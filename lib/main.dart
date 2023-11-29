@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:ultrared/src/controllers/chat_controller.dart';
+import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/socket_service.dart';
 import 'package:ultrared/src/routes/routes.dart';
 
@@ -15,13 +17,15 @@ class MyApp extends StatelessWidget {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return   MultiProvider(
       providers: [
-         ChangeNotifierProvider(create: (_) => SocketService(),),
+         ChangeNotifierProvider(create: (_) => SocketService()),
+         ChangeNotifierProvider(create: (_) => ChatController()),
+         ChangeNotifierProvider(create: (_) => HomeController())
        
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
-        title: 'Material App',
-         initialRoute: 'home',
+        title: 'Utrared App',
+         initialRoute: 'login',
          routes: appRoutes,
       ),
     );

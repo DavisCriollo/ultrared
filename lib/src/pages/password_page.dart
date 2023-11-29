@@ -1,304 +1,195 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:ultrared/src/utils/responsive.dart';
+import 'package:ultrared/src/utils/theme.dart';
+import 'package:ultrared/src/widgets/botonBase.dart';
 
-// import 'package:flutter/material.dart';
+class PasswordPage extends StatefulWidget {
+  const PasswordPage({Key? key}) : super(key: key);
 
+  @override
+  State<PasswordPage> createState() => _PasswordPageState();
+}
 
-// class PasswordPage extends StatelessWidget {
-//   const PasswordPage({Key? key}) : super(key: key);
+class _PasswordPageState extends State<PasswordPage> {
+  @override
+  Widget build(BuildContext context) {
+    final Responsive size = Responsive.of(context);
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: cuaternaryColor,
+        appBar: AppBar(
+          iconTheme: const IconThemeData( color: Colors.black),
+           centerTitle: true, // Centra el título en el AppBar
+          elevation: 0,
+          backgroundColor: cuaternaryColor, // Fondo blanco
+          title: Text('CONTRASEÑA',
+              style: GoogleFonts.poppins(
+                fontSize: size.iScreen(2.0),
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+                letterSpacing: -0.40,
+              ) // Color del título en negro
+              ),
+        ),
+        body: Container(
+            // alignment: Alignment.center,
+            // color: Colors.red,
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final Responsive size = Responsive.of(context);
-//     return ChangeNotifierProvider<PasswordController>(
-//       create: (_) => PasswordController(),
-//       builder: (_, __) {
-//         final controller = _.read<PasswordController>();
+            width: size.wScreen(100.0),
+            height: size.hScreen(100.0),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: size.hScreen(8),
+                    width: size.wScreen(100),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
 
-//         return Scaffold(
-//           backgroundColor: Colors.white,
-//           appBar: AppBar(
-//             // backgroundColor: const Color(0XFF343A40), 
-//             title:  Text(
-//               'Recuperar Contraseña',style:  Theme.of(context).textTheme.headline2,
-//               // style: TextStyle(color: Colors.white),
-//             ),
-             
-//           ),
-//           body: GestureDetector(
-//             onTap: () => FocusScope.of(context).unfocus(),
-//             child: Container(
-//               // color: Colors.red,
+                    // color: Colors.blue, // Puedes ajustar el color según tus preferencias
+                    child: Image.asset(
+                      'assets/imgs/LetrasNegro.png',
+                      fit: BoxFit.contain, // URL de la imagen
+                    ),
+                  ),
+                 // ***********************************************/
 
-//               width: size.wScreen(100),
-//               height: size.hScreen(100),
-//               margin: EdgeInsets.only(
-//                           bottom: size.iScreen(2),
-//                           left: size.iScreen(4.0),
-//                           right: size.iScreen(4.0)),
-//               child: SingleChildScrollView(
-//                         physics: const ClampingScrollPhysics(),
-//                 child: Form(
-//                   key: controller.passwordFormKey,
-//                   child: Column(
-//                     children: [
-//                       SizedBox(height: size.iScreen(2.0),),
-//                       const LogoImage(),
-//                       Container(
-//                         margin: EdgeInsets.only(
-//                             bottom: size.iScreen(2),
-//                             left: size.iScreen(2),
-//                             right: size.iScreen(2)),
-//                         child: Text(
-//                           '¿ Olvidaste tu Contraseña ?',
-//                           style: GoogleFonts.lexendDeca(
-//                             fontSize: size.iScreen(2.0),
-//                             // fontWeight: FontWeight.bold,
-//                             color: Colors.grey
-//                           ),
-//                         ),
-//                       ),
-//                       Container(
-//                         margin: EdgeInsets.symmetric(
-//                             vertical: size.iScreen(1.0),
-//                             horizontal: size.iScreen(0.0)),
-//                         child: Text(
-//                           'Escribe tu usuario y código de empresa para recuperarla.',
-//                           style: GoogleFonts.lexendDeca(
-//                             fontSize: size.iScreen(1.9),
-//                             fontWeight: FontWeight.w400,
-//                             // color: quinaryColor
-//                           ),
-//                         ),
-//                       ),
-//                       // SizedBox(
-//                       //   width: size.wScreen(70.0),
-//                       //   child: Form(
-//                       //     key: controller.formKey,
-//                       //     child: TextFormField(
-//                       //       keyboardType: TextInputType.emailAddress,
-//                       //       decoration: const InputDecoration(
-//                       //           hintText: 'correo@correo.com'),
-//                       //       textAlign: TextAlign.center,
-//                       //       style: TextStyle(
-//                       //         color: Colors.black,
-//                       //         fontSize: size.iScreen(1.7),
-//                       //         // letterSpacing: 2.0,
-//                       //       ),
-//                       //       onChanged: (text) {
-//                       //         controller.onCorreoChange(text);
-//                       //       },
-//                       //       validator: (value) {
-//                       //         if (!EmailValidator.validate(value ?? "")) {
-//                       //           return 'Correo inválido';
-//                       //         }
-//                       //       },
-//                       //     ),
-//                       //   ),
-//                       // ),
-//                 //=============================================================================================================//
-//                  //***********************************************/
-//                               SizedBox(
-//                                 height: size.iScreen(2.0),
-//                               ),
-//                               //*****************************************/
-//                               //*****************************************/
-//                               SizedBox(
-//                                 width: size.wScreen(100.0),
-//                                 // color: Colors.blue,
-//                                 child: Text('Usuario',
-//                                     style: GoogleFonts.lexendDeca(
-//                                       // fontSize: size.iScreen(2.0),
-//                                       fontWeight: FontWeight.normal,
-//                                       color: Colors.grey,
-//                                     )),
-//                               ),
-//                               TextFormField(
-//                                     // controller: textUsuario,
-//                                     // initialValue: controller.getUsuario,
-//                                     // initialValue: (textUsuario.text==true)? textUsuario.text:'',
-                                       
-//                                     decoration: const InputDecoration(
-//                                       suffixIcon:
-//                                           Icon(Icons.person_outline_outlined),
-//                                     ),
-//                                     textAlign: TextAlign.start,
-//                                     style: const TextStyle(
-                
-//                                         // fontSize: size.iScreen(3.5),
-//                                         // fontWeight: FontWeight.bold,
-//                                         // letterSpacing: 2.0,
-//                                         ),
-//                                     onChanged: (text) {
-//                                       // controller.onChangeUser(text);
-//                                     },
-//                                     validator: (text) {
-//                                       if (text!.trim().isNotEmpty) {
-//                                         return null;
-//                                       } else {
-//                                         return 'Usuario Inválido';
-//                                       }
-//                                     },
-//                                     onSaved: (value) {
-//                                       // codigo = value;
-//                                       //  controller.onChangeUser(value!);
-//                                     },
-//                                   ),
-                
-//                               //***********************************************/
-//                               SizedBox(
-//                                 height: size.iScreen(2.0),
-//                               ),
-//                               //*****************************************/
-//                                  SizedBox(
-//                                 height: size.iScreen(2.0),
-//                               ),
-//                               //*****************************************/
-//                               //*****************************************/
-//                               SizedBox(
-//                                 width: size.wScreen(100.0),
-//                                 // color: Colors.blue,
-//                                 child: Text('Empresa',
-//                                     style: GoogleFonts.lexendDeca(
-//                                       // fontSize: size.iScreen(2.0),
-//                                       fontWeight: FontWeight.normal,
-//                                       color: Colors.grey,
-//                                     )),
-//                               ),
-//                               TextFormField(
-//                                     // controller: textUsuario,
-//                                     // initialValue: controller.getUsuario,
-//                                     // initialValue: (textUsuario.text==true)? textUsuario.text:'',
-                                       
-//                                     decoration: const InputDecoration(
-//                                       suffixIcon:
-//                                           Icon(Icons.apartment_outlined),
-//                                     ),
-//                                     textAlign: TextAlign.start,
-//                                     style: const TextStyle(
-                
-//                                         // fontSize: size.iScreen(3.5),
-//                                         // fontWeight: FontWeight.bold,
-//                                         // letterSpacing: 2.0,
-//                                         ),
-//                                     onChanged: (text) {
-//                                       // controller.onChangeEmpresa(text);
-//                                     },
-//                                     validator: (text) {
-//                                       if (text!.trim().isNotEmpty) {
-//                                         return null;
-//                                       } else {
-//                                         return 'Código de empresa Inválido';
-//                                       }
-//                                     },
-//                                     onSaved: (value) {
-//                                       // codigo = value;
-//                                       //  controller.onChangeEmpresa(value!);
-//                                     },
-//                                   ),
-//                              //***********************************************/
-//                 //=============================================================================================================//
-//                      Container(
-//                       decoration: BoxDecoration(
-//                           color: primaryColor,
-//                           borderRadius: BorderRadius.circular(8.0)),
-//                       margin: EdgeInsets.symmetric(
-//                           horizontal: size.iScreen(5.0),
-//                           vertical: size.iScreen(3.0)),
-//                       padding: EdgeInsets.symmetric(
-//                         horizontal: size.iScreen(3.0),
-//                         vertical: size.iScreen(0.5)
-//                       ),
-//                       child: GestureDetector(
-//                         child: Container(
-//                           alignment: Alignment.center,
-//                           height: size.iScreen(3.5),
-//                           width: size.iScreen(10.0),
-//                           child: Text('Enviar',
-//                               style: GoogleFonts.lexendDeca(
-//                                 fontSize: size.iScreen(2.0),
-//                                 fontWeight: FontWeight.normal,
-//                                 color: Colors.white,
-//                               )),
-//                         ),
-//                         onTap: () => onSubmit(context, controller),
-//                         // onTap: null,
-                        
-//                       ),
-//                     ),
-                  
-//                       // GestureDetector(
-//                       //   onTap: () => onSubmit(context, controller),
-//                       //   child:
-//                       //    Container(
-//                       //     margin:
-//                       //         EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
-//                       //     padding: EdgeInsets.symmetric(
-//                       //         vertical: size.iScreen(1.0),
-//                       //         horizontal: size.iScreen(5.0)),
-//                       //     decoration: BoxDecoration(
-//                       //         color: primaryColor,
-//                       //         borderRadius: BorderRadius.circular(5.0)),
-//                       //     child: Text(
-//                       //       'Enviar',
-//                       //       style: GoogleFonts.lexendDeca(
-//                       //           fontSize: 18,
-//                       //           fontWeight: FontWeight.bold,
-//                       //           color: Colors.white),
-//                       //     ),
-//                       //   ),
+                  SizedBox(
+                    height: size.iScreen(2.0),
+                  ),
+                  //*****************************************/
+                  Container(
+                    // height: size.hScreen(40),
+                    width: size.wScreen(100),
+                    // color: Colors.green, // Puedes ajustar el color según tus preferencias
+                    // Puedes agregar contenido adicional en este contenedor
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: size.wScreen(80),
+                          height: size.hScreen(8.0),
+                          child: Text(
+                            'Internet por Fibra Óptica',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                                fontSize: size.iScreen(2.5),
+                                fontWeight: FontWeight.w500,
+                                color: secondaryColor),
+                          ),
+                        ),
+                        //***********************************************/
+                        SizedBox(
+                          height: size.hScreen(10.0),
+                        ),
+                       
+
+                        //***********************************************/
+                        SizedBox(
+                          width: size.wScreen(80),
+                          height: size.hScreen(8.0),
+                          child: Text(
+                           'Recupera tu Contraseña',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                                fontSize: size.iScreen(2.5),
+                                fontWeight: FontWeight.w500,
+                                
+                                ),
+                          ),
+                        ),
+                        //***********************************************/
+                        SizedBox(
+                          height: size.hScreen(1.0),
+                        ),
+                       
+
+                        //***********************************************/
+ 
+                        Container(
+                          // color: Colors.red,
+                          width: size.wScreen(80.0),
+                          padding: EdgeInsets.all(size.wScreen(0.0)),
+                          child: Center(
+                            child: Container(
+                               padding: EdgeInsets.symmetric(  horizontal: size.hScreen(2.0), vertical: size.iScreen(0.0)),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 1.0,
+                                ),
+                              ),
+                              child: TextFormField(
+                                // maxLength: 3,
+                                decoration: const InputDecoration(
+                                  suffixIcon:
+                                      Icon(Icons.email),
+                                  hintText:    'ESCRIBE TU CORREO',
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        //***********************************************/
+
+                        SizedBox(
+                          height: size.iScreen(20.0),
+                        ),
+                        //*****************************************/
+                   
+                       
+
                       
+                        //***********************************************/
+
                       
-                      
-                      
-//                       // ),
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
+                        BotonBase(
+                          size: size,
+                          label: 'ENVIAR',
+                        ),
 
-//   void onSubmit(BuildContext context, PasswordController controller) async {
-//     final isValid = controller.validateForm();
-//     if (!isValid) return;
-//     if (isValid) {
-
-//       //  final response = await controller.passwordRecovery();
-//       // ProgressDialog.dissmiss(context);
-//       // if (response != null) {
-//       //    print('SIIIIIIIII');
-//       //   // Navigator.pushNamedAndRemoveUntil(
-//       //   //     context, "home", (Route<dynamic> route) => false);
-//       // }
-//       // ProgressDialog.show(context);
-//       // //     //TODO: CUARDAD LA INFORMACION EN LA BASE
-//       //   final response = await controller.passwordRecovery();
-//       // //     // await controller.getCurrentPosition();
-//       // // controller.passwordRecovery();
-//       // ProgressDialog.dissmiss(context);
-//       //  if (response != null) {
-//       //     // print('SIIIIIIIII');
-//       //     NotificatiosnService.showSnackBarSuccsses("${response["msg"]}");
-//       //   // Navigator.pushNamedAndRemoveUntil(context, "home", (Route<dynamic> route) => false);
-//       // } 
-
-//     }
-//   }
-// }
-
-// class LogoImage extends StatelessWidget {
-//   const LogoImage({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final Responsive size = Responsive.of(context);
-//     return Container(
-//       margin: EdgeInsets.only(bottom: size.iScreen(5.0)),
-//       width: size.wScreen(45),
-//       child: Image.asset('assets/imgs/logo_neitor.png'),
-//     );
-//   }
-// }
+                        // SizedBox(
+                        //   height: size.hScreen(5.0),
+                        // ),
+                         SizedBox(
+                          height: size.hScreen(5.0),
+                        ),
+                        // Text.rich(
+                        //   TextSpan(
+                        //     children: [
+                        //       TextSpan(
+                        //         text: 'Ya tienes cuenta. ',
+                        //         style: GoogleFonts.poppins(
+                        //           fontSize: size.iScreen(1.5),
+                        //           fontWeight: FontWeight.w400,
+                        //           // color: Colors.white
+                        //         ),
+                        //       ),
+                        //       TextSpan(
+                        //         text: 'INICIAR SESIÓN',
+                        //         style: TextStyle(
+                        //           color: Color(0xFFB32523),
+                        //           fontSize: size.iScreen(1.3),
+                        //           fontFamily: 'Poppins',
+                        //           fontWeight: FontWeight.w600,
+                        //           height: size.iScreen(0.1),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )),
+      ),
+    );
+  }
+}

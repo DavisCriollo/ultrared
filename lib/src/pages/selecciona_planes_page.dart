@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:ultrared/src/controllers/home_controller.dart';
+import 'package:ultrared/src/pages/foto_perfil_page.dart';
+import 'package:ultrared/src/pages/password_page.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
+import 'package:ultrared/src/widgets/no_data.dart';
 
 class SeleccionaPlanPage extends StatefulWidget {
   const SeleccionaPlanPage({Key? key}) : super(key: key);
@@ -18,9 +23,12 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        backgroundColor: cuaternaryColor,
         appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.black),
+          centerTitle: true, // Centra el título en el AppBar
           elevation: 0,
-          backgroundColor: Colors.white, // Fondo blanco
+          backgroundColor: cuaternaryColor, // Fondo blanco
           title: Text('REGISTRO',
               style: GoogleFonts.poppins(
                 fontSize: size.iScreen(2.0),
@@ -31,28 +39,32 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
               ),
         ),
         body: Container(
+            // alignment: Alignment.center,
+            // color: Colors.red,
+
             width: size.wScreen(100.0),
             height: size.hScreen(100.0),
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    height: size.hScreen(10),
+                    height: size.hScreen(8),
                     width: size.wScreen(100),
                     padding:
                         EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
 
                     // color: Colors.blue, // Puedes ajustar el color según tus preferencias
                     child: Image.asset(
-                      'assets/imgs/banner2.jpeg',
-                      fit: BoxFit.cover, // URL de la imagen
+                      'assets/imgs/LetrasNegro.png',
+                      fit: BoxFit.contain, // URL de la imagen
                     ),
                   ),
                   //***********************************************/
 
                   SizedBox(
-                    height: size.iScreen(1.0),
+                    height: size.iScreen(3.0),
                   ),
                   //*****************************************/
                   Container(
@@ -72,7 +84,7 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
                             'Internet por Fibra Óptica',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.poppins(
-                                fontSize: size.iScreen(2.0),
+                                fontSize: size.iScreen(2.5),
                                 fontWeight: FontWeight.w500,
                                 color: secondaryColor),
                           ),
@@ -85,44 +97,55 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
                         //*****************************************/
                         //***********************************************/
                         Container(
-                          width: size.wScreen(80.0),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: size.iScreen(2.0),
-                              vertical: size.iScreen(2.0)),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(
-                              color: Colors.grey,
-                              width: 1.0,
+                            width: size.wScreen(80.0),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.iScreen(2.0),
+                                vertical: size.iScreen(1.0)),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(
+                                color: Colors.grey,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // Espacio entre el icono y el texto
-                              Container(
-                                // color: Colors.red,
-                                width: size.wScreen(60.0),
-                                child: Text(
-                                  'SELECCIONA TU PLAN  ',
-                                  style: GoogleFonts.poppins(
-                                    fontSize:
-                                        16.0, // Ajusta según tus necesidades
-                                    fontWeight: FontWeight.w400,
-                                    // color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              Icon(
-                                Icons
-                                    .keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
-                                color: Colors.grey, // Color del icono
-                              ),
-                            ],
-                          ),
-
-                          
-                        ),
+                            child: Consumer<HomeController>(
+                              builder: (_, valuePlan, __) {
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    // Espacio entre el icono y el texto
+                                    Container(
+                                      // color: Colors.red,
+                                      width: size.wScreen(60.0),
+                                      child: Text(
+                                        valuePlan.getPlanItem != ""
+                                            ? valuePlan.getPlanItem
+                                            : 'SELECCIONA TU PLAN  ',
+                                        style: GoogleFonts.poppins(
+                                          fontSize:
+                                              size.iScreen(2.2), // Ajusta según tus necesidades
+                                          fontWeight: FontWeight.w400,
+                                          color: valuePlan.getPlanItem != ""? Colors.black:Colors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        final _ctrl =
+                                            context.read<HomeController>();
+                                        _modalPlanes(context, size, _ctrl);
+                                      },
+                                      child: Icon(
+                                        Icons
+                                            .keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
+                                        color: Colors.grey, // Color del icono
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            )),
                         //***********************************************/
 
                         SizedBox(
@@ -131,45 +154,56 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
                         //*****************************************/
                         //***********************************************/
                         Container(
-                          width: size.wScreen(80.0),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: size.iScreen(2.0),
-                              vertical: size.iScreen(2.0)),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(
-                              color: Colors.grey,
-                              width: 1.0,
+                            width: size.wScreen(80.0),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.iScreen(2.0),
+                                vertical: size.iScreen(1.0)),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(
+                                color: Colors.grey,
+                                width: 1.0,
+                              ),
                             ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // Espacio entre el icono y el texto
-                              Container(
-                                // color: Colors.red,
-                                width: size.wScreen(60.0),
-                                child: Text(
-                                  'SELECCIONA TU PLAN  ',
-                                  style: GoogleFonts.poppins(
-                                    fontSize:
-                                        16.0, // Ajusta según tus necesidades
-                                    fontWeight: FontWeight.w400,
-                                    // color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              const Icon(
-                                Icons
-                                    .keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
-                                color: Colors.grey, // Color del icono
-                              ),
-                            ],
-                          ),
+                            child: Consumer<HomeController>(
+                              builder: (_, valueSector, __) {
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    // Espacio entre el icono y el texto
+                                    Container(
+                                      // color: Colors.red,
+                                      width: size.wScreen(60.0),
+                                      child: Text(
+                                        valueSector.getSectorItem != ""
+                                            ? valueSector.getSectorItem
+                                            : 'SELECCIONA TU SECTOR',
+                                        style: GoogleFonts.poppins(
+                                          fontSize:
+                                              size.iScreen(2.2), // Ajusta según tus necesidades
+                                          fontWeight: FontWeight.w400,
+                                           color: valueSector.getSectorItem != ""? Colors.black:Colors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        final _ctrl =
+                                            context.read<HomeController>();
+                                        _modalSectores(context, size, _ctrl);
+                                      },
+                                      child: Icon(
+                                        Icons
+                                            .keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
+                                        color: Colors.grey, // Color del icono
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            )),
 
-                          
-                        ),
-                       
                         //***********************************************/
 
                         SizedBox(
@@ -182,7 +216,9 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
                           padding: EdgeInsets.all(size.wScreen(0.0)),
                           child: Center(
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 16.0),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.hScreen(2.0),
+                                  vertical: size.iScreen(0.0)),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.0),
                                 border: Border.all(
@@ -191,10 +227,13 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
                                 ),
                               ),
                               child: TextFormField(
-                                maxLength: 3,
+                                maxLines: 3,
+                                minLines: 1,
                                 decoration: const InputDecoration(
-                                  suffixIcon:
-                                      Icon(Icons.account_circle_rounded),
+                                  suffixIcon: Icon(
+                                    Icons.message_outlined,
+                                    color: secondaryColor,
+                                  ),
                                   hintText: 'ESCRIBE TU SECTOR (OPCIONAL)',
                                   border: InputBorder.none,
                                 ),
@@ -202,58 +241,186 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
                             ),
                           ),
                         ),
-                        //***********************************************/
 
                         SizedBox(
-                          height: size.iScreen(3.0),
+                          height: size.iScreen(1.0),
                         ),
                         //*****************************************/
                         //***********************************************/
-
+                        Container(
+                            width: size.wScreen(80.0),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.iScreen(2.0),
+                                vertical: size.iScreen(1.0)),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(
+                                color: Colors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                            child: Consumer<HomeController>(
+                              builder: (_, valueGPS, __) {
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      // color: Colors.red,
+                                      width: size.wScreen(60.0),
+                                      child: valueGPS.getLocationMessage == ""
+                                          ? Text(
+                                              'UBICACIÓN GPS  ',
+                                              style: GoogleFonts.poppins(
+                                                fontSize:
+                                                    size.iScreen(2.2), // Ajusta según tus necesidades
+                                                fontWeight: FontWeight.w400,
+                                               color: valueGPS.getLocationMessage != ""? Colors.black:Colors.grey,
+                                              ),
+                                            )
+                                          : Text(
+                                              '${valueGPS.getLocationMessage}  ',
+                                              style: GoogleFonts.poppins(
+                                                fontSize:
+                                                    size.iScreen(2.2), // Ajusta según tus necesidades
+                                                fontWeight: FontWeight.w400,
+                                                color: valueGPS.getLocationMessage != ""? Colors.black:Colors.grey,
+                                              ),
+                                            ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        valueGPS.getLocation(context);
+                                      },
+                                      child: Icon(
+                                        Icons
+                                            .location_on_outlined, // Cambia el icono según tus necesidades
+                                        color: valueGPS.getLocationMessage == ""
+                                            ? Colors.grey
+                                            : tercearyColor, // Color del icono
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            )),
                         //***********************************************/
 
                         SizedBox(
-                          height: size.iScreen(2.0),
+                          height: size.iScreen(15.0),
                         ),
                         //*****************************************/
-                        BotonBase(
-                          size: size,
-                          label: 'SIGUIENTE',
+
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => FotosPerfilPage())));
+                          },
+                          child: BotonBase(
+                            size: size,
+                            label: 'SIGUIENTE',
+                          ),
                         ),
 
                         SizedBox(
                           height: size.hScreen(5.0),
                         ),
-                        Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: '¿No recuerdas tu contraseña?. ',
-                                style: GoogleFonts.poppins(
-                                  fontSize: size.iScreen(1.5),
-                                  fontWeight: FontWeight.w400,
-                                  // color: Colors.white
-                                ),
-                              ),
-                              TextSpan(
-                                text: 'RECUPÉRALA',
-                                style: TextStyle(
-                                  color: Color(0xFFB32523),
-                                  fontSize: size.iScreen(1.3),
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w600,
-                                  height: size.iScreen(0.1),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
                       ],
                     ),
                   ),
                 ],
               ),
             )),
+      ),
+    );
+  }
+
+  Future<String?> _modalPlanes(
+      BuildContext context, Responsive size, HomeController controller) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Center(child: const Text('Selecciona tu plan')),
+        content: Container(
+          height: size.hScreen(50.0),
+          width: double.maxFinite,
+          child: ListView.builder(
+            itemCount: controller.getlistaPlanes.length,
+            itemBuilder: (BuildContext context, int index) {
+              final _plan = controller.getlistaPlanes[index];
+              // final List _tiposList =
+              //     _listaSexoAnimal[index]['sexNombre'];
+
+              return controller.getlistaPlanes.isNotEmpty
+                  ? Wrap(
+                      children: controller.getlistaPlanes
+                          .map(
+                            (e) => ListTile(
+                              onTap: () {
+// print('ESPECIE: ${especiesList['aliNombre']}');
+                                controller.setPlanItem(e);
+                                // e['sexNombre']);
+// print('RAZA: ${e['nombre']}');
+                                // controller.setTipoAlimento(e['sexNombre']);
+
+                                Navigator.pop(context);
+                              },
+                              // title: Text('${e['sexNombre']}'),
+                              title: Text('$e'),
+                            ),
+                          )
+                          .toList(),
+                    )
+                  : const NoData(label: 'No existen alimentos registrados');
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<String?> _modalSectores(
+      BuildContext context, Responsive size, HomeController controller) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Center(child: const Text('Selecciona tu Sector')),
+        content: Container(
+          height: size.hScreen(50.0),
+          width: double.maxFinite,
+          child: ListView.builder(
+            itemCount: controller.getlistaSectores.length,
+            itemBuilder: (BuildContext context, int index) {
+              final _plan = controller.getlistaSectores[index];
+              // final List _tiposList =
+              //     _listaSexoAnimal[index]['sexNombre'];
+
+              return controller.getlistaSectores.isNotEmpty
+                  ? Wrap(
+                      children: controller.getlistaSectores
+                          .map(
+                            (e) => ListTile(
+                              onTap: () {
+// print('ESPECIE: ${especiesList['aliNombre']}');
+                                controller.setSectorItem(e);
+                                // e['sexNombre']);
+// print('RAZA: ${e['nombre']}');
+                                // controller.setTipoAlimento(e['sexNombre']);
+
+                                Navigator.pop(context);
+                              },
+                              // title: Text('${e['sexNombre']}'),
+                              title: Text('$e'),
+                            ),
+                          )
+                          .toList(),
+                    )
+                  : const NoData(label: 'No existen alimentos registrados');
+            },
+          ),
+        ),
       ),
     );
   }
