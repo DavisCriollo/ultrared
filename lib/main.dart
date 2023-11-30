@@ -5,16 +5,38 @@ import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/socket_service.dart';
 import 'package:ultrared/src/routes/routes.dart';
+import 'package:ultrared/src/service/notifications_service.dart';
 
 void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback(
+      (_) {
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+        ]);
+      },
+    );
+  }
+
+
+
+  @override
   Widget build(BuildContext context) {
-     SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    //  SystemChrome.setPreferredOrientations(
+    //   [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return   MultiProvider(
       providers: [
          ChangeNotifierProvider(create: (_) => SocketService()),
@@ -25,8 +47,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
         title: 'Utrared App',
-         initialRoute: 'login',
+         initialRoute: 'splash',
          routes: appRoutes,
+             scaffoldMessengerKey: NotificatiosnService.messengerKey,
       ),
     );
   }

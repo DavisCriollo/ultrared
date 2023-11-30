@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/pages/login_page.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
+import 'package:ultrared/src/pages/splash_screen.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 
@@ -120,13 +122,15 @@ class DrawerMenu extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Cerrar Sesión'),
-            onTap: () {
+            onTap: ()  async{
               // Acción al hacer clic en "Salir"
-              Navigator.pop(context);
+              // Navigator.pop(context);
+                                await Auth.instance.deleteTokenFireBase();
+                await Auth.instance.deleteSesion(context);
               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: ((context) => SerClientePage())));
+                                    builder: ((context) => SplashPage())));
             },
           ),
            //***********************************************/

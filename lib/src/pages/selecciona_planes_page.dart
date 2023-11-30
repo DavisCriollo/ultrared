@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/foto_perfil_page.dart';
@@ -20,6 +21,8 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
+      final _ctrl =
+                                            context.read<HomeController>();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -189,8 +192,7 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        final _ctrl =
-                                            context.read<HomeController>();
+                                      
                                         _modalSectores(context, size, _ctrl);
                                       },
                                       child: Icon(
@@ -289,8 +291,36 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
                                             ),
                                     ),
                                     GestureDetector(
-                                      onTap: () {
-                                        valueGPS.getLocation(context);
+                                      onTap: () async{
+
+
+
+                                        //    valueGPS.setItemGPS('');
+    
+                                        // valueGPS.getLocation( );
+
+ final status = await Permission.location.request();
+      if (status == PermissionStatus.granted) {
+        //   // print('============== SI TIENE PERMISOS');
+        await _ctrl.getLocation();
+        if (_ctrl.getGPSPositione) {
+          // Navigator.of(context).pushAndRemoveUntil(
+          //     MaterialPageRoute(
+          //         builder: (context) => HomePage(
+          //               // validaTurno: validaTurno,
+          //               // tipo: session.rol,
+          //               // user: session,
+          //               // ubicacionGPS: controllerHome.getCoords,
+          //             )),
+          //     (Route<dynamic> route) => false);
+          // ModalRoute.withName('/');
+        }
+      } else {
+        Navigator.pushNamed(context, 'gps');
+      }
+
+
+
                                       },
                                       child: Icon(
                                         Icons

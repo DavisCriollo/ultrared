@@ -216,23 +216,29 @@
 //     );
 //   }
 // }
+
+
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/socket_service.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
+import 'package:ultrared/src/pages/splash_screen.dart';
+import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/drawer_menu.dart';
 
 import 'package:ultrared/src/widgets/elementoSOS.dart';
 import 'package:ultrared/src/widgets/elementosHome.dart';
+import 'package:ultrared/src/widgets/no_data.dart';
 // import 'socket_provider.dart'; // Asegúrate de importar tu SocketProvider
 
 class HomePage extends StatefulWidget {
@@ -261,11 +267,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     if (state == AppLifecycleState.resumed) {
       // await homeController.validaInicioDeSesion(context);
       print('EL ESTADO ES ------: $state');
-      homeController.getLocation(context);
-      //  Navigator.pushReplacement(
-      //             context,
-      //             MaterialPageRoute<void>(
-      //                 builder: (BuildContext context) => const SplashPage()));
+      homeController.getLocation();
+       Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const SplashPage()));
 
 //  final _isTurned=
 // homeController.buscaNotificacionesPush('');
@@ -336,9 +342,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     @override
     final Responsive size = Responsive.of(context);
     var socketProvider = context.read<SocketService>();
+    final _ctrl = context.read<HomeController>() ;
+    _ctrl.checkConnectivity();
     // var socketProvider =Provider.of<SocketProvider>(context,listen:  true);
-
-    return SafeArea(
+    //  _ctrl.getconectionInternet== false?
+    return 
+  Consumer<HomeController>(builder: (_, values, __) { 
+    return  SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey.shade200, // appBar: AppBar(
         //   title: Text('Estado del Socket'),
@@ -363,6 +373,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             ),
           ),
           actions: [
+            values.connectionStatus != ConnectionStatus.none ?
             Badge(
                 position: const BadgePosition(
                                       top: 10.0, start: 25.0),
@@ -381,15 +392,19 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                             color: Colors.black,
                                           )),
               ),
-            )
+            ): Container()
           ],
         ),
-        drawer: DrawerMenu(),
+        drawer:  values.connectionStatus != ConnectionStatus.none ? DrawerMenu():null,
         body: Container(
           height: size.hScreen(100),
           width: size.wScreen(100),
           // color:Colors.green,
-          child: Column(
+          child:
+          
+          values.connectionStatus != ConnectionStatus.none ?
+          
+           Column(
             children: [
               // Container(
               //   padding: EdgeInsets.symmetric(
@@ -439,7 +454,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     children: [
                       Container(
                         width: size.wScreen(100.0),
-                        height: size.wScreen(70.0),
+                        height: size.wScreen(60.0),
 
                         // color: Colors.red,
                         child: Container(
@@ -487,7 +502,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
 
                         // color: Colors.red,
-                        child: Column(
+                        child:
+                          
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
@@ -717,9 +734,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 ),
               ),
             ],
-          ),
+          ): NoData(label: 'No tiene conexión...'),
         ),
       ),
     );
+  
+   },);
+   
+  
   }
+
+
+
+
 }
