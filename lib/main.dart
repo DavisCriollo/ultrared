@@ -3,9 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
-import 'package:ultrared/src/controllers/socket_service.dart';
+
 import 'package:ultrared/src/routes/routes.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
+import 'package:ultrared/src/service/socket_service.dart';
 
 void main() => runApp(const MyApp());
 
@@ -47,6 +48,7 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
         title: 'Utrared App',
+        //  initialRoute: 'home',
          initialRoute: 'splash',
          routes: appRoutes,
              scaffoldMessengerKey: NotificatiosnService.messengerKey,

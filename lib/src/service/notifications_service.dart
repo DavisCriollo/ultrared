@@ -13,7 +13,7 @@ class NotificatiosnService {
   static showSnackBarError(String message) {
     final snackBar =  SnackBar(
       // backgroundColor: Colors.red.withOpacity(0.9),
- backgroundColor: cuaternaryColor,
+ backgroundColor: tercearyColor,
       content: Text(
         message,
         style: const TextStyle(
@@ -27,7 +27,7 @@ class NotificatiosnService {
   static showSnackBarSuccsses(String message) {
     final snackBar =  SnackBar(
       // backgroundColor: Colors.green.withOpacity(0.9),
-      backgroundColor: secondaryColor,
+      backgroundColor: Colors.green,
       content: Text(
         message,
         style: const TextStyle(
@@ -41,7 +41,7 @@ class NotificatiosnService {
   static showSnackBarDanger(String message) {
     final snackBar =  SnackBar(
       // backgroundColor: Colors.green.withOpacity(0.9),
-      backgroundColor: tercearyColor,
+      backgroundColor: Colors.orange,
       content: Text(
         message,
         style: const TextStyle(

@@ -171,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                                         if (text!.trim().isNotEmpty) {
                                           return null;
                                         } else {
-                                          return 'Usuario Inválido';
+                                          return 'Usuario Incorrecto';
                                         }
                                       },
                       ),
@@ -235,7 +235,7 @@ class _LoginPageState extends State<LoginPage> {
                                         if (text!.trim().isNotEmpty) {
                                           return null;
                                         } else {
-                                          return 'Usuario Inválido';
+                                          return 'Contraseña Incorrecta';
                                         }
                                       },
                                            
@@ -346,7 +346,9 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute<void>(
-                      builder: (BuildContext context) => const HomePage()));
+                      builder: (BuildContext context) => const HomePage(
+                       
+                      )));
             }
             else{
               // NotificatiosnService.showSnackBarError('Error de conexión con el servidor');

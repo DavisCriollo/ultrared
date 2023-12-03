@@ -71,6 +71,8 @@ class SerClientePage extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap:(){
+
+                          
                           Navigator.push(
                                         context,
                                         MaterialPageRoute(

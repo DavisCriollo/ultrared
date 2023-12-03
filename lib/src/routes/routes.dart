@@ -29,7 +29,7 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
 
   // 'home': (_) => const SeleccionaPlanPage(),
 
-  // 'home': (_) => const FotosPerfilPage(),
+  'home': (_) => const FotosPerfilPage(),
   // 'home': (_) => const FotosCasaPage()
   // 'home': (_) => const FotosCasaPage()
   // 'home': (_) => const ListaUsuariosChat()

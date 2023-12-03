@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'dart:io';
 // import 'dart:js';
 
+import 'package:cross_file/src/types/interface.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as _http;
 import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/models/auth_response.dart';
+import 'package:ultrared/src/models/foto_url.dart';
 
 import 'package:ultrared/src/service/notifications_service.dart' as snaks;
 
@@ -28,12 +30,12 @@ class ApiProvider {
     try {
       final dataResp =
           await _http.post(Uri.parse('$_dirURL/auth/login'), body: {
-        // "usuario": usuario,
-        // "password": password,
-        // "empresa": empresa,
-    "usuario": "admin",
-	"password": "Admin**+21",
-	"empresa": "ULTRA2022"
+        "usuario": usuario,
+        "password": password,
+        "empresa": empresa,
+  //   "usuario": "admin",
+	// "password": "Admin**+21",
+	// "empresa": "ULTRA2022"
       });
       final respo = jsonDecode(dataResp.body);
 
@@ -84,46 +86,336 @@ class ApiProvider {
     }
   }
 
-//   //=========================GET ALL COMUNICADOS CLIENTES =====================================//
-//   Future<AllCumunicadosClientes?> getAllComunicadosClientes({
-//     BuildContext? context,
-//     int? cantidad,
-//     int? page,
-//     String? search,
-//     String? input,
-//     bool? orden,
-//     String? datos,
-//     String? rucempresa,
-//     String? token,
-//   }) async {
-//     try {
-//       final url = Uri.parse(
-//           '$_dirURL/comunicados?cantidad=$cantidad&page=$page&search=$search&input=$input&orden=$orden&datos=$datos&rucempresa=$rucempresa');
+  //=========================GET ALL CIUDADES =====================================//
+  Future getAllCiudades({
+    BuildContext? context,
+    String? token,
+    String? notificacion,
+  }) async {
+    try {
+      final url = Uri.parse(
+          '$_dirURL/ciudades/filtroNotToken/0');
 
-//       final dataResp = await _http.get(
-//         url,
-//         headers: {"x-auth-token": '$token'},
-//       );
+      final dataResp = await _http.get(
+        url,
+        // headers: {"x-auth-token": '$token'},
+      );
+      final respo = jsonDecode(dataResp.body);
+      if (dataResp.statusCode == 200) {
+        return respo;
+      }
 
-//       if (dataResp.statusCode == 200) {
-//         final responseData = AllCumunicadosClientes.fromJson(dataResp.body);
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+        Auth.instance.deleteSesion(context!);
 
-//         return responseData;
-//       }
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+  //=========================GET ALL CIUDADES =====================================//
+  Future getAllPlanesSinToken({
+    BuildContext? context,
+    String? token,
+    String? notificacion,
+  }) async {
+    try {
+      final url = Uri.parse(
+          '$_dirURL/planes/filtroNotToken/0');
 
-//       if (dataResp.statusCode == 404) {
+      final dataResp = await _http.get(
+        url,
+        // headers: {"x-auth-token": '$token'},
+      );
+      final respo = jsonDecode(dataResp.body);
+      if (dataResp.statusCode == 200) {
+        return respo;
+      }
+
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+        Auth.instance.deleteSesion(context!);
+
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+  //=========================CREAR USUARIOS =====================================//
+  Future createUserSinToken({
+    BuildContext? context,
+    Map<String,dynamic>? data,
+  }) async {
+
+
+
+  try {
+
+ final uri = Uri.parse('$_dirURL/usuarios');
+      final headers = {
+        'Content-Type': 'application/json',
+       
+      };
+      Map<String, dynamic> body = data!;
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
+
+      final dataResp = await _http.post(
+        uri,
+        headers: headers,
+        body: jsonBody,
+        encoding: encoding,
+      );
+
+
+      final respo = jsonDecode(dataResp.body);
+
+
+      if (dataResp.statusCode == 404) {
+        snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
+        return null;
+      }
+      if (dataResp.statusCode == 200) {
+        // final responsData = AuthResponse.fromMap(respo);
+        // return responsData;
+        return respo;
+      }
+      if (dataResp.statusCode == 401) {
+        Auth.instance.deleteSesion(context!);
+
+        return null;
+      }
+    } catch (e) {
+      print('-ERROR -> $e');
+    }
+  }
+ //=========================ENVIA LOS URLTEMPORALES =====================================//
+
+// Future saveUrlAlServidor(BuildContext? context,String image,  String? token) async {
+//   try {
+//      var request = _http.MultipartRequest(
+//         'POST', Uri.parse('$_dirURL/upload_delete_multiple_files/upload'));
+
+//     //for token
+//     request.headers.addAll({"x-auth-token": '$token'});
+
+//     request.files
+//         .add(await _http.MultipartFile.fromPath('fotoperfil', image));
+
+//     //for completeing the request
+//     var response = await request.send();
+
+//     //for getting and decoding the response into json format
+//     var responsed = await _http.Response.fromStream(response);
+//     // final responseData = json.decode(responsed.body);
+// // print('LISTA SERVER: ${responsed.body}');
+// print('LISTA SERVER: ${responsed.body}');
+//       if (responsed.statusCode == 404) {
+//         snaks.NotificatiosnService.showSnackBarDanger(
+//             "No se puede agregar Contenido");
+
 //         return null;
+      
 //       }
-//       if (dataResp.statusCode == 401) {
-//         Auth.instance.deleteSesion(context!);
+//       if (responsed.statusCode == 200) {
+//       final responseFoto = FotoUrl.fromJson(responsed.body);
+//       print('LISTA foto: ${responseFoto.urls[0].url}');
+//      return  responseFoto.urls[0].url;
+//       }
+//       if (responsed.statusCode == 401) {
+//         snaks.NotificatiosnService.showSnackBarDanger(
+//             "Debe inciar sesión nuevamente");
 
 //         return null;
+
 //       }
-//     } catch (e) {
-//       print('-ERROR -> $e');
-//       return null;
-//     }
+
+
+
+//   } catch (e) {
+//  return null;
 //   }
+ 
+
+// }
+
+
+
+
+
+Future saveUrlAlServidor({ BuildContext? context,File? urlFile, String? token}) async {
+  try {
+     var request = _http.MultipartRequest(
+        'POST', Uri.parse('$_dirURL/upload_delete_multiple_files/uploadNotToken'));
+
+    //for token
+    // request.headers.addAll({"x-auth-token": '$token'});
+
+    request.files
+        .add(await _http.MultipartFile.fromPath('foto', urlFile!.path));
+
+    //for completeing the request
+    var response = await request.send();
+
+    //for getting and decoding the response into json format
+    var responsed = await _http.Response.fromStream(response);
+    // final responseData = json.decode(responsed.body);
+// print('LISTA SERVER: ${responsed.body}');
+      if (responsed.statusCode == 404) {
+        snaks.NotificatiosnService.showSnackBarDanger(
+            "No se puede agregar Contenido");
+
+        return null;
+      
+      }
+      if (responsed.statusCode == 200) {
+      final responseFoto = FotoUrl.fromJson(responsed.body);
+      // print('LISTA foto: ${responseFoto.urls[0].url}');
+     return  responseFoto.urls[0].url;
+      }
+      if (responsed.statusCode == 401) {
+        snaks.NotificatiosnService.showSnackBarDanger(
+            "Debe inciar sesión nuevamente");
+
+        return null;
+
+      }
+
+
+
+  } catch (e) {
+ return null;
+  }
+
+   
+
+}
+
+
+
+
+
+
+
+
+//-------------IMAGEN AL SERVIDOR----------------//
+
+
+  Future uploadImage({
+    required File image,
+     required String imageType,
+    required String enterprices,
+  }) async {
+    try {
+      final url = Uri.parse('$_dirURL/upload_delete_multiple_files/uploadNotToken'); // Reemplaza con la URL correcta
+      final request = _http.MultipartRequest('POST', url);
+
+      // Adjunta la imagen al formulario multipart
+      request.files.add(await _http.MultipartFile.fromPath(
+        'foto',
+        image.path,
+        ));
+
+      // Agrega otros campos al formulario multipart
+      request.fields['archivo'] =image.path;
+      request.fields['tipo'] = imageType;
+      request.fields['rucempresa'] = enterprices;
+
+      // Envía la solicitud y obtén la respuesta
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        // Procesa la respuesta según tus necesidades
+       return  await response.stream.bytesToString();
+        // notifyListeners();
+      } else {
+        throw Exception('Error al cargar la imagen. Código de estado: ${response.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Error al cargar la imagen: $error');
+    }
+  }
+
+
+
+
+//=========================GET ALL GRUPOS CHAT =====================================//
+  Future getAllGruposChat({
+    BuildContext? context,
+    String? token,
+    
+  }) async {
+    try {
+      final url = Uri.parse(
+          '$_dirURL/messages/byPerId/0');
+
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
+      final respo = jsonDecode(dataResp.body);
+      if (dataResp.statusCode == 200) {
+        return respo;
+      }
+
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+        Auth.instance.deleteSesion(context!);
+
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+//=========================GET ALL GRUPOS CHAT =====================================//
+  Future getAllUsuariosChat({
+    BuildContext? context,
+    int? idChat, 
+    String? token,
+    
+  }) async {
+    try {
+      final url = Uri.parse(
+          '$_dirURL/messages/participantes?chat_id=$idChat');
+
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
+
+
+// print('INFO DE LA CONSULTA UUARIOS DEL CHAT ${dataResp.body}');
+
+
+
+      final respo = jsonDecode(dataResp.body);
+      if (dataResp.statusCode == 200) {
+        return respo;
+      }
+
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+        Auth.instance.deleteSesion(context!);
+
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 
 //   //=========================GET ALL COMUNICADOS CLIENTES =====================================//
 //   Future getAllComunicados({
@@ -2801,46 +3093,46 @@ class ApiProvider {
 //   }
 
 // }
-//  //=========================ELIMINA FOTO DEL SERVIDOS=====================================//
+ //=========================ELIMINA FOTO DEL SERVIDOS=====================================//
 
-//   Future deleteUrlDelServidor({List<Map<String, String>>? datos, String? token}) async {
-//     try {
+  Future deleteUrlDelServidor({List<Map<String, String>>? datos, String? token}) async {
+    try {
 
-// var request = _http.MultipartRequest('POST', Uri.parse('$_dirURL/multimedias'));
-//  request.headers.addAll({
-//         'Content-Type': 'multipart/form-data',
-//         "x-auth-token": '$token'
-//       });
+var request = _http.MultipartRequest('POST', Uri.parse('$_dirURL/multimedias'));
+ request.headers.addAll({
+        'Content-Type': 'multipart/form-data',
+        "x-auth-token": '$token'
+      });
 
-// // Convierte el array de objetos a una cadena JSON
-// String arrayDeObjetosJson = jsonEncode(datos);
+// Convierte el array de objetos a una cadena JSON
+String arrayDeObjetosJson = jsonEncode(datos);
 
-// // Añade el array de objetos al request
-// request.fields['eliminar'] = arrayDeObjetosJson;
+// Añade el array de objetos al request
+request.fields['eliminar'] = arrayDeObjetosJson;
 
-// var response = await request.send();
-//       // print('=== 200 ===> ${response.reasonPhrase}');
-//  if (response.statusCode == 200) {
-//       // print('=== 200 ===> ${response.reasonPhrase}');
-//       return true;
-//     }
-//     if (response.statusCode == 404) {
-//         snaks.NotificatiosnService.showSnackBarDanger(
-//             "=== 404 ===>  No se puede agregar foto");
-//         return false;
-//        }
-//       if (response.statusCode == 401) {
-//         snaks.NotificatiosnService.showSnackBarDanger(
-//             "=== 401 ===>  Debe inciar sesión nuevamente");
+var response = await request.send();
+      // print('=== 200 ===> ${response.reasonPhrase}');
+ if (response.statusCode == 200) {
+      // print('=== 200 ===> ${response.reasonPhrase}');
+      return true;
+    }
+    if (response.statusCode == 404) {
+        snaks.NotificatiosnService.showSnackBarDanger(
+            "=== 404 ===>  No se puede agregar foto");
+        return false;
+       }
+      if (response.statusCode == 401) {
+        snaks.NotificatiosnService.showSnackBarDanger(
+            "=== 401 ===>  Debe inciar sesión nuevamente");
 
-//         return false;
+        return false;
 
-//       }
+      }
 
-//     } catch (err) {
+    } catch (err) {
 
-//       return false;
-//     }
-//   }
+      return false;
+    }
+  }
 
 }

@@ -109,6 +109,8 @@ class _SplashPageState extends State<SplashPage> {
     final controllerHome = Provider.of<HomeController>(context, listen: false);
     controllerHome.checkConnectivity(); 
     final Map<String, dynamic>? session = await Auth.instance.getSession();
+
+
     // controllerHome.setSesionUser(session);
 
     final String? tokenFCM = await Auth.instance.getTokenFireBase();

@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:ultrared/src/controllers/home_controller.dart';
+import 'package:ultrared/src/controllers/socket_service.dart';
+import 'package:ultrared/src/service/notifications_service.dart';
+import 'package:ultrared/src/service/socket_service.dart';
+import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
@@ -12,6 +18,36 @@ class FotosCasaPage extends StatefulWidget {
 }
 
 class _FotosCasaPageState extends State<FotosCasaPage> {
+  @override
+  void initState() {
+  initData();
+    super.initState();
+  }
+   void initData() async {
+    // final loadInfo = Provider.of<AusenciasController>(context, listen: false);
+    // loadInfo.buscaAusencias('', 'false');
+
+    // final serviceSocket = context.read<SocketService>();
+    // serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
+    //   if (data['tabla'] == 'usuario') {
+    //     // loadInfo.buscaAusencias('', 'false');
+    //     NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+    //   if (data['tabla'] == 'usuario') {
+    //     // loadInfo.buscausuarios('', 'false');
+    //     NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
+    //   if (data['tabla'] == 'usuario') {
+    //     // loadInfo.buscaAusencias('', 'false');
+    //     NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
@@ -158,9 +194,18 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
                           height: size.iScreen(10.0),
                         ),
                         //*****************************************/
-                        BotonBase(
-                          size: size,
-                          label: 'GUARDAR',
+                        GestureDetector(
+                          onTap: () {
+                            final _crtl =context.read <HomeController>();
+                            // final _crtlSocket =context.read <SocketService>();
+                            _onSubmit(context,_crtl,size ) ;
+                            // _crtl.resetValues();
+                            
+                          },
+                          child: BotonBase(
+                            size: size,
+                            label: 'GUARDAR',
+                          ),
                         ),
 
                         // SizedBox(
@@ -175,4 +220,62 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
       ),
     );
   }
+
+
+
+    void _onSubmit(BuildContext context, HomeController controller, size) async {
+  
+      ProgressDialog.show(context);
+      final response = await controller.crearUsuario(context);
+      ProgressDialog.dissmiss(context);
+      if (response != null) {
+         _modalMessageResponse(context, response['msg'], size);
+    
+      } else {
+        NotificatiosnService.showSnackBarError(
+            'No se pudo realizar la petición');
+      }
+    
+    }
+  }  
+
+
+  Future<void> _modalMessageResponse(
+      BuildContext context, String _message, Responsive size) {
+    return showDialog<String>(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+          title: const Center(child: Text('Información')),
+          content: SizedBox(
+            // height: size.hScreen(50.0),
+            width: double.maxFinite,
+            child: ListTile(
+             
+              title: Text(_message),
+            ),
+          ),
+          actions: <Widget>[
+            Container(
+              width: size.wScreen(100),
+              // color: Colors.red,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context, 'OK');
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                child: const Text('OK'),
+              ),
+            )
+          ]),
+    );
+  
+
+
+
+
+
+
+
 }

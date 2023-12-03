@@ -14,7 +14,7 @@ class Auth {
 
   final _storage = const FlutterSecureStorage();
   final keySESION = 'SESSION';
-  final keyTURNO = 'TURNO';
+
   final keyCREDENCIALES = 'CEDENCIALES';
   final keyTOKENFIREBASE = 'TOKENFIREBASE';
   final keyRONDAS = 'RONDASACTIVIDAD';
@@ -76,6 +76,9 @@ class Auth {
       final Map<String, dynamic> json = jsonDecode(value);
       // final session = Session.fromJson(jsonDecode(value));
       // return session;
+        // print('LA INFO DEL MOVIL; $json ');
+
+
       return json;
     }
     return null;
@@ -85,7 +88,7 @@ class Auth {
   Future<void> deleteSesion(BuildContext context) async {
     // await _storage.deleteAll();
     await _storage.delete(key: keySESION);
-     print('SESION ELIMINADA:$keySESION');
+    //  print('SESION ELIMINADA:$keySESION');
     Navigator.pushNamedAndRemoveUntil(context, 'serCliente', (_) => false);
   }
   // CIERRO SESSION
@@ -143,23 +146,7 @@ class Auth {
     await _storage.delete(key: keyIDREGISTRO);
   }
 
-  // ============================================= ARRAY DE RONDAS =======================//
-
-
-// OBTEMENOS EL TURNO  DEL DISPOSITIVO
-  Future getTurnoSessionUsuario() async {
-    final String? value = await _storage.read(key: keyTURNO);
-    if (value != null) {
-      return value;
-    }
-    return null;
-  }
-
-  // CIERRO TURNO
-  Future<void> deleteTurnoSesionUser() async {
-    await _storage.delete(key: keyTURNO);
-  }
-
+  
   //=========================================================================//
   // GUARDO RECORDAR CONTRASENA EN EL DISPOSITIVO
   Future<void> saveDataRecordarme(List<dynamic> _recordarme) async {

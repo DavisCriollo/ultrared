@@ -1,9 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/selecciona_planes_page.dart';
+import 'package:ultrared/src/pages/selecciona_sector.dart';
+import 'package:ultrared/src/service/notifications_service.dart';
+import 'package:ultrared/src/service/socket_service.dart';
+import 'package:ultrared/src/utils/letras_mayusculas_minusculas.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
+import 'package:ultrared/src/utils/valida_email.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class RegistroPage extends StatefulWidget {
   const RegistroPage({Key? key}) : super(key: key);
@@ -13,17 +23,31 @@ class RegistroPage extends StatefulWidget {
 }
 
 class _RegistroPageState extends State<RegistroPage> {
-    bool _isChecked = false;
+  TextEditingController _textAddTelefono = TextEditingController();
+  TextEditingController _textAddCorreo = TextEditingController();
+  TextEditingController controllerTextCountry = TextEditingController();
+  bool _isChecked = false;
+
+  @override
+  void dispose() {
+    _textAddCorreo.clear();
+    _textAddTelefono.clear();
+    controllerTextCountry.clear();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
+    final _control = context.read<HomeController>();
+  context.read<SocketService>();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: cuaternaryColor,
         appBar: AppBar(
-          iconTheme: const IconThemeData( color: Colors.black),
-           centerTitle: true, // Centra el título en el AppBar
+          iconTheme: const IconThemeData(color: Colors.black),
+          centerTitle: true, // Centra el título en el AppBar
           elevation: 0,
           backgroundColor: cuaternaryColor, // Fondo blanco
           title: Text('REGISTRO',
@@ -61,7 +85,7 @@ class _RegistroPageState extends State<RegistroPage> {
                   //***********************************************/
 
                   SizedBox(
-                    height: size.iScreen(3.0),
+                    height: size.iScreen(0.0),
                   ),
                   //*****************************************/
                   Container(
@@ -91,7 +115,7 @@ class _RegistroPageState extends State<RegistroPage> {
                         //***********************************************/
 
                         SizedBox(
-                          height: size.iScreen(2.0),
+                          height: size.iScreen(0.5),
                         ),
                         //*****************************************/
                         Container(
@@ -100,7 +124,8 @@ class _RegistroPageState extends State<RegistroPage> {
                           padding: EdgeInsets.all(size.wScreen(0.0)),
                           child: Center(
                             child: Container(
-                              padding: EdgeInsets.symmetric( horizontal: size.hScreen(2.0),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.hScreen(2.0),
                                   vertical: size.iScreen(0.0)),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -116,6 +141,14 @@ class _RegistroPageState extends State<RegistroPage> {
                                   hintText: 'CÉDULA',
                                   border: InputBorder.none,
                                 ),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[0-9]')),
+                                ],
+                                onChanged: (text) {
+                                  _control.setItemCedua(text);
+                                },
                               ),
                             ),
                           ),
@@ -145,11 +178,14 @@ class _RegistroPageState extends State<RegistroPage> {
                               ),
                               child: TextFormField(
                                 // maxLength: 1,
-                                decoration: const InputDecoration(
+                                decoration: InputDecoration(
                                   suffixIcon: Icon(Icons.person),
                                   hintText: 'NOMBRES',
                                   border: InputBorder.none,
                                 ),
+                                onChanged: (text) {
+                                  _control.setItemNombre(text.trim());
+                                },
                               ),
                             ),
                           ),
@@ -184,6 +220,9 @@ class _RegistroPageState extends State<RegistroPage> {
                                   hintText: 'APELLIDOS',
                                   border: InputBorder.none,
                                 ),
+                                onChanged: (text) {
+                                  _control.setItemApellido(text.trim());
+                                },
                               ),
                             ),
                           ),
@@ -214,11 +253,13 @@ class _RegistroPageState extends State<RegistroPage> {
                               child: TextFormField(
                                 // maxLength: 1,
                                 decoration: const InputDecoration(
-                                  suffixIcon: Icon(
-                                      Icons.stay_current_portrait_outlined),
-                                  hintText: 'CELULAR',
+                                  suffixIcon: Icon(Icons.directions),
+                                  hintText: 'DIRECCIÒN',
                                   border: InputBorder.none,
                                 ),
+                                 onChanged: (text) {
+                                  _control.setItemDireccion(text.trim());
+                                },
                               ),
                             ),
                           ),
@@ -230,65 +271,178 @@ class _RegistroPageState extends State<RegistroPage> {
                         SizedBox(
                           height: size.iScreen(2.0),
                         ),
-                        //*****************************************/
+
+                        //***********************************************/
+                        //***********************************************/
                         Container(
-                          // color: Colors.red,
-                          width: size.wScreen(80.0),
-                          padding: EdgeInsets.all(size.wScreen(0.0)),
-                          child: Center(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(  horizontal: size.hScreen(2.0), vertical: size.iScreen(0.0)),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                              child: TextFormField(
-                                // maxLength: 1,
-                                decoration: const InputDecoration(
-                                  suffixIcon: Icon(Icons.email),
-                                  hintText: 'EMAIL',
-                                  border: InputBorder.none,
-                                ),
+                            width: size.wScreen(80.0),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.iScreen(2.0),
+                                vertical: size.iScreen(1.0)),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(
+                                color: Colors.grey,
+                                width: 1.0,
                               ),
                             ),
-                          ),
-                        ),
+                            child: Consumer<HomeController>(
+                              builder: (_, valuCorreo, __) {
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      // color: Colors.red,
+                                      width: size.wScreen(60.0),
+                                      child: valuCorreo.getItemCorreos == ""
+                                          ? Text(
+                                              ' EMAIL  ',
+                                              style: GoogleFonts.poppins(
+                                                fontSize: size.iScreen(
+                                                    2.0), // Ajusta según tus necesidades
+                                                fontWeight: FontWeight.w400,
+                                                color:
+                                                    valuCorreo.getItemCorreos !=
+                                                            ""
+                                                        ? Colors.black
+                                                        : Colors.grey,
+                                              ),
+                                            )
+                                          : Text(
+                                              '${valuCorreo.getItemCorreos}  ',
+                                              style: GoogleFonts.poppins(
+                                                fontSize: size.iScreen(
+                                                    2.0), // Ajusta según tus necesidades
+                                                fontWeight: FontWeight.w400,
+                                                letterSpacing: 0.5,
+                                                color:
+                                                    valuCorreo.getItemCorreos !=
+                                                            ""
+                                                        ? Colors.black
+                                                        : Colors.grey,
+                                              ),
+                                            ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        _agregaCorreo(context, _control, size);
+                                      },
+                                      child: Icon(
+                                        Icons
+                                            .email_outlined, // Cambia el icono según tus necesidades
+                                        color: valuCorreo.getItemCelulars == ""
+                                            ? Colors.grey
+                                            : tercearyColor, // Color del icono
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            )),
                         //***********************************************/
 
                         SizedBox(
                           height: size.iScreen(2.0),
                         ),
+
+                        //***********************************************/
+
+                        //***********************************************/
+                        Container(
+                            width: size.wScreen(80.0),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.iScreen(2.0),
+                                vertical: size.iScreen(1.0)),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(
+                                color: Colors.grey,
+                                width: 1.0,
+                              ),
+                            ),
+                            child: Consumer<HomeController>(
+                              builder: (_, valuCelular, __) {
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      // color: Colors.red,
+                                      width: size.wScreen(60.0),
+                                      child: valuCelular.getItemCelulars == ""
+                                          ? Text(
+                                              'CELULAR  ',
+                                              style: GoogleFonts.poppins(
+                                                fontSize: size.iScreen(
+                                                    2.0), // Ajusta según tus necesidades
+                                                fontWeight: FontWeight.w400,
+                                                color: valuCelular
+                                                            .getItemCelulars !=
+                                                        ""
+                                                    ? Colors.black
+                                                    : Colors.grey,
+                                              ),
+                                            )
+                                          : Text(
+                                              '${valuCelular.getItemCelulars}  ',
+                                              style: GoogleFonts.poppins(
+                                                fontSize: size.iScreen(
+                                                    2.0), // Ajusta según tus necesidades
+                                                fontWeight: FontWeight.w400,
+                                                letterSpacing: 0.5,
+                                                color: valuCelular
+                                                            .getItemCelulars !=
+                                                        ""
+                                                    ? Colors.black
+                                                    : Colors.grey,
+                                              ),
+                                            ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        _agregaCelular(context, _control, size);
+                                      },
+                                      child: Icon(
+                                        Icons
+                                            .stay_current_portrait_outlined, // Cambia el icono según tus necesidades
+                                        color: valuCelular.getItemCelulars == ""
+                                            ? Colors.grey
+                                            : tercearyColor, // Color del icono
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            )),
+
+                        //***********************************************/
+                        //***********************************************/
+
+                        SizedBox(
+                          height: size.iScreen(1.0),
+                        ),
                         //*****************************************/
-                        // Container(
-                        //     // color: Colors.red,
-                        //     width: size.wScreen(80.0),
-                        //     padding: EdgeInsets.all(size.wScreen(0.0)),
-                        //     child: Text(
-                        //       'Confirmo que soy mayor de 18 años.',
-                        //       style: TextStyle(
-                        //         color: Colors.black,
-                        //         fontSize: 14,
-                        //         fontFamily: 'Poppins',
-                        //         fontWeight: FontWeight.w400,
-                        //         height: 0,
-                        //       ),
+
+                        //***********************************************/
+
                         //     )),
-                         SizedBox(
+                        SizedBox(
                           width: size.wScreen(80),
                           height: size.hScreen(8.0),
                           child: Row(
                             children: [
-                             Checkbox(
-                value: _isChecked,
-                onChanged: (value) {
-                  setState(() {
-                    _isChecked = value!;
-                  });
-                },
-              ),
+                              Checkbox(
+                                value: _isChecked,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _isChecked = value!;
+
+                                  _control.setItemIsEdad(_isChecked);
+
+                                  });
+                                },
+                              ),
                               Text(
                                 'Confirmo que soy mayor de 18 años.',
                                 textAlign: TextAlign.center,
@@ -311,18 +465,12 @@ class _RegistroPageState extends State<RegistroPage> {
 
                         //***********************************************/
 
-                        SizedBox(
-                          height: size.iScreen(2.0),
-                        ),
-                        //*****************************************/
                         GestureDetector(
-                           onTap:(){
-                        Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: ((context) =>
-                                              SeleccionaPlanPage())));
-                      },
+                          onTap: () {
+                           
+
+                            _next(context, _control);
+                          },
                           child: BotonBase(
                             size: size,
                             label: 'SIGUIENTE',
@@ -332,7 +480,6 @@ class _RegistroPageState extends State<RegistroPage> {
                         SizedBox(
                           height: size.hScreen(5.0),
                         ),
-                       
                       ],
                     ),
                   ),
@@ -341,5 +488,238 @@ class _RegistroPageState extends State<RegistroPage> {
             )),
       ),
     );
+  }
+
+  Future<bool?> _agregaCelular(
+      BuildContext context, HomeController controller, Responsive size) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+            title: Container(child: const Text("AGREGAR CELULAR")),
+            content: Card(
+              color: Colors.transparent,
+              elevation: 0.0,
+              child: Form(
+                key: controller.celularFormKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      width: size.iScreen(100.0),
+                      child: Container(
+                        // width: size.wScreen(45.0),
+                        child: IntlPhoneField(
+                          autofocus: true,
+                          controller: controllerTextCountry,
+                          decoration: const InputDecoration(),
+                          style: TextStyle(color: Colors.black),
+
+//  initialCountryCode: 'EC',
+
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                          ],
+                          onChanged: (phone) {
+                            print(phone.completeNumber);
+                            controller.seItemCelulars(phone.completeNumber);
+                          },
+                          onCountryChanged: (country) {
+                            controller.seItemCodeCelular(country.dialCode);
+                          },
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          controller.seItemCelulars(controller.getItemCelulars!
+                              .replaceAll(
+                                  '+593', controller.getItemCodeCelular!));
+
+                          final isValidS = controller.validateFormCelular();
+                          if (!isValidS) return;
+                          if (isValidS) {
+                            controllerTextCountry.text = '';
+                            // controller.agregaListaCelulares();
+                            Navigator.pop(context);
+                          }
+                          //  print(countries.firstWhere((element) => element['code'] == phone.countryISOCode)['max_length']);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: tercearyColor,
+                              borderRadius: BorderRadius.circular(5.0)),
+                          // color: primaryColor,
+                          padding: EdgeInsets.symmetric(
+                              vertical: size.iScreen(0.5),
+                              horizontal: size.iScreen(0.5)),
+                          child: Text('Agregar',
+                              style: GoogleFonts.lexendDeca(
+                                  // fontSize: size.iScreen(2.0),
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white)),
+                        ))
+                  ],
+                ),
+              ),
+            )
+
+            //  },)
+
+            );
+      },
+    );
+  }
+
+  Future<bool?> _agregaCorreo(
+      BuildContext context, HomeController controller, Responsive size) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+            title: Container(child: const Text("AGREGAR CORREO")),
+            content: Card(
+              color: Colors.transparent,
+              elevation: 0.0,
+              child: Form(
+                key: controller.correoFormKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      width: size.iScreen(100.0),
+                      child: Container(
+                        // width: size.wScreen(45.0),
+                        child:
+                            // IntlPhoneField(
+                            //   controller: controllerTextCountry,
+                            //   decoration: const InputDecoration(
+
+                            //       // labelText: 'Phone Number',
+                            //       // border: OutlineInputBorder(
+                            //       //   // borderSide: BorderSide(),
+                            //       // ),
+                            //       ),
+                            //   onChanged: (phone) {
+                            //     print(phone.completeNumber);
+                            //     controller.seItemAddCelulars(phone.completeNumber);
+                            //   },
+                            //   onCountryChanged: (country) {
+                            //     controller.seItemCodeCelular(country.dialCode);
+                            //   },
+                            // ),
+                            //===============================================//
+                            SizedBox(
+                          width: size.iScreen(40.0),
+                          child: TextFormField(
+                            controller: _textAddCorreo,
+
+                            keyboardType: TextInputType.emailAddress,
+                            textCapitalization: TextCapitalization.none,
+
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              final validador = validateEmail(value);
+                              if (validador == null) {
+                                controller.setIsCorreo(true);
+                              }
+                              return validateEmail(value);
+                            },
+                            decoration: const InputDecoration(
+                                hintText: '  Ingrese un Correo'
+                                // suffixIcon: Icon(Icons.beenhere_outlined)
+                                ),
+                            inputFormatters: [
+                              LowerCaseText(),
+                            ],
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+
+                                // fontSize: size.iScreen(3.5),
+                                // fontWeight: FontWeight.bold,
+                                // letterSpacing: 2.0,
+                                ),
+                            onChanged: (text) {
+                              controller.setItemCorreos(text);
+                              // final _estado=
+                              // valueCantidad.validaStock(text);
+                              // if(_estado==true){
+                              // print('@VERDADERO@ $_estado');
+
+                              // }else{
+                              // print('@FALSE@ $_estado');
+
+                              // }
+                            },
+                            // validator: (text) {
+                            //   if (text!.trim().isNotEmpty) {
+                            //     return null;
+                            //   } else {
+                            //     return 'Cantidad inválida';
+                            //   }
+                            // },
+                          ),
+                        ),
+                        //===============================================//
+                      ),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          final isValidS = controller.validateFormCorreo();
+                          if (!isValidS) return;
+                          if (isValidS) {
+                            _textAddCorreo.text = '';
+                            // controller.agregaListaCorreos();
+                            Navigator.pop(context);
+                          }
+                          //  print(countries.firstWhere((element) => element['code'] == phone.countryISOCode)['max_length']);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: tercearyColor,
+                              borderRadius: BorderRadius.circular(5.0)),
+                          // color: primaryColor,
+                          padding: EdgeInsets.symmetric(
+                              vertical: size.iScreen(0.5),
+                              horizontal: size.iScreen(0.5)),
+                          child: Text('Agregar',
+                              style: GoogleFonts.lexendDeca(
+                                  // fontSize: size.iScreen(2.0),
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white)),
+                        ))
+                  ],
+                ),
+              ),
+            )
+
+            //  },)
+
+            );
+      },
+    );
+  }
+
+  void _next(BuildContext context, HomeController controller) {
+    if (
+      controller.getItemCedua!.isEmpty ||
+        controller.getItemCedua!.length < 10 ||
+        controller.getItemNombre!.isEmpty ||
+        controller.getItemApellido!.isEmpty ||
+        controller.getItemDireccion!.isEmpty ||
+        controller.getItemCorreos!.isEmpty |
+            controller.getItemCelulars!.isEmpty||
+            controller.getItemIsEdad==false
+            ) {
+      NotificatiosnService.showSnackBarDanger('Falta agregar  información');
+    } else {
+         Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: ((context) =>
+                                                  SeleccionaSector())));
+    }
   }
 }

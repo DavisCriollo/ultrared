@@ -226,11 +226,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:ultrared/src/api/authentication_client.dart';
+import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/socket_service.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
+import 'package:ultrared/src/pages/lista_grupos_chat.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
 import 'package:ultrared/src/pages/splash_screen.dart';
+import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
@@ -242,6 +246,7 @@ import 'package:ultrared/src/widgets/no_data.dart';
 // import 'socket_provider.dart'; // Asegúrate de importar tu SocketProvider
 
 class HomePage extends StatefulWidget {
+
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -249,6 +254,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+   Map<String, dynamic>? user ={};
+
   @override
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -264,6 +271,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     final homeController = context.read<HomeController>();
+   
     if (state == AppLifecycleState.resumed) {
       // await homeController.validaInicioDeSesion(context);
       print('EL ESTADO ES ------: $state');
@@ -293,9 +301,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
 
     var socketManager = context.read<SocketService>();
-    if (socketManager.status == SocketStatus.desconectado) {
-      socketManager.conectar();
-    }
+    
+
+    user =await Auth.internal().getSession();
+      print('${user!['nombre']}');
+
+    // final  socketManager = context.read<SocketService>();
+    // if (socketManager.status == SocketStatus.desconectado) {
+    //   socketManager.conectar();
+    // }
   }
 
   @override
@@ -306,6 +320,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+
+
+
+    
     final List<String> imageUrls = [
       'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
 
@@ -395,7 +413,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             ): Container()
           ],
         ),
-        drawer:  values.connectionStatus != ConnectionStatus.none ? DrawerMenu():null,
+        drawer:  values.connectionStatus != ConnectionStatus.none ? DrawerMenu(user: user):null,
         body: Container(
           height: size.hScreen(100),
           width: size.wScreen(100),
@@ -547,11 +565,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                   ),
                                   GestureDetector(
                                          onTap:(){
+                                          final _chatCtrl= context.read<ChatController>();
+                                          _chatCtrl.buscaGruposChat(context);
                         Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: ((context) =>
-                                          ListaUsuariosChat())));
+                                          ListaGruposChat())));
+
+
+
+
                       },
                                     child: Container(
                                       // color: Colors.yellow,

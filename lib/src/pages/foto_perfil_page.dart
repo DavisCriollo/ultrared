@@ -1,5 +1,11 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/foto_casa_page.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
@@ -111,13 +117,13 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
 
                         Container(
                           width: size.wScreen(80.0),
-                          height: size.hScreen(40.0),
+                          // height: size.hScreen(80.0),
                           clipBehavior: Clip.antiAlias,
                           decoration: ShapeDecoration(
                             shape: RoundedRectangleBorder(
                               side: BorderSide(
                                   width: 1, color: Colors.grey),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                           child: Container(
@@ -129,22 +135,58 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
                               children: [
                               
                                  SizedBox(
-                          width: size.wScreen(80),
-                          // height: size.hScreen(8.0),
-                          child: Center(
-                            child: Column(
-                              children: [
-                               Icon( Icons.camera_alt_rounded,color:Colors.grey,size: size.iScreen(4.0),),
-                                Text(
-                                  'Tomar Selfie',
-                                  // textAlign: TextAlign.center,
-                                  style: GoogleFonts.poppins(
-                                      fontSize: size.iScreen(1.5),
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black54),
-                                ),
-                              ],
-                            ),
+                          // width: size.wScreen(80),
+                          // height: size.hScreen(100.0),
+                          child: 
+                          GestureDetector(
+                            onTap: () {
+                              final control=context.read<HomeController>();
+                              bottomSheet(control,context,size);
+                            },
+                            child: 
+                            
+                            Consumer<HomeController>(builder: (_, valueFoto, __) {  
+                              return  
+                              
+                              
+                             valueFoto.image != null?  Center(
+                              child: Column(
+                                children: [
+
+                                
+          Image.file(
+           File(valueFoto.image!.path
+           ),
+           fit: BoxFit.cover,
+            // width: size.wScreen(100.0),
+            // height: size.hScreen(0.0),
+          ),
+                                
+                                 
+                                ],
+                              ),
+                            ): Container(
+                              
+                                  constraints: BoxConstraints(minHeight: size.hScreen(50.0)),
+
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon( Icons.camera_alt_rounded,color:Colors.grey,size: size.iScreen(4.0),),
+                                   Text(
+                                      'Tomar Foto',
+                                      // textAlign: TextAlign.center,
+                                      style: GoogleFonts.poppins(
+                                          fontSize: size.iScreen(1.5),
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black54),
+                                    ),
+                                ],
+                              ),
+                            );
+                              
+                            },),
+                           
                           ),
                         ),
                               ],
@@ -156,7 +198,7 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
                         //***********************************************/
                       
                         SizedBox(
-                          height: size.iScreen(10.0),
+                          height: size.iScreen(2.0),
                         ),
                         //*****************************************/
                         GestureDetector(
@@ -166,6 +208,8 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
                                       MaterialPageRoute(
                                           builder: ((context) =>
                                           FotosCasaPage())));
+                        // final _ctrl = context.read<HomeController>();
+                        // _ctrl.getUrlsServer( ) ;
                       },
                           child: BotonBase(
                             size: size,
@@ -185,4 +229,83 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
       ),
     );
   }
+
+void bottomSheet(
+    HomeController _controller,
+    BuildContext context,
+    Responsive size,
+  ) {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (_) => CupertinoActionSheet(
+             
+              actions: [
+                CupertinoActionSheetAction(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  _getImageFromCamera(context,_controller);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Abrir Cámara',
+                          style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(2.2),
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          )),
+                      Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: size.iScreen(2.0),
+                          ),
+                          child: Icon(Icons.camera_alt_outlined,
+                              size: size.iScreen(3.0))),
+                    ],
+                  ),
+                ),
+                CupertinoActionSheetAction(
+                  onPressed: () {
+                     Navigator.pop(context);
+                  _getImageFromGallery(context,_controller);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Abrir Galería',
+                          style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(2.2),
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          )),
+                      Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: size.iScreen(2.0),
+                          ),
+                          child: Icon(Icons.image_outlined,
+                              size: size.iScreen(3.0))),
+                    ],
+                  ),
+                ),
+              ],
+             
+            ));
+  }
+
+Future<void> _getImageFromCamera(BuildContext context, HomeController controller ) async {
+    final XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
+   controller.setImage(image);
+  }
+
+  Future<void> _getImageFromGallery(BuildContext context,HomeController controller ) async {
+    final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+   controller.setImage(image);
+  }
+
+
+
+
+
+
+  
+
 }

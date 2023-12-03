@@ -1,6 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
+import 'package:ultrared/src/pages/acercaDe.dart';
+import 'package:ultrared/src/pages/lista_notificaciones.dart';
 import 'package:ultrared/src/pages/login_page.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
 import 'package:ultrared/src/pages/splash_screen.dart';
@@ -8,6 +12,9 @@ import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 
 class DrawerMenu extends StatelessWidget {
+  final Map<String, dynamic>? user;
+
+  const DrawerMenu({Key? key, required this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
@@ -25,17 +32,37 @@ class DrawerMenu extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset(
-                  'assets/imgs/Avatar.png', // Reemplaza con la ruta de tu imagen en los activos
-                  width: size.iScreen(9.0),
-                  height: size.iScreen(9.0),
-                  fit: BoxFit.cover,
-                ),
-                // SizedBox(height: size.w),
+                user!['foto'].isNotEmpty
+                    ? Container(
+                        width: size.iScreen(9.0),
+                        height: size.iScreen(9.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.blue, width: 2.0),
+                        ),
+                        child: ClipOval(
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                '${user!['foto']}', // Reemplaza con la URL de tu imagen
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                            fit: BoxFit.cover,
+                          ),
+                        ))
+                    : ClipOval(
+                        child: Image.asset(
+                          'assets/imgs/no-image.png', // Reemplaza con la ruta de tu imagen en los activos
+                          width: size.iScreen(7.5),
+                          height: size.iScreen(7.5),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                 Container(
                   width: size.wScreen(80.0),
                   child: Text(
-                    'Pedro Cevallos',
+                    '${user!['nombre']}',
                     overflow: TextOverflow.ellipsis,
                     // maxLines: 2,
 
@@ -59,20 +86,19 @@ class DrawerMenu extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'ID ',
+                        ' ID ',
                         style: GoogleFonts.poppins(
                             fontSize: size.iScreen(1.5),
                             fontWeight: FontWeight.w400,
                             color: Colors.black),
                       ),
                       Text(
-                        '2550  ',
+                        '${user!['id']}  ',
                         style: GoogleFonts.poppins(
                             fontSize: size.iScreen(1.5),
                             fontWeight: FontWeight.w700,
                             color: Colors.black),
                       ),
-                    
                     ],
                   ),
                 ),
@@ -101,6 +127,10 @@ class DrawerMenu extends StatelessWidget {
             onTap: () {
               // Acción al hacer clic en "Configuración"
               Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => ListaNotificaciones())));
             },
           ),
           ListTile(
@@ -117,42 +147,42 @@ class DrawerMenu extends StatelessWidget {
             onTap: () {
               // Acción al hacer clic en "Acerca de"
               Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: ((context) => AcercaDePage())));
             },
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Cerrar Sesión'),
-            onTap: ()  async{
+            onTap: () async {
               // Acción al hacer clic en "Salir"
               // Navigator.pop(context);
-                                await Auth.instance.deleteTokenFireBase();
-                await Auth.instance.deleteSesion(context);
-              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => SplashPage())));
+              await Auth.instance.deleteTokenFireBase();
+              await Auth.instance.deleteSesion(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: ((context) => SplashPage())));
             },
           ),
-           //***********************************************/
+          //***********************************************/
 
-                  SizedBox(
-                    height: size.iScreen(3.0),
-                  ),
-                  //*****************************************/
+          SizedBox(
+            height: size.iScreen(3.0),
+          ),
+          //*****************************************/
           Container(
             padding: EdgeInsets.symmetric(horizontal: size.iScreen(2.0)),
-  width: size.wScreen(100),
-  // height: 19,
-  child: Text(
-    'Versión 1.0.0',
-    textAlign: TextAlign.left,
-   style: GoogleFonts.poppins(
-                            fontSize: size.iScreen(1.5),
-                            fontWeight: FontWeight.w700,
-                            color: secondaryColor,
-                            height: 0.21),
-  ),
-)
+            width: size.wScreen(100),
+            // height: 19,
+            child: Text(
+              'Versión 1.0.0',
+              textAlign: TextAlign.left,
+              style: GoogleFonts.poppins(
+                  fontSize: size.iScreen(1.5),
+                  fontWeight: FontWeight.w700,
+                  color: secondaryColor,
+                  height: 0.21),
+            ),
+          )
         ],
       ),
     );

@@ -59,8 +59,9 @@ dependencies:
   geolocator: ^7.6.2
   url_launcher: ^6.0.10
   badges: ^2.0.2
-  
-
+  fl_country_code_picker: ^0.0.3
+  intl_phone_field: ^3.1.0
+  dotted_border: 
 
 
 

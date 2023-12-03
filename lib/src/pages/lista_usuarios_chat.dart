@@ -2,19 +2,60 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
+import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
+import 'package:ultrared/src/widgets/no_data.dart';
 
 class ListaUsuariosChat extends StatefulWidget {
-  const ListaUsuariosChat({Key? key}) : super(key: key);
+  final Map<String,dynamic> infoGrupo;
+  const ListaUsuariosChat({Key? key, required this.infoGrupo}) : super(key: key);
 
   @override
   State<ListaUsuariosChat> createState() => _ListaUsuariosChatState();
 }
 
 class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
+   @override
+  void initState() {
+    initData();
+    super.initState();
+  }
+
+  void initData() async {
+    final loadInfo = context.read<ChatController>();
+
+    final serviceSocket = context.read<SocketService>();
+    // loadInfo.buscaGestionDocumental('', 'ENVIADO');
+
+
+    serviceSocket.socket!.on('server:lista-chats-grupos', (data) async {
+      print('LA TABLA GESTION  EXITO >>>>>>>> ${data}');
+
+      // if (data['tabla'] == 'acta_entrega_recepcion') {
+      //   // loadInfo.buscaGestionDocumental('', 'ENVIADO');
+      //   // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+      // }
+    });
+    serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+      // print('LA TABLA GESTION  ACTUALIZA >>>>>>>> ${data}');
+      // if (data['tabla'] == 'acta_entrega_recepcion') {
+      //   // loadInfo.buscaGestionDocumental('', 'ENVIADO');
+      //   // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+      // }
+    });
+    serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
+      // print('LA TABLA GESTION  ELIMINA >>>>>>>> ${data}');
+      // if (data['tabla'] == 'acta_entrega_recepcion') {
+      //   // loadInfo.buscaGestionDocumental('', 'ENVIADO');
+      //   // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+      // }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
@@ -27,7 +68,7 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
            centerTitle: true, // Centra el título en el AppBar
           elevation: 0,
           backgroundColor: cuaternaryColor, // Fondo blanco
-          title: Text('"LOS VÉLEZ"',
+          title: Text("${widget.infoGrupo['chat_name']}",
               style: GoogleFonts.poppins(
                 fontSize: size.iScreen(2.0),
                 fontWeight: FontWeight.w700,
@@ -44,10 +85,45 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
 
                 width: size.wScreen(100.0),
                 height: size.hScreen(100.0),
-                child: ListView.builder(
+                child: 
+                Consumer<ChatController>(builder: (_, valueUsuarios, __) {  
+                   if (valueUsuarios.getErrorUsuariosChat == null) {
+                  return Center(
+                    // child: CircularProgressIndicator(),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Cargando Datos...',
+                          style: GoogleFonts.lexendDeca(
+                              fontSize: size.iScreen(1.5),
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        //***********************************************/
+                        SizedBox(
+                          height: size.iScreen(1.0),
+                        ),
+                        //*****************************************/
+                        const CircularProgressIndicator(),
+                      ],
+                    ),
+                  );
+                } else if (valueUsuarios.getErrorUsuariosChat == false) {
+                  return const NoData(
+                    label: 'No existen datos para mostar',
+                  );
+                  // Text("Error al cargar los datos");
+                } else if (valueUsuarios.getListaTodosLosUsuariosChat.isEmpty) {
+                  return const NoData(
+                    label: 'No existen datos para mostar',
+                  );
+                }
+                  return  ListView.builder(
                   shrinkWrap:true ,
-            itemCount: 50,
+            itemCount: valueUsuarios.getListaTodosLosUsuariosChat.length,
             itemBuilder: (context, index) {
+              final _usuario=valueUsuarios.getListaTodosLosUsuariosChat[index];
               return 
               Column(
                 children: [
@@ -62,13 +138,14 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
                           // decoration:  BoxDecoration(borderRadius: BorderRadius.circular(100),
                           // color:  Colors.red
                           // ),
-                        child: Image.asset(
-                                        'assets/imgs/Avatar.png',
-                                        // scale: 1.5,
-                                        fit: BoxFit.contain,
-                                        width: size.iScreen(5.0),
-                                        scale: 1.0, // URL de la imagen
-                                      ),
+                        child: 
+                        // Image.asset(
+                        //                 'assets/imgs/Avatar.png',
+                        //                 // scale: 1.5,
+                        //                 fit: BoxFit.contain,
+                        //                 width: size.iScreen(5.0),
+                        //                 scale: 1.0, // URL de la imagen
+                        //               ),
                         // CachedNetworkImage(
                         //                               imageUrl: 'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
                         //                               fit: BoxFit.contain,
@@ -81,17 +158,46 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
                         //                               errorWidget: (context, url,
                         //                                       error) =>
                         //                                   const Icon(Icons.error),
-                        //                             ),
+                        //             
+                        //                ),
+
+                          _usuario!['foto'].isNotEmpty
+                    ? Container(
+                        width: size.iScreen(9.0),
+                        height: size.iScreen(9.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.blue, width: 2.0),
+                        ),
+                        child: ClipOval(
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                '${_usuario!['foto']}', // Reemplaza con la URL de tu imagen
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                            fit: BoxFit.cover,
+                          ),
+                        ))
+                    : ClipOval(
+                        child: Image.asset(
+                          'assets/imgs/no-image.png', // Reemplaza con la ruta de tu imagen en los activos
+                          width: size.iScreen(7.5),
+                          height: size.iScreen(7.5),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                       ),
                     ),
-                    title: Text('Pedro Cevallos',
+                    title: Text('${_usuario['nombres']}',
                     style: GoogleFonts.poppins(
                     fontSize: size.iScreen(1.8),
                     fontWeight: FontWeight.normal,
                     color: Colors.black,
                     letterSpacing: -0.40,
                   ) ),
-                    subtitle: Text('Disponible',
+                    subtitle: Text(_usuario['perOnline']==1?'Disponible':'No Disponible',
                     ),
                     onTap: () {
                       // Acción al hacer clic en el ListTile
@@ -109,9 +215,11 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
               );
        
             },
-      )),
+      );
+                },)
+               ),
       Positioned(
-        bottom: size.wScreen(0),
+        bottom: size.wScreen(2),
         right: size.wScreen(2.0),
         child:   GestureDetector(
           onTap: () =>  Navigator.push(

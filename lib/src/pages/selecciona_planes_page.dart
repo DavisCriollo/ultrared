@@ -127,7 +127,7 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
                                             : 'SELECCIONA TU PLAN  ',
                                         style: GoogleFonts.poppins(
                                           fontSize:
-                                              size.iScreen(2.2), // Ajusta según tus necesidades
+                                              size.iScreen(2.0), // Ajusta según tus necesidades
                                           fontWeight: FontWeight.w400,
                                           color: valuePlan.getPlanItem != ""? Colors.black:Colors.grey,
                                         ),
@@ -139,7 +139,7 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
                                             context.read<HomeController>();
                                         _modalPlanes(context, size, _ctrl);
                                       },
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons
                                             .keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
                                         color: Colors.grey, // Color del icono
@@ -184,7 +184,7 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
                                             : 'SELECCIONA TU SECTOR',
                                         style: GoogleFonts.poppins(
                                           fontSize:
-                                              size.iScreen(2.2), // Ajusta según tus necesidades
+                                              size.iScreen(2.0), // Ajusta según tus necesidades
                                           fontWeight: FontWeight.w400,
                                            color: valueSector.getSectorItem != ""? Colors.black:Colors.grey,
                                         ),
@@ -195,7 +195,7 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
                                       
                                         _modalSectores(context, size, _ctrl);
                                       },
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons
                                             .keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
                                         color: Colors.grey, // Color del icono
@@ -209,7 +209,7 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
                         //***********************************************/
 
                         SizedBox(
-                          height: size.iScreen(2.0),
+                          height: size.iScreen(1.0),
                         ),
                         //*****************************************/
                         Container(
@@ -270,12 +270,12 @@ class _SeleccionaPlanPageState extends State<SeleccionaPlanPage> {
                                     Container(
                                       // color: Colors.red,
                                       width: size.wScreen(60.0),
-                                      child: valueGPS.getLocationMessage == ""
+                                      child: valueGPS.getLocationMessage.isEmpty
                                           ? Text(
                                               'UBICACIÓN GPS  ',
                                               style: GoogleFonts.poppins(
                                                 fontSize:
-                                                    size.iScreen(2.2), // Ajusta según tus necesidades
+                                                    size.iScreen(2.0), // Ajusta según tus necesidades
                                                 fontWeight: FontWeight.w400,
                                                color: valueGPS.getLocationMessage != ""? Colors.black:Colors.grey,
                                               ),
