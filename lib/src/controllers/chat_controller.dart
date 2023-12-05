@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/api/api_provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
+import 'package:ultrared/src/controllers/init_provider.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:http/http.dart' as _http;
 
@@ -40,11 +41,35 @@ class ChatController extends ChangeNotifier {
   }
 
 //================================== CREA NUEVA CONSIGNA  ==============================//
-  Future buscarGrupoChat(
+//   Future mensajeSocket(
+//     BuildContext context,
+//   ) async {
+//     // final serviceSocket = context.read<SocketService>();
+//     // final serviceSocket = Provider.of<SocketService>(context,listen:false);
+
+//     final infoUser = await Auth.instance.getSession();
+//     final _pyloadGrupos = {
+//        "chat_id" : 4
+//     };
+
+
+
+//     // serviceSocket.enviarMensaje('client:lista-usuarios', {
+//     //    "chat_id" : 4
+//     // });
+    
+
+
+// // print('LOS DATOS PARA SOCKET : ${infoUser['token']}');
+
+
+//   }
+
+  Future mensajeSocket(
     BuildContext context,
   ) async {
-    // final serviceSocket = context.read<SocketService>();
-    final serviceSocket = Provider.of<SocketService>(context,listen:false);
+    final serviceSocket = context.read<InitProvider>();
+    // final serviceSocket = Provider.of<SocketService>(context,listen:false);
 
     final infoUser = await Auth.instance.getSession();
     final _pyloadGrupos = {
@@ -53,7 +78,9 @@ class ChatController extends ChangeNotifier {
 
 
 
-    serviceSocket.socket!.emit('client:lista-usuarios', _pyloadGrupos);
+    // serviceSocket.enviarMensaje('client:lista-usuarios', {
+    //    "chat_id" : 4
+    // });
     
 
 
@@ -61,6 +88,7 @@ class ChatController extends ChangeNotifier {
 
 
   }
+
 
 
 
@@ -76,7 +104,7 @@ class ChatController extends ChangeNotifier {
 
     _listaTodosLosGruposChat = _data;
 
-    print('_listaTodosLosGruposChat: $_listaTodosLosGruposChat');
+    // print('_listaTodosLosGruposChat: $_listaTodosLosGruposChat');
 
     notifyListeners();
   }
@@ -117,7 +145,7 @@ class ChatController extends ChangeNotifier {
 
     _listaTodosLosUsuariosChat = _data;
 
-    print('_listaTodosLosUsuariosChat: $_listaTodosLosUsuariosChat');
+    // print('_listaTodosLosUsuariosChat: $_listaTodosLosUsuariosChat');
 
     notifyListeners();
   }

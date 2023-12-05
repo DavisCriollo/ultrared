@@ -7,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/foto_casa_page.dart';
+import 'package:ultrared/src/pages/foto_vehiculo.dart';
+import 'package:ultrared/src/service/notifications_service.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
@@ -27,8 +29,8 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
       child: Scaffold(
         backgroundColor: cuaternaryColor,
         appBar: AppBar(
-           iconTheme: const IconThemeData( color: Colors.black),
-           centerTitle: true, // Centra el título en el AppBar
+          iconTheme: const IconThemeData(color: Colors.black),
+          centerTitle: true, // Centra el título en el AppBar
           elevation: 0,
           backgroundColor: cuaternaryColor, // Fondo blanco
           title: Text('FOTO DE PERFIL',
@@ -112,8 +114,6 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
                           height: size.iScreen(2.0),
                         ),
                         //*****************************************/
-                   
-                       
 
                         Container(
                           width: size.wScreen(80.0),
@@ -121,8 +121,7 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
                           clipBehavior: Clip.antiAlias,
                           decoration: ShapeDecoration(
                             shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  width: 1, color: Colors.grey),
+                              side: BorderSide(width: 1, color: Colors.grey),
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
@@ -130,65 +129,114 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                              
-                                 SizedBox(
-                          // width: size.wScreen(80),
-                          // height: size.hScreen(100.0),
-                          child: 
-                          GestureDetector(
-                            onTap: () {
-                              final control=context.read<HomeController>();
-                              bottomSheet(control,context,size);
-                            },
-                            child: 
-                            
-                            Consumer<HomeController>(builder: (_, valueFoto, __) {  
-                              return  
-                              
-                              
-                             valueFoto.image != null?  Center(
-                              child: Column(
-                                children: [
+                                SizedBox(
+                                  // width: size.wScreen(80),
+                                  // height: size.hScreen(100.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      final control =
+                                          context.read<HomeController>();
+                                      bottomSheet(control, context, size);
+                                    },
+                                    child: Consumer<HomeController>(
+                                      builder: (_, valueFoto, __) {
+                                        return valueFoto.getUrlPerfil != ""
+                                            ? Center(
+                                                child: Column(
+                                                  children: [
+                                                    // Image.file(
+                                                    //  File(valueFoto.image!.path
+                                                    //  ),
+                                                    //  fit: BoxFit.cover,
+                                                    //   // width: size.wScreen(100.0),
+                                                    //   // height: size.hScreen(0.0),
+                                                    // ),
+                                                    Stack(
+                                                      children: [
+                                                        Center(
+                                                            child:
+                                                                // Image.network(
+                                                                //   valueFoto.getUrlImage,
+                                                                //   errorBuilder: (context, error, stackTrace) {
+                                                                //     // print('Error al cargar la imagen: $error');
+                                                                //     return
+                                                                //     Icon(
+                                                                //       Icons.error_outline,
+                                                                //       size: size.iScreen(4.0),
+                                                                //       color: Colors.red,
+                                                                //     );
+                                                                //   },
+                                                                // ),
 
-                                
-          Image.file(
-           File(valueFoto.image!.path
-           ),
-           fit: BoxFit.cover,
-            // width: size.wScreen(100.0),
-            // height: size.hScreen(0.0),
-          ),
-                                
-                                 
-                                ],
-                              ),
-                            ): Container(
-                              
-                                  constraints: BoxConstraints(minHeight: size.hScreen(50.0)),
-
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon( Icons.camera_alt_rounded,color:Colors.grey,size: size.iScreen(4.0),),
-                                   Text(
-                                      'Tomar Foto',
-                                      // textAlign: TextAlign.center,
-                                      style: GoogleFonts.poppins(
-                                          fontSize: size.iScreen(1.5),
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black54),
+                                                                FadeInImage(
+                                                          placeholder:
+                                                              const AssetImage(
+                                                                  'assets/imgs/loader.gif'),
+                                                          image: NetworkImage(
+                                                            '${valueFoto.getUrlPerfil}',
+                                                          ),
+                                                        )),
+                                                        Positioned(
+                                                            top: size
+                                                                .iScreen(1.0),
+                                                            right: size
+                                                                .iScreen(2.0),
+                                                            child: InkWell(
+                                                              onTap: () {
+// print('sssiii');
+                                                                valueFoto.eliminaUrlServerPerfil(
+                                                                    valueFoto
+                                                                        .getUrlPerfil);
+                                                              },
+                                                              child: Icon(
+                                                                Icons
+                                                                    .delete_forever,
+                                                                color:
+                                                                    Colors.red,
+                                                                size: size
+                                                                    .iScreen(4),
+                                                              ),
+                                                            ))
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            : Container(
+                                                constraints: BoxConstraints(
+                                                    minHeight:
+                                                        size.hScreen(50.0)),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.camera_alt_rounded,
+                                                      color: Colors.grey,
+                                                      size: size.iScreen(4.0),
+                                                    ),
+                                                    Text(
+                                                      'Tomar Foto',
+                                                      // textAlign: TextAlign.center,
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              fontSize: size
+                                                                  .iScreen(1.5),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color: Colors
+                                                                  .black54),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                      },
                                     ),
-                                ],
-                              ),
-                            );
-                              
-                            },),
-                           
-                          ),
-                        ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -196,21 +244,48 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
                         //***********************************************/
 
                         //***********************************************/
-                      
+
                         SizedBox(
                           height: size.iScreen(2.0),
                         ),
                         //*****************************************/
                         GestureDetector(
-                             onTap:(){
-                        Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: ((context) =>
-                                          FotosCasaPage())));
-                        // final _ctrl = context.read<HomeController>();
-                        // _ctrl.getUrlsServer( ) ;
-                      },
+                          onTap: () {
+
+                             final control=context.read<HomeController>();
+
+                              if (control.getUrlPerfil.isNotEmpty) {
+                                 if ( control.getItemLugarServicio=='HOGAR') {
+                                    
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => FotosCasaPage())));
+                                  }else
+                                  {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => FotosVehiculoPage())));
+
+                                  }
+
+                                
+                              } else {
+                                NotificatiosnService.showSnackBarDanger('Agregar foto de Perfil');
+                              }
+
+
+                                 
+
+
+
+
+
+
+                            // final _ctrl = context.read<HomeController>();
+                            // _ctrl.getUrlsServer( ) ;
+                          },
                           child: BotonBase(
                             size: size,
                             label: 'SIGUIENTE',
@@ -230,7 +305,7 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
     );
   }
 
-void bottomSheet(
+  void bottomSheet(
     HomeController _controller,
     BuildContext context,
     Responsive size,
@@ -238,12 +313,15 @@ void bottomSheet(
     showCupertinoModalPopup(
         context: context,
         builder: (_) => CupertinoActionSheet(
-             
               actions: [
                 CupertinoActionSheetAction(
-                  onPressed: () {
+                  onPressed: () async {
+                    final image = await _getImage(context, ImageSource.camera);
+                    if (image != null) {
+                      _controller.setImage(image,'fotoperfil');
+                    }
                     Navigator.pop(context);
-                  _getImageFromCamera(context,_controller);
+                    // _getImageFromCamera(context,_controller);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -264,9 +342,13 @@ void bottomSheet(
                   ),
                 ),
                 CupertinoActionSheetAction(
-                  onPressed: () {
-                     Navigator.pop(context);
-                  _getImageFromGallery(context,_controller);
+                  onPressed: () async {
+                    final image = await _getImage(context, ImageSource.gallery);
+                    if (image != null) {
+                      _controller.setImage(image,'fotoperfil');
+                    }
+                    Navigator.pop(context);
+                    // _getImageFromGallery(context,_controller);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -287,25 +369,27 @@ void bottomSheet(
                   ),
                 ),
               ],
-             
             ));
   }
 
-Future<void> _getImageFromCamera(BuildContext context, HomeController controller ) async {
-    final XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
-   controller.setImage(image);
+// Future<void> _getImageFromCamera(BuildContext context, HomeController controller ) async {
+//     final XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
+//    controller.setImage(image!);
+//   }
+
+//   Future<void> _getImageFromGallery(BuildContext context,HomeController controller ) async {
+//     final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+//    controller.setImage(image!);
+//   }
+
+  Future<File?> _getImage(BuildContext context, ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.getImage(source: source);
+
+    if (pickedFile == null) {
+      return null;
+    }
+
+    return File(pickedFile.path);
   }
-
-  Future<void> _getImageFromGallery(BuildContext context,HomeController controller ) async {
-    final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
-   controller.setImage(image);
-  }
-
-
-
-
-
-
-  
-
 }

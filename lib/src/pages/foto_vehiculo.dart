@@ -16,21 +16,22 @@ import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
 
-class FotosCasaPage extends StatefulWidget {
-  const FotosCasaPage({Key? key}) : super(key: key);
+class FotosVehiculoPage extends StatefulWidget {
+  const FotosVehiculoPage({Key? key}) : super(key: key);
 
   @override
-  State<FotosCasaPage> createState() => _FotosCasaPageState();
+  State<FotosVehiculoPage> createState() => _FotosVehiculoPageState();
 }
 
-class _FotosCasaPageState extends State<FotosCasaPage> {
+class _FotosVehiculoPageState extends State<FotosVehiculoPage> {
   @override
   void initState() {
-    initData();
+  initData();
     super.initState();
   }
-
-  void initData() async {}
+   void initData() async {
+  
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,25 +41,23 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
       child: Scaffold(
         backgroundColor: cuaternaryColor,
         appBar: AppBar(
-            iconTheme: const IconThemeData(color: Colors.black),
-            centerTitle: true, // Centra el título en el AppBar
-            elevation: 0,
-            backgroundColor: cuaternaryColor, // Fondo blanco
-            title: Consumer<HomeController>(
-              builder: (_, value, __) {
-                return Text(
-                    value.getItemLugarServicio == 'HOGAR'
-                        ? 'FOTO DE TU CASA'
-                        : 'FOTO DE TU VEHICULO',
-                    style: GoogleFonts.poppins(
-                      fontSize: size.iScreen(2.0),
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                      letterSpacing: -0.40,
-                    ) // Color del título en negro
-                    );
-              },
-            )),
+          iconTheme: const IconThemeData( color: Colors.black),
+           centerTitle: true, // Centra el título en el AppBar
+          elevation: 0,
+          backgroundColor: cuaternaryColor, // Fondo blanco
+          title: 
+          Consumer<HomeController>(builder: (_, value, __) { 
+                return Text( value.getItemLugarServicio== 'HOGAR'? 'FOTO DE TU CASA':'FOTO DE TU VEHICULO',
+              style: GoogleFonts.poppins(
+                fontSize: size.iScreen(2.0),
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+                letterSpacing: -0.40,
+              ) // Color del título en negro
+              );
+           },)
+          
+        ),
         body: Container(
             // alignment: Alignment.center,
             // color: Colors.red,
@@ -112,34 +111,34 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
                           height: size.hScreen(2.0),
                         ),
                         SizedBox(
-                            width: size.wScreen(80),
-                            // height: size.hScreen(8.0),
-                            child: Consumer<HomeController>(
-                              builder: (_, value, __) {
-                                return Text(
-                                  value.getItemLugarServicio == 'HOGAR'
-                                      ? 'Es necesaria la foto de tu casa para brindarte mejor asistencia cuando lo necesites. Te agradecemos tu comprensión.'
-                                      : 'Es necesaria la foto de tu vehículo para brindarte mejor asistencia cuando lo necesites. Te agradecemos tu comprensión.',
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.poppins(
-                                      fontSize: size.iScreen(1.7),
-                                      fontWeight: FontWeight.w500,
-                                      color: secondaryColor),
-                                  //  Color del título en negro
-                                );
-                              },
-                            )
-
-                            // Text(
-
-                            //    'Es necesaria la foto de tu casa para brindarte mejor asistencia cuando lo necesites. Te agradecemos tu comprensión.',
-                            //    textAlign: TextAlign.center,
-                            //   style: GoogleFonts.poppins(
-                            //       fontSize: size.iScreen(1.7),
-                            //       fontWeight: FontWeight.w500,
-                            //       color: secondaryColor),
-                            // ),
-                            ),
+                          width: size.wScreen(80),
+                          // height: size.hScreen(8.0),
+                          child: 
+                          
+                           Consumer<HomeController>(builder: (_, value, __) { 
+                return Text( value.getItemLugarServicio== 'HOGAR'?
+                 'Es necesaria la foto de tu casa para brindarte mejor asistencia cuando lo necesites. Te agradecemos tu comprensión.':
+                 'Es necesaria la foto de tu vehículo para brindarte mejor asistencia cuando lo necesites. Te agradecemos tu comprensión.'
+                 ,
+               textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                                fontSize: size.iScreen(1.7),
+                                fontWeight: FontWeight.w500,
+                                color: secondaryColor),
+                                //  Color del título en negro
+              );
+           },)
+                          
+                          // Text(
+                            
+                          //    'Es necesaria la foto de tu casa para brindarte mejor asistencia cuando lo necesites. Te agradecemos tu comprensión.', 
+                          //    textAlign: TextAlign.center,
+                          //   style: GoogleFonts.poppins(
+                          //       fontSize: size.iScreen(1.7),
+                          //       fontWeight: FontWeight.w500,
+                          //       color: secondaryColor),
+                          // ),
+                        ),
                         //***********************************************/
 
                         //***********************************************/
@@ -148,6 +147,8 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
                           height: size.iScreen(2.0),
                         ),
                         //*****************************************/
+                   
+                       
 
                         // Container(
                         //   width: size.wScreen(80.0),
@@ -167,7 +168,7 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
                         //       crossAxisAlignment:
                         //           CrossAxisAlignment.center,
                         //       children: [
-
+                              
                         //          SizedBox(
                         //   width: size.wScreen(80),
                         //   // height: size.hScreen(8.0),
@@ -209,7 +210,8 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                SizedBox(
+
+                                 SizedBox(
                                   // width: size.wScreen(80),
                                   // height: size.hScreen(100.0),
                                   child: GestureDetector(
@@ -220,7 +222,7 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
                                     },
                                     child: Consumer<HomeController>(
                                       builder: (_, valueFoto, __) {
-                                        return valueFoto.getUrlCasa != ""
+                                        return valueFoto.getUrlVehiculo != ""
                                             ? Center(
                                                 child: Column(
                                                   children: [
@@ -253,7 +255,7 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
                                                               const AssetImage(
                                                                   'assets/imgs/loader.gif'),
                                                           image: NetworkImage(
-                                                            '${valueFoto.getUrlCasa}',
+                                                            '${valueFoto.getUrlVehiculo}',
                                                           ),
                                                         )),
                                                         Positioned(
@@ -264,9 +266,9 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
                                                             child: InkWell(
                                                               onTap: () {
 // print('sssiii');
-                                                                valueFoto.eliminaUrlServerCasa(
+                                                                valueFoto.eliminaUrlServerVehiculo(
                                                                     valueFoto
-                                                                        .getUrlCasa);
+                                                                        .getUrlVehiculo);
                                                               },
                                                               child: Icon(
                                                                 Icons
@@ -322,17 +324,18 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
                         //***********************************************/
 
                         //***********************************************/
-
+                      
                         SizedBox(
                           height: size.iScreen(2.0),
                         ),
                         //*****************************************/
                         GestureDetector(
                           onTap: () {
-                            final _crtl = context.read<HomeController>();
+                            final _crtl =context.read <HomeController>();
                             // final _crtlSocket =context.read <SocketService>();
-                            _onSubmit(context, _crtl, size);
+                            _onSubmit(context,_crtl,size ) ;
                             // _crtl.resetValues();
+                            
                           },
                           child: BotonBase(
                             size: size,
@@ -352,7 +355,6 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
       ),
     );
   }
-
   void bottomSheet(
     HomeController _controller,
     BuildContext context,
@@ -366,7 +368,7 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
                   onPressed: () async {
                     final image = await _getImage(context, ImageSource.camera);
                     if (image != null) {
-                      _controller.setImage(image, 'fotocasa');
+                      _controller.setImage(image,'fotovehiculo');
                     }
                     Navigator.pop(context);
                     // _getImageFromCamera(context,_controller);
@@ -393,7 +395,7 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
                   onPressed: () async {
                     final image = await _getImage(context, ImageSource.gallery);
                     if (image != null) {
-                      _controller.setImage(image, 'fotocasa');
+                      _controller.setImage(image,'fotovehiculo');
                     }
                     Navigator.pop(context);
                     // _getImageFromGallery(context,_controller);
@@ -442,62 +444,88 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
   }
 }
 
-void _onSubmit(BuildContext context, HomeController controller, size) async {
-  final control = context.read<HomeController>();
 
-  if (control.getUrlCasa.isNotEmpty) {
-    ProgressDialog.show(context);
-    final response = await controller.crearUsuario(context);
-    ProgressDialog.dissmiss(context);
-    if (response != null) {
-      _modalMessageResponse(context, response['msg'], size);
-    } else {
-      NotificatiosnService.showSnackBarError('No se pudo realizar la petición');
+       void _onSubmit(BuildContext context, HomeController controller, size) async {
+
+
+        final control=context.read<HomeController>();
+
+                              if (control.getUrlVehiculo.isNotEmpty) {
+                                  ProgressDialog.show(context);
+                                    final response = await controller.crearUsuario(context);
+                                    ProgressDialog.dissmiss(context);
+                                    if (response != null) {
+                                      _modalMessageResponse(context, response['msg'], size);
+                                  
+                                    } else {
+                                      NotificatiosnService.showSnackBarError(
+                                          'No se pudo realizar la petición');
+                                    }
+                              }
+                              else {
+                                  NotificatiosnService.showSnackBarDanger('Agregar foto de Vehículo');
+                              }
+  
+    
+    
     }
-  } else {
-    NotificatiosnService.showSnackBarDanger('Agregar foto de Casa');
-  }
-}
+   
 
-Future<void> _modalMessageResponse(
-    BuildContext context, String _message, Responsive size) {
-  return showDialog<String>(
-    barrierDismissible: false,
-    context: context,
-    builder: (BuildContext context) => AlertDialog(
-        title: const Center(child: Text('Información')),
-        content: SizedBox(
-          // height: size.hScreen(50.0),
-          width: double.maxFinite,
-          child: ListTile(
-            title: Text(_message),
-          ),
-        ),
-        actions: <Widget>[
-          Container(
-            width: size.wScreen(100),
-            // color: Colors.red,
-            child: TextButton(
-              onPressed: () {
-                //         Navigator.of(context).pushAndRemoveUntil(
-                //     MaterialPageRoute(
-                //         builder: (context) => LoginPage(
-                //               // validaTurno: validaTurno,
-                //               // tipo: session.rol,
-                //               // user: session,
-                //               // ubicacionGPS: controllerHome.getCoords,
-                //             )),
-                //     (Route<dynamic> route) => false);
-                // ModalRoute.withName('/');
 
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-              child: const Text('OK'),
+  Future<void> _modalMessageResponse(
+      BuildContext context, String _message, Responsive size) {
+    return showDialog<String>(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+          title: const Center(child: Text('Información')),
+          content: SizedBox(
+            // height: size.hScreen(50.0),
+            width: double.maxFinite,
+            child: ListTile(
+             
+              title: Text(_message),
             ),
-          )
-        ]),
-  );
+          ),
+          actions: <Widget>[
+            Container(
+              width: size.wScreen(100),
+              // color: Colors.red,
+              child: TextButton(
+                onPressed: () {
+
+
+
+          //        Navigator.of(context).pushAndRemoveUntil(
+          //     MaterialPageRoute(
+          //         builder: (context) => LoginPage(
+          //               // validaTurno: validaTurno,
+          //               // tipo: session.rol,
+          //               // user: session,
+          //               // ubicacionGPS: controllerHome.getCoords,
+          //             )),
+          //     (Route<dynamic> route) => false);
+          // ModalRoute.withName('/');
+
+              Navigator.pop(context);
+              Navigator.pop(context);
+              Navigator.pop(context);
+              Navigator.pop(context);
+
+
+
+                },
+                child: const Text('OK'),
+              ),
+            )
+          ]),
+    );
+  
+
+
+
+
+
+
+
 }

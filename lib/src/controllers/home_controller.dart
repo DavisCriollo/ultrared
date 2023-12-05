@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:cross_file/cross_file.dart';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -6,13 +8,16 @@ import 'package:flutter/material.dart';
 // import 'package:geolocator/geolocator.dart' as Geolocator;
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 // import 'package:image_picker/image_picker.dart';
+// import 'package:path_provider/path_provider.dart';
+// // import 'package:image_picker/image_picker.dart';
 import 'package:ultrared/src/api/api_provider.dart';
-import 'package:ultrared/src/api/authentication_client.dart';
-import 'package:http/http.dart' as _http;
-import 'package:ultrared/src/models/foto_url.dart';
-import 'package:ultrared/src/service/socket_service.dart';
-import 'package:ultrared/src/utils/valida_cedula.dart';
+// import 'package:ultrared/src/api/authentication_client.dart';
+// import 'package:http/http.dart' as _http;
+// import 'package:ultrared/src/models/foto_url.dart';
+// import 'package:ultrared/src/service/socket_service.dart';
+// import 'package:ultrared/src/utils/valida_cedula.dart';
 
 
 
@@ -72,6 +77,9 @@ class HomeController extends ChangeNotifier {
      _locationGPS= {};
    
      _itemPlaca= "";
+     _itemMarca= "";
+     _itemModelo= "";
+     _itemColor= "";
   }
 
   // Future<void> getLocation( BuildContext context) async {
@@ -426,6 +434,30 @@ class HomeController extends ChangeNotifier {
 
     notifyListeners();
   }
+  String? _itemMarca = '';
+  String? get getItemMarca => _itemMarca;
+
+  void setItemMarca(String? valor) {
+    _itemMarca = valor;
+
+    notifyListeners();
+  }
+  String? _itemModelo = '';
+  String? get getItemModelo => _itemModelo;
+
+  void setItemModelo(String? valor) {
+    _itemDireccion = valor;
+
+    notifyListeners();
+  }
+  String? _itemColor = '';
+  String? get getItemColor => _itemColor;
+
+  void setItemColor(String? valor) {
+    _itemColor = valor;
+
+    notifyListeners();
+  }
 
   String? _itemReferencia = '';
   String? get getItemReferencia => _itemReferencia;
@@ -443,8 +475,15 @@ class HomeController extends ChangeNotifier {
    _itemPlaca = '';
    _locationGPS = {};
     _locationMessage ='';
+   _itemMarca = '';
+   _itemModelo = '';
+   _itemColor = '';
+   _itemLugarServicio = '';
+ 
+   
     _itemLugarServicio = valor;
 
+// setFotoTipo( valor);
 
     notifyListeners();
   }
@@ -508,18 +547,42 @@ class HomeController extends ChangeNotifier {
 
 //-------------------- TOMAR FOTO------------------//
 
-  XFile? _image;
+String? _fotoTipo = '';
+  String? get getFotoTipo => _fotoTipo;
 
-  XFile? get image => _image;
+  void setFotoTipo(String? _valor) {
+    _fotoTipo = '';
 
-  void setImage(XFile? newImage) {
-    _image = newImage;
+      if (_valor=='HOGAR') {
+     _fotoTipo = 'fotocasa';
+  } else if (_valor=='TRANSPORTE') {
+     _fotoTipo = 'fotovehiculo';
+  } else{
+     _fotoTipo = _valor;
+  }
 
-getUrlsServer( );
-
-
+   
+    
+print('LA _fotoTipo $_fotoTipo');
     notifyListeners();
   }
+
+
+
+
+
+//   File? _image;
+
+//   File? get image => _image;
+
+//   void setImage(File? newImage) {
+//     _image = newImage;
+
+// guarImagenServer();
+
+
+//     notifyListeners();
+//   }
 
 
 
@@ -637,14 +700,17 @@ bool? _errorCrearUsuario; // sera nulo la primera vez
     "ciudad": _ciudadItem,
     "sector": _sectorItem,
     "referencia": _itemReferencia,
-    "fotoPerfil": "https://documentos.neitor.com/contable/fotoperfil/ULTRA2022/96eee234-93e9-4a4c-9fb7-7d12ba3b3c5a.png",
-    "fotoCasa": "https://documentos.neitor.com/contable/fotocasa/ULTRA2022/b2ed4c5b-e7db-4e34-8ba3-c32a9480f6c0.png",
+    "fotoPerfil": _urlImagePerfil,
+    "fotoCasa": _urlImageCasa,
     "gps": {
         "laitud": -7,
         "longitud": -90
     },
-    "fotoVehiculo": "",
+    "fotoVehiculo": _urlImageVehiculo,
     "placa": _itemPlaca,
+    "marca": _itemMarca,
+    "modelo": _itemModelo,
+    "color": _itemColor
 }
    );
     if (response != null) {
@@ -667,16 +733,50 @@ bool? _errorCrearUsuario; // sera nulo la primera vez
 //========================== PROCESO DE TOMAR FOTO DE CAMARA =======================//
   String  _urlImage = "";
   String  get getUrlImage =>_urlImage;
-
-  void setUrlImge(String data) {
+   void setUrlImge(String data, String _tipo) {
     _urlImage = "";
-    _urlImage = data;
+     _urlImage = data;
     print('IMAGEN URL: $_urlImage');
-
-    // agregarContenido();
 
     notifyListeners();
   }
+
+  String  _urlImagePerfil = "";
+  String  get getUrlPerfil =>_urlImagePerfil;
+
+  void setUrlPerfil(String _data) {
+    _urlImagePerfil = "";
+    _urlImagePerfil = _data;
+    print('PERFIL URL: $_urlImagePerfil');
+ 
+    notifyListeners();
+  }
+
+  String  _urlImageCasa = "";
+    String  get getUrlCasa =>_urlImageCasa;
+
+  void setUrlCasa(String _data) {
+    _urlImageCasa = "";
+    _urlImageCasa = _data;
+    print('CASA URL: $_urlImageCasa');
+ 
+    notifyListeners();
+  }
+  String  _urlImageVehiculo = "";
+  
+
+     String  get getUrlVehiculo =>_urlImageVehiculo;
+
+  void setUrlVehiculo(String _data) {
+    _urlImageVehiculo = "";
+    _urlImageVehiculo = _data;
+    print('VEHICULO URL: $_urlImageVehiculo');
+ 
+    notifyListeners();
+  }
+
+
+
   bool  _errorUrl =true;
   bool  get getErrorUrl =>_errorUrl;
   void setErrorUrl(bool _data) {
@@ -685,95 +785,124 @@ bool? _errorCrearUsuario; // sera nulo la primera vez
   }
 
 
-// Future getUrlsServer( ) async {
 
-//     // final dataUser = await Auth.instance.getSession();
-//        File? _imageFile;
-
-// ;
-
-//     final response = await _api.saveUrlAlServidor(
-
-//         urlFile: File(image!.path),
-//       // token: '${dataUser!['token']}',
-//     );
-
-//     if (response != null) {
-//       _errorUrl = true;
-//       // setListaUrlse(response['data']);
-//       // print('ES LOS URLS: ${response['urls'][0]}');
-//       setUrlImge(response.toString());
-//       notifyListeners();
-//       // return response;
-//     }
-//     if (response == null) {
-//       _errorUrl = false;
-//       notifyListeners();
-
-//     }
-//    return response;
-//   }
-Future getUrlsServer( ) async {
-
-    // final dataUser = await Auth.instance.getSession();
-      //  File? _imageFile;
-
-;
-
-    final response = await _api.uploadImage(
-      image:File(image!.path),
-     imageType:'fotoperfil',
-enterprices:'ULTRA2022',
-    );
-
-    if (response != null) {
-      _errorUrl = true;
-      // setListaUrlse(response['data']);
-      // print('ES LOS URLS: ${response['urls'][0]}');
-      setUrlImge(response.toString());
-      notifyListeners();
-      // return response;
-    }
-    if (response == null) {
-      _errorUrl = false;
-      notifyListeners();
-
-    }
-   return response;
-  }
+Future eliminaUrlServerPerfil( String _url) async {
 
 
-
-Future eliminaUrlServer( String _url) async {
-
-
-final _urlImageDelete=
-[
+final Map<String,dynamic>_urlImageDelete=
+{
+	"urls": [
 		{
-			"nombre": "foto",
-			"url": _url,
+			"url": _url
 		}
-	];
-// print('ES LOS URLSTEMP: ${_urlImageDelete}');
-
-    final dataUser = await Auth.instance.getSession();
+	],
+	"rucempresa": "ULTRA2022"
+};
 
     final response = await _api.deleteUrlDelServidor(
          datos:_urlImageDelete,
-      token: '${dataUser!.token}',
+      // token: '${dataUser!.token}',
     );
 
     if (response != null) {
       _errorUrl = true;
       // setListaUrlse(response['data']);
-      // print('ES LOS URLS: ${response['urls'][0]}');
-      // setUrlImge(response.toString());
+      // print('ES LOS URLS: ${response}');
+      setUrlPerfil('');
+    // image== null;
+
+      // print('las variables : image - $_urlImage');
       notifyListeners();
       return 'true';
       // return response;
     }
+
+
     if (response == null) {
       _errorUrl = false;
+        print('ES LOS URLS: ${response}');
+      notifyListeners();
+      return 'false';
+
+    }
+ 
+  }
+Future eliminaUrlServerCasa( String _url) async {
+
+
+final Map<String,dynamic>_urlImageDelete=
+{
+	"urls": [
+		{
+			"url": _url
+		}
+	],
+	"rucempresa": "ULTRA2022"
+};
+
+    final response = await _api.deleteUrlDelServidor(
+         datos:_urlImageDelete,
+      // token: '${dataUser!.token}',
+    );
+
+    if (response != null) {
+      _errorUrl = true;
+      // setListaUrlse(response['data']);
+      // print('ES LOS URLS: ${response}');
+      setUrlCasa('');
+    // image== null;
+
+      // print('las variables : image - $_urlImage');
+      notifyListeners();
+      return 'true';
+      // return response;
+    }
+
+
+    if (response == null) {
+      _errorUrl = false;
+        print('ES LOS URLS: ${response}');
+      notifyListeners();
+      return 'false';
+
+    }
+ 
+  }
+Future eliminaUrlServerVehiculo( String _url) async {
+
+
+final Map<String,dynamic>_urlImageDelete=
+{
+	"urls": [
+		{
+			"url": _url
+		}
+	],
+	"rucempresa": "ULTRA2022"
+};
+
+    final response = await _api.deleteUrlDelServidor(
+         datos:_urlImageDelete,
+      // token: '${dataUser!.token}',
+    );
+
+    if (response != null) {
+      _errorUrl = true;
+      // setListaUrlse(response['data']);
+      // print('ES LOS URLS: ${response}');
+      setUrlCasa('');
+    // image== null;
+
+      // print('las variables : image - $_urlImage');
+      notifyListeners();
+      return 'true';
+      // return response;
+    }
+
+
+    if (response == null) {
+      _errorUrl = false;
+        print('ES LOS URLS: ${response}');
       notifyListeners();
       return 'false';
 
@@ -781,6 +910,237 @@ final _urlImageDelete=
  
   }
 
+
+//-------------------------------------//
+///AGREGAMOS LA IMAGEN EN PANTALLA ////
+  String _url ='' ; 
+ File? _selectedImage;
+
+  File? get selectedImage => _selectedImage;
+
+  void setImage(File image,String _tipo) {
+    _selectedImage = image;
+    _url=_selectedImage!.path;
+    if (_tipo=='fotoperfil' ) {
+       getUrlsServerPerfil( );
+      
+    }
+    else if ( _tipo=='fotocasa' ) {
+         getUrlsServerCasa( );
+  }
+    else if (_tipo=='fotovehiculo' ) {
+        getUrlsServerVehiculo( );
+  }
+    
+
+    // getUrlsServer( )
+  
+
+
+    notifyListeners();
+  }
+
+  void clearImage() {
+    _selectedImage = null;
+    notifyListeners();
+  }
+void deleteImage() {
+    if (_selectedImage != null) {
+      _selectedImage!.delete();
+      clearImage();
+    }
+  }
+
+// Future getUrlsServer( ) async {
+ 
+
+
+
+//     final response = await _api.getUrlsServer(
+//         _selectedImage,
+//          _fotoTipo!
+   
+//     );
+
+//     if (response != null && _fotoTipo=='fotoperfil' ) {
+//       _errorUrl = true;
+//        setUrlPerfil(response.toString(),);
+//        notifyListeners();
+//       return response;
+//     }
+//     else if (response != null && _fotoTipo=='fotocasa' ) {
+//         _errorUrl = true;
+//         setUrlCasa(response.toString(),);
+//        notifyListeners();
+//       return response;
+//   }
+//     else if (response != null && _fotoTipo=='fotovehiculo' ) {
+//         _errorUrl = true;
+//         setUrlVehiculo(response.toString(),);
+//        notifyListeners();
+//       return response;
+//   }
+//     if (response == null) {
+//       _errorUrl = false;
+
+//       notifyListeners();
+
+//     }
+//   //  return response;
+
+
+
+
+//   }
+Future getUrlsServerPerfil( ) async {
+ 
+   try {
+
+     final response = await _api.getUrlsServer(
+        _selectedImage,
+        'fotoperfil'
+   
+    );
+
+    if (response != null ) {
+      _errorUrl = true;
+       setUrlPerfil(response.toString(),);
+       notifyListeners();
+      return response;
+    }
+   
+    if (response == null) {
+      _errorUrl = false;
+
+      notifyListeners();
+
+    }
+     
+   } catch (e) {
+
+   return false;
+   }
+
+
+
+
+  }
+Future getUrlsServerCasa( ) async {
+ 
+   try {
+
+     final response = await _api.getUrlsServer(
+        _selectedImage,
+        'fotocasa'
+   
+    );
+
+    if (response != null ) {
+      _errorUrl = true;
+       setUrlCasa(response.toString(),);
+       notifyListeners();
+      return response;
+    }
+   
+    if (response == null) {
+      _errorUrl = false;
+
+      notifyListeners();
+
+    }
+     
+   } catch (e) {
+
+   return false;
+   }
+
+
+
+
+  }
+Future getUrlsServerVehiculo( ) async {
+ 
+   try {
+
+     final response = await _api.getUrlsServer(
+        _selectedImage,
+        'fotovehiculo'
+   
+    );
+
+    if (response != null ) {
+      _errorUrl = true;
+       setUrlVehiculo(response.toString(),);
+       notifyListeners();
+      return response;
+    }
+   
+    if (response == null) {
+      _errorUrl = false;
+
+      notifyListeners();
+
+    }
+     
+   } catch (e) {
+
+   return false;
+   }
+
+
+
+
+  }
+
+
+
+//  File? _selectedImage;
+
+//   File? get selectedImage => _selectedImage;
+
+//   void setImage(File image) {
+//     _selectedImage = image;
+//     _url=_selectedImage!.path;
+//     print('LA FOTO ESTA EN : $image');
+//     notifyListeners();
+//   }
+
+//   void clearImage() {
+//     _selectedImage = null;
+//     notifyListeners();
+//   }
+// void deleteImage() {
+//     if (_selectedImage != null) {
+//       _selectedImage!.delete();
+//       clearImage();
+//     }
+//   }
+
+
+
+
+
+//  File? _imageFile;
+
+//   File? get imageFile => _imageFile;
+
+
+//   Future<void> saveImage() async {
+//     if (_imageFile != null) {
+//       try {
+//         final appDocDir = await getApplicationDocumentsDirectory();
+//         final fileName = 'mi_imagen_guardada.png'; // Puedes cambiar el nombre y la extensión según tus necesidades
+//         final savedImage = await _imageFile!.copy('${appDocDir.path}/$fileName');
+
+//         // Notificar al usuario que la imagen se ha guardado exitosamente
+       
+//         // );
+//       } catch (error) {
+//         print('Error al guardar la imagen: $error');
+//       }
+//     }
+//   }
+//-------------------------------------//
 
 
 

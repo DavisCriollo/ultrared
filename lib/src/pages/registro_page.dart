@@ -40,7 +40,7 @@ class _RegistroPageState extends State<RegistroPage> {
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
     final _control = context.read<HomeController>();
-  context.read<SocketService>();
+  // context.read<SocketService>();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(

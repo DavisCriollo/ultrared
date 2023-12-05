@@ -6,10 +6,12 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/login_controller.dart';
+import 'package:ultrared/src/controllers/init_provider.dart';
 
 import 'package:ultrared/src/pages/home_page.dart';
 import 'package:ultrared/src/pages/login_page.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
+import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 
 import '../api/authentication_client.dart';
@@ -106,12 +108,18 @@ class _SplashPageState extends State<SplashPage> {
 
 
 
-    final controllerHome = Provider.of<HomeController>(context, listen: false);
+    final controllerHome = context.read<HomeController>();
+    final _ctrlInitProvider =context.read<InitProvider>();
+                final _ctrlSocket =context.read<SocketService>();
+                  SocketService(_ctrlInitProvider);
     controllerHome.checkConnectivity(); 
     final Map<String, dynamic>? session = await Auth.instance.getSession();
 
 
-    // controllerHome.setSesionUser(session);
+  // controllerSocket.setTokenAndCedula('${session!['token']}','${session['rucempresa']}');
+// print('${session!['token']} ${session['rucempresa']}');
+//   controllerSocket.enviarMensaje( 'client:lista-usuarios', {"chat_id": 4} );
+                                                // _ctrlSocket.sendMessage( 'client:lista-usuarios',{});
 
     final String? tokenFCM = await Auth.instance.getTokenFireBase();
 
@@ -136,7 +144,15 @@ class _SplashPageState extends State<SplashPage> {
       //   Navigator.pushNamed(context, 'gps');
       // }
 
-
+  // final infoUser  = await Auth.instance.getSession();
+              
+  //               _ctrlInitProvider.login("${session['token']}", "${session['rucempresa']}");
+  //             SocketService(_ctrlInitProvider);
+               
+  //    final _ctrlSocket =context.read<SocketService>();
+  //                 _ctrlSocket.sendMessage('client:lista-usuarios', {
+  //      "chat_id" : 4
+  //   });
       
        Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(

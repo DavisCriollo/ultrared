@@ -1,10 +1,9 @@
 
 import 'package:flutter/material.dart';
+
 import 'package:ultrared/src/api/api_provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
-import 'package:ultrared/src/controllers/home_controller.dart';
-import 'package:ultrared/src/models/auth_response.dart';
-import 'package:ultrared/src/models/sessio_model.dart';
+
 
 class LoginController extends ChangeNotifier {
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
@@ -46,8 +45,18 @@ class LoginController extends ChangeNotifier {
     notifyListeners();
   }
 
-  //========================== MENU =======================//
- 
+  //========================== DATA PARA SOCKET =======================//
+  String _token = "";
+  String _cedula = "";
+
+  String get token => _token;
+  String get cedula => _cedula;
+
+  void login(String token, String cedula) {
+    _token = token;
+    _cedula = cedula;
+    notifyListeners();
+  }
   //========================== LOGIN =======================//
   Future loginApp(BuildContext context) async {
     // List _creddenciales = [];
@@ -64,7 +73,7 @@ class LoginController extends ChangeNotifier {
       //   await Auth.instance.saveDataRecordarme(_creddenciales);
       // }
       // _dataLogin = response;
-
+      
       return response;
     }
     if (response == null) {

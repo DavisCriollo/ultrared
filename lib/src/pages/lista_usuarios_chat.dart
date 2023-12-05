@@ -29,32 +29,32 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
   void initData() async {
     final loadInfo = context.read<ChatController>();
 
-    final serviceSocket = context.read<SocketService>();
+    // final serviceSocket = context.read<SocketService>();
     // loadInfo.buscaGestionDocumental('', 'ENVIADO');
 
 
-    serviceSocket.socket!.on('server:lista-chats-grupos', (data) async {
-      print('LA TABLA GESTION  EXITO >>>>>>>> ${data}');
+    // serviceSocket.socket!.on('server:lista-chats-grupos', (data) async {
+    //   print('LA TABLA GESTION  EXITO >>>>>>>> ${data}');
 
-      // if (data['tabla'] == 'acta_entrega_recepcion') {
-      //   // loadInfo.buscaGestionDocumental('', 'ENVIADO');
-      //   // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      // }
-    });
-    serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
-      // print('LA TABLA GESTION  ACTUALIZA >>>>>>>> ${data}');
-      // if (data['tabla'] == 'acta_entrega_recepcion') {
-      //   // loadInfo.buscaGestionDocumental('', 'ENVIADO');
-      //   // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      // }
-    });
-    serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
-      // print('LA TABLA GESTION  ELIMINA >>>>>>>> ${data}');
-      // if (data['tabla'] == 'acta_entrega_recepcion') {
-      //   // loadInfo.buscaGestionDocumental('', 'ENVIADO');
-      //   // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      // }
-    });
+    //   // if (data['tabla'] == 'acta_entrega_recepcion') {
+    //   //   // loadInfo.buscaGestionDocumental('', 'ENVIADO');
+    //   //   // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   // }
+    // });
+    // serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+    //   // print('LA TABLA GESTION  ACTUALIZA >>>>>>>> ${data}');
+    //   // if (data['tabla'] == 'acta_entrega_recepcion') {
+    //   //   // loadInfo.buscaGestionDocumental('', 'ENVIADO');
+    //   //   // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   // }
+    // });
+    // serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
+    //   // print('LA TABLA GESTION  ELIMINA >>>>>>>> ${data}');
+    //   // if (data['tabla'] == 'acta_entrega_recepcion') {
+    //   //   // loadInfo.buscaGestionDocumental('', 'ENVIADO');
+    //   //   // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   // }
+    // });
   }
   @override
   Widget build(BuildContext context) {

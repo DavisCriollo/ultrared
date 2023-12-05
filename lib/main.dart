@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+// import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
+// import 'package:ultrared/src/controllers/init_provider.dart';
 
 import 'package:ultrared/src/routes/routes.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
@@ -33,14 +35,20 @@ class _MyAppState extends State<MyApp> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
-    //  SystemChrome.setPreferredOrientations(
-    //   [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+
     return   MultiProvider(
       providers: [
-         ChangeNotifierProvider(create: (_) => SocketService()),
+         ChangeNotifierProvider(create: (_) => InitProvider()),
+         ChangeNotifierProxyProvider<InitProvider, SocketService>(
+          create: (_) => SocketService(InitProvider()),
+          update: (_, authProvider, sockeProvider) {
+            sockeProvider!.authProvider = authProvider;
+            return sockeProvider;
+          },
+        ),
          ChangeNotifierProvider(create: (_) => ChatController()),
          ChangeNotifierProvider(create: (_) => HomeController())
        

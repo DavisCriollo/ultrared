@@ -217,7 +217,6 @@
 //   }
 // }
 
-
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -229,7 +228,7 @@ import 'package:provider/provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
-import 'package:ultrared/src/controllers/socket_service.dart';
+import 'package:ultrared/src/controllers/init_provider.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
 import 'package:ultrared/src/pages/lista_grupos_chat.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
@@ -246,7 +245,6 @@ import 'package:ultrared/src/widgets/no_data.dart';
 // import 'socket_provider.dart'; // Asegúrate de importar tu SocketProvider
 
 class HomePage extends StatefulWidget {
-
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -254,7 +252,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
-   Map<String, dynamic>? user ={};
+  Map<String, dynamic>? user = {};
 
   @override
   void initState() {
@@ -271,15 +269,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     final homeController = context.read<HomeController>();
-   
+
     if (state == AppLifecycleState.resumed) {
       // await homeController.validaInicioDeSesion(context);
       print('EL ESTADO ES ------: $state');
       homeController.getLocation();
-       Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute<void>(
-                      builder: (BuildContext context) => const SplashPage()));
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute<void>(
+              builder: (BuildContext context) => const SplashPage()));
 
 //  final _isTurned=
 // homeController.buscaNotificacionesPush('');
@@ -300,11 +298,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     WidgetsBinding.instance!.addObserver(this);
     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
 
-    var socketManager = context.read<SocketService>();
-    
+    // var socketManager = context.read<SocketService>();
 
-    user =await Auth.internal().getSession();
-      print('${user!['nombre']}');
+    user = await Auth.internal().getSession();
+    // print('${user!['nombre']}');
 
     // final  socketManager = context.read<SocketService>();
     // if (socketManager.status == SocketStatus.desconectado) {
@@ -320,10 +317,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-
-
-
-    
     final List<String> imageUrls = [
       'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
 
@@ -359,416 +352,456 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     @override
     final Responsive size = Responsive.of(context);
-    var socketProvider = context.read<SocketService>();
-    final _ctrl = context.read<HomeController>() ;
+    // var socketProvider = context.read<SocketService>();
+    final _ctrl = context.read<HomeController>();
     _ctrl.checkConnectivity();
     // var socketProvider =Provider.of<SocketProvider>(context,listen:  true);
     //  _ctrl.getconectionInternet== false?
-    return 
-  Consumer<HomeController>(builder: (_, values, __) { 
-    return  SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.grey.shade200, // appBar: AppBar(
-        //   title: Text('Estado del Socket'),
-        // ),
-        appBar: AppBar(
-          toolbarHeight: size.hScreen(10.0),
-          iconTheme: const IconThemeData(color: Colors.black),
-          elevation: 0.0,
-          backgroundColor: cuaternaryColor, //
-          title: Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: size.iScreen(1.0), vertical: size.iScreen(0.5)),
-            alignment: Alignment.centerLeft,
-            // color:Colors.blue,
-            width: size.wScreen(80.0),
-            height: size.wScreen(17.0),
-            child: Image.asset(
-              'assets/imgs/LetrasNegro.png',
-              scale: 1.0,
-              // fit: BoxFit.,
-              // width: size.1Screen(5.0), // URL de la imagen
-            ),
-          ),
-          actions: [
-            values.connectionStatus != ConnectionStatus.none ?
-            Badge(
-                position: const BadgePosition(
-                                      top: 10.0, start: 25.0),
-                                       badgeContent: Text('9+', style: GoogleFonts.poppins(
-                                  fontSize: size.iScreen(1.4),
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.white,
-                                ),
-                                       ),
-              badgeColor: tercearyColor,
-              child: Container(
-                margin: EdgeInsets.only(right: size.iScreen(2.0)),
-                child: IconButton(onPressed: (){}, icon: Icon(
-                                            Icons.notifications,
-                                            size: size.iScreen(3.5),
-                                            color: Colors.black,
-                                          )),
-              ),
-            ): Container()
-          ],
-        ),
-        drawer:  values.connectionStatus != ConnectionStatus.none ? DrawerMenu(user: user):null,
-        body: Container(
-          height: size.hScreen(100),
-          width: size.wScreen(100),
-          // color:Colors.green,
-          child:
-          
-          values.connectionStatus != ConnectionStatus.none ?
-          
-           Column(
-            children: [
-              // Container(
-              //   padding: EdgeInsets.symmetric(
-              //       horizontal: size.iScreen(1.0), vertical: size.iScreen(1.0)),
-              //   // color:  Colors.red,
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       GestureDetector(
-              //         onTap: () {
-
-              //         }
-              //         ,
-
-              //         child: Container(
-              //           // color:Colors.green,
-              //           width: size.wScreen(10.0),
-              //           height: size.wScreen(10.0),
-              //           child: Icon(
-              //             Icons.menu,
-              //             color: Colors.black,
-              //             size: size.wScreen(7.0),
-              //           ),
-              //         ),
-              //       ),
-              //       Container(
-              //         alignment: Alignment.centerLeft,
-              //         // color:Colors.blue,
-              //         width: size.wScreen(80.0),
-              //         height: size.wScreen(15.0),
-              //         child: Image.asset(
-              //           'assets/imgs/LetrasNegro.png',
-              //           scale: 1.3,
-              //           // fit: BoxFit.,
-              //           // width: size.1Screen(5.0), // URL de la imagen
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-
-              Expanded(
-                child: Container(
-                  // height: size.hScreen(80.0),
-                  // color: Colors.blue,
-                  child: Column(
-                    children: [
-                      Container(
-                        width: size.wScreen(100.0),
-                        height: size.wScreen(60.0),
-
-                        // color: Colors.red,
-                        child: Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              ElementosHome(
-                                enabled: true,
-                                size: size,
-                                image: 'assets/imgs/document.png',
-                                title: 'Estado de Cuenta',
-                                label: 'Verifica tu estado de cuenta',
-                                onTap: (){}
-                                // () => Navigator.pushNamed(
-                                //     context, 'SubmenuMascotas'),
-                                // onTap: () {
-                                //   Navigator.of(context).push(MaterialPageRoute(
-                                //       builder: (context) =>
-                                //           const SubmenuMascotas()));
-                                // },
-                              ),
-                              ElementosSOS(
-                                enabled: true,
-                                size: size,
-                                image: 'assets/imgs/document.png',
-                                title: 'Botón de Ayuda',
-                                label: 'Presiona por 3 segundos',
-                                onTap:  (){}
-                                // () => Navigator.pushNamed(
-                                //     context, 'SubmenuMascotas'),
-                                // onTap: () {
-                                //   Navigator.of(context).push(MaterialPageRoute(
-                                //       builder: (context) =>
-                                //           const SubmenuMascotas()));
-                                // },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: size.wScreen(100.0),
-                        height: size.wScreen(40.0),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
-
-                        // color: Colors.red,
-                        child:
-                          
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: size.wScreen(100.0),
-                              child: Text(
-                                'Chat Comunitario',
-                                // textAlign: TextAlign.center,
-                                style: GoogleFonts.poppins(
-                                  fontSize: size.iScreen(2.2),
-                                  fontWeight: FontWeight.w700,
-                                  color: octinaryColor,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8.0)),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: size.iScreen(1.0),
-                                  vertical: size.iScreen(1.0)),
-                              width: size.wScreen(100.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Container(
-                                    //  color: Colors.blue,
-                                    width: size.wScreen(70.0),
-                                    child: Text(
-                                      'Interactua con tus vecinos e informa a tu comunidad temas relevantes.',
-                                      // textAlign: TextAlign.center,
-                                      style: GoogleFonts.poppins(
-                                        fontSize: size.iScreen(1.7),
-                                        fontWeight: FontWeight.w700,
-                                        color: octinaryColor,
-                                        letterSpacing: -0.28,
-                                      ),
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                         onTap:(){
-                                          final _chatCtrl= context.read<ChatController>();
-                                          _chatCtrl.buscaGruposChat(context);
-                        Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: ((context) =>
-                                          ListaGruposChat())));
-
-
-
-
-                      },
-                                    child: Container(
-                                      // color: Colors.yellow,
-                                      width: size.wScreen(20.0),
-                                      child: Image.asset(
-                                        'assets/imgs/chat-bubble.png',
-                                        // scale: 1.5,
-                                        // fit: BoxFit.,
-                                        // width: size.1Screen(5.0), // URL de la imagen
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          width: size.wScreen(100.0),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: size.iScreen(1.0)),
-
-                          // height: size.wScreen(40.0),
-
-                          // color: Colors.red,
-                          // color: Colors.red,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: size.wScreen(100.0),
-                                child: Text(
-                                  'Noticias para ti',
-                                  // textAlign: TextAlign.center,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: size.iScreen(2.2),
-                                    fontWeight: FontWeight.w700,
-                                    color: octinaryColor,
-                                  ),
-                                ),
-                              ),
-                              //***********************************************/
-
-                              SizedBox(
-                                height: size.iScreen(1.5),
-                              ),
-                              //*****************************************/
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8.0)),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: size.iScreen(1.0),
-                                    vertical: size.iScreen(1.0)),
-                                width: size.wScreen(100.0),
-                                child: Container(
-                                  // color: Colors.yellow,
-                                  width: size.wScreen(95.0),
-                                  child:
-
-                                      // CarouselSlider(
-                                      //   options: CarouselOptions(
-                                      //     // height: 200.0,
-                                      //     autoPlay: true,
-                                      //     aspectRatio: 16 / 9,
-                                      //     enlargeCenterPage: true,
-                                      //   ),
-                                      //   items: imageUrls.map((url) {
-                                      //     return Builder(
-                                      //       builder: (BuildContext context) {
-                                      //         return Container(
-                                      //           width: MediaQuery.of(context)
-                                      //               .size
-                                      //               .width,
-                                      //           margin: EdgeInsets.symmetric(
-                                      //               horizontal: 5.0),
-                                      //           decoration: BoxDecoration(
-                                      //               // color: Colors.blue,
-                                      //               ),
-                                      //           child: Image.network(
-                                      //             url,
-                                      //             fit: BoxFit.cover,
-                                      //           ),
-                                      //         );
-                                      //       },
-                                      //     );
-                                      //   }).toList(),
-                                      // ),
-                                      CarouselSlider(
-                                    options: CarouselOptions(
-                                      // height: 200.0,
-                                      autoPlay: true,
-                                      aspectRatio: 16 / 9,
-                                      enlargeCenterPage: true,
-                                    ),
-                                    items: _listaInfoPublicidad.map((info) {
-                                      return Builder(
-                                          builder: (BuildContext context) {
-                                        return Container(
-                                            width: size.wScreen(100),
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 1.0),
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: size.iScreen(0.0)),
-                                            decoration: BoxDecoration(
-                                                // color: Colors.yellow.shade50,
-                                                ),
-                                            child: info['tipo'] == 'comunicado'
-                                                ? Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: size
-                                                                .iScreen(1.0),
-                                                            vertical: size
-                                                                .iScreen(1.0)),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0),
-                                                               color: Colors.yellow.shade100,
-                                                    ),
-                                                    child: Column(
-                                                      children: [
-                                                        Text(
-                                                          '${info['titulo']}',
-                                                          style: GoogleFonts
-                                                              .poppins(
-                                                            fontSize: size
-                                                                .iScreen(2.0),
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            color:
-                                                                octinaryColor,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          '${info['descripcion']}',
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: GoogleFonts
-                                                              .poppins(
-                                                            fontSize: size
-                                                                .iScreen(1.7),
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal,
-                                                            color:
-                                                                octinaryColor,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                : CachedNetworkImage(
-                                                    imageUrl: info['url'],
-                                                    fit: BoxFit.cover,
-                                                    placeholder: (context,
-                                                            url) =>
-                                                        const CupertinoActivityIndicator(),
-                                                    // Image.asset(
-                                                    //     'assets/imgs/loader.gif'),
-
-                                                    errorWidget: (context, url,
-                                                            error) =>
-                                                        const Icon(Icons.error),
-                                                  ));
-                                      });
-                                    }).toList(),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+    return Consumer<HomeController>(
+      builder: (_, values, __) {
+        return SafeArea(
+          child: Scaffold(
+            backgroundColor: Colors.grey.shade200, // appBar: AppBar(
+            //   title: Text('Estado del Socket'),
+            // ),
+            appBar: AppBar(
+              toolbarHeight: size.hScreen(10.0),
+              iconTheme: const IconThemeData(color: Colors.black),
+              elevation: 0.0,
+              backgroundColor: cuaternaryColor, //
+              title: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: size.iScreen(1.0), vertical: size.iScreen(0.5)),
+                alignment: Alignment.centerLeft,
+                // color:Colors.blue,
+                width: size.wScreen(80.0),
+                height: size.wScreen(17.0),
+                child: Image.asset(
+                  'assets/imgs/LetrasNegro.png',
+                  scale: 1.0,
+                  // fit: BoxFit.,
+                  // width: size.1Screen(5.0), // URL de la imagen
                 ),
               ),
-            ],
-          ): NoData(label: 'No tiene conexión...'),
-        ),
-      ),
+              actions: [
+                values.connectionStatus != ConnectionStatus.none
+                    ? Badge(
+                        position: const BadgePosition(top: 10.0, start: 25.0),
+                        badgeContent: Text(
+                          '9+',
+                          style: GoogleFonts.poppins(
+                            fontSize: size.iScreen(1.4),
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white,
+                          ),
+                        ),
+                        badgeColor: tercearyColor,
+                        child: Container(
+                          margin: EdgeInsets.only(right: size.iScreen(2.0)),
+                          child: IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.notifications,
+                                size: size.iScreen(3.5),
+                                color: Colors.black,
+                              )),
+                        ),
+                      )
+                    : Container()
+              ],
+            ),
+            drawer: values.connectionStatus != ConnectionStatus.none
+                ? DrawerMenu(user: user)
+                : null,
+            body: Container(
+              height: size.hScreen(100),
+              width: size.wScreen(100),
+              // color:Colors.green,
+              child: values.connectionStatus != ConnectionStatus.none
+                  ? Column(
+                      children: [
+                        // Container(
+                        //   padding: EdgeInsets.symmetric(
+                        //       horizontal: size.iScreen(1.0), vertical: size.iScreen(1.0)),
+                        //   // color:  Colors.red,
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       GestureDetector(
+                        //         onTap: () {
+
+                        //         }
+                        //         ,
+
+                        //         child: Container(
+                        //           // color:Colors.green,
+                        //           width: size.wScreen(10.0),
+                        //           height: size.wScreen(10.0),
+                        //           child: Icon(
+                        //             Icons.menu,
+                        //             color: Colors.black,
+                        //             size: size.wScreen(7.0),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       Container(
+                        //         alignment: Alignment.centerLeft,
+                        //         // color:Colors.blue,
+                        //         width: size.wScreen(80.0),
+                        //         height: size.wScreen(15.0),
+                        //         child: Image.asset(
+                        //           'assets/imgs/LetrasNegro.png',
+                        //           scale: 1.3,
+                        //           // fit: BoxFit.,
+                        //           // width: size.1Screen(5.0), // URL de la imagen
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+
+                        Expanded(
+                          child: Container(
+                            // height: size.hScreen(80.0),
+                            // color: Colors.blue,
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: size.wScreen(100.0),
+                                  height: size.wScreen(60.0),
+
+                                  // color: Colors.red,
+                                  child: Container(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        ElementosHome(
+                                            enabled: true,
+                                            size: size,
+                                            image: 'assets/imgs/document.png',
+                                            title: 'Estado de Cuenta',
+                                            label:
+                                                'Verifica tu estado de cuenta',
+                                            onTap: () {}
+                                            // () => Navigator.pushNamed(
+                                            //     context, 'SubmenuMascotas'),
+                                            // onTap: () {
+                                            //   Navigator.of(context).push(MaterialPageRoute(
+                                            //       builder: (context) =>
+                                            //           const SubmenuMascotas()));
+                                            // },
+                                            ),
+                                        ElementosSOS(
+                                            enabled: true,
+                                            size: size,
+                                            image: 'assets/imgs/document.png',
+                                            title: 'Botón de Ayuda',
+                                            label: 'Presiona por 3 segundos',
+                                            onTap: () {}
+                                            // () => Navigator.pushNamed(
+                                            //     context, 'SubmenuMascotas'),
+                                            // onTap: () {
+                                            //   Navigator.of(context).push(MaterialPageRoute(
+                                            //       builder: (context) =>
+                                            //           const SubmenuMascotas()));
+                                            // },
+                                            ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: size.wScreen(100.0),
+                                  height: size.wScreen(40.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: size.iScreen(1.0)),
+
+                                  // color: Colors.red,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: size.wScreen(100.0),
+                                        child: Text(
+                                          'Chat Comunitario',
+                                          // textAlign: TextAlign.center,
+                                          style: GoogleFonts.poppins(
+                                            fontSize: size.iScreen(2.2),
+                                            fontWeight: FontWeight.w700,
+                                            color: octinaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(8.0)),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: size.iScreen(1.0),
+                                            vertical: size.iScreen(1.0)),
+                                        width: size.wScreen(100.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Container(
+                                              //  color: Colors.blue,
+                                              width: size.wScreen(70.0),
+                                              child: Text(
+                                                'Interactua con tus vecinos e informa a tu comunidad temas relevantes.',
+                                                // textAlign: TextAlign.center,
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: size.iScreen(1.7),
+                                                  fontWeight: FontWeight.w700,
+                                                  color: octinaryColor,
+                                                  letterSpacing: -0.28,
+                                                ),
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: ()  async{
+
+
+
+  // final Map<String, dynamic>? session = await Auth.instance.getSession();
+                                                final serviceSocket = context.read<SocketService>();
+
+
+  //                                                 serviceSocket.setTokenAndCedula('${session!['token']}','${session['rucempresa']}');
+
+                                                serviceSocket.sendMessage( 'client:lista-usuarios', {"chat_id": 4} );
+  //                                               serviceSocket.escucharDesdeServidor( 'client:lista-usuarios',((_) => {}));
+
+                                                final _chatCtrl = context.read<ChatController>();
+                                                _chatCtrl
+                                                    .buscaGruposChat(context);
+                                                     final infoUser  = await Auth.instance.getSession();
+                final _ctrlInitProvider =context.read<InitProvider>();
+    //             final _ctrlSocket =context.read<SocketService>();
+    //             // _ctrlInitProvider.login("${infoUser!['token']}", "${infoUser!['rucempresa']}");
+              
+                 SocketService(_ctrlInitProvider);
+     final _ctrlSocket =context.read<SocketService>();
+                  _ctrlSocket.sendMessage('client:lista-usuarios', {
+       "chat_id" : 4
+    });
+
+
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: ((context) =>
+                                                            ListaGruposChat())));
+                                              },
+                                              child: Container(
+                                                // color: Colors.yellow,
+                                                width: size.wScreen(20.0),
+                                                child: Image.asset(
+                                                  'assets/imgs/chat-bubble.png',
+                                                  // scale: 1.5,
+                                                  // fit: BoxFit.,
+                                                  // width: size.1Screen(5.0), // URL de la imagen
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    width: size.wScreen(100.0),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: size.iScreen(1.0)),
+
+                                    // height: size.wScreen(40.0),
+
+                                    // color: Colors.red,
+                                    // color: Colors.red,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: size.wScreen(100.0),
+                                          child: Text(
+                                            'Noticias para ti',
+                                            // textAlign: TextAlign.center,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: size.iScreen(2.2),
+                                              fontWeight: FontWeight.w700,
+                                              color: octinaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                        //***********************************************/
+
+                                        SizedBox(
+                                          height: size.iScreen(1.5),
+                                        ),
+                                        //*****************************************/
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0)),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: size.iScreen(1.0),
+                                              vertical: size.iScreen(1.0)),
+                                          width: size.wScreen(100.0),
+                                          child: Container(
+                                            // color: Colors.yellow,
+                                            width: size.wScreen(95.0),
+                                            child:
+
+                                                // CarouselSlider(
+                                                //   options: CarouselOptions(
+                                                //     // height: 200.0,
+                                                //     autoPlay: true,
+                                                //     aspectRatio: 16 / 9,
+                                                //     enlargeCenterPage: true,
+                                                //   ),
+                                                //   items: imageUrls.map((url) {
+                                                //     return Builder(
+                                                //       builder: (BuildContext context) {
+                                                //         return Container(
+                                                //           width: MediaQuery.of(context)
+                                                //               .size
+                                                //               .width,
+                                                //           margin: EdgeInsets.symmetric(
+                                                //               horizontal: 5.0),
+                                                //           decoration: BoxDecoration(
+                                                //               // color: Colors.blue,
+                                                //               ),
+                                                //           child: Image.network(
+                                                //             url,
+                                                //             fit: BoxFit.cover,
+                                                //           ),
+                                                //         );
+                                                //       },
+                                                //     );
+                                                //   }).toList(),
+                                                // ),
+                                                CarouselSlider(
+                                              options: CarouselOptions(
+                                                // height: 200.0,
+                                                autoPlay: true,
+                                                aspectRatio: 16 / 9,
+                                                enlargeCenterPage: true,
+                                              ),
+                                              items: _listaInfoPublicidad
+                                                  .map((info) {
+                                                return Builder(builder:
+                                                    (BuildContext context) {
+                                                  return Container(
+                                                      width: size.wScreen(100),
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 1.0),
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal:
+                                                                  size.iScreen(
+                                                                      0.0)),
+                                                      decoration: BoxDecoration(
+                                                          // color: Colors.yellow.shade50,
+                                                          ),
+                                                      child: info['tipo'] ==
+                                                              'comunicado'
+                                                          ? Container(
+                                                              padding: EdgeInsets.symmetric(
+                                                                  horizontal: size
+                                                                      .iScreen(
+                                                                          1.0),
+                                                                  vertical: size
+                                                                      .iScreen(
+                                                                          1.0)),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8.0),
+                                                                color: Colors
+                                                                    .yellow
+                                                                    .shade100,
+                                                              ),
+                                                              child: Column(
+                                                                children: [
+                                                                  Text(
+                                                                    '${info['titulo']}',
+                                                                    style: GoogleFonts
+                                                                        .poppins(
+                                                                      fontSize:
+                                                                          size.iScreen(
+                                                                              2.0),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                      color:
+                                                                          octinaryColor,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    '${info['descripcion']}',
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: GoogleFonts
+                                                                        .poppins(
+                                                                      fontSize:
+                                                                          size.iScreen(
+                                                                              1.7),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                      color:
+                                                                          octinaryColor,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          : CachedNetworkImage(
+                                                              imageUrl:
+                                                                  info['url'],
+                                                              fit: BoxFit.cover,
+                                                              placeholder: (context,
+                                                                      url) =>
+                                                                  const CupertinoActivityIndicator(),
+                                                              // Image.asset(
+                                                              //     'assets/imgs/loader.gif'),
+
+                                                              errorWidget: (context,
+                                                                      url,
+                                                                      error) =>
+                                                                  const Icon(Icons
+                                                                      .error),
+                                                            ));
+                                                });
+                                              }).toList(),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : NoData(label: 'No tiene conexión...'),
+            ),
+          ),
+        );
+      },
     );
-  
-   },);
-   
-  
   }
-
-
-
-
 }

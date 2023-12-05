@@ -2,15 +2,18 @@
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/login_controller.dart';
 import 'package:ultrared/src/pages/home_page.dart';
 import 'package:ultrared/src/pages/password_page.dart';
-import 'package:ultrared/src/pages/splash_screen.dart';
+
 import 'package:ultrared/src/service/notifications_service.dart';
+import 'package:ultrared/src/service/socket_service.dart';
+
 import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
@@ -343,15 +346,25 @@ class _LoginPageState extends State<LoginPage> {
             final response = await controller.loginApp(context);
             ProgressDialog.dissmiss(context);
             if (response != null) {
+                final infoUser  = await Auth.instance.getSession();
+                final _ctrlInitProvider =context.read<InitProvider>();
+                final _ctrlSocket =context.read<SocketService>();
+                _ctrlInitProvider.login("${infoUser!['token']}", "${infoUser!['rucempresa']}");
+              
+                 SocketService(_ctrlInitProvider);
+
+            
+
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute<void>(
                       builder: (BuildContext context) => const HomePage(
-                       
+                     
                       )));
+                      
             }
             else{
-              // NotificatiosnService.showSnackBarError('Error de conexión con el servidor');
+              NotificatiosnService.showSnackBarError('Error de conexión con el servidor');
             }
 
         // if (status == PermissionStatus.granted) {

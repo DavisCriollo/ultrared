@@ -396,6 +396,7 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                                     "TRANSPORTE"
                                 ? Column(
                                     children: [
+                                      //*****************************************/
                                       SizedBox(
                                         height: size.iScreen(1.0),
                                       ),
@@ -427,11 +428,137 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                                                   Icons.message_outlined,
                                                   color: secondaryColor,
                                                 ),
-                                                hintText: 'ESCRIBE LA PLACA',
+                                                hintText: 'ESCRIBE PLACA DEL VEHICULO',
                                                 border: InputBorder.none,
                                               ),
                                                 onChanged: (text) {
                                   _ctrl.setItemPlaca(text.trim());
+                                },
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      //*****************************************/
+                                      SizedBox(
+                                        height: size.iScreen(1.0),
+                                      ),
+                                      //*****************************************/
+                                      Container(
+                                        // color: Colors.red,
+                                        width: size.wScreen(80.0),
+                                        padding:
+                                            EdgeInsets.all(size.wScreen(0.0)),
+                                        child: Center(
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: size.hScreen(2.0),
+                                                vertical: size.iScreen(0.0)),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              border: Border.all(
+                                                color: Colors.grey,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            child: TextFormField(
+                                                 inputFormatters: [
+                                  UpperCaseText(),
+                                ],
+                                              decoration: const InputDecoration(
+                                                suffixIcon: Icon(
+                                                  Icons.message_outlined,
+                                                  color: secondaryColor,
+                                                ),
+                                                hintText: 'ESCRIBE MARCA DEL VEHICULO',
+                                                border: InputBorder.none,
+                                              ),
+                                                onChanged: (text) {
+                                  _ctrl.setItemMarca(text.trim());
+                                },
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      //*****************************************/
+                                      SizedBox(
+                                        height: size.iScreen(1.0),
+                                      ),
+                                      //*****************************************/
+                                      Container(
+                                        // color: Colors.red,
+                                        width: size.wScreen(80.0),
+                                        padding:
+                                            EdgeInsets.all(size.wScreen(0.0)),
+                                        child: Center(
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: size.hScreen(2.0),
+                                                vertical: size.iScreen(0.0)),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              border: Border.all(
+                                                color: Colors.grey,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            child: TextFormField(
+                                                 inputFormatters: [
+                                  UpperCaseText(),
+                                ],
+                                              decoration: const InputDecoration(
+                                                suffixIcon: Icon(
+                                                  Icons.message_outlined,
+                                                  color: secondaryColor,
+                                                ),
+                                                hintText: 'ESCRIBE MODELO DEL VEHICULO',
+                                                border: InputBorder.none,
+                                              ),
+                                                onChanged: (text) {
+                                  _ctrl.setItemModelo(text.trim());
+                                },
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      //*****************************************/
+                                      SizedBox(
+                                        height: size.iScreen(1.0),
+                                      ),
+                                      //*****************************************/
+                                      Container(
+                                        // color: Colors.red,
+                                        width: size.wScreen(80.0),
+                                        padding:
+                                            EdgeInsets.all(size.wScreen(0.0)),
+                                        child: Center(
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: size.hScreen(2.0),
+                                                vertical: size.iScreen(0.0)),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              border: Border.all(
+                                                color: Colors.grey,
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            child: TextFormField(
+                                                 inputFormatters: [
+                                  UpperCaseText(),
+                                ],
+                                              decoration: const InputDecoration(
+                                                suffixIcon: Icon(
+                                                  Icons.message_outlined,
+                                                  color: secondaryColor,
+                                                ),
+                                                hintText: 'ESCRIBE COLOR DEL VEHICULO',
+                                                border: InputBorder.none,
+                                              ),
+                                                onChanged: (text) {
+                                  _ctrl.setItemColor(text.trim());
                                 },
                                             ),
                                           ),
@@ -569,10 +696,15 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                         //*****************************************/
 
                         //***********************************************/
+                         Consumer<HomeController>(
+                          builder: (_, valueSize, __) {
+                            return 
 
-                        SizedBox(
-                          height: size.iScreen(15.0),
-                        ),
+                       SizedBox(
+                          height: valueSize.getItemLugarServicio == "HOGAR"
+                                ?size.iScreen(10.0):size.iScreen(2.0)
+                        );
+                        }),
                         //*****************************************/
 
                         GestureDetector(
@@ -581,6 +713,8 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                             //     context,
                             //     MaterialPageRoute(
                             //         builder: ((context) => FotosPerfilPage())));
+                               final control=context.read<HomeController>();
+                              // control.setFotoTipo('fotoperfil'); 
                             _next(context, _ctrl);
                           },
                           child: BotonBase(
@@ -869,6 +1003,7 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
   }
 
   void _next(BuildContext context, HomeController controller) {
+
     if (controller.getItemLugarServicio!.isEmpty ||
         controller.getCiudadItem.isEmpty ||
         controller.getSectorItem.isEmpty ||
@@ -878,10 +1013,14 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
     else if (controller.getItemLugarServicio == 'HOGAR' && controller.getLocationMessage.isEmpty) {
       NotificatiosnService.showSnackBarDanger('Falta agregar  información');
     } 
-     else if (controller.getItemLugarServicio == 'TRANSPORTE' && controller.getItemPlaca!.isEmpty) {
+     else if (controller.getItemLugarServicio == 'TRANSPORTE' &&controller.getItemPlaca=='' 
+     
+    //  ||controller.getItemMarca==''||controller.getItemModelo==''||controller.getItemColor==''
+      ) {
+      // if( controller.getItemPlaca=='' ||controller.getItemMarca==''||controller.getItemModelo==''||controller.getItemColor=='')
       NotificatiosnService.showSnackBarDanger('Falta agregar  información');
     } else{
-
+          // controller.setFotoTipo('fotoperfil');
       Navigator.push(context,
           MaterialPageRoute(builder: ((context) => FotosPerfilPage())));
     }

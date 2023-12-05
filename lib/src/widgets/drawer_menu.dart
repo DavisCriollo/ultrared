@@ -2,12 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/pages/acercaDe.dart';
 import 'package:ultrared/src/pages/lista_notificaciones.dart';
 import 'package:ultrared/src/pages/login_page.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
 import 'package:ultrared/src/pages/splash_screen.dart';
+import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 
@@ -134,16 +136,16 @@ class DrawerMenu extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.share),
-            title: Text('Compartir'),
+            leading: const Icon(Icons.share),
+            title:  const Text('Compartir'),
             onTap: () {
               // Acción al hacer clic en "Configuración"
               Navigator.pop(context);
             },
           ),
           ListTile(
-            leading: Icon(Icons.info),
-            title: Text('Acerca de'),
+            leading: const Icon(Icons.info),
+            title: const Text('Acerca de'),
             onTap: () {
               // Acción al hacer clic en "Acerca de"
               Navigator.pop(context);
@@ -155,12 +157,27 @@ class DrawerMenu extends StatelessWidget {
             leading: Icon(Icons.exit_to_app),
             title: Text('Cerrar Sesión'),
             onTap: () async {
+              context.read<SocketService>().disconnectServer();
               // Acción al hacer clic en "Salir"
               // Navigator.pop(context);
               await Auth.instance.deleteTokenFireBase();
               await Auth.instance.deleteSesion(context);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: ((context) => SplashPage())));
+
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: ((context) => SplashPage())));
+
+              Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => SerClientePage(
+                        // validaTurno: validaTurno,
+                        // tipo: session.rol,
+                        // user: session,
+                        // ubicacionGPS: controllerHome.getCoords,
+                      )),
+              (Route<dynamic> route) => false);
+          ModalRoute.withName('/');
+
+
             },
           ),
           //***********************************************/
