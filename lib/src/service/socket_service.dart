@@ -660,76 +660,131 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 // }
 
 
-class SocketProvider with ChangeNotifier {
+// class SocketProvider with ChangeNotifier {
   
-  IO.Socket? _socket;
+//   IO.Socket? _socket;
 
-  IO.Socket get socket => _socket!;
+//   IO.Socket get socket => _socket!;
 
-  void initializeSocket() {
-    if (_socket == null) {
-      _socket = IO.io('https://testconta.neitor.com', <String, dynamic>{
-        'transports': ['websocket'],
-        'autoConnect': true,
-      });
+//   void initializeSocket() {
+//     if (_socket == null) {
+//       _socket = IO.io('https://testconta.neitorsss.com', <String, dynamic>{
+//         'transports': ['websocket'],
+//         'autoConnect': true,
+//       });
 
-      _socket!.onConnect((_) => print('Conectado OK ...........'));
-      _socket!.onDisconnect((_) => print('DESCONECTADO DEL SERVIDOR'));
+//       _socket!.onConnect((_) => print('Conectado OK ...........'));
+//       _socket!.onDisconnect((_) => print('DESCONECTADO DEL SERVIDOR'));
 
-    //    _socket!.emit('client:lista-usuarios', {
-    //    "chat_id" : 4
-    // });
-     _socket!.on('server:lista-usuarios', (data) async {
-      // print('server:lista-usuarios dsdsd : $data')
-      print('server:lista-chats-grupos dsdsd : $data');
-    });
-     _socket!.on('server:lista-chats-grupos', (data) async {
-      // print('server:lista-usuarios dsdsd : $data')
-      print('server:lista-chats-grupos dsdsd : $data');
-    });
+//     //    _socket!.emit('client:lista-usuarios', {
+//     //    "chat_id" : 4
+//     // });
+//      _socket!.on('server:lista-usuarios', (data) async {
+//       // print('server:lista-usuarios dsdsd : $data')
+//       print('server:LISTA USUARIOS dsdsd : $data');
+//     });
+//      _socket!.on('server:lista-chats-grupos', (data) async {
+//       // print('server:lista-usuarios dsdsd : $data')
+//       print('server:LISTA CHAT GRUPOS dsdsd : $data');
+//     });
 
 
-      notifyListeners();
-    }
-  }
+//       notifyListeners();
+//     }
+//   }
 
-  void disconnectSocket() {
-    if (_socket != null) {
-      _socket!.disconnect();
-      _socket = null;
-      notifyListeners();
-    }
-  }
+//   void disconnectSocket() {
+//     if (_socket != null) {
+//       _socket!.disconnect();
+//       _socket = null;
+//       notifyListeners();
+//     }
+//   }
 
-void updateCredentials(String token, String rucempresa) {
-  if (_socket != null) {
-    // Actualiza las credenciales y reconecta el socket si está conectado
-    _socket!.disconnect();
+// void updateCredentials(String token, String rucempresa) {
+//   if (_socket != null) {
+//     // Actualiza las credenciales y reconecta el socket si está conectado
+//     _socket!.disconnect();
 
-    // Concatena las credenciales en una cadena
-    String queryString = 'rucempresa=$rucempresa&x-auth-token=$token';
+//     // Concatena las credenciales en una cadena
+//     String queryString = 'rucempresa=$rucempresa&x-auth-token=$token';
     
-    // Asigna la cadena de consulta al socket
-    _socket!.query = queryString;
+//     // Asigna la cadena de consulta al socket
+//     _socket!.query = queryString;
 
-    _socket!.connect();
+//     _socket!.connect();
+//   }
+// }
+
+//   void emitEvent(String eventName, dynamic data) {
+//     if (_socket != null && _socket!.connected) {
+//         // print('El socket está ${_socket!.query} ');
+//         // print('El socket está ${_socket!.active} ');
+//         // print('El socket está ${_socket!.subs} ');
+//       _socket!.emit(eventName, data);
+//     }
+//   }
+
+// void verificarConexion() {
+//     if (_socket != null) {
+//       bool estaConectado = _socket!.connected;
+//       print('El socket está ' + (estaConectado ? 'conectado siiiiiii' : 'desconectado nooo'));
+//     }
+//   }
+
+// }
+
+
+
+class SocketModel with ChangeNotifier {
+  late IO.Socket _socket;
+
+  IO.Socket get socket => _socket;
+
+  // Método para conectar Socket.io
+  void connectToSocket(String token, String ruc) {
+    _socket = IO.io('https://testconta.neitor.com', <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': true,
+      'query': {
+        'rucempresa': ruc,
+        'x-auth-token': token,
+      },
+    });
+
+    // Manejar eventos Socket.io según tus necesidades
+    _socket.on('connect', (_) {
+      print('Conectado al servidor');
+      notifyListeners();
+    });
+
+    _socket.on('disconnect', (_) {
+      print('Desconectado del servidor');
+      notifyListeners();
+    });
+
+    // Ejemplo de cómo manejar un evento personalizado
+    _socket.on('mensajeDesdeServidor', (data) {
+      print('Mensaje desde el servidor: $data');
+    });
+
+
+ // Ejemplo de cómo manejar un evento personalizado
+    _socket.on('server:lista-usuarios', (data) {
+      print('Mensaje desde el servidor: $data');
+    });
+
+
   }
-}
 
+  // Método para desconectar Socket.io
+  void disconnectSocket() {
+    _socket.disconnect();
+    notifyListeners();
+  }
+   // Método para emitir eventos al servidor
   void emitEvent(String eventName, dynamic data) {
-    if (_socket != null && _socket!.connected) {
-        // print('El socket está ${_socket!.query} ');
-        // print('El socket está ${_socket!.active} ');
-        // print('El socket está ${_socket!.subs} ');
-      _socket!.emit(eventName, data);
-    }
+    _socket.emit(eventName, data);
   }
-
-void verificarConexion() {
-    if (_socket != null) {
-      bool estaConectado = _socket!.connected;
-      print('El socket está ' + (estaConectado ? 'conectado siiiiiii' : 'desconectado nooo'));
-    }
-  }
-
 }
+

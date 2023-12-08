@@ -92,16 +92,18 @@ class _MyAppState extends State<MyApp> {
 
 
 
-      ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProxyProvider<AuthProvider, SocketProvider>(
-          create: (_) => SocketProvider(),
-          update: (_, authProvider, socketProvider) {
-            // Actualiza el SocketProvider cuando cambian las credenciales de autenticación
-            socketProvider!.updateCredentials(authProvider.token, authProvider.rucempresa);
-            return socketProvider;
-          },
-        ),
+      // ChangeNotifierProvider(create: (_) => AuthProvider()),
+      //   ChangeNotifierProxyProvider<AuthProvider, SocketProvider>(
+      //     create: (_) => SocketProvider(),
+      //     update: (_, authProvider, socketProvider) {
+      //       // Actualiza el SocketProvider cuando cambian las credenciales de autenticación
+      //       socketProvider!.updateCredentials(authProvider.token, authProvider.rucempresa);
+      //       return socketProvider;
+      //     },
+      //   ),
 
+
+         ChangeNotifierProvider(create: (_) => SocketModel()),
          ChangeNotifierProvider(create: (_) => HomeController()),
      ChangeNotifierProvider(create: (_) => ChatController()),
 

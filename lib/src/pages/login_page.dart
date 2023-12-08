@@ -350,13 +350,12 @@ class _LoginPageState extends State<LoginPage> {
             if (response != null) {
                 final infoUser  = await Auth.instance.getSession();
             //     final _ctrlInitProvider =context.read<InitProvider>();
-            var _ctrlAuth = Provider.of<AuthProvider>(context, listen: false);
-            var _ctrlSocket = Provider.of<SocketProvider>(context, listen: false);
-                // final _ctrlAuth =context.read<AuthProvider>();
-                // final _ctrlSocket =context.read<SocketProvider>();
-            //     _ctrlInitProvider.login("${infoUser!['token']}", "${infoUser!['rucempresa']}");
-              
-            //   _ctrlSocket.sendMessage( 'client:lista-usuarios', {"chat_id": 4} );
+            // var _ctrlAuth = Provider.of<AuthProvider>(context, listen: false);
+            var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
+              _ctrlSocket.connectToSocket("${infoUser!['token']}", "${infoUser!['rucempresa']}");
+                
+        
+              _ctrlSocket..emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
             //  SocketService(_ctrlInitProvider);
 
 
@@ -384,15 +383,15 @@ class _LoginPageState extends State<LoginPage> {
                      
                       )));
 
-                       _ctrlAuth.setCredentials("${infoUser!['token']}", "${infoUser!['rucempresa']}");
+    //                    _ctrlAuth.setCredentials("${infoUser!['token']}", "${infoUser!['rucempresa']}");
             
-            // Inicializa y conecta el socket
-            _ctrlSocket.initializeSocket();
-            _ctrlSocket.socket.connect();
-                // final _ctrlSocket =context.read<SocketProvider>();
-    //                             _ctrlSocket.emitEvent('client:lista-usuarios', {
-    //    "chat_id" : 4
-    // });
+    //         // Inicializa y conecta el socket
+    //         _ctrlSocket.initializeSocket();
+    //         _ctrlSocket.socket.connect();
+    //             // final _ctrlSocket =context.read<SocketProvider>();
+    // //                             _ctrlSocket.emitEvent('client:lista-usuarios', {
+    // //    "chat_id" : 4
+    // // });
 
             }
             else{

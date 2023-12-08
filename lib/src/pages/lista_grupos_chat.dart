@@ -70,7 +70,7 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
           backgroundColor: cuaternaryColor, // Fondo blanco
           title: GestureDetector(
             onTap: () {
-                    final _ctrlSocket =Provider.of<SocketProvider>(context,listen: false);
+                    final _ctrlSocket =Provider.of<SocketModel>(context,listen: false);
  
                   _ctrlSocket.emitEvent('client:lista-usuarios', {
        "chat_id" : 4

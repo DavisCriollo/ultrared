@@ -44,7 +44,7 @@ class ElementosHome extends StatelessWidget {
                 decoration: BoxDecoration(
             color: (enabled == false) ? const Color(0xFFcdd0cb) : Colors.white,
             borderRadius: BorderRadius.circular(size.iScreen(.0))),
-                 width: size.iScreen(17.0),
+                 width: size.iScreen(18.0),
                 padding:EdgeInsets.all(size.iScreen(0.0)),
               child: Container(
                  height: size.iScreen(13.5),

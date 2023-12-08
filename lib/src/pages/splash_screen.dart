@@ -128,26 +128,27 @@ class _SplashPageState extends State<SplashPage> {
 
     if (session != null) {
 
-     final _ctrlSocket =context.read<SocketProvider>();
-                final _ctrlAuth =context.read<AuthProvider>();
+     final _ctrlSocket =context.read<SocketModel>();
+                // final _ctrlAuth =context.read<AuthProvider>();
 //                   SocketService(_ctrlInitProvider);
 //     controllerHome.checkConnectivity(); 
-    final Map<String, dynamic>? session = await Auth.instance.getSession();
+    // final Map<String, dynamic>? session = await Auth.instance.getSession();
 
-
-    _ctrlAuth.setCredentials("${session!['token']}", "${session['rucempresa']}");
+  //  var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
+              _ctrlSocket.connectToSocket("${session['token']}", "${session['rucempresa']}");
+    // _ctrlAuth.setCredentials("${session!['token']}", "${session['rucempresa']}");
             
-            // Inicializa y conecta el socket
-            _ctrlSocket.initializeSocket();
-            _ctrlSocket.socket.connect();
+    //         // Inicializa y conecta el socket
+    //         _ctrlSocket.initializeSocket();
+    //         _ctrlSocket.socket.connect();
 
-    final String? tokenFCM = await Auth.instance.getTokenFireBase();
+    // final String? tokenFCM = await Auth.instance.getTokenFireBase();
 
-    _ctrlAuth.setCredentials("${session['token']}", "${session['rucempresa']}");
+    // _ctrlAuth.setCredentials("${session['token']}", "${session['rucempresa']}");
             
-            // Inicializa y conecta el socket
-            _ctrlSocket.initializeSocket();
-            _ctrlSocket.socket.connect();
+    //         // Inicializa y conecta el socket
+    //         _ctrlSocket.initializeSocket();
+    //         _ctrlSocket.socket.connect();
 
     // final String? tokenFCM = await Auth.instance.getTokenFireBase();
 
