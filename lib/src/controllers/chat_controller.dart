@@ -65,29 +65,29 @@ class ChatController extends ChangeNotifier {
 
 //   }
 
-  Future mensajeSocket(
-    BuildContext context,
-  ) async {
-    final serviceSocket = context.read<InitProvider>();
-    // final serviceSocket = Provider.of<SocketService>(context,listen:false);
+//   Future mensajeSocket(
+//     BuildContext context,
+//   ) async {
+//     final serviceSocket = context.read<InitProvider>();
+//     // final serviceSocket = Provider.of<SocketService>(context,listen:false);
 
-    final infoUser = await Auth.instance.getSession();
-    final _pyloadGrupos = {
-       "chat_id" : 4
-    };
+//     final infoUser = await Auth.instance.getSession();
+//     final _pyloadGrupos = {
+//        "chat_id" : 4
+//     };
 
 
 
-    // serviceSocket.enviarMensaje('client:lista-usuarios', {
-    //    "chat_id" : 4
-    // });
+//     // serviceSocket.enviarMensaje('client:lista-usuarios', {
+//     //    "chat_id" : 4
+//     // });
     
 
 
-// print('LOS DATOS PARA SOCKET : ${infoUser['token']}');
+// // print('LOS DATOS PARA SOCKET : ${infoUser['token']}');
 
 
-  }
+//   }
 
 
 

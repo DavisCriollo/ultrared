@@ -11,6 +11,7 @@ import 'package:ultrared/src/controllers/init_provider.dart';
 import 'package:ultrared/src/pages/home_page.dart';
 import 'package:ultrared/src/pages/login_page.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
+import 'package:ultrared/src/service/provider_socket.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 
@@ -108,22 +109,48 @@ class _SplashPageState extends State<SplashPage> {
 
 
 
-    final controllerHome = context.read<HomeController>();
-    final _ctrlInitProvider =context.read<InitProvider>();
-                final _ctrlSocket =context.read<SocketService>();
-                  SocketService(_ctrlInitProvider);
-    controllerHome.checkConnectivity(); 
+//     // final controllerHome = context.read<HomeController>();
+//     final _ctrlInitProvider =context.read<InitProvider>();
+//                 final _ctrlSocket =context.read<SocketProvider>();
+//                 final _ctrlAuth =context.read<AuthProvider>();
+// //                   SocketService(_ctrlInitProvider);
+// //     controllerHome.checkConnectivity(); 
     final Map<String, dynamic>? session = await Auth.instance.getSession();
 
 
-  // controllerSocket.setTokenAndCedula('${session!['token']}','${session['rucempresa']}');
-// print('${session!['token']} ${session['rucempresa']}');
-//   controllerSocket.enviarMensaje( 'client:lista-usuarios', {"chat_id": 4} );
-                                                // _ctrlSocket.sendMessage( 'client:lista-usuarios',{});
+//     _ctrlAuth.setCredentials("${session!['token']}", "${session['rucempresa']}");
+            
+//             // Inicializa y conecta el socket
+//             _ctrlSocket.initializeSocket();
+//             _ctrlSocket.socket.connect();
+
+//     final String? tokenFCM = await Auth.instance.getTokenFireBase();
+
+    if (session != null) {
+
+     final _ctrlSocket =context.read<SocketProvider>();
+                final _ctrlAuth =context.read<AuthProvider>();
+//                   SocketService(_ctrlInitProvider);
+//     controllerHome.checkConnectivity(); 
+    final Map<String, dynamic>? session = await Auth.instance.getSession();
+
+
+    _ctrlAuth.setCredentials("${session!['token']}", "${session['rucempresa']}");
+            
+            // Inicializa y conecta el socket
+            _ctrlSocket.initializeSocket();
+            _ctrlSocket.socket.connect();
 
     final String? tokenFCM = await Auth.instance.getTokenFireBase();
 
-    if (session != null) {
+    _ctrlAuth.setCredentials("${session['token']}", "${session['rucempresa']}");
+            
+            // Inicializa y conecta el socket
+            _ctrlSocket.initializeSocket();
+            _ctrlSocket.socket.connect();
+
+    // final String? tokenFCM = await Auth.instance.getTokenFireBase();
+
       // final status = await Permission.location.request();
       // if (status == PermissionStatus.granted) {
       //   //   // print('============== SI TIENE PERMISOS');

@@ -317,6 +317,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+
+
+
+
+
     final List<String> imageUrls = [
       'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
 
@@ -354,6 +359,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     final Responsive size = Responsive.of(context);
     // var socketProvider = context.read<SocketService>();
     final _ctrl = context.read<HomeController>();
+    final _chatCtrl = context.read<ChatController>();
     _ctrl.checkConnectivity();
     // var socketProvider =Provider.of<SocketProvider>(context,listen:  true);
     //  _ctrl.getconectionInternet== false?
@@ -566,27 +572,27 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
 
   // final Map<String, dynamic>? session = await Auth.instance.getSession();
-                                                final serviceSocket = context.read<SocketService>();
+                                                // final serviceSocket = context.read<SocketService>();
 
 
   //                                                 serviceSocket.setTokenAndCedula('${session!['token']}','${session['rucempresa']}');
 
-                                                serviceSocket.sendMessage( 'client:lista-usuarios', {"chat_id": 4} );
+                                                // serviceSocket.sendMessage( 'client:lista-usuarios', {"chat_id": 4} );
   //                                               serviceSocket.escucharDesdeServidor( 'client:lista-usuarios',((_) => {}));
 
-                                                final _chatCtrl = context.read<ChatController>();
-                                                _chatCtrl
-                                                    .buscaGruposChat(context);
+                                              
+                                                _chatCtrl.buscaGruposChat(context);
                                                      final infoUser  = await Auth.instance.getSession();
-                final _ctrlInitProvider =context.read<InitProvider>();
-    //             final _ctrlSocket =context.read<SocketService>();
-    //             // _ctrlInitProvider.login("${infoUser!['token']}", "${infoUser!['rucempresa']}");
-              
-                 SocketService(_ctrlInitProvider);
-     final _ctrlSocket =context.read<SocketService>();
-                  _ctrlSocket.sendMessage('client:lista-usuarios', {
+    //             final _ctrlInitProvider =context.read<InitProvider>();
+                // final _ctrlSocket =context.read<SocketProvider>();
+                  var socketProvider = Provider.of<SocketProvider>(context, listen: false);
+
+ 
+// socketProvider.verificarConexion();
+                  socketProvider.emitEvent('client:lista-usuarios', {
        "chat_id" : 4
     });
+
 
 
                                                 Navigator.push(

@@ -68,14 +68,24 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
            centerTitle: true, // Centra el título en el AppBar
           elevation: 0,
           backgroundColor: cuaternaryColor, // Fondo blanco
-          title: Text('MIS GRUPOS',
-              style: GoogleFonts.poppins(
-                fontSize: size.iScreen(2.0),
-                fontWeight: FontWeight.w700,
-                color: Colors.black,
-                letterSpacing: -0.40,
-              ) // Color del título en negro
-              ),
+          title: GestureDetector(
+            onTap: () {
+                    final _ctrlSocket =Provider.of<SocketProvider>(context,listen: false);
+ 
+                  _ctrlSocket.emitEvent('client:lista-usuarios', {
+       "chat_id" : 4
+    });
+
+            },
+            child: Text('MIS GRUPOS',
+                style: GoogleFonts.poppins(
+                  fontSize: size.iScreen(2.0),
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                  letterSpacing: -0.40,
+                ) // Color del título en negro
+                ),
+          ),
         ),
         body: Container(
             // alignment: Alignment.center,

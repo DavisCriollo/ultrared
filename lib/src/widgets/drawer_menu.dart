@@ -157,7 +157,7 @@ class DrawerMenu extends StatelessWidget {
             leading: Icon(Icons.exit_to_app),
             title: Text('Cerrar Sesión'),
             onTap: () async {
-              context.read<SocketService>().disconnectServer();
+              context.read<SocketProvider>().disconnectSocket();
               // Acción al hacer clic en "Salir"
               // Navigator.pop(context);
               await Auth.instance.deleteTokenFireBase();

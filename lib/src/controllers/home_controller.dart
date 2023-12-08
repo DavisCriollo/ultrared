@@ -9,10 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 // import 'package:image_picker/image_picker.dart';
 // import 'package:path_provider/path_provider.dart';
 // // import 'package:image_picker/image_picker.dart';
 import 'package:ultrared/src/api/api_provider.dart';
+import 'package:ultrared/src/service/socket_service.dart';
 // import 'package:ultrared/src/api/authentication_client.dart';
 // import 'package:http/http.dart' as _http;
 // import 'package:ultrared/src/models/foto_url.dart';
@@ -1139,6 +1141,29 @@ Future getUrlsServerVehiculo( ) async {
 //         print('Error al guardar la imagen: $error');
 //       }
 //     }
+//   }
+//-------------------------------------//
+// bool _isAuthenticated = false;
+
+//   bool get isAuthenticated => _isAuthenticated;
+
+//   void authenticateUser(String username, String userId) {
+//     _isAuthenticated = true;
+
+//     final socketService = Provider.of<SocketService>(navigatorKey.currentContext, listen: false);
+//     socketService.disconnectSocket(); // Asegura que el socket esté desconectado antes de la reconexión
+//     socketService.connectSocket(username, userId);
+
+//     notifyListeners();
+//   }
+
+//   void logoutUser() {
+//     _isAuthenticated = false;
+
+//     final socketService = Provider.of<SocketService>(navigatorKey.currentContext, listen: false);
+//     socketService.disconnectSocket();
+
+//     notifyListeners();
 //   }
 //-------------------------------------//
 

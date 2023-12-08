@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
+import 'package:ultrared/src/controllers/auth_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/login_controller.dart';
 import 'package:ultrared/src/pages/home_page.dart';
 import 'package:ultrared/src/pages/password_page.dart';
 
 import 'package:ultrared/src/service/notifications_service.dart';
+import 'package:ultrared/src/service/provider_socket.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 
 import 'package:ultrared/src/utils/dialogs.dart';
@@ -340,20 +342,40 @@ class _LoginPageState extends State<LoginPage> {
         NotificatiosnService.showSnackBarError('SIN CONEXION A INTERNET');
       } else if (conexion == ConnectivityResult.wifi ||
           conexion == ConnectivityResult.mobile) {
-        final controllerHome = HomeController();
+        // final controllerHome = HomeController();
 
              ProgressDialog.show(context);
             final response = await controller.loginApp(context);
             ProgressDialog.dissmiss(context);
             if (response != null) {
                 final infoUser  = await Auth.instance.getSession();
-                final _ctrlInitProvider =context.read<InitProvider>();
-                final _ctrlSocket =context.read<SocketService>();
-                _ctrlInitProvider.login("${infoUser!['token']}", "${infoUser!['rucempresa']}");
+            //     final _ctrlInitProvider =context.read<InitProvider>();
+            var _ctrlAuth = Provider.of<AuthProvider>(context, listen: false);
+            var _ctrlSocket = Provider.of<SocketProvider>(context, listen: false);
+                // final _ctrlAuth =context.read<AuthProvider>();
+                // final _ctrlSocket =context.read<SocketProvider>();
+            //     _ctrlInitProvider.login("${infoUser!['token']}", "${infoUser!['rucempresa']}");
               
-                 SocketService(_ctrlInitProvider);
+            //   _ctrlSocket.sendMessage( 'client:lista-usuarios', {"chat_id": 4} );
+            //  SocketService(_ctrlInitProvider);
 
-            
+
+            //------------------/
+// // _ctrlSocket..emitMessage("${infoUser!['token']}", "${infoUser!['rucempresa']}");
+//  _ctrlAuth.authenticateUser("${infoUser!['token']}", "${infoUser!['rucempresa']}");
+//             _ctrlSocket.emitMessage('mensaje_desde_flutter', 'Hola desde Flutter');
+
+
+
+            //    Provider.of<AuthProvider>(context, listen: false)
+            //     .login("${infoUser!['token']}", "${infoUser!['rucempresa']}");
+
+            // // Conectamos al socket después de iniciar sesión
+            //  Provider.of<SocketService>(context, listen: false)
+            //     .connectToSocket();
+
+
+            //------------------/
 
               Navigator.pushReplacement(
                   context,
@@ -361,7 +383,17 @@ class _LoginPageState extends State<LoginPage> {
                       builder: (BuildContext context) => const HomePage(
                      
                       )));
-                      
+
+                       _ctrlAuth.setCredentials("${infoUser!['token']}", "${infoUser!['rucempresa']}");
+            
+            // Inicializa y conecta el socket
+            _ctrlSocket.initializeSocket();
+            _ctrlSocket.socket.connect();
+                // final _ctrlSocket =context.read<SocketProvider>();
+    //                             _ctrlSocket.emitEvent('client:lista-usuarios', {
+    //    "chat_id" : 4
+    // });
+
             }
             else{
               NotificatiosnService.showSnackBarError('Error de conexión con el servidor');
