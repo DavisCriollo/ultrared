@@ -355,7 +355,7 @@ class _LoginPageState extends State<LoginPage> {
               _ctrlSocket.connectToSocket("${infoUser!['token']}", "${infoUser!['rucempresa']}");
                 
         
-              _ctrlSocket..emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
+              _ctrlSocket.emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
             //  SocketService(_ctrlInitProvider);
 
 

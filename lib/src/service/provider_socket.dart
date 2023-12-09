@@ -83,7 +83,7 @@
 // }
 
 
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 
 // class AuthProvider with ChangeNotifier {
 //   String _token = "";
@@ -101,16 +101,16 @@ import 'package:flutter/material.dart';
 // }
 
 
-class AuthProvider with ChangeNotifier {
-  String _token = '';
-  String _rucempresa = '';
+// class AuthProvider with ChangeNotifier {
+//   String _token = '';
+//   String _rucempresa = '';
 
-  String get token => _token;
-  String get rucempresa => _rucempresa;
+//   String get token => _token;
+//   String get rucempresa => _rucempresa;
 
-  void setCredentials(String token, String rucempresa) {
-    _token = token;
-    _rucempresa = rucempresa;
-    notifyListeners();
-  }
-}
+//   void setCredentials(String token, String rucempresa) {
+//     _token = token;
+//     _rucempresa = rucempresa;
+//     notifyListeners();
+//   }
+// }

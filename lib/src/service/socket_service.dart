@@ -774,6 +774,11 @@ class SocketModel with ChangeNotifier {
       print('Mensaje desde el servidor: $data');
     });
 
+        // Ejemplo de cómo manejar un evento personalizado
+_socket.on('server:lista-usuarios', (data) {
+  print('Mensaje desde el servidor nuevo: $data');
+  setMensajeDesdeServidor(data); // Actualizar el mensaje en el modelo
+});
 
   }
 
@@ -786,5 +791,19 @@ class SocketModel with ChangeNotifier {
   void emitEvent(String eventName, dynamic data) {
     _socket.emit(eventName, data);
   }
+
+
+ List _mensajeDesdeServidor = [];
+
+ List get mensajeDesdeServidor => _mensajeDesdeServidor;
+
+  // Método para establecer la información recibida
+  void setMensajeDesdeServidor(List _data) {
+    _mensajeDesdeServidor = _data;
+    notifyListeners();
+  }
+
+
+
 }
 
