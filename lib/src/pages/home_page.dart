@@ -572,27 +572,20 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             
             
             
-              // final Map<String, dynamic>? session = await Auth.instance.getSession();
+         
                                                   final serviceSocket = context.read<SocketModel>();
             
             
-              //                                                 serviceSocket.setTokenAndCedula('${session!['token']}','${session['rucempresa']}');
+            
             
                                                   serviceSocket.emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
-              //                                               serviceSocket.escucharDesdeServidor( 'client:lista-usuarios',((_) => {}));
+                                                  // serviceSocket.emitEvent( 'client:lista-chats-grupos', {} );
+             
             
                                                 
                                                   _chatCtrl.buscaGruposChat(context);
                                                        final infoUser  = await Auth.instance.getSession();
-                //             final _ctrlInitProvider =context.read<InitProvider>();
-                  // final _ctrlSocket =context.read<SocketProvider>();
-            //         var socketProvider = Provider.of<SocketProvider>(context, listen: false);
-            
              
-            // // socketProvider.verificarConexion();
-            //         socketProvider.emitEvent('client:lista-usuarios', {
-            //        "chat_id" : 4
-            //     });
             
             
             

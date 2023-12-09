@@ -7,14 +7,18 @@ class MensajeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: GestureDetector(onTap: () {
-            final serviceSocket = context.read<SocketModel>();
-            
-            
-              //                                                 serviceSocket.setTokenAndCedula('${session!['token']}','${session['rucempresa']}');
-            
-                                                  serviceSocket.emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
-        },child: Text('Mensaje desde el Servidor')),
+        title: Row( mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(onTap: () {
+                final serviceSocket = context.read<SocketModel>();
+                    serviceSocket.emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
+            },child: Text('Mensaje desde el Servidor')),
+            GestureDetector(onTap: () {
+                final serviceSocket = context.read<SocketModel>();
+                    serviceSocket.reset( );
+            },child: Text('XXX')),
+          ],
+        ),
       ),
       body: Center(
         child: Consumer<SocketModel>(

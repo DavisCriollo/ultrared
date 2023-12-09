@@ -10,7 +10,8 @@ import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/message.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+    final Map<String,dynamic> infoChat;
+  const ChatPage({Key? key, required this.infoChat}) : super(key: key);
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -20,6 +21,9 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final TextEditingController _textController = TextEditingController();
 
   // final _focusNode = new FocusNode();
+
+
+
 
   List<MessageChat> _messaje = [
     MessageChat(
@@ -61,6 +65,13 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
+
+
+print('LA INFORMACION : ${widget.infoChat}');
+
+
+
     final Responsive size = Responsive.of(context);
     return Scaffold(
         backgroundColor: Colors.grey.shade100,

@@ -793,13 +793,36 @@ _socket.on('server:lista-usuarios', (data) {
   }
 
 
+  // Método para establecer la información recibida
  List _mensajeDesdeServidor = [];
-
  List get mensajeDesdeServidor => _mensajeDesdeServidor;
 
-  // Método para establecer la información recibida
+ List _listaGruposChat = [];
+ List get getListaGruposChat => _listaGruposChat;
+ List _listaUsuariosChat = [];
+ List get getListaUsuariosChat => _listaUsuariosChat;
+
+
   void setMensajeDesdeServidor(List _data) {
-    _mensajeDesdeServidor = _data;
+    if(_data.contains('chat_type')){
+      _listaGruposChat = [];
+      _listaGruposChat = _data;
+    notifyListeners();
+
+    }else{
+      
+   _listaUsuariosChat = [];
+
+   _listaUsuariosChat= _data;
+
+    }
+
+  }
+
+
+
+  void reset() {
+   _mensajeDesdeServidor=[];
     notifyListeners();
   }
 

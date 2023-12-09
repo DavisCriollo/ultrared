@@ -145,7 +145,7 @@ class ChatController extends ChangeNotifier {
 
     _listaTodosLosUsuariosChat = _data;
 
-    // print('_listaTodosLosUsuariosChat: $_listaTodosLosUsuariosChat');
+    print('_listaTodosLosUsuariosChat: $_listaTodosLosUsuariosChat');
 
     notifyListeners();
   }
