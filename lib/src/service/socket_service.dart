@@ -512,6 +512,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/service/provider_socket.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -741,6 +742,17 @@ class SocketModel with ChangeNotifier {
 
   IO.Socket get socket => _socket;
 
+ final ChatController _crtlChat = ChatController();
+
+
+ List _listaGruposChat = [];
+ List get getListaGruposChat => _listaGruposChat;
+
+ Map<String,dynamic> _mensajeChat = {};
+ Map<String,dynamic> get getMensajeChat => _mensajeChat;
+
+
+
   // Método para conectar Socket.io
   void connectToSocket(String token, String ruc) {
     _socket = IO.io('https://testconta.neitor.com', <String, dynamic>{
@@ -764,21 +776,47 @@ class SocketModel with ChangeNotifier {
     });
 
     // Ejemplo de cómo manejar un evento personalizado
-    _socket.on('mensajeDesdeServidor', (data) {
-      print('Mensaje desde el servidor: $data');
+    _socket.on('server:lista-chats-grupos', (data) {
+      // print('Los grupos del servidor  -------#####   : $data');
+
+   _listaGruposChat = [];
+      _listaGruposChat = data;
+
+ notifyListeners();
+
     });
 
 
  // Ejemplo de cómo manejar un evento personalizado
     _socket.on('server:lista-usuarios', (data) {
-      print('Mensaje desde el servidor: $data');
+      // print('Mensaje desde el servidor: $data');
+       
+     _listaUsuariosChat = [];
+
+   _listaUsuariosChat= data;
+   notifyListeners();
     });
 
-        // Ejemplo de cómo manejar un evento personalizado
-_socket.on('server:lista-usuarios', (data) {
-  print('Mensaje desde el servidor nuevo: $data');
-  setMensajeDesdeServidor(data); // Actualizar el mensaje en el modelo
+        //ESCUCHA LOS MENSAJES CHAT
+_socket.on('server:send-mensaje', (data) {
+  // print('MENSAJE CHAT: $data');
+  _mensajeChat= {};
+      _mensajeChat = data;
+      // _crtlChat.setInfoBusquedaTodoLosChatPaginacion([{data}]);
+    notifyListeners();
+  // setMensajeDesdeServidor(data); // Actualizar el mensaje en el modelo
 });
+        //ESCUCHA LOS MENSAJES CHAT
+        // ESCUCHAS EXTERNOS
+  // List<VoidCallback> _listeners = [];
+
+  // // Método para agregar oyentes externos
+  // void addListener(VoidCallback listener) {
+  //   _listeners.add(listener);
+  // }
+
+
+
 
   }
 
@@ -797,8 +835,8 @@ _socket.on('server:lista-usuarios', (data) {
  List _mensajeDesdeServidor = [];
  List get mensajeDesdeServidor => _mensajeDesdeServidor;
 
- List _listaGruposChat = [];
- List get getListaGruposChat => _listaGruposChat;
+
+
  List _listaUsuariosChat = [];
  List get getListaUsuariosChat => _listaUsuariosChat;
 
@@ -814,6 +852,7 @@ _socket.on('server:lista-usuarios', (data) {
    _listaUsuariosChat = [];
 
    _listaUsuariosChat= _data;
+       notifyListeners();
 
     }
 

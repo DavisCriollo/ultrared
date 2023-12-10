@@ -95,16 +95,16 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
 
             width: size.wScreen(100.0),
             height: size.hScreen(100.0),
-            child: Consumer<ChatController>(
+            child: Consumer<SocketModel>(
               builder: (_, valueChat, __) {
-                if (valueChat.getErrorGruposChat == null) {
+               if (valueChat.getListaGruposChat.isEmpty) {
                   return Center(
                     // child: CircularProgressIndicator(),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          'Cargando Datos...',
+                          'Esperando Datos...',
                           style: GoogleFonts.lexendDeca(
                               fontSize: size.iScreen(1.5),
                               color: Colors.black87,
@@ -119,22 +119,13 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                       ],
                     ),
                   );
-                } else if (valueChat.getErrorGruposChat == false) {
-                  return const NoData(
-                    label: 'No existen datos para mostar',
-                  );
-                  // Text("Error al cargar los datos");
-                } else if (valueChat.getListaTodosLosGruposChat.isEmpty) {
-                  return const NoData(
-                    label: 'No existen datos para mostar',
-                  );
-                }
+                } 
 
                 return ListView.builder(
                   shrinkWrap: true,
-                  itemCount: valueChat.getListaTodosLosGruposChat.length,
+                  itemCount: valueChat.getListaGruposChat.length,
                   itemBuilder: (context, index) {
-                    final _grupo = valueChat.getListaTodosLosGruposChat[index];
+                    final _grupo = valueChat.getListaGruposChat[index];
                     return Column(
                       children: [
                         ListTile(

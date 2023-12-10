@@ -31,6 +31,22 @@ class HomeController extends ChangeNotifier {
   GlobalKey<FormState> correoFormKey = GlobalKey<FormState>();
 
   final _api = ApiProvider();
+
+
+ Map<String, dynamic>? _user = {};
+ Map<String, dynamic>? get getUser =>_user;
+ void setUserApp(Map<String, dynamic>? _data){
+_user=_data;
+   
+    print('USUARIO-------------$_user');
+notifyListeners();
+
+ }
+
+
+
+
+
   
    String _locationMessage ='';
   Map<String,dynamic> _locationGPS = {};

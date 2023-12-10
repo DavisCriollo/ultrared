@@ -569,6 +569,54 @@ return jsonMap['nombre'];
       return null;
     }
   }
+//=========================GET ALL GRUPOS CHAT =====================================//
+  Future getAllTodoLosChatPaginacion({
+    BuildContext? context,
+    int? cantidad,
+    int? page,
+    String? search,
+    String? input,
+    bool? orden,
+    int? chatId,
+    String? rucempresa,
+    String? token,
+    
+  }) async {
+
+// print('page=$page&cantidad=$cantidad&searc=$search&input=$input&orden=$orden&chat_id=$chatId');
+
+    try {
+      final url = Uri.parse(
+          '$_dirURL/messages/?page=$page&cantidad=$cantidad&search=$search&input=$input&orden=$orden&chat_id=$chatId');
+          // '$_dirURL/messages/?page=0&cantidad=3&search&input=message_id&orden=false&chat_id=4');
+
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
+
+
+// print('INFO DE LA CONSULTA UUARIOS DEL CHAT ${dataResp.body}');
+
+
+
+      final respo = jsonDecode(dataResp.body);
+      if (dataResp.statusCode == 200) {
+        return respo;
+      }
+
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+        Auth.instance.deleteSesion(context!);
+
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 
 //================================= DELETE TOKEN FIREBASE ==============================//
   Future validaTokenUsuarios({

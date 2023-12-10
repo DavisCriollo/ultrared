@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
 import 'package:ultrared/src/service/socket_service.dart';
@@ -61,6 +62,7 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
+      final user =  Auth.internal().getSession();
     final  _crtl= context.read <SocketModel>();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -71,27 +73,14 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
            centerTitle: true, // Centra el título en el AppBar
           elevation: 0,
           backgroundColor: cuaternaryColor, // Fondo blanco
-          title: Row(
-            children: [
-              GestureDetector(onTap: () {
-                final serviceSocket = context.read<SocketModel>();
-                    serviceSocket.emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
-              },
-                child: Text("${widget.infoGrupo['chat_name']}",
-                    style: GoogleFonts.poppins(
-                      fontSize: size.iScreen(2.0),
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                      letterSpacing: -0.40,
-                    ) // Color del título en negro
-                    ),
+          title: Text("${widget.infoGrupo['chat_name']}",
+              style: GoogleFonts.poppins(
+                fontSize: size.iScreen(2.0),
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+                letterSpacing: -0.40,
+              ) // Color del título en negro
               ),
-               GestureDetector(onTap: () {
-                final serviceSocket = context.read<SocketModel>();
-                    serviceSocket.reset( );
-            },child: Text('XXX')),
-            ],
-          ),
         ),
         body: Stack(
           children: [
@@ -366,12 +355,17 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
         child:   GestureDetector(
           onTap: () {
 
+
+  final  _crtl= context.read <ChatController>();
+
               final _info =
               {
   "opcion": "GROUP", // 'INDIVIDUAL' | 'GROUP'
-  "chat_id": 4, // tomar del grupo del chat
+  "chat_id": widget.infoGrupo['chat_id'], 
+  "idUsuario": user,
+  // tomar del grupo del chat
  };
-
+  _crtl.buscaAllTodoLosChatPaginacion('', false,widget.infoGrupo['chat_id']);
 
             Navigator.push(
                                       context,

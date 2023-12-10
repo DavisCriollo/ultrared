@@ -298,9 +298,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     WidgetsBinding.instance!.addObserver(this);
     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
 
-    // var socketManager = context.read<SocketService>();
+    var ctrlHome = context.read<HomeController>();
 
     user = await Auth.internal().getSession();
+      ctrlHome.setUserApp(user);
     // print('${user!['nombre']}');
 
     // final  socketManager = context.read<SocketService>();
@@ -578,13 +579,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             
             
             
-                                                  serviceSocket.emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
-                                                  // serviceSocket.emitEvent( 'client:lista-chats-grupos', {} );
+                                                  // serviceSocket.emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
+                                                  // // serviceSocket.emitEvent( 'client:lista-chats-grupos', {} );
              
             
                                                 
-                                                  _chatCtrl.buscaGruposChat(context);
-                                                       final infoUser  = await Auth.instance.getSession();
+                                                  // _chatCtrl.buscaGruposChat(context);
+                                                  //      final infoUser  = await Auth.instance.getSession();
              
             
             

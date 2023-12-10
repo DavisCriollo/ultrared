@@ -6,6 +6,7 @@ import 'package:ultrared/src/utils/theme.dart';
 class MessageChat extends StatelessWidget {
   final String messaje;
   final String type;
+  final String uidUser;
   final String uid;
   // final AnimationController animationController;
 
@@ -14,6 +15,7 @@ class MessageChat extends StatelessWidget {
     required this.messaje,
     required this.uid,
     required this.type,
+    required this.uidUser,
     //  required this.animationController
   }) : super(key: key);
 
@@ -21,9 +23,9 @@ class MessageChat extends StatelessWidget {
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
     return Container(
-      child: uid == '123'
+      child: uid == uidUser
           ? _myChat(size, messaje, type)
-          : _noChat(size, messaje, type),
+          : null// _noChat(size, messaje, type),
     );
   }
 }
@@ -88,7 +90,9 @@ _myChat(Responsive size, String messaje, String type) {
                               ? _messajeTexto(messaje, size)
                               : type == 'img'
                                   ? _messajeImagen(size)
-                                  :type == 'video'? _messajeVideo(size): _messajeAudio(size)),
+                                  : type == 'video'
+                                      ? _messajeVideo(size)
+                                      : _messajeAudio(size)),
                       SizedBox(
                         height: size.wScreen(4.0),
                       )
@@ -124,51 +128,49 @@ _myChat(Responsive size, String messaje, String type) {
 
 Container _messajeVideo(Responsive size) {
   return Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(8.0),
-                                      color: Colors.grey,
-                                    ),
-                                    width: size.wScreen(
-                                      60.0,
-                                    ),
-                                    height: size.hScreen(
-                                      30.0,
-                                    ));
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        color: Colors.grey,
+      ),
+      width: size.wScreen(
+        60.0,
+      ),
+      height: size.hScreen(
+        30.0,
+      ));
 }
+
 Container _messajeAudio(Responsive size) {
   return Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(8.0),
-                                      color: Colors.grey,
-                                    ),
-                                    width: size.wScreen(
-                                      60.0,
-                                    ),
-                                    height: size.iScreen(
-                                      30.0,
-                                    ));
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        color: Colors.grey,
+      ),
+      width: size.wScreen(
+        60.0,
+      ),
+      height: size.iScreen(
+        30.0,
+      ));
 }
 
 Container _messajeImagen(Responsive size) {
   return Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(8.0),
-                                      color: Colors.grey,
-                                    ),
-                                    width: size.wScreen(
-                                      60.0,
-                                    ),
-                                    height: size.hScreen(
-                                      30.0,
-                                    ));
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        color: Colors.grey,
+      ),
+      width: size.wScreen(
+        60.0,
+      ),
+      height: size.hScreen(
+        30.0,
+      ));
 }
 
 Text _messajeTexto(String messaje, Responsive size) {
   return Text(
-    messaje,
+    messaje.toString(),
     style: GoogleFonts.poppins(
       fontSize: size.iScreen(1.5),
       fontWeight: FontWeight.w400,
