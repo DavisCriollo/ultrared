@@ -37,8 +37,7 @@ class HomeController extends ChangeNotifier {
  Map<String, dynamic>? get getUser =>_user;
  void setUserApp(Map<String, dynamic>? _data){
 _user=_data;
-   
-    print('USUARIO-------------$_user');
+
 notifyListeners();
 
  }
@@ -378,12 +377,13 @@ notifyListeners();
 
   void seItemCodeCelular(String? valor) {
     if (valor == '593') {
-      _itemCodeCelulares = '+$valor' + '9';
+      // _itemCodeCelulares = '+$valor' + '9';
+      _itemCodeCelulares = '0';
     } else {
       _itemCodeCelulares = '+$valor';
     }
 
-    print('item _itemCodeCelulares: $_itemCodeCelulares');
+    // print('item _itemCodeCelulares: $_itemCodeCelulares');
 
     notifyListeners();
   }
@@ -431,7 +431,7 @@ notifyListeners();
 
   void setItemIsEdad(bool? valor) {
     _itemIsEdad = valor;
- print(' es mayor $_itemIsEdad');
+//  print(' es mayor $_itemIsEdad');
     notifyListeners();
   }
 
@@ -534,7 +534,7 @@ notifyListeners();
 
     _listaTodasLasCiudades = _data;
 
-    // print('LA RAZA: ${_listaTodasLasCiudades[0]['espRazas']}');
+    print('LA RAZA: ${_listaTodasLasCiudades[0]['espRazas']}');
 
     notifyListeners();
   }
@@ -581,7 +581,7 @@ String? _fotoTipo = '';
 
    
     
-print('LA _fotoTipo $_fotoTipo');
+// print('LA _fotoTipo $_fotoTipo');
     notifyListeners();
   }
 
@@ -619,7 +619,7 @@ String? _itemCedulaRecupera = '';
 
   void setItemCedulaRecupera(String? valor) {
     _itemCedulaRecupera = valor;
-print('LA validaCedula $_itemCedulaRecupera');
+// print('LA validaCedula $_itemCedulaRecupera');
     notifyListeners();
   }
 
@@ -666,7 +666,7 @@ print('LA validaCedula $_itemCedulaRecupera');
 
     _listaTodosLosPlanes = _data;
 
-    // print('LA RAZA: ${_listaTodosLosPlanes[0]['espRazas']}');
+    print('LA RAZA: ${_listaTodosLosPlanes[0]['espRazas']}');
 
     notifyListeners();
   }
@@ -754,7 +754,7 @@ bool? _errorCrearUsuario; // sera nulo la primera vez
    void setUrlImge(String data, String _tipo) {
     _urlImage = "";
      _urlImage = data;
-    print('IMAGEN URL: $_urlImage');
+    // print('IMAGEN URL: $_urlImage');
 
     notifyListeners();
   }
@@ -765,7 +765,7 @@ bool? _errorCrearUsuario; // sera nulo la primera vez
   void setUrlPerfil(String _data) {
     _urlImagePerfil = "";
     _urlImagePerfil = _data;
-    print('PERFIL URL: $_urlImagePerfil');
+    // print('PERFIL URL: $_urlImagePerfil');
  
     notifyListeners();
   }

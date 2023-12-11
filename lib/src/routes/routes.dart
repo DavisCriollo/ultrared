@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ultrared/src/pages/acceso_gps_page.dart';
+import 'package:ultrared/src/pages/auxilio_page.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
 import 'package:ultrared/src/pages/foto_casa_page.dart';
 import 'package:ultrared/src/pages/foto_perfil_page.dart';
@@ -30,6 +31,7 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
   // 'home': (_) => const SeleccionaPlanPage(),
 
   'home': (_) => const FotosPerfilPage(),
+  'auxilo': (_) => const AuxilioPage()
   // 'home': (_) => const FotosCasaPage()
   // 'home': (_) => const FotosCasaPage()
   // 'home': (_) => const ListaUsuariosChat()

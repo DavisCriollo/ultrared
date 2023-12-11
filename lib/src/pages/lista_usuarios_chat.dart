@@ -166,7 +166,7 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
                         height: size.iScreen(9.0),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.blue, width: 2.0),
+                          border: Border.all(color: Colors.grey, width: 2.0),
                         ),
                         child: ClipOval(
                           child: CachedNetworkImage(

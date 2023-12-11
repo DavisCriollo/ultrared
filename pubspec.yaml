@@ -64,6 +64,10 @@ dependencies:
   dotted_border: 
   cross_file: ^0.3.3+2
 
+  flutter_map: 
+
+
+
 
 
 

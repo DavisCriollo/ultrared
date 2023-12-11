@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,8 +23,12 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     Map<String, dynamic>? user = {};
     final _scrollController = ScrollController();
+  
+  // bool showScrollToTopButton = false;
+   
   @override
   void initState() {
+   
   _scrollController.addListener(() {
 
       if (_scrollController.position.maxScrollExtent ==
@@ -38,18 +43,25 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
           _next.setPage(_next.getpage);
           //       providerSearchPropietario.setCantidad(25);
           _next.buscaAllTodoLosChatPaginacion('', false,widget.infoChat['chat_id'],);
+      
         } else {
           print("ES NULL POR ESO NO HACER PETICION ");
         }
       }
     });
     super.initState();
+    //  _scrollController.addListener(_scrollListener);
   }
+ 
   @override
   void dispose() {
   _scrollController.dispose();
     super.dispose();
   }
+
+
+ 
+
   final TextEditingController _textController = TextEditingController();
 
   // final _focusNode = new FocusNode();
@@ -106,98 +118,141 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
 
     final Responsive size = Responsive.of(context);
-    return Scaffold(
-        backgroundColor: Colors.grey.shade100,
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.black),
-          centerTitle: true, // Centra el título en el AppBar
-          elevation: 0,
-          backgroundColor: cuaternaryColor, // Fondo blanco
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const CircleAvatar(
-                // Puedes ajustar el contenido del CircleAvatar según tus necesidades
-                backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('assets/imgs/Avatar.png'),
-              ),
-              Spacer(),
-              Container(
-                // color: Colors.red,
-                width: size.wScreen(65),
-                child: Text(
-                  'Pedro Cevallos  ',
-                  style: GoogleFonts.poppins(
-                    fontSize: size.iScreen(2.0),
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black,
-                    letterSpacing: -0.40,
+
+    return GestureDetector(
+         onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+          backgroundColor: Colors.grey.shade100,
+          appBar: AppBar(
+            iconTheme: const IconThemeData(color: Colors.black),
+            centerTitle: true, // Centra el título en el AppBar
+            elevation: 0,
+            backgroundColor: cuaternaryColor, // Fondo blanco
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                 
+               Container(
+                        width: size.iScreen(4.0),
+                        height: size.iScreen(4.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.grey, width: 2.0),
+                        ),
+                        child: ClipOval(
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                '${_ctrlHome.getUser!['foto']}', // Reemplaza con la URL de tu imagen
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                            fit: BoxFit.cover,
+                          ),
+                        )),
+                Spacer(),
+                Container(
+                  // color: Colors.red,
+                  width: size.wScreen(65),
+                  child: Text(
+                    '${_ctrlHome.getUser!['nombre']} ',
+                    style: GoogleFonts.poppins(
+                      fontSize: size.iScreen(2.0),
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                      letterSpacing: -0.40,
+                    ),
+                    overflow: TextOverflow.ellipsis, // Color del título en negro
                   ),
-                  overflow: TextOverflow.ellipsis, // Color del título en negro
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        body: Container(
-          height: size.hScreen(100),
-          width: size.wScreen(100),
-          child: Column(
-            children: [
-              Flexible(child: Consumer<ChatController>(
-                builder: (_, values, __) {
-
-
-                  return
-                  //  Wrap( children: ( values.getListaTodoLosChatPaginacion as List).map((e) => MessageChat(
-                  //       type: 'text',
-                  //       uid:e['person_id'].toString(),
-                  //       messaje:e['message_text'],
-                  //       uidUser: "${_ctrlHome.getUser!['id']}",
-                  //        ) ).toList());                 
-                  ListView.builder(
-                    reverse :true,
-                                        controller: _scrollController,
-
-                    itemCount: values.getListaTodoLosChatPaginacion.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final Map<String,dynamic> menssaje = values.getListaTodoLosChatPaginacion[index];
-                      return MessageChat(
-                        type: 'text',
-                        uid:menssaje['person_id'].toString(),
-                        messaje:'${menssaje['message_text']}',
-                        uidUser: "${_ctrlHome.getUser!['id']}",
-                         ) ;
-                    },
-                  );
-
-
-
-                  // return ListView.builder(
-                  //   controller: _scrollController,
-                  //   physics: const BouncingScrollPhysics(),
-                  //   reverse: true,
-                  //   itemCount: _messaje.length,
-                  //   itemBuilder: (BuildContext context, int index) {
-                  //     final messaje = _messaje[index];
-                  //     return messaje;
-                  //   },
-                  // );
-                },
-              )),
-              _buildInputField(context, size)
-            ],
+          body: Container(
+            height: size.hScreen(100),
+            width: size.wScreen(100),
+            child: Column(
+              children: [
+                Flexible(child: Consumer<ChatController>(
+                  builder: (_, values, __) {
+    
+    
+                    return
+                    //  Wrap( children: ( values.getListaTodoLosChatPaginacion as List).map((e) => MessageChat(
+                    //       type: 'text',
+                    //       uid:e['person_id'].toString(),
+                    //       messaje:e['message_text'],
+                    //       uidUser: "${_ctrlHome.getUser!['id']}",
+                    //        ) ).toList());                 
+                    Stack(
+                      children: [
+                        ListView.builder(
+                          physics:const BouncingScrollPhysics(),
+                          reverse :true,
+                         controller: _scrollController,
+    
+                          itemCount: values.getListaTodoLosChatPaginacion.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final Map<String,dynamic> menssaje = values.getListaTodoLosChatPaginacion[index];
+                            return MessageChat(
+                              type: 'text',
+                              user:menssaje,
+                              messaje:'${menssaje['message_text']}',
+                              sessionUser: _ctrlHome.getUser!,
+                               ) ;
+                          },
+                        ),
+          //                 Positioned(
+          //                   bottom: 0.0,
+          //                   right: size.iScreen(2.0),
+          //         child:
+                  
+                  
+          // //          Consumer<ChatController>(
+          // //   builder: (context, scrollProvider, _) {
+    
+              
+          // //     return  _scrollController.position.maxScrollExtent ==
+          // //   _scrollController.offset? _BotonFinalListView(size) :Container();
+          // //   },
+          // // ),
+          //         _scrollController.position.maxScrollExtent ==
+          //   _scrollController.offset? Container(): _BotonFinalListView(size) 
+                  
+          //       ),
+                      ],
+                    );
+    
+    
+    
+                    // return ListView.builder(
+                    //   controller: _scrollController,
+                    //   physics: const BouncingScrollPhysics(),
+                    //   reverse: true,
+                    //   itemCount: _messaje.length,
+                    //   itemBuilder: (BuildContext context, int index) {
+                    //     final messaje = _messaje[index];
+                    //     return messaje;
+                    //   },
+                    // );
+                  },
+                )),
+              
+                
+                _buildInputField(context, size)
+              ],
+            ),
+          )
+          // Column(
+          //   children: <Widget>[
+          //     Expanded(
+          //       child: _buildMessageList(size),
+          //     ),
+          //     _buildInputField(context,size),
+          //   ],
+          // ),
           ),
-        )
-        // Column(
-        //   children: <Widget>[
-        //     Expanded(
-        //       child: _buildMessageList(size),
-        //     ),
-        //     _buildInputField(context,size),
-        //   ],
-        // ),
-        );
+    );
 
 //   }
 
@@ -250,6 +305,33 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 //       ],
 //     ),
 //   );
+  }
+
+  InkWell _BotonFinalListView(Responsive size) {
+    return InkWell(          
+                  onTap: (){
+                     _scrollController.animateTo(
+              _scrollController.position.minScrollExtent,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+                        );
+                  },
+                  child: Container(        
+               width: size.iScreen(5.0),
+               height: size.iScreen(5.0),
+               decoration: ShapeDecoration(
+                             shape: CircleBorder(), //here we set the circular figure
+                             color: Colors.green.shade100
+                           ),
+                         child: Center(
+                              child: Icon(
+                                     Icons.keyboard_arrow_down_outlined,
+                                     size: 30,
+                                      color: Colors.black87,
+                                      )
+                            ),
+                        )
+            );
   }
 
   Widget _buildInputField(BuildContext context, Responsive size) {
@@ -426,7 +508,7 @@ final _data={
 
 
 
-print('se imprima data para socket $_data');
+// print('se imprima data para socket $_data');
   _ctrlSocket.emitEvent('client:send-mensaje', _data);
 
   valueChat.addItemsChatPaginacion(_ctrlSocket.getMensajeChat);
@@ -438,6 +520,11 @@ print('se imprima data para socket $_data');
 
  valueChat.buscaAllTodoLosChatPaginacion('false',false,widget.infoChat['chat_id']);
 
+ _scrollController.animateTo(
+              0.0,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+            );
 
       // valueChat.setMensaje(_newMessaje);
 

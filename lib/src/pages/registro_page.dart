@@ -135,7 +135,7 @@ class _RegistroPageState extends State<RegistroPage> {
                                 ),
                               ),
                               child: TextFormField(
-                                // maxLength: 1,
+                               
                                 decoration: const InputDecoration(
                                   suffixIcon: Icon(Icons.assignment_ind),
                                   hintText: 'CÉDULA',
@@ -147,7 +147,8 @@ class _RegistroPageState extends State<RegistroPage> {
                                       RegExp(r'[0-9]')),
                                 ],
                                 onChanged: (text) {
-                                  _control.setItemCedua(text);
+                                  _control.setItemCedua(text.trim());
+                                 
                                 },
                               ),
                             ),
@@ -274,72 +275,72 @@ class _RegistroPageState extends State<RegistroPage> {
 
                         //***********************************************/
                         //***********************************************/
-                        Container(
-                            width: size.wScreen(80.0),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: size.iScreen(2.0),
-                                vertical: size.iScreen(1.0)),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: 1.0,
+                        GestureDetector(
+                           onTap: () {
+                                          _agregaCorreo(context, _control, size);
+                                        },
+                          child: Container(
+                              width: size.wScreen(80.0),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.iScreen(2.0),
+                                  vertical: size.iScreen(1.0)),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 1.0,
+                                ),
                               ),
-                            ),
-                            child: Consumer<HomeController>(
-                              builder: (_, valuCorreo, __) {
-                                return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      // color: Colors.red,
-                                      width: size.wScreen(60.0),
-                                      child: valuCorreo.getItemCorreos == ""
-                                          ? Text(
-                                              ' EMAIL  ',
-                                              style: GoogleFonts.poppins(
-                                                fontSize: size.iScreen(
-                                                    2.0), // Ajusta según tus necesidades
-                                                fontWeight: FontWeight.w400,
-                                                color:
-                                                    valuCorreo.getItemCorreos !=
-                                                            ""
-                                                        ? Colors.black
-                                                        : Colors.grey,
+                              child: Consumer<HomeController>(
+                                builder: (_, valuCorreo, __) {
+                                  return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        // color: Colors.red,
+                                        width: size.wScreen(60.0),
+                                        child: valuCorreo.getItemCorreos == ""
+                                            ? Text(
+                                                ' EMAIL  ',
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: size.iScreen(
+                                                      2.0), // Ajusta según tus necesidades
+                                                  fontWeight: FontWeight.w400,
+                                                  color:
+                                                      valuCorreo.getItemCorreos !=
+                                                              ""
+                                                          ? Colors.black
+                                                          : Colors.grey,
+                                                ),
+                                              )
+                                            : Text(
+                                                '${valuCorreo.getItemCorreos}  ',
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: size.iScreen(
+                                                      2.0), // Ajusta según tus necesidades
+                                                  fontWeight: FontWeight.w400,
+                                                  letterSpacing: 0.5,
+                                                  color:
+                                                      valuCorreo.getItemCorreos !=
+                                                              ""
+                                                          ? Colors.black
+                                                          : Colors.grey,
+                                                ),
                                               ),
-                                            )
-                                          : Text(
-                                              '${valuCorreo.getItemCorreos}  ',
-                                              style: GoogleFonts.poppins(
-                                                fontSize: size.iScreen(
-                                                    2.0), // Ajusta según tus necesidades
-                                                fontWeight: FontWeight.w400,
-                                                letterSpacing: 0.5,
-                                                color:
-                                                    valuCorreo.getItemCorreos !=
-                                                            ""
-                                                        ? Colors.black
-                                                        : Colors.grey,
-                                              ),
-                                            ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        _agregaCorreo(context, _control, size);
-                                      },
-                                      child: Icon(
+                                      ),
+                                      Icon(
                                         Icons
                                             .email_outlined, // Cambia el icono según tus necesidades
                                         color: valuCorreo.getItemCelulars == ""
-                                            ? Colors.grey
+                                            ? Colors.black45
                                             : tercearyColor, // Color del icono
                                       ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            )),
+                                    ],
+                                  );
+                                },
+                              )),
+                        ),
                         //***********************************************/
 
                         SizedBox(
@@ -349,72 +350,72 @@ class _RegistroPageState extends State<RegistroPage> {
                         //***********************************************/
 
                         //***********************************************/
-                        Container(
-                            width: size.wScreen(80.0),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: size.iScreen(2.0),
-                                vertical: size.iScreen(1.0)),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: 1.0,
+                        GestureDetector(
+                           onTap: () {
+                                           _agregaCelular(context, _control, size);
+                                        },
+                          child: Container(
+                              width: size.wScreen(80.0),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.iScreen(2.0),
+                                  vertical: size.iScreen(1.0)),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 1.0,
+                                ),
                               ),
-                            ),
-                            child: Consumer<HomeController>(
-                              builder: (_, valuCelular, __) {
-                                return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      // color: Colors.red,
-                                      width: size.wScreen(60.0),
-                                      child: valuCelular.getItemCelulars == ""
-                                          ? Text(
-                                              'CELULAR  ',
-                                              style: GoogleFonts.poppins(
-                                                fontSize: size.iScreen(
-                                                    2.0), // Ajusta según tus necesidades
-                                                fontWeight: FontWeight.w400,
-                                                color: valuCelular
-                                                            .getItemCelulars !=
-                                                        ""
-                                                    ? Colors.black
-                                                    : Colors.grey,
+                              child: Consumer<HomeController>(
+                                builder: (_, valuCelular, __) {
+                                  return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        // color: Colors.red,
+                                        width: size.wScreen(60.0),
+                                        child: valuCelular.getItemCelulars == ""
+                                            ? Text(
+                                                'CELULAR  ',
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: size.iScreen(
+                                                      2.0), // Ajusta según tus necesidades
+                                                  fontWeight: FontWeight.w400,
+                                                  color: valuCelular
+                                                              .getItemCelulars !=
+                                                          ""
+                                                      ? Colors.black
+                                                      : Colors.grey,
+                                                ),
+                                              )
+                                            : Text(
+                                                '${valuCelular.getItemCelulars}  ',
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: size.iScreen(
+                                                      2.0), // Ajusta según tus necesidades
+                                                  fontWeight: FontWeight.w400,
+                                                  letterSpacing: 0.5,
+                                                  color: valuCelular
+                                                              .getItemCelulars !=
+                                                          ""
+                                                      ? Colors.black45
+                                                      : Colors.grey,
+                                                ),
                                               ),
-                                            )
-                                          : Text(
-                                              '${valuCelular.getItemCelulars}  ',
-                                              style: GoogleFonts.poppins(
-                                                fontSize: size.iScreen(
-                                                    2.0), // Ajusta según tus necesidades
-                                                fontWeight: FontWeight.w400,
-                                                letterSpacing: 0.5,
-                                                color: valuCelular
-                                                            .getItemCelulars !=
-                                                        ""
-                                                    ? Colors.black
-                                                    : Colors.grey,
-                                              ),
-                                            ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        _agregaCelular(context, _control, size);
-                                      },
-                                      child: Icon(
+                                      ),
+                                      Icon(
                                         Icons
                                             .stay_current_portrait_outlined, // Cambia el icono según tus necesidades
                                         color: valuCelular.getItemCelulars == ""
                                             ? Colors.grey
                                             : tercearyColor, // Color del icono
                                       ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            )),
+                                    ],
+                                  );
+                                },
+                              )),
+                        ),
 
                         //***********************************************/
                         //***********************************************/
@@ -510,6 +511,7 @@ class _RegistroPageState extends State<RegistroPage> {
                       child: Container(
                         // width: size.wScreen(45.0),
                         child: IntlPhoneField(
+                          initialCountryCode: 'EC',
                           autofocus: true,
                           controller: controllerTextCountry,
                           decoration: const InputDecoration(),
@@ -535,7 +537,7 @@ class _RegistroPageState extends State<RegistroPage> {
                         onPressed: () {
                           controller.seItemCelulars(controller.getItemCelulars!
                               .replaceAll(
-                                  '+593', controller.getItemCodeCelular!));
+                                  '+593', '0'));
 
                           final isValidS = controller.validateFormCelular();
                           if (!isValidS) return;
@@ -705,7 +707,9 @@ class _RegistroPageState extends State<RegistroPage> {
   void _next(BuildContext context, HomeController controller) {
     if (
       controller.getItemCedua!.isEmpty ||
-        controller.getItemCedua!.length < 10 ||
+        controller.getItemCedua!.length < 10  || controller.getItemCedua!.length > 10 ){
+         NotificatiosnService.showSnackBarDanger('Cédula incorrecta');
+        }else if(
         controller.getItemNombre!.isEmpty ||
         controller.getItemApellido!.isEmpty ||
         controller.getItemDireccion!.isEmpty ||

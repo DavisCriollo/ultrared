@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ultrared/src/utils/responsive.dart';
@@ -6,31 +7,45 @@ import 'package:ultrared/src/utils/theme.dart';
 class MessageChat extends StatelessWidget {
   final String messaje;
   final String type;
-  final String uidUser;
-  final String uid;
+  final Map<String, dynamic>sessionUser;
+  final Map<String, dynamic> user;
   // final AnimationController animationController;
 
   const MessageChat({
     Key? key,
     required this.messaje,
-    required this.uid,
+    required this.user,
     required this.type,
-    required this.uidUser,
+    required this.sessionUser,
     //  required this.animationController
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
+String fechaString = "${user['msg_FecReg']}";
+
+  // Convertir la cadena a DateTime
+  DateTime fecha = DateTime.parse(fechaString);
+
+  // Convertir a la zona horaria local
+  DateTime fechaLocal = fecha.toLocal();
+
+  // String horaFormateada = "${fechaLocal.hour}:${fechaLocal.minute}:${fechaLocal.second}";
+  String horaFormateada =   "${fechaLocal.hour < 10 ? '0' : ''}${fechaLocal.hour}:${fechaLocal.minute < 10 ? '0' : ''}${fechaLocal.minute}";
+  // Formatear la fecha para mostrar solo la hora
+
+  // print("Hora local formateada: $horaFormateada");
+
     return Container(
-      child: uid == uidUser
-          ? _myChat(size, messaje, type)
-          : null// _noChat(size, messaje, type),
+      child: user['person_id'] == sessionUser['id']
+          ? _myChat(size, messaje, type,user,sessionUser,horaFormateada)
+          : _noChat(size, messaje, type,user,sessionUser ,horaFormateada),
     );
   }
 }
 
-_myChat(Responsive size, String messaje, String type) {
+_myChat(Responsive size, String messaje, String type,Map<String, dynamic> user,Map<String, dynamic> sesionUser,String _hora) {
   return Align(
     alignment: Alignment.centerRight,
     child: Container(
@@ -41,10 +56,25 @@ _myChat(Responsive size, String messaje, String type) {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          CircleAvatar(
-            backgroundColor: Colors.transparent,
-            backgroundImage: AssetImage('assets/imgs/Avatar.png'),
-          ),
+           Container(
+                        width: size.iScreen(4.0),
+                        height: size.iScreen(4.0),
+                        margin:EdgeInsets.symmetric(horizontal:size.iScreen(0.3)),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.grey, width: 2.0),
+                        ),
+                        child: ClipOval(
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                '${sesionUser['foto']}', // Reemplaza con la URL de tu imagen
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                            fit: BoxFit.cover,
+                          ),
+                        )),
           Container(
               // color: Colors.red ,
               // width: size.wScreen(60.0),
@@ -67,7 +97,7 @@ _myChat(Responsive size, String messaje, String type) {
                         // width: size.wScreen(60.0),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Pedro Cevallos ',
+                          '${user['nombres']} ',
                           textAlign: TextAlign.left,
                           style: GoogleFonts.poppins(
                             fontSize: size.iScreen(1.5),
@@ -102,7 +132,7 @@ _myChat(Responsive size, String messaje, String type) {
                     bottom: 0,
                     right: 0,
                     child: Text(
-                      '14:32',
+                      '$_hora',
                       style: GoogleFonts.poppins(
                         fontSize: size.iScreen(1.2),
                         fontWeight: FontWeight.w500,
@@ -184,7 +214,7 @@ Text _messajeTexto(String messaje, Responsive size) {
   );
 }
 
-_noChat(Responsive size, String messaje, String type) {
+_noChat(Responsive size, String messaje, String type,Map<String, dynamic> user,Map<String, dynamic> sesionUser,String _hora) {
   return Align(
     alignment: Alignment.centerLeft,
     child: Container(
@@ -263,7 +293,7 @@ _noChat(Responsive size, String messaje, String type) {
                     bottom: 0,
                     right: 0,
                     child: Text(
-                      '14:32',
+                      '$_hora',
                       style: GoogleFonts.poppins(
                         fontSize: size.iScreen(1.2),
                         fontWeight: FontWeight.w500,

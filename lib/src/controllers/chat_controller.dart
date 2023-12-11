@@ -287,7 +287,7 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
     notifyListeners();
   }
 
-  int? _cantidad = 100;
+  int? _cantidad = 25;
   int? get getCantidad => _cantidad;
   void setCantidad(int? _cant) {
     _cantidad = _cant;
@@ -352,16 +352,59 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
 
 
 
-//------------------LISTA DE LOS MENSAJES ----------//
- List<MessageChat> _mensaje = [];
+// //------------------LISTA DE LOS MENSAJES ----------//
+//  List<MessageChat> _mensaje = [];
 
- void setMensaje(MessageChat _messaje){
-   _mensaje.insert(0, _messaje);
+//  void setMensaje(MessageChat _messaje){
+//    _mensaje.insert(0, _messaje);
 
 
-   print('EL MENSAJE ${_mensaje}');
-   notifyListeners();
- }
+//    print('EL MENSAJE ${_mensaje}');
+//    notifyListeners();
+//  }
+
+
+//---- VERIFICA EL FINAL DEL LISTVIEWPARA MOSTAR EL BOTON
+ ScrollController _scrollController = ScrollController();
+  bool _showButton = false;
+
+  ScrollController get scrollController => _scrollController;
+
+  bool get showButton => _showButton;
+
+  ScrollProvider() {
+    _scrollController.addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      _updateShowButton(false);
+    } else {
+      _updateShowButton(true);
+    }
+  }
+
+  void _updateShowButton(bool value) {
+    if (_showButton != value) {
+      _showButton = value;
+      notifyListeners();
+    }
+  }
+
+  void scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
 
 
 
