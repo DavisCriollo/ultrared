@@ -140,22 +140,19 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                           border: Border.all(color: Colors.grey, width: 2.0),
                         ),
                         child: ClipOval(
-                          child: CachedNetworkImage(
-                            imageUrl:
-                                '${_ctrlHome.getUser!['foto']}', // Reemplaza con la URL de tu imagen
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
-                            fit: BoxFit.cover,
-                          ),
-                        )),
+                        child: Image.asset(
+                          'assets/imgs/groups.png', // Reemplaza con la ruta de tu imagen en los activos
+                          width: size.iScreen(7.5),
+                          height: size.iScreen(7.5),
+                          fit: BoxFit.cover,
+                        ),
+                      ),),
                 Spacer(),
                 Container(
                   // color: Colors.red,
                   width: size.wScreen(65),
                   child: Text(
-                    '${_ctrlHome.getUser!['nombre']} ',
+                     '${widget.infoChat['grupo']['chat_name']}', 
                     style: GoogleFonts.poppins(
                       fontSize: size.iScreen(2.0),
                       fontWeight: FontWeight.w700,

@@ -179,11 +179,12 @@ class ApiProvider {
 
 
       final respo = jsonDecode(dataResp.body);
+      print('la data $respo');
 
-
+  snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
       if (dataResp.statusCode == 404) {
         snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
-        return null;
+        return respo["msg"];
       }
       if (dataResp.statusCode == 200) {
         // final responsData = AuthResponse.fromMap(respo);
@@ -193,7 +194,7 @@ class ApiProvider {
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
 
-        return null;
+        return respo["msg"];
       }
     } catch (e) {
       print('-ERROR -> $e');
@@ -508,6 +509,68 @@ return jsonMap['nombre'];
     try {
       final url = Uri.parse(
           '$_dirURL/messages/byPerId/0');
+
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
+      final respo = jsonDecode(dataResp.body);
+      if (dataResp.statusCode == 200) {
+        return respo;
+      }
+
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+        Auth.instance.deleteSesion(context!);
+
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+//=========================GET ALL GRUPOS CHAT =====================================//
+  Future getAllNoticias({
+    BuildContext? context,
+    String? token,
+    
+  }) async {
+    try {
+      final url = Uri.parse(
+          '$_dirURL/noticias/listado');
+
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
+      final respo = jsonDecode(dataResp.body);
+      if (dataResp.statusCode == 200) {
+        return respo;
+      }
+
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+        Auth.instance.deleteSesion(context!);
+
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+//=========================GET ALL GRUPOS CHAT =====================================//
+  Future getAllNotificaciones({
+    BuildContext? context,
+    String? token,
+    
+  }) async {
+    try {
+      final url = Uri.parse(
+          '$_dirURL/notificaciones/listado');
 
       final dataResp = await _http.get(
         url,

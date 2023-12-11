@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/login_page.dart';
 import 'package:ultrared/src/pages/registro_page.dart';
 import 'package:ultrared/src/utils/responsive.dart';
@@ -71,7 +73,8 @@ class SerClientePage extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap:(){
-
+                               final _ctrlHome= context.read<HomeController>();
+                            _ctrlHome.resetAllValues();
                           
                           Navigator.push(
                                         context,

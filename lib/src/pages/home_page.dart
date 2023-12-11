@@ -1,221 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:provider/provider.dart';
-// import 'package:ultrared/src/controllers/socket_service.dart';
-// import 'package:ultrared/src/utils/responsive.dart';
-// // import 'socket_provider.dart'; // Asegúrate de importar tu SocketProvider
-
-// class SocketStatusScreen extends StatefulWidget {
-//   const SocketStatusScreen({Key? key}) : super(key: key);
-
-//   @override
-//   State<SocketStatusScreen> createState() => _SocketStatusScreenState();
-// }
-
-// class _SocketStatusScreenState extends State<SocketStatusScreen>with WidgetsBindingObserver {
-
-//   @override
-//   void initState() {
-//     WidgetsBinding.instance?.addPostFrameCallback((_) {
-//       //  setUpNotificationPlugins();
-
-//       initData();
-//     });
-//     super.initState();
-//   }
-
-// // ======================= OBSERVABLE  ==========================//
-
-//   @override
-//   void didChangeAppLifecycleState(AppLifecycleState state) async {
-//     // final homeController = Provider.of<HomeController>(context, listen: false);
-//     if (state == AppLifecycleState.resumed) {
-//       // await homeController.validaInicioDeSesion(context);
-//       print('EL ESTADO ES: $state');
-//       //  Navigator.pushReplacement(
-//       //             context,
-//       //             MaterialPageRoute<void>(
-//       //                 builder: (BuildContext context) => const SplashPage()));
-
-// //  final _isTurned=
-// // homeController.buscaNotificacionesPush('');
-// //       homeController.buscaNotificacionesPush2('');
-//           // homeController.setGetTestTurno(null);
-//         // homeController.getValidaTurnoServer();
-
-//     }
-//     if (state == AppLifecycleState.inactive) { print('EL ESTADO ES: $state');}
-//     if (state == AppLifecycleState.paused) { print('EL ESTADO ES: $state');}
-//   }
-
-//   initData() async {
-//       WidgetsBinding.instance!.addObserver(this);
-//     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
-
-//  var socketManager = context.read  <SocketService>();
-//     if (socketManager.status == SocketStatus.desconectado) {
-//       socketManager.conectar();
-//     }
-
-//   }
-//   @override
-//   void dispose() {
-//     WidgetsBinding.instance!.removeObserver(this);
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//         final Responsive size = Responsive.of(context);
-//     var socketProvider =context.read <SocketService>();
-//     // var socketProvider =Provider.of<SocketProvider>(context,listen:  true);
-
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Estado del Socket'),
-//       ),
-//       body:
-//       // Center(
-//       //   child: Column(
-//       //     mainAxisAlignment: MainAxisAlignment.center,
-//       //     children: <Widget>[
-//       //       Text(
-//       //         'Estado del Socket:',
-//       //         style: TextStyle(fontSize: 18.0),
-//       //       ),
-//       //       SizedBox(height: 16.0),
-//       //       _buildStatusWidget(socketProvider.status),
-//       //       SizedBox(height: 16.0),
-//       //       ElevatedButton(
-//       //         onPressed: () {
-//       //           // Realiza alguna acción según el estado actual del socket
-//       //           if (socketProvider.status == SocketStatus.desconectado) {
-//       //             socketProvider.conectar();
-//       //           } else if (socketProvider.status == SocketStatus.conectado) {
-//       //             socketProvider.desconectar();
-//       //           }
-//       //         },
-//       //         child:
-//       //         Consumer<SocketService>(builder: (_, value, __) {
-//       //           return  Text(
-//       //           value.status == SocketStatus.desconectado
-//       //               ? 'Conectar'
-//       //               : 'Desconectar',
-//       //         );
-//       //         },)
-
-//       //       ),
-//       //     ],
-//       //   ),
-//       // ),
-
-// Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             // Text(
-//             //   socketManager.status == SocketStatus.desconectado
-//             //       ? 'Conectar'
-//             //       : 'Desconectar',
-//             //   style: TextStyle(fontSize: 24.0),
-//             // ),
-//              Consumer<SocketService>(builder: (_, value, __) {
-//                 return  Text(
-//                 value.status == SocketStatus.desconectado
-//                     ? 'Conectar'
-//                     : 'Desconectar',
-//               );
-//               },),
-
-//               Container(
-//   width: size.wScreen(80),
-//   height: size.hScreen(5.0),
-//   clipBehavior: Clip.antiAlias,
-//   decoration: ShapeDecoration(
-//     color: Color(0xFFB32523),
-//     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-//   ),
-//   child: Center(
-//     child: Text(
-//                   'QUIERO SER CLIENTE',
-//                   textAlign: TextAlign.center,
-//                   style: GoogleFonts.poppins(
-//                             fontSize: size.iScreen(1.8),
-//                             // fontWeight: FontWeight.bold,
-//                             color: Colors.white
-//                           ),
-//                   // TextStyle(
-//                   //   color: Colors.white,
-//                   //   fontSize: size.iScreen(1.8),
-//                   //   fontFamily: 'Poppins',
-//                   //   fontWeight: FontWeight.w500,
-//                   //   // height: 0.09,
-//                   // ),
-//                 ),
-//   ),
-//   // Stack(
-//   //   children: [
-//   //     Positioned(
-//   //       left: 84.50,
-//   //       top: 12,
-//   //       child: Container(
-//   //         child: Row(
-//   //           mainAxisSize: MainAxisSize.min,
-//   //           mainAxisAlignment: MainAxisAlignment.start,
-//   //           crossAxisAlignment: CrossAxisAlignment.start,
-//   //           children: [
-//   //             Text(
-//   //               'QUIERO SER CLIENTE',
-//   //               textAlign: TextAlign.center,
-//   //               style: TextStyle(
-//   //                 color: Colors.white,
-//   //                 fontSize: 16,
-//   //                 fontFamily: 'Poppins',
-//   //                 fontWeight: FontWeight.w500,
-//   //                 height: 0.09,
-//   //               ),
-//   //             ),
-//   //           ],
-//   //         ),
-//   //       ),
-//   //     ),
-//   //   ],
-//   // ),
-// )
-
-//             // Otros widgets de la página principal
-//           ],
-//         ),
-//       ),
-
-//     );
-//   }
-
-//   Widget _buildStatusWidget(SocketStatus status) {
-//     String statusText;
-//     Color statusColor;
-
-//     switch (status) {
-//       case SocketStatus.conectado:
-//         statusText = 'Conectado';
-//         statusColor = Colors.green;
-//         break;
-//       case SocketStatus.desconectado:
-//         statusText = 'Desconectado';
-//         statusColor = Colors.red;
-//         break;
-//       case SocketStatus.conectando:
-//         statusText = 'Conectando';
-//         statusColor = Colors.orange;
-//         break;
-//     }
-
-//     return Text(
-//       statusText,
-//       style: TextStyle(fontSize: 24.0, color: statusColor),
-//     );
-//   }
-// }
 
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -231,6 +13,7 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/init_provider.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
 import 'package:ultrared/src/pages/lista_grupos_chat.dart';
+import 'package:ultrared/src/pages/lista_notificaciones.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
 import 'package:ultrared/src/pages/splash_screen.dart';
 import 'package:ultrared/src/service/socket_service.dart';
@@ -323,44 +106,44 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
 
 
-    final List<String> imageUrls = [
-      'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
+    // final List<String> imageUrls = [
+    //   'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
 
-      // Agrega más URLs según sea necesario
-    ];
+    //   // Agrega más URLs según sea necesario
+    // ];
 
-    final List<Map<String, dynamic>> _listaInfoPublicidad = [
-      {
-        "tipo": 'promociones',
-        "url":
-            'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
-        "titulo": 'Promocioes',
-        "descripcion": 'El tituloLa Descripcion',
-      },
+    // final List<Map<String, dynamic>> _listaInfoPublicidad = [
+    //   {
+    //     "tipo": 'promociones',
+    //     "url":
+    //         'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
+    //     "titulo": 'Promocioes',
+    //     "descripcion": 'El tituloLa Descripcion',
+    //   },
 
-      {
-        "tipo": 'comunicado',
-        "url": '',
-        "titulo": 'Reunión de la Comunidad',
-        "descripcion":
-            'Se realizara en la casa comunal a las 17:hoo para tratar temas relacionados con la vialidad',
-      },
-      {
-        "tipo": 'publicidad',
-        "url":
-            'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
-        "titulo": 'Publicidad',
-        "descripcion": 'La Descripcion de la publicidad',
-      },
+    //   {
+    //     "tipo": 'comunicado',
+    //     "url": '',
+    //     "titulo": 'Reunión de la Comunidad',
+    //     "descripcion":
+    //         'Se realizara en la casa comunal a las 17:hoo para tratar temas relacionados con la vialidad',
+    //   },
+    //   {
+    //     "tipo": 'publicidad',
+    //     "url":
+    //         'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
+    //     "titulo": 'Publicidad',
+    //     "descripcion": 'La Descripcion de la publicidad',
+    //   },
 
-      // Agrega más URLs según sea necesario
-    ];
+    //   // Agrega más URLs según sea necesario
+    // ];
 
     @override
     final Responsive size = Responsive.of(context);
     // var socketProvider = context.read<SocketService>();
     final _ctrl = context.read<HomeController>();
-    final _chatCtrl = context.read<ChatController>();
+    // final _chatCtrl = context.read<ChatController>();
     _ctrl.checkConnectivity();
     // var socketProvider =Provider.of<SocketProvider>(context,listen:  true);
     //  _ctrl.getconectionInternet== false?
@@ -389,7 +172,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   // fit: BoxFit.,
                   // width: size.1Screen(5.0), // URL de la imagen
                 ),
-              ),
+              ),  
               actions: [
                 values.connectionStatus != ConnectionStatus.none
                     ? Badge(
@@ -406,7 +189,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         child: Container(
                           margin: EdgeInsets.only(right: size.iScreen(2.0)),
                           child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+
+context.read<HomeController>().buscarNotificaciones(context);
+
+// 
+
+
+                               Navigator.of(context).push(MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const ListaNotificaciones()));
+
+                              },
                               icon: Icon(
                                 Icons.notifications,
                                 size: size.iScreen(3.5),
@@ -654,47 +448,29 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                 horizontal: size.iScreen(1.0),
                                                 vertical: size.iScreen(1.0)),
                                             width: size.wScreen(100.0),
-                                            child: Container(
+                                            child: 
+                                            
+                                            Container(
                                               // color: Colors.yellow,
                                               width: size.wScreen(95.0),
                                               child:
             
-                                                  // CarouselSlider(
-                                                  //   options: CarouselOptions(
-                                                  //     // height: 200.0,
-                                                  //     autoPlay: true,
-                                                  //     aspectRatio: 16 / 9,
-                                                  //     enlargeCenterPage: true,
-                                                  //   ),
-                                                  //   items: imageUrls.map((url) {
-                                                  //     return Builder(
-                                                  //       builder: (BuildContext context) {
-                                                  //         return Container(
-                                                  //           width: MediaQuery.of(context)
-                                                  //               .size
-                                                  //               .width,
-                                                  //           margin: EdgeInsets.symmetric(
-                                                  //               horizontal: 5.0),
-                                                  //           decoration: BoxDecoration(
-                                                  //               // color: Colors.blue,
-                                                  //               ),
-                                                  //           child: Image.network(
-                                                  //             url,
-                                                  //             fit: BoxFit.cover,
-                                                  //           ),
-                                                  //         );
-                                                  //       },
-                                                  //     );
-                                                  //   }).toList(),
-                                                  // ),
-                                                  CarouselSlider(
+
+                                                    Consumer <HomeController> (builder: ( _, valueNoticias,__) { 
+return 
+
+
+valueNoticias.getListaTodasLasNoticias.isNotEmpty?
+
+
+CarouselSlider(
                                                 options: CarouselOptions(
                                                   // height: 200.0,
                                                   autoPlay: true,
                                                   aspectRatio: 16 / 9,
                                                   enlargeCenterPage: true,
                                                 ),
-                                                items: _listaInfoPublicidad
+                                                items: valueNoticias.getListaTodasLasNoticias
                                                     .map((info) {
                                                   return Builder(builder:
                                                       (BuildContext context) {
@@ -711,8 +487,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                         decoration: BoxDecoration(
                                                             // color: Colors.yellow.shade50,
                                                             ),
-                                                        child: info['tipo'] ==
-                                                                'comunicado'
+                                                        child: info['noti_tipo_servicio'] ==
+                                                                'HOGAR'
                                                             ? Container(
                                                                 padding: EdgeInsets.symmetric(
                                                                     horizontal: size
@@ -734,7 +510,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                                 child: Column(
                                                                   children: [
                                                                     Text(
-                                                                      '${info['titulo']}',
+                                                                      '${info['noti_titulo']}',
                                                                       style: GoogleFonts
                                                                           .poppins(
                                                                         fontSize:
@@ -748,7 +524,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                                       ),
                                                                     ),
                                                                     Text(
-                                                                      '${info['descripcion']}',
+                                                                      '${info['noti_descripcion']}',
                                                                       textAlign:
                                                                           TextAlign
                                                                               .center,
@@ -785,7 +561,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                               ));
                                                   });
                                                 }).toList(),
-                                              ),
+                                              ):NoData(label: 'No hay noticias nuevas');
+                                           
+
+                                                     },),
+                                                  
+                                           
+                                           
                                             ),
                                           ),
                                         ],

@@ -457,10 +457,7 @@ class _FotosVehiculoPageState extends State<FotosVehiculoPage> {
                                     if (response != null) {
                                       _modalMessageResponse(context, response['msg'], size);
                                   
-                                    } else {
-                                      NotificatiosnService.showSnackBarError(
-                                          'No se pudo realizar la petición');
-                                    }
+                                    } 
                               }
                               else {
                                   NotificatiosnService.showSnackBarDanger('Agregar foto de Vehículo');
@@ -488,36 +485,18 @@ class _FotosVehiculoPageState extends State<FotosVehiculoPage> {
             ),
           ),
           actions: <Widget>[
-            Container(
-              width: size.wScreen(100),
-              // color: Colors.red,
-              child: TextButton(
-                onPressed: () {
-
-
-
-          //        Navigator.of(context).pushAndRemoveUntil(
-          //     MaterialPageRoute(
-          //         builder: (context) => LoginPage(
-          //               // validaTurno: validaTurno,
-          //               // tipo: session.rol,
-          //               // user: session,
-          //               // ubicacionGPS: controllerHome.getCoords,
-          //             )),
-          //     (Route<dynamic> route) => false);
-          // ModalRoute.withName('/');
-
-              Navigator.pop(context);
-              Navigator.pop(context);
-              Navigator.pop(context);
-              Navigator.pop(context);
-
-
-
-                },
-                child: const Text('OK'),
-              ),
-            )
+           Container(
+            width: size.wScreen(100),
+            // color: Colors.red,
+            child: TextButton(
+              onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const SerClientePage()),
+          (Route<dynamic> route) => false);
+              },
+              child: const Text('OK'),
+            ),
+          )
           ]),
     );
   

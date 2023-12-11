@@ -40,7 +40,7 @@ class _RegistroPageState extends State<RegistroPage> {
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
     final _control = context.read<HomeController>();
-  // context.read<SocketService>();
+    // context.read<SocketService>();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -124,34 +124,67 @@ class _RegistroPageState extends State<RegistroPage> {
                           padding: EdgeInsets.all(size.wScreen(0.0)),
                           child: Center(
                             child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: size.hScreen(2.0),
-                                  vertical: size.iScreen(0.0)),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 1.0,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.hScreen(2.0),
+                                    vertical: size.iScreen(0.0)),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+
+                                  // border: Border.all(
+                                  //   color: Colors.grey,
+                                  //   width: 1.0,
+                                  // ),
                                 ),
-                              ),
-                              child: TextFormField(
-                               
-                                decoration: const InputDecoration(
-                                  suffixIcon: Icon(Icons.assignment_ind),
-                                  hintText: 'CÉDULA',
-                                  border: InputBorder.none,
-                                ),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r'[0-9]')),
-                                ],
-                                onChanged: (text) {
-                                  _control.setItemCedua(text.trim());
-                                 
-                                },
-                              ),
-                            ),
+                                child:
+
+                                    // TextFormField(
+
+                                    //   decoration: const InputDecoration(
+                                    //     suffixIcon: Icon(Icons.assignment_ind),
+                                    //     hintText: 'CÉDULA',
+                                    //     border: InputBorder.none,
+                                    //   ),
+                                    //   keyboardType: TextInputType.number,
+                                    //   inputFormatters: <TextInputFormatter>[
+                                    //     FilteringTextInputFormatter.allow(
+                                    //         RegExp(r'[0-9]')),
+                                    //   ],
+                                    //   onChanged: (text) {
+                                    //     _control.setItemCedua(text.trim());
+
+                                    //   },
+                                    // ),
+                                    Container(
+                                  width: size.wScreen(100.0),
+                                  child: TextFormField(
+                                    maxLength: 10,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'[0-9]')),
+                                    ],
+                                    decoration: InputDecoration(
+                                      suffixIcon:
+                                          const Icon(Icons.assignment_ind),
+                                      hintText: 'CÉDULA',
+                                      // border: InputBorder.none,
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          10.0, 15.0, 0.0, 0.0),
+                                      focusedBorder: const OutlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.grey)),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+
+                                      // labelText: 'Nome',
+                                    ),
+                                    onChanged: (text) {
+                                      _control.setItemCedua(text.trim());
+                                    },
+                                  ),
+                                )),
                           ),
                         ),
                         //***********************************************/
@@ -258,7 +291,7 @@ class _RegistroPageState extends State<RegistroPage> {
                                   hintText: 'DIRECCIÒN',
                                   border: InputBorder.none,
                                 ),
-                                 onChanged: (text) {
+                                onChanged: (text) {
                                   _control.setItemDireccion(text.trim());
                                 },
                               ),
@@ -276,9 +309,9 @@ class _RegistroPageState extends State<RegistroPage> {
                         //***********************************************/
                         //***********************************************/
                         GestureDetector(
-                           onTap: () {
-                                          _agregaCorreo(context, _control, size);
-                                        },
+                          onTap: () {
+                            _agregaCorreo(context, _control, size);
+                          },
                           child: Container(
                               width: size.wScreen(80.0),
                               padding: EdgeInsets.symmetric(
@@ -307,11 +340,11 @@ class _RegistroPageState extends State<RegistroPage> {
                                                   fontSize: size.iScreen(
                                                       2.0), // Ajusta según tus necesidades
                                                   fontWeight: FontWeight.w400,
-                                                  color:
-                                                      valuCorreo.getItemCorreos !=
-                                                              ""
-                                                          ? Colors.black
-                                                          : Colors.grey,
+                                                  color: valuCorreo
+                                                              .getItemCorreos !=
+                                                          ""
+                                                      ? Colors.black
+                                                      : Colors.grey,
                                                 ),
                                               )
                                             : Text(
@@ -321,11 +354,11 @@ class _RegistroPageState extends State<RegistroPage> {
                                                       2.0), // Ajusta según tus necesidades
                                                   fontWeight: FontWeight.w400,
                                                   letterSpacing: 0.5,
-                                                  color:
-                                                      valuCorreo.getItemCorreos !=
-                                                              ""
-                                                          ? Colors.black
-                                                          : Colors.grey,
+                                                  color: valuCorreo
+                                                              .getItemCorreos !=
+                                                          ""
+                                                      ? Colors.black
+                                                      : Colors.grey,
                                                 ),
                                               ),
                                       ),
@@ -351,9 +384,9 @@ class _RegistroPageState extends State<RegistroPage> {
 
                         //***********************************************/
                         GestureDetector(
-                           onTap: () {
-                                           _agregaCelular(context, _control, size);
-                                        },
+                          onTap: () {
+                            _agregaCelular(context, _control, size);
+                          },
                           child: Container(
                               width: size.wScreen(80.0),
                               padding: EdgeInsets.symmetric(
@@ -399,7 +432,7 @@ class _RegistroPageState extends State<RegistroPage> {
                                                   color: valuCelular
                                                               .getItemCelulars !=
                                                           ""
-                                                      ? Colors.black45
+                                                      ? Colors.black
                                                       : Colors.grey,
                                                 ),
                                               ),
@@ -439,8 +472,7 @@ class _RegistroPageState extends State<RegistroPage> {
                                   setState(() {
                                     _isChecked = value!;
 
-                                  _control.setItemIsEdad(_isChecked);
-
+                                    _control.setItemIsEdad(_isChecked);
                                   });
                                 },
                               ),
@@ -468,8 +500,6 @@ class _RegistroPageState extends State<RegistroPage> {
 
                         GestureDetector(
                           onTap: () {
-                           
-
                             _next(context, _control);
                           },
                           child: BotonBase(
@@ -535,9 +565,8 @@ class _RegistroPageState extends State<RegistroPage> {
                     ),
                     TextButton(
                         onPressed: () {
-                          controller.seItemCelulars(controller.getItemCelulars!
-                              .replaceAll(
-                                  '+593', '0'));
+                          controller.seItemCelulars(controller.getItemCelulars );
+                              // .replaceAll('+593', '0'));
 
                           final isValidS = controller.validateFormCelular();
                           if (!isValidS) return;
@@ -705,25 +734,20 @@ class _RegistroPageState extends State<RegistroPage> {
   }
 
   void _next(BuildContext context, HomeController controller) {
-    if (
-      controller.getItemCedua!.isEmpty ||
-        controller.getItemCedua!.length < 10  || controller.getItemCedua!.length > 10 ){
-         NotificatiosnService.showSnackBarDanger('Cédula incorrecta');
-        }else if(
-        controller.getItemNombre!.isEmpty ||
+    if (controller.getItemCedua!.isEmpty ||
+        controller.getItemCedua!.length < 10 ||
+        controller.getItemCedua!.length > 10) {
+      NotificatiosnService.showSnackBarDanger('Cédula incorrecta');
+    } else if (controller.getItemNombre!.isEmpty ||
         controller.getItemApellido!.isEmpty ||
         controller.getItemDireccion!.isEmpty ||
         controller.getItemCorreos!.isEmpty |
-            controller.getItemCelulars!.isEmpty||
-            controller.getItemIsEdad==false
-            ) {
+            controller.getItemCelulars!.isEmpty ||
+        controller.getItemIsEdad == false) {
       NotificatiosnService.showSnackBarDanger('Falta agregar  información');
     } else {
-         Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: ((context) =>
-                                                  SeleccionaSector())));
+      Navigator.push(context,
+          MaterialPageRoute(builder: ((context) => SeleccionaSector())));
     }
   }
 }

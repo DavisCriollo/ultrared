@@ -2,10 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
+import 'package:ultrared/src/widgets/no_data.dart';
 
 class ListaNotificaciones extends StatefulWidget {
   const ListaNotificaciones({Key? key}) : super(key: key);
@@ -18,6 +21,13 @@ class _ListaNotificacionesState extends State<ListaNotificaciones> {
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
+
+
+
+
+
+
+    
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -42,63 +52,300 @@ class _ListaNotificacionesState extends State<ListaNotificaciones> {
 
             width: size.wScreen(100.0),
             height: size.hScreen(100.0),
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              shrinkWrap:true ,
-        itemCount: 50,
-        itemBuilder: (context, index) {
-          return 
-          Column(
-            children: [
-              ListTile(
-                dense: true,
-                leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Container(
-                    alignment:  Alignment.center,
-                    width: size.iScreen(5.0),
-            height: size.iScreen(5.0),
-                      // decoration:  BoxDecoration(borderRadius: BorderRadius.circular(100),
-                      // color:  Colors.red
-                      // ),
-                    child: Image.asset(
-                                    'assets/imgs/Avatar.png',
-                                    // scale: 1.5,
-                                    fit: BoxFit.contain,
-                                    width: size.iScreen(5.0),
-                                    scale: 1.0, // URL de la imagen
-                                  ),
-                   
+            child:
+            
+            Container(
+                // alignment: Alignment.center,
+                // color: Colors.red,
+
+                width: size.wScreen(100.0),
+                height: size.hScreen(100.0),
+                child: 
+                Consumer<HomeController>(builder: (_, valueNotificaciones,__) {
+          
+            
+             if (valueNotificaciones.getListaTodasLasNotificaciones.isEmpty) {
+
+                  if (valueNotificaciones.getErrorNotificaciones == null) {
+                return Center(
+                  // child: CircularProgressIndicator(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Cargando Datos...',
+                        style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(1.5),
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      //***********************************************/
+                      SizedBox(
+                        height: size.iScreen(1.0),
+                      ),
+                      //*****************************************/
+                      const CircularProgressIndicator(),
+                    ],
                   ),
-                ),
-                title: Text('Pedro Cevallos',
-                style: GoogleFonts.poppins(
-                fontSize: size.iScreen(1.8),
-                fontWeight: FontWeight.normal,
-                color: Colors.black,
-                letterSpacing: -0.40,
-              ) ),
-                subtitle: Text('Disponible',
-                ),
-                onTap: () {
-                  // Acción al hacer clic en el ListTile
-                  print('Clic en el ListTile $index');
-                },
-                trailing:  Text('11:35',style: GoogleFonts.poppins(
-                fontSize: size.iScreen(1.6),
-                fontWeight: FontWeight.normal,
-                color: Colors.black,
-                // letterSpacing: -0.40,
-              )),
-              ),
-            Divider()
-            ],
-          );
+                );
+              } else if (valueNotificaciones.getListaTodasLasNotificaciones.isEmpty) {
+                return const NoData(
+                  label: 'No existen multas para mostar',
+                );
+              } else if (valueNotificaciones.getListaTodasLasNotificaciones.isEmpty) {
+                return const NoData(
+                  label: 'No existen datos para mostar',
+                );
+                // Text("sin datos");
+              } }
+            return ListView.builder(
+                  shrinkWrap:true ,
+            itemCount: valueNotificaciones.getListaTodasLasNotificaciones.length,
+            itemBuilder: (context, index) {
+
+              final _notificacion=valueNotificaciones.getListaTodasLasNotificaciones[index];
+              String fechaString = "${_notificacion['notFecReg']}";
+
+  // Convertir la cadena a DateTime
+  DateTime fecha = DateTime.parse(fechaString);
+
+  // Convertir a la zona horaria local
+  DateTime fechaLocal = fecha.toLocal();
+
+  // String horaFormateada = "${fechaLocal.hour}:${fechaLocal.minute}:${fechaLocal.second}";
+  String horaFormateada =   "${fechaLocal.hour < 10 ? '0' : ''}${fechaLocal.hour}:${fechaLocal.minute < 10 ? '0' : ''}${fechaLocal.minute}";
+              return 
+              Column(
+                children: [
+                  ListTile(
+                    dense: true,
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Container(
+                        alignment:  Alignment.center,
+                        width: size.iScreen(5.0),
+                height: size.iScreen(5.0),
+                          // decoration:  BoxDecoration(borderRadius: BorderRadius.circular(100),
+                          // color:  Colors.red
+                          // ),
+                        child: 
+                        // Image.asset(
+                        //                 'assets/imgs/Avatar.png',
+                        //                 // scale: 1.5,
+                        //                 fit: BoxFit.contain,
+                        //                 width: size.iScreen(5.0),
+                        //                 scale: 1.0, // URL de la imagen
+                        //               ),
+                        // CachedNetworkImage(
+                        //                               imageUrl: 'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
+                        //                               fit: BoxFit.contain,
+                        //                               placeholder: (context,
+                        //                                       url) =>
+                        //                                   const CupertinoActivityIndicator(),
+                        //                               // Image.asset(
+                        //                               //     'assets/imgs/loader.gif'),
+                    
+                        //                               errorWidget: (context, url,
+                        //                                       error) =>
+                        //                                   const Icon(Icons.error),
+                        //             
+                        //                ),
+
+                          _notificacion!['perFoto'].isNotEmpty
+                    ? Container(
+                        width: size.iScreen(9.0),
+                        height: size.iScreen(9.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.grey, width: 2.0),
+                        ),
+                        child: ClipOval(
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                '${_notificacion!['perFoto']}', // Reemplaza con la URL de tu imagen
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                            fit: BoxFit.cover,
+                          ),
+                        ))
+                    : ClipOval(
+                        child: Image.asset(
+                          'assets/imgs/no-image.png', // Reemplaza con la ruta de tu imagen en los activos
+                          width: size.iScreen(7.5),
+                          height: size.iScreen(7.5),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      ),
+                    ),
+                    title: Text('${_notificacion['perNombre']}',
+                    style: GoogleFonts.poppins(
+                    fontSize: size.iScreen(1.8),
+                    fontWeight: FontWeight.normal,
+                    color: Colors.black,
+                    letterSpacing: -0.40,
+                  ) ),
+                    subtitle: Text('${_notificacion['notTipo']}',
+                    ),
+                    onTap: () {
+                      // Acción al hacer clic en el ListTile
+                      print('Clic en el ListTile $index');
+                    },
+                    trailing:  Text('$horaFormateada',style: GoogleFonts.poppins(
+                    fontSize: size.iScreen(1.6),
+                    fontWeight: FontWeight.normal,
+                    color: Colors.black,
+                    // letterSpacing: -0.40,
+                  )),
+                  ),
+                Divider()
+                ],
+              );
        
-        },
-      )),
-    
+            },
+      );
+          },
+        ),
+      //           Consumer<ChatController>(builder: (_, valueUsuarios, __) {  
+      //              if (valueUsuarios.getErrorUsuariosChat == null) {
+      //             return Center(
+      //               // child: CircularProgressIndicator(),
+      //               child: Column(
+      //                 mainAxisSize: MainAxisSize.min,
+      //                 children: [
+      //                   Text(
+      //                     'Cargando Datos...',
+      //                     style: GoogleFonts.lexendDeca(
+      //                         fontSize: size.iScreen(1.5),
+      //                         color: Colors.black87,
+      //                         fontWeight: FontWeight.bold),
+      //                   ),
+      //                   //***********************************************/
+      //                   SizedBox(
+      //                     height: size.iScreen(1.0),
+      //                   ),
+      //                   //*****************************************/
+      //                   const CircularProgressIndicator(),
+      //                 ],
+      //               ),
+      //             );
+      //           } else if (valueUsuarios.getErrorUsuariosChat == false) {
+      //             return const NoData(
+      //               label: 'No existen datos para mostar',
+      //             );
+      //             // Text("Error al cargar los datos");
+      //           } else if (valueUsuarios.getListaTodosLosUsuariosChat.isEmpty) {
+      //             return const NoData(
+      //               label: 'No existen datos para mostar',
+      //             );
+      //           }
+      //             return  ListView.builder(
+      //             shrinkWrap:true ,
+      //       itemCount: valueUsuarios.getListaTodosLosUsuariosChat.length,
+      //       itemBuilder: (context, index) {
+      //         final _usuario=valueUsuarios.getListaTodosLosUsuariosChat[index];
+      //         return 
+      //         Column(
+      //           children: [
+      //             ListTile(
+      //               dense: true,
+      //               leading: ClipRRect(
+      //                 borderRadius: BorderRadius.circular(100),
+      //                 child: Container(
+      //                   alignment:  Alignment.center,
+      //                   width: size.iScreen(5.0),
+      //           height: size.iScreen(5.0),
+      //                     // decoration:  BoxDecoration(borderRadius: BorderRadius.circular(100),
+      //                     // color:  Colors.red
+      //                     // ),
+      //                   child: 
+      //                   // Image.asset(
+      //                   //                 'assets/imgs/Avatar.png',
+      //                   //                 // scale: 1.5,
+      //                   //                 fit: BoxFit.contain,
+      //                   //                 width: size.iScreen(5.0),
+      //                   //                 scale: 1.0, // URL de la imagen
+      //                   //               ),
+      //                   // CachedNetworkImage(
+      //                   //                               imageUrl: 'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
+      //                   //                               fit: BoxFit.contain,
+      //                   //                               placeholder: (context,
+      //                   //                                       url) =>
+      //                   //                                   const CupertinoActivityIndicator(),
+      //                   //                               // Image.asset(
+      //                   //                               //     'assets/imgs/loader.gif'),
+                    
+      //                   //                               errorWidget: (context, url,
+      //                   //                                       error) =>
+      //                   //                                   const Icon(Icons.error),
+      //                   //             
+      //                   //                ),
+
+      //                     _usuario!['foto'].isNotEmpty
+      //               ? Container(
+      //                   width: size.iScreen(9.0),
+      //                   height: size.iScreen(9.0),
+      //                   decoration: BoxDecoration(
+      //                     shape: BoxShape.circle,
+      //                     border: Border.all(color: Colors.blue, width: 2.0),
+      //                   ),
+      //                   child: ClipOval(
+      //                     child: CachedNetworkImage(
+      //                       imageUrl:
+      //                           '${_usuario!['foto']}', // Reemplaza con la URL de tu imagen
+      //                       placeholder: (context, url) =>
+      //                           const CircularProgressIndicator(),
+      //                       errorWidget: (context, url, error) =>
+      //                           Icon(Icons.error),
+      //                       fit: BoxFit.cover,
+      //                     ),
+      //                   ))
+      //               : ClipOval(
+      //                   child: Image.asset(
+      //                     'assets/imgs/no-image.png', // Reemplaza con la ruta de tu imagen en los activos
+      //                     width: size.iScreen(7.5),
+      //                     height: size.iScreen(7.5),
+      //                     fit: BoxFit.cover,
+      //                   ),
+      //                 ),
+      //                 ),
+      //               ),
+      //               title: Text('${_usuario['nombres']}',
+      //               style: GoogleFonts.poppins(
+      //               fontSize: size.iScreen(1.8),
+      //               fontWeight: FontWeight.normal,
+      //               color: Colors.black,
+      //               letterSpacing: -0.40,
+      //             ) ),
+      //               subtitle: Text(_usuario['perOnline']==1?'Disponible':'No Disponible',
+      //               ),
+      //               onTap: () {
+      //                 // Acción al hacer clic en el ListTile
+      //                 print('Clic en el ListTile $index');
+      //               },
+      //               trailing:  Text('11:35',style: GoogleFonts.poppins(
+      //               fontSize: size.iScreen(1.6),
+      //               fontWeight: FontWeight.normal,
+      //               color: Colors.black,
+      //               // letterSpacing: -0.40,
+      //             )),
+      //             ),
+      //           Divider()
+      //           ],
+      //         );
+       
+      //       },
+      // );
+      //           },)
+               ),
+      
+      
+      
+      
+      
       ),
-    );
+    ));
   }
 }

@@ -7,10 +7,7 @@
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:flutter/material.dart';
-// import 'package:sincop_app/src/api/authentication_client.dart';
-// import 'package:sincop_app/src/controllers/home_controller.dart';
-// // import 'package:sincop_app/src/service/local_notificaciones.dart';
-// import 'package:sincop_app/src/service/local_notifications.dart';
+
 
 // class PushNotificationService extends ChangeNotifier {
 //   static final localNotification = LocalNotifications();

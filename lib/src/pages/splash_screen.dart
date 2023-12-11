@@ -181,7 +181,7 @@ class _SplashPageState extends State<SplashPage> {
   //                 _ctrlSocket.sendMessage('client:lista-usuarios', {
   //      "chat_id" : 4
   //   });
-      
+    context.read<HomeController>().buscarNoticias(context);
        Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => HomePage(

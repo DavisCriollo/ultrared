@@ -349,6 +349,13 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
       // );
       //           },)
                ),
+      
+      
+      
+      
+      
+      
+      
       Positioned(
         bottom: size.wScreen(2),
         right: size.wScreen(2.0),
@@ -361,6 +368,7 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
               final _info =
               {
   "opcion": "GROUP", // 'INDIVIDUAL' | 'GROUP'
+ "grupo":widget.infoGrupo,
   "chat_id": widget.infoGrupo['chat_id'], 
   "idUsuario": user,
   // tomar del grupo del chat

@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 // import 'package:path_provider/path_provider.dart';
 // // import 'package:image_picker/image_picker.dart';
 import 'package:ultrared/src/api/api_provider.dart';
+import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 // import 'package:ultrared/src/api/authentication_client.dart';
 // import 'package:http/http.dart' as _http;
@@ -97,6 +98,34 @@ notifyListeners();
      _itemMarca= "";
      _itemModelo= "";
      _itemColor= "";
+  }
+  void resetAllValues(){
+    _itemLugarServicio= "";
+    _itemCedua= "";
+     _itemNombre= "";
+     _itemApellido= "";
+     _itemCelulares= "";
+     _itemCorreos= "";
+     _itemDireccion= "";
+  
+     _ciudadItem= "";
+     _sectorItem= "";
+     _itemReferencia= "";
+    
+     _locationGPS= {};
+     _gpsPositione = false;
+   
+     _itemPlaca= "";
+     _itemMarca= "";
+     _itemModelo= "";
+     _itemColor= "";
+
+     _fotoTipo= "";
+     _urlImage= "";
+     _urlImageCasa= " ";
+     _urlImagePerfil= "";
+     _urlImageVehiculo= "";
+     
   }
 
   // Future<void> getLocation( BuildContext context) async {
@@ -314,7 +343,7 @@ notifyListeners();
       Geolocator.openAppSettings();
     }
 
-    // print('_locationMessage   $_locationGPS');
+    print('_locationGPS   $_locationGPS');
     notifyListeners();
   }
 
@@ -376,12 +405,13 @@ notifyListeners();
   String? get getItemCodeCelular => _itemCodeCelulares;
 
   void seItemCodeCelular(String? valor) {
-    if (valor == '593') {
-      // _itemCodeCelulares = '+$valor' + '9';
-      _itemCodeCelulares = '0';
-    } else {
+    // if (valor == '593') {
+    //   // _itemCodeCelulares = '+$valor' + '9';
+    //   _itemCodeCelulares = '+$valor' ;
+    //   // _itemCodeCelulares = '0';
+    // } else {
       _itemCodeCelulares = '+$valor';
-    }
+    // }
 
     // print('item _itemCodeCelulares: $_itemCodeCelulares');
 
@@ -534,7 +564,7 @@ notifyListeners();
 
     _listaTodasLasCiudades = _data;
 
-    print('LA RAZA: ${_listaTodasLasCiudades[0]['espRazas']}');
+
 
     notifyListeners();
   }
@@ -656,7 +686,7 @@ String? _itemCedulaRecupera = '';
 
 
 
-//================================== LISTAR ALIMENTOS  ==============================//
+//================================== LISTAR PLANES  ==============================//
 
   List _listaTodosLosPlanes = [];
   List get getListaTodosLosPlanes => _listaTodosLosPlanes;
@@ -666,7 +696,7 @@ String? _itemCedulaRecupera = '';
 
     _listaTodosLosPlanes = _data;
 
-    print('LA RAZA: ${_listaTodosLosPlanes[0]['espRazas']}');
+  
 
     notifyListeners();
   }
@@ -693,6 +723,80 @@ String? _itemCedulaRecupera = '';
     return null;
   }
 
+//================================== LISTAR TODAS LA NOTICIAS  ==============================//
+  List _listaTodasLasNoticias = [];
+  List get getListaTodasLasNoticias => _listaTodasLasNoticias;
+
+  void setListaTodasLasNoticias(List _data) {
+    _listaTodasLasNoticias = [];
+
+    _listaTodasLasNoticias = _data;
+
+    print('_listaTodasLasNoticias: $_listaTodasLasNoticias');
+
+    notifyListeners();
+  }
+
+  bool? _errorNoticias; // sera nulo la primera vez
+  bool? get getErrorNoticias => _errorNoticias;
+
+  Future? buscarNoticias(BuildContext context) async {
+       final dataUser = await Auth.instance.getSession();
+
+    final response = await _api.getAllNoticias(
+      context: 
+     context,token: dataUser['token'] );
+    if (response != null) {
+      _errorNoticias = true;
+      setListaTodasLasNoticias(response['data']);
+
+          notifyListeners();
+      return response;
+    }
+    if (response == null) {
+      _errorNoticias = false;
+      notifyListeners();
+      return null;
+    }
+    return null;
+  }
+//================================== LISTAR TODAS LA NOTIFICACIONES  ==============================//
+  List _listaTodasLasNotificaciones = [];
+  List get getListaTodasLasNotificaciones => _listaTodasLasNotificaciones;
+
+  void setListaTodasLasNotificaciones(List _data) {
+    _listaTodasLasNotificaciones = [];
+
+    _listaTodasLasNotificaciones = _data;
+
+    // print('_listaTodasLasNotificaciones: $_listaTodasLasNotificaciones');
+
+    notifyListeners();
+  }
+
+  bool? _errorNotificaciones; // sera nulo la primera vez
+  bool? get getErrorNotificaciones => _errorNotificaciones;
+
+  Future? buscarNotificaciones(BuildContext context) async {
+       final dataUser = await Auth.instance.getSession();
+
+    final response = await _api.getAllNotificaciones(
+      context: 
+     context,token: dataUser['token'] );
+    if (response != null) {
+      _errorNotificaciones = true;
+      setListaTodasLasNotificaciones(response['data']);
+
+          notifyListeners();
+      return response;
+    }
+    if (response == null) {
+      _errorNotificaciones = false;
+      notifyListeners();
+      return null;
+    }
+    return null;
+  }
 
 
 
@@ -720,10 +824,11 @@ bool? _errorCrearUsuario; // sera nulo la primera vez
     "referencia": _itemReferencia,
     "fotoPerfil": _urlImagePerfil,
     "fotoCasa": _urlImageCasa,
-    "gps": {
-        "laitud": -7,
-        "longitud": -90
-    },
+    "gps": _locationGPS,
+    // {
+    //     "laitud": -7,
+    //     "longitud": -90
+    // },
     "fotoVehiculo": _urlImageVehiculo,
     "placa": _itemPlaca,
     "marca": _itemMarca,
