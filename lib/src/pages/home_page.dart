@@ -16,6 +16,7 @@ import 'package:ultrared/src/pages/lista_grupos_chat.dart';
 import 'package:ultrared/src/pages/lista_notificaciones.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
 import 'package:ultrared/src/pages/splash_screen.dart';
+import 'package:ultrared/src/service/notification_push.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
@@ -45,6 +46,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       initData();
     });
     super.initState();
+     FirebaseService.getFirebaseToken().then((token) {
+      print("Firebase Token: $token");
+    });
+
+    FirebaseService.configureFirebaseMessaging();
   }
 
 // ======================= OBSERVABLE  ==========================//

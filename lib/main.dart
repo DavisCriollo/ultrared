@@ -8,12 +8,18 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 // import 'package:ultrared/src/controllers/init_provider.dart';
 
 import 'package:ultrared/src/routes/routes.dart';
+import 'package:ultrared/src/service/notification_push.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
 import 'package:ultrared/src/service/provider_socket.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 
 
-void main() => runApp(const MyApp());
+void main()  async{
+
+   WidgetsFlutterBinding.ensureInitialized();
+await FirebaseService.initializeFirebase();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -33,8 +39,14 @@ class _MyAppState extends State<MyApp> {
           DeviceOrientation.portraitUp,
           DeviceOrientation.portraitDown,
         ]);
+        
       },
     );
+    //  FirebaseService.getFirebaseToken().then((token) {
+    //   print("Firebase Token: $token");
+    // });
+
+    // FirebaseService.configureFirebaseMessaging();
   }
 
 

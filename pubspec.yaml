@@ -64,10 +64,16 @@ dependencies:
   dotted_border: 
   cross_file: ^0.3.3+2
 
+
+  firebase_messaging: ^11.4.0
+  firebase_core: ^1.17.0
+
   flutter_map: 
 
 
 
+# dependency_overrides:
+#   firebase_core_platform_interface: 4.5.1
 
 
 
