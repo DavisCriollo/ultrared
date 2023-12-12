@@ -343,7 +343,7 @@ notifyListeners();
       Geolocator.openAppSettings();
     }
 
-    print('_locationGPS   $_locationGPS');
+    // print('_locationGPS   $_locationGPS');
     notifyListeners();
   }
 
@@ -1217,75 +1217,48 @@ Future getUrlsServerVehiculo( ) async {
 
 
 
-//  File? _selectedImage;
 
-//   File? get selectedImage => _selectedImage;
+//========================== GUARDA TOKEN DDE LA NOTIFICACION =======================//
+  String? _tokennotificacion;
 
-//   void setImage(File image) {
-//     _selectedImage = image;
-//     _url=_selectedImage!.path;
-//     print('LA FOTO ESTA EN : $image');
-//     notifyListeners();
-//   }
-
-//   void clearImage() {
-//     _selectedImage = null;
-//     notifyListeners();
-//   }
-// void deleteImage() {
-//     if (_selectedImage != null) {
-//       _selectedImage!.delete();
-//       clearImage();
-//     }
-//   }
+  String? get getTokennotificacion => _tokennotificacion;
+  Future? setTokennotificacion(String? _tokenFM,String _option) async {
+    _tokennotificacion = _tokenFM;
 
 
+// print('el token es :$_tokenFM');
 
 
+    sentToken(_option);
+    notifyListeners();
+  }
 
-//  File? _imageFile;
+  bool? _errorGuardatoken; // sera nulo la primera vez
+  bool? get getErrorGuardatoken => _errorGuardatoken;
+  set setErrorGuardatoken(bool? value) {
+    _errorGuardatoken = value;
+    notifyListeners();
+  }
 
-//   File? get imageFile => _imageFile;
+  Future sentToken( String _option) async {
+   final  _infoUser = await Auth.instance.getSession();
+    final response = await _api.sentTokenFCM(
+      option: _option,
+      tokennotificacion: _tokennotificacion,
+      token: _infoUser['token'],
+    );
 
+    if (response != null) {
+      _errorGuardatoken = true;
+      return response;
+    }
+    if (response == null) {
+      _errorGuardatoken = false;
+      notifyListeners();
+      return null;
+    }
+  }
 
-//   Future<void> saveImage() async {
-//     if (_imageFile != null) {
-//       try {
-//         final appDocDir = await getApplicationDocumentsDirectory();
-//         final fileName = 'mi_imagen_guardada.png'; // Puedes cambiar el nombre y la extensión según tus necesidades
-//         final savedImage = await _imageFile!.copy('${appDocDir.path}/$fileName');
-
-//         // Notificar al usuario que la imagen se ha guardado exitosamente
-       
-//         // );
-//       } catch (error) {
-//         print('Error al guardar la imagen: $error');
-//       }
-//     }
-//   }
-//-------------------------------------//
-// bool _isAuthenticated = false;
-
-//   bool get isAuthenticated => _isAuthenticated;
-
-//   void authenticateUser(String username, String userId) {
-//     _isAuthenticated = true;
-
-//     final socketService = Provider.of<SocketService>(navigatorKey.currentContext, listen: false);
-//     socketService.disconnectSocket(); // Asegura que el socket esté desconectado antes de la reconexión
-//     socketService.connectSocket(username, userId);
-
-//     notifyListeners();
-//   }
-
-//   void logoutUser() {
-//     _isAuthenticated = false;
-
-//     final socketService = Provider.of<SocketService>(navigatorKey.currentContext, listen: false);
-//     socketService.disconnectSocket();
-
-//     notifyListeners();
-//   }
 //-------------------------------------//
 
 

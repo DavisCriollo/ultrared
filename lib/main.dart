@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:ultrared/src/controllers/auth_controller.dart';
-// import 'package:ultrared/src/api/authentication_client.dart';
+
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
-// import 'package:ultrared/src/controllers/init_provider.dart';
+
 
 import 'package:ultrared/src/routes/routes.dart';
 import 'package:ultrared/src/service/notification_push.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
-import 'package:ultrared/src/service/provider_socket.dart';
+
 import 'package:ultrared/src/service/socket_service.dart';
 
 

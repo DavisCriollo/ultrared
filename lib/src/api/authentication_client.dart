@@ -105,6 +105,7 @@ class Auth {
   Future<void> saveTokenFireBase(String data) async {
 // GUARDAMOS LA INFORMACION DEL DISPOSITIVO
     await _storage.write(key: keyTOKENFIREBASE, value: data);
+      print('TOKEN FCM guardad :$data');
   }
 
   // OBTEMENOS EL TOKENFIREBASE   DEL DISPOSITIVO

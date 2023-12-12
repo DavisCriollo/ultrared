@@ -32,7 +32,7 @@ apply plugin: 'com.google.gms.google-services'
        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
    }
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 31
     // compileSdkVersion 33
       lintOptions {
         checkReleaseBuilds false

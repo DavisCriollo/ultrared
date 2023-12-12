@@ -1,9 +1,9 @@
-
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -46,11 +46,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       initData();
     });
     super.initState();
-     FirebaseService.getFirebaseToken().then((token) {
-      print("Firebase Token: $token");
-    });
+    //  FirebaseService.getFirebaseToken().then((token) {
+    //   final ctrlHome =context.read <HomeController>();
+    //   ctrlHome.setTokennotificacion(token, 'guardar');
 
-    FirebaseService.configureFirebaseMessaging();
+    //   // print("Firebase Token: $token");
+    // });
+
+    // FirebaseService.configureFirebaseMessaging();
   }
 
 // ======================= OBSERVABLE  ==========================//
@@ -88,9 +91,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
 
     var ctrlHome = context.read<HomeController>();
+    FirebaseService.getFirebaseToken().then((token) async {
+      // final ctrlHome =context.read <HomeController>();
+      await Auth.internal().saveTokenFireBase(token.toString());
+      ctrlHome.setTokennotificacion(token, 'guardar');
+
+      // print("Firebase Token: $token");
+    });
+
+    FirebaseService.configureFirebaseMessaging();
 
     user = await Auth.internal().getSession();
-      ctrlHome.setUserApp(user);
+    ctrlHome.setUserApp(user);
     // print('${user!['nombre']}');
 
     // final  socketManager = context.read<SocketService>();
@@ -107,11 +119,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-
-
-
-
-
     // final List<String> imageUrls = [
     //   'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
 
@@ -178,13 +185,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   // fit: BoxFit.,
                   // width: size.1Screen(5.0), // URL de la imagen
                 ),
-              ),  
+              ),
               actions: [
                 values.connectionStatus != ConnectionStatus.none
-                    ? Badge(
+                    ? 
+                    Consumer<SocketModel>(builder: (_, value, __) {  
+                      return
+                    Badge(
                         position: const BadgePosition(top: 10.0, start: 25.0),
                         badgeContent: Text(
-                          '9+',
+                        //  value.getListaNotificaciones.isNotEmpty?  '${value.getListaNotificaciones.length}':'',
+                           '${value.getListaNotificaciones.length}',
                           style: GoogleFonts.poppins(
                             fontSize: size.iScreen(1.4),
                             fontWeight: FontWeight.normal,
@@ -196,16 +207,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           margin: EdgeInsets.only(right: size.iScreen(2.0)),
                           child: IconButton(
                               onPressed: () {
+                                context
+                                    .read<HomeController>()
+                                    .buscarNotificaciones(context);
 
-context.read<HomeController>().buscarNotificaciones(context);
+//
 
-// 
-
-
-                               Navigator.of(context).push(MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const ListaNotificaciones()));
-
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ListaNotificaciones()));
                               },
                               icon: Icon(
                                 Icons.notifications,
@@ -213,7 +223,8 @@ context.read<HomeController>().buscarNotificaciones(context);
                                 color: Colors.black,
                               )),
                         ),
-                      )
+                      );},)
+                    
                     : Container()
               ],
             ),
@@ -237,10 +248,10 @@ context.read<HomeController>().buscarNotificaciones(context);
                           //     children: [
                           //       GestureDetector(
                           //         onTap: () {
-            
+
                           //         }
                           //         ,
-            
+
                           //         child: Container(
                           //           // color:Colors.green,
                           //           width: size.wScreen(10.0),
@@ -267,7 +278,7 @@ context.read<HomeController>().buscarNotificaciones(context);
                           //     ],
                           //   ),
                           // ),
-            
+
                           Expanded(
                             child: Container(
                               // height: size.hScreen(80.0),
@@ -277,7 +288,7 @@ context.read<HomeController>().buscarNotificaciones(context);
                                   Container(
                                     width: size.wScreen(100.0),
                                     height: size.wScreen(60.0),
-            
+
                                     // color: Colors.red,
                                     child: Container(
                                       child: Row(
@@ -306,7 +317,43 @@ context.read<HomeController>().buscarNotificaciones(context);
                                               image: 'assets/imgs/document.png',
                                               title: 'Botón de Ayuda',
                                               label: 'Presiona por 3 segundos',
-                                              onTap: () {}
+                                              onTap: ()  async{
+                                                // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
+                                                final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
+                                                 final status = await Permission .location.request();
+                                                      if (status == PermissionStatus .granted) {
+                                                        //   // print('============== SI TIENE PERMISOS');
+                                                        await _ctrl
+                                                            .getLocation();
+                                                        if (_ctrl.getLocationGPS.isNotEmpty) {
+                                                         
+                                                    final _dataPanico = {
+                                                  "coordenadas": {
+                                                    "latitud":_ctrl.getLocationGPS['latitud'],
+                                                    "longitud":_ctrl.getLocationGPS['longitud']
+                                                  },
+                                                  "rucempresa": "ULTRA2022",
+                                                  "perId": _ctrl.getUser!['id']
+                                                };
+
+                                                print('esta la info para el bon de panico ------> $_dataPanico');
+                                                _ctrlSocket.emitEvent('client:boton-panico', _dataPanico);
+                                                         
+                                                        }
+                                                      } else {
+                                                        Navigator.pushNamed(
+                                                            context, 'gps');
+                                                      }
+
+
+                                             
+
+
+
+                                           
+
+//  showNotification();
+                                              }
                                               // () => Navigator.pushNamed(
                                               //     context, 'SubmenuMascotas'),
                                               // onTap: () {
@@ -324,10 +371,11 @@ context.read<HomeController>().buscarNotificaciones(context);
                                     height: size.wScreen(40.0),
                                     padding: EdgeInsets.symmetric(
                                         horizontal: size.iScreen(1.0)),
-            
+
                                     // color: Colors.red,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Container(
                                           width: size.wScreen(100.0),
@@ -369,27 +417,16 @@ context.read<HomeController>().buscarNotificaciones(context);
                                                 ),
                                               ),
                                               GestureDetector(
-                                                onTap: ()  async{
-            
-            
-            
-         
-                                                  final serviceSocket = context.read<SocketModel>();
-            
-            
-            
-            
+                                                onTap: () async {
+                                                  final serviceSocket = context
+                                                      .read<SocketModel>();
+
                                                   // serviceSocket.emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
                                                   // // serviceSocket.emitEvent( 'client:lista-chats-grupos', {} );
-             
-            
-                                                
+
                                                   // _chatCtrl.buscaGruposChat(context);
                                                   //      final infoUser  = await Auth.instance.getSession();
-             
-            
-            
-            
+
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
@@ -418,9 +455,9 @@ context.read<HomeController>().buscarNotificaciones(context);
                                       width: size.wScreen(100.0),
                                       padding: EdgeInsets.symmetric(
                                           horizontal: size.iScreen(1.0)),
-            
+
                                       // height: size.wScreen(40.0),
-            
+
                                       // color: Colors.red,
                                       // color: Colors.red,
                                       child: Column(
@@ -440,7 +477,7 @@ context.read<HomeController>().buscarNotificaciones(context);
                                             ),
                                           ),
                                           //***********************************************/
-            
+
                                           SizedBox(
                                             height: size.iScreen(1.5),
                                           ),
@@ -454,126 +491,103 @@ context.read<HomeController>().buscarNotificaciones(context);
                                                 horizontal: size.iScreen(1.0),
                                                 vertical: size.iScreen(1.0)),
                                             width: size.wScreen(100.0),
-                                            child: 
-                                            
-                                            Container(
+                                            child: Container(
                                               // color: Colors.yellow,
                                               width: size.wScreen(95.0),
-                                              child:
-            
+                                              child: Consumer<HomeController>(
+                                                builder:
+                                                    (_, valueNoticias, __) {
+                                                  return valueNoticias
+                                                          .getListaTodasLasNoticias
+                                                          .isNotEmpty
+                                                      ? CarouselSlider(
+                                                          options:
+                                                              CarouselOptions(
+                                                            // height: 200.0,
+                                                            autoPlay: true,
+                                                            aspectRatio: 16 / 9,
+                                                            enlargeCenterPage:
+                                                                true,
+                                                          ),
+                                                          items: valueNoticias
+                                                              .getListaTodasLasNoticias
+                                                              .map((info) {
+                                                            return Builder(builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return Container(
+                                                                  width: size
+                                                                      .wScreen(
+                                                                          100),
+                                                                  margin: EdgeInsets
+                                                                      .symmetric(
+                                                                          horizontal:
+                                                                              1.0),
+                                                                  padding: EdgeInsets.symmetric(
+                                                                      horizontal:
+                                                                          size.iScreen(
+                                                                              0.0)),
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                          // color: Colors.yellow.shade50,
+                                                                          ),
+                                                                  child: info['noti_tipo_servicio'] ==
+                                                                          'HOGAR'
+                                                                      ? Container(
+                                                                          padding: EdgeInsets.symmetric(
+                                                                              horizontal: size.iScreen(1.0),
+                                                                              vertical: size.iScreen(1.0)),
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(8.0),
+                                                                            color:
+                                                                                Colors.yellow.shade100,
+                                                                          ),
+                                                                          child:
+                                                                              Column(
+                                                                            children: [
+                                                                              Text(
+                                                                                '${info['noti_titulo']}',
+                                                                                style: GoogleFonts.poppins(
+                                                                                  fontSize: size.iScreen(2.0),
+                                                                                  fontWeight: FontWeight.w700,
+                                                                                  color: octinaryColor,
+                                                                                ),
+                                                                              ),
+                                                                              Text(
+                                                                                '${info['noti_descripcion']}',
+                                                                                textAlign: TextAlign.center,
+                                                                                style: GoogleFonts.poppins(
+                                                                                  fontSize: size.iScreen(1.7),
+                                                                                  fontWeight: FontWeight.normal,
+                                                                                  color: octinaryColor,
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        )
+                                                                      : CachedNetworkImage(
+                                                                          imageUrl:
+                                                                              info['url'],
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                          placeholder: (context, url) =>
+                                                                              const CupertinoActivityIndicator(),
+                                                                          // Image.asset(
+                                                                          //     'assets/imgs/loader.gif'),
 
-                                                    Consumer <HomeController> (builder: ( _, valueNoticias,__) { 
-return 
-
-
-valueNoticias.getListaTodasLasNoticias.isNotEmpty?
-
-
-CarouselSlider(
-                                                options: CarouselOptions(
-                                                  // height: 200.0,
-                                                  autoPlay: true,
-                                                  aspectRatio: 16 / 9,
-                                                  enlargeCenterPage: true,
-                                                ),
-                                                items: valueNoticias.getListaTodasLasNoticias
-                                                    .map((info) {
-                                                  return Builder(builder:
-                                                      (BuildContext context) {
-                                                    return Container(
-                                                        width: size.wScreen(100),
-                                                        margin:
-                                                            EdgeInsets.symmetric(
-                                                                horizontal: 1.0),
-                                                        padding:
-                                                            EdgeInsets.symmetric(
-                                                                horizontal:
-                                                                    size.iScreen(
-                                                                        0.0)),
-                                                        decoration: BoxDecoration(
-                                                            // color: Colors.yellow.shade50,
-                                                            ),
-                                                        child: info['noti_tipo_servicio'] ==
-                                                                'HOGAR'
-                                                            ? Container(
-                                                                padding: EdgeInsets.symmetric(
-                                                                    horizontal: size
-                                                                        .iScreen(
-                                                                            1.0),
-                                                                    vertical: size
-                                                                        .iScreen(
-                                                                            1.0)),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              8.0),
-                                                                  color: Colors
-                                                                      .yellow
-                                                                      .shade100,
-                                                                ),
-                                                                child: Column(
-                                                                  children: [
-                                                                    Text(
-                                                                      '${info['noti_titulo']}',
-                                                                      style: GoogleFonts
-                                                                          .poppins(
-                                                                        fontSize:
-                                                                            size.iScreen(
-                                                                                2.0),
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w700,
-                                                                        color:
-                                                                            octinaryColor,
-                                                                      ),
-                                                                    ),
-                                                                    Text(
-                                                                      '${info['noti_descripcion']}',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                      style: GoogleFonts
-                                                                          .poppins(
-                                                                        fontSize:
-                                                                            size.iScreen(
-                                                                                1.7),
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .normal,
-                                                                        color:
-                                                                            octinaryColor,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              )
-                                                            : CachedNetworkImage(
-                                                                imageUrl:
-                                                                    info['url'],
-                                                                fit: BoxFit.cover,
-                                                                placeholder: (context,
-                                                                        url) =>
-                                                                    const CupertinoActivityIndicator(),
-                                                                // Image.asset(
-                                                                //     'assets/imgs/loader.gif'),
-            
-                                                                errorWidget: (context,
-                                                                        url,
-                                                                        error) =>
-                                                                    const Icon(Icons
-                                                                        .error),
-                                                              ));
-                                                  });
-                                                }).toList(),
-                                              ):NoData(label: 'No hay noticias nuevas');
-                                           
-
-                                                     },),
-                                                  
-                                           
-                                           
+                                                                          errorWidget: (context, url, error) =>
+                                                                              const Icon(Icons.error),
+                                                                        ));
+                                                            });
+                                                          }).toList(),
+                                                        )
+                                                      : NoData(
+                                                          label:
+                                                              'No hay noticias nuevas');
+                                                },
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -594,4 +608,47 @@ CarouselSlider(
       },
     );
   }
+
+  // Future<void> showNotification() async {
+  //   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  //       FlutterLocalNotificationsPlugin();
+
+  //   const AndroidInitializationSettings initializationSettingsAndroid =
+  //       AndroidInitializationSettings('app_icon');
+
+  //   final IOSInitializationSettings initializationSettingsIOS =
+  //       IOSInitializationSettings(
+  //           onDidReceiveLocalNotification: (int id, String? title, String? body, String? payload) async {});
+
+  //   final InitializationSettings initializationSettings =
+  //       InitializationSettings(
+  //           android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+
+  //   await flutterLocalNotificationsPlugin.initialize(
+  //     initializationSettings,
+  //     onSelectNotification: (String? payload) async {},
+  //   );
+
+  //   const AndroidNotificationDetails androidPlatformChannelSpecifics =
+  //       AndroidNotificationDetails(
+  //     'your channel id',
+  //     'your channel name',
+  //         channelDescription: 'Channel description',
+  //     importance: Importance.max,
+  //     priority: Priority.high,
+  //     showWhen: false,
+  //   );
+
+  //   const NotificationDetails platformChannelSpecifics =
+  //       NotificationDetails(android: androidPlatformChannelSpecifics);
+
+  //   await flutterLocalNotificationsPlugin.show(
+  //     0,
+  //     'Título de la notificación',
+  //     'Cuerpo de la notificación',
+  //     platformChannelSpecifics,
+  //     payload: 'Default_Sound',
+  //   );
+  // }
+
 }

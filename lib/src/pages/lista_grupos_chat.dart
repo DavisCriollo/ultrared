@@ -186,7 +186,7 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                                           infoGrupo: _grupo,
                                         ))));
                             // Acción al hacer clic en el ListTile
-                            print('Clic en el ListTile $index');
+                            // print('Clic en el ListTile $index');
                           },
                           //   trailing:  Text('11:35',style: GoogleFonts.poppins(
                           //   fontSize: size.iScreen(1.6),

@@ -120,7 +120,7 @@ class ElementosSOS extends StatelessWidget {
           ],
         ),
       ),
-      onTap:onTap,
+      onLongPress:onTap,
     );
   }
 }

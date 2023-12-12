@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
+import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/acercaDe.dart';
 import 'package:ultrared/src/pages/lista_notificaciones.dart';
 import 'package:ultrared/src/pages/login_page.dart';
@@ -124,15 +125,20 @@ class DrawerMenu extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.notifications_active),
+            leading: const Icon(Icons.notifications_active),
             title: Text('Notificaciones'),
             onTap: () {
               // Acción al hacer clic en "Configuración"
               Navigator.pop(context);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: ((context) => ListaNotificaciones())));
+              context
+                                    .read<HomeController>()
+                                    .buscarNotificaciones(context);
+
+//
+
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ListaNotificaciones()));
             },
           ),
           ListTile(
@@ -157,6 +163,9 @@ class DrawerMenu extends StatelessWidget {
             leading: Icon(Icons.exit_to_app),
             title: Text('Cerrar Sesión'),
             onTap: () async {
+                 var ctrlHome = context.read<HomeController>();
+               final _tokenFCM = await Auth.instance.getTokenFireBase();
+                  ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
               context.read<SocketModel>().disconnectSocket();
               // Acción al hacer clic en "Salir"
               // Navigator.pop(context);

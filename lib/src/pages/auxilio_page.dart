@@ -162,32 +162,83 @@ class _AuxilioPageState extends State<AuxilioPage> {
                       ),
                     ),
                     Expanded(
-                      child: Container(
-                        width:  size.wScreen(100),
-                        child: FlutterMap(
-                          options: MapOptions(
-                            center: latlng.LatLng(-0.27105192324533584, -79.14019002882391), // Coordenadas de San Francisco
-                            zoom: 12.0,
-                          ),
-                          layers: [
-                            TileLayerOptions(
-                              urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                              subdomains: ['a', 'b', 'c'],
-                            ),
-                            MarkerLayerOptions(
-                              markers: [
-                                Marker(
-                                  width: 40.0,
-                                  height: 40.0,
-                                  point: latlng.LatLng(-0.27105192324533584, -79.14019002882391),
-                                  builder: (ctx) => Container(
-                        child: Icon(Icons.location_on,color:  tercearyColor,size:  size.iScreen(4.0),),
-                                  ),
+                      child: Stack(
+                        children: [
+                          Container(
+                            width:  size.wScreen(100),
+                            child: FlutterMap(
+                              options: MapOptions(
+                                center: latlng.LatLng(-0.27105192324533584, -79.14019002882391), // Coordenadas de San Francisco
+                                zoom: 12.0,
+                              ),
+                              layers: [
+                                TileLayerOptions(
+                                  urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                  subdomains: ['a', 'b', 'c'],
+                                ),
+                                MarkerLayerOptions(
+                                  markers: [
+                                    Marker(
+                                      width: 40.0,
+                                      height: 40.0,
+                                      point: latlng.LatLng(-0.27105192324533584, -79.14019002882391),
+                                      builder: (ctx) => Container(
+                            child: Icon(Icons.location_on,color:  tercearyColor,size:  size.iScreen(4.0),),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            child: Container(
+                              padding : EdgeInsets.symmetric(horizontal: size.iScreen(2.0),vertical: size.iScreen(2.0)),
+                              // color:  Colors.red,
+                              width: size.wScreen(100),
+                              child: Row(
+                                children: [
+                                  Container(
+                                padding : EdgeInsets.symmetric(horizontal: size.iScreen(0.9),vertical: size.iScreen(1.2)),
+                                     decoration: ShapeDecoration(
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+                                    child: Column(
+                                        children: [
+                                          Container(
+                                            width: size.iScreen(17),
+                                            height: size.iScreen(17),
+                                            decoration: ShapeDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage("https://via.placeholder.com/130x116"),
+                                                fit: BoxFit.fill,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
+                                            ),
+                                          ),
+                                          Text('Foto del Transporte',
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.poppins(
+                                        fontSize: size.iScreen(1.5),
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                        letterSpacing: -0.40,
+                                      ))
+
+                                        ],
+                                      ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ],

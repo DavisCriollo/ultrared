@@ -201,7 +201,50 @@ class ApiProvider {
     }
   }
 
+//================================= TOKEN ID ==============================//
+  Future sentTokenFCM({
+    BuildContext? context,
+    String? option,
+    String? tokennotificacion,
+    String? token,
+  }) async {
+    try {
+      final uri = Uri.parse('$_dirURL/notificaciones/token');
+      final headers = {
+        'Content-Type': 'application/json',
+        "x-auth-token": "$token"
+      };
+      Map<String, dynamic> body = {
+        "option": option,
+        "tokennotificacion": tokennotificacion,
+      };
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
 
+      final dataResp = await _http.post(
+        uri,
+        headers: headers,
+        body: jsonBody,
+        encoding: encoding,
+      );
+
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 200) {
+        final responseData = jsonDecode(dataResp.body);
+
+        return responseData;
+      }
+      if (dataResp.statusCode == 401) {
+        Auth.instance.deleteSesion(context!);
+
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 
 
 
