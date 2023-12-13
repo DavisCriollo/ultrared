@@ -16,6 +16,7 @@ import 'package:ultrared/src/pages/lista_grupos_chat.dart';
 import 'package:ultrared/src/pages/lista_notificaciones.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
 import 'package:ultrared/src/pages/splash_screen.dart';
+import 'package:ultrared/src/service/local_notifications.dart';
 import 'package:ultrared/src/service/notification_push.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/dialogs.dart';
@@ -91,15 +92,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
 
     var ctrlHome = context.read<HomeController>();
-    FirebaseService.getFirebaseToken().then((token) async {
-      // final ctrlHome =context.read <HomeController>();
-      await Auth.internal().saveTokenFireBase(token.toString());
-      ctrlHome.setTokennotificacion(token, 'guardar');
+    // FirebaseService.getFirebaseToken().then((token) async {
+    //   // final ctrlHome =context.read <HomeController>();
+    //   await Auth.internal().saveTokenFireBase(token.toString());
+    //   ctrlHome.setTokennotificacion(token, 'guardar');
 
-      // print("Firebase Token: $token");
-    });
+    //   // print("Firebase Token: $token");
+    // });
 
-    FirebaseService.configureFirebaseMessaging();
+    // FirebaseService.configureFirebaseMessaging();
 
     user = await Auth.internal().getSession();
     ctrlHome.setUserApp(user);
@@ -189,13 +190,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               actions: [
                 values.connectionStatus != ConnectionStatus.none
                     ? 
-                    Consumer<SocketModel>(builder: (_, value, __) {  
+                    Consumer<HomeController>(builder: (_, value, __) {  
                       return
                     Badge(
                         position: const BadgePosition(top: 10.0, start: 25.0),
                         badgeContent: Text(
                         //  value.getListaNotificaciones.isNotEmpty?  '${value.getListaNotificaciones.length}':'',
-                           '${value.getListaNotificaciones.length}',
+                           '${value.getListaTodasLasNotificaciones.length}',
                           style: GoogleFonts.poppins(
                             fontSize: size.iScreen(1.4),
                             fontWeight: FontWeight.normal,
@@ -302,7 +303,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                               title: 'Estado de Cuenta',
                                               label:
                                                   'Verifica tu estado de cuenta',
-                                              onTap: () {}
+                                              onTap: () {
+
+                                                //  FirebaseService.showTestNotification()  ;
+
+
+
+                                              }
                                               // () => Navigator.pushNamed(
                                               //     context, 'SubmenuMascotas'),
                                               // onTap: () {
@@ -336,8 +343,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                   "perId": _ctrl.getUser!['id']
                                                 };
 
+
+                                                _ctrl.activateAlarm();
+
                                                 print('esta la info para el bon de panico ------> $_dataPanico');
                                                 _ctrlSocket.emitEvent('client:boton-panico', _dataPanico);
+
+
                                                          
                                                         }
                                                       } else {

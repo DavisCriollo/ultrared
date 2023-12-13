@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:cross_file/cross_file.dart';
@@ -1259,7 +1260,39 @@ Future getUrlsServerVehiculo( ) async {
     }
   }
 
-//-------------------------------------//
+//-------------obtiene informacion dde la NOTIFICACIONES -----------------------//
+
+Map<String, dynamic> _infoNotificaacion={};
+Map<String, dynamic> get getInfoNotificacion =>_infoNotificaacion;
+
+
+ void setInfoNotificacion(Map<String, dynamic>_data) {
+
+_infoNotificaacion=_data;
+
+//  print('ESTA ES LA INFO DE NOTIFICACION  : $_infoNotificaacion');
+notifyListeners();
+ }
+
+
+
+
+//---------------MUESTRA ESTADO DE LA ALARMA PRESIONADA--------------------//
+ bool _alarmActivated = false;
+
+  bool get alarmActivated => _alarmActivated;
+
+  void activateAlarm() {
+    _alarmActivated = true;
+    notifyListeners();
+
+    // Esperar 5 segundos antes de desactivar la alarma
+    Timer(Duration(seconds: 5), () {
+      _alarmActivated = false;
+      notifyListeners();
+    });
+  }
+//-----------------------------------//
 
 
 

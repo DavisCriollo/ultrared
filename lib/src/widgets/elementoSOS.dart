@@ -1,8 +1,13 @@
 
 
 
+import 'dart:convert';
+
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:ultrared/src/controllers/home_controller.dart';
 
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
@@ -29,7 +34,10 @@ class ElementosSOS extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return 
+
+    Consumer<HomeController> (builder: (_, values, __) { 
+      return   InkWell(
      
       // splashColor: Colors.red,
       child: Container(
@@ -40,7 +48,7 @@ class ElementosSOS extends StatelessWidget {
             borderRadius: BorderRadius.circular(size.iScreen(1.0))),
         width: size.iScreen(16.0),
         height: size.iScreen(20),
-        child: Column(
+        child:Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
@@ -64,32 +72,37 @@ class ElementosSOS extends StatelessWidget {
                     //   fit: BoxFit.contain,
                     //   width: size.iScreen(7.0),
                     // ),
-                       Container(
-                    width: size.iScreen(9.0),
-                    height: size.iScreen(9.0),
-                    decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(100)),
-                    margin: EdgeInsets.all(size.iScreen(0.0)),
-                    padding: EdgeInsets.all(size.iScreen(0.0)),
-                    child: Container(
-                      width: size.iScreen(3.0),
-                      height: size.iScreen(3.5),
-                      decoration: BoxDecoration(
-                          color: tercearyColor,
+                       AvatarGlow(
+                          glowRadiusFactor: 0.2,
+                glowColor: Colors.red,
+                animate: values.alarmActivated== false?false:true,
+                         child: Container(
+                                           width: size.iScreen(9.0),
+                                           height: size.iScreen(9.0),
+                                           decoration: BoxDecoration(
+                          color: values.alarmActivated== true? Colors.white:Colors.grey,
                           borderRadius: BorderRadius.circular(100)),
-                      margin: EdgeInsets.all(size.iScreen(1.5)),
-                      padding: EdgeInsets.all(size.iScreen(0.5)),
-                      child: Center(
-                          child: Text('SOS',
-                              style: GoogleFonts.poppins(
-                                fontSize: size.iScreen(2.5),
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                letterSpacing: -0.28,
-                              ))),
-                    ),
-                  ),
+                                           margin: EdgeInsets.all(size.iScreen(0.0)),
+                                           padding: EdgeInsets.all(size.iScreen(0.0)),
+                                           child: Container(
+                                             width: size.iScreen(3.0),
+                                             height: size.iScreen(3.5),
+                                             decoration: BoxDecoration(
+                            color:values.alarmActivated== true? Colors.white:tercearyColor,
+                            borderRadius: BorderRadius.circular(100)),
+                                             margin: EdgeInsets.all(size.iScreen(1.5)),
+                                             padding: EdgeInsets.all(size.iScreen(0.5)),
+                                             child: Center(
+                            child: Text('SOS',
+                                style: GoogleFonts.poppins(
+                                  fontSize: size.iScreen(2.5),
+                                  color: values.alarmActivated== true? Colors.red:Colors.white,
+                                  fontWeight: FontWeight.normal,
+                                  letterSpacing: -0.28,
+                                ))),
+                                           ),
+                                         ),
+                       ),
                      Text(title,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
@@ -107,20 +120,38 @@ class ElementosSOS extends StatelessWidget {
               child: Column(
                 children: [
                  
-                  Text(label,
+                  Text(values.alarmActivated== true?
+                  'Alarma Activada': label,
                   textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                           fontSize: size.iScreen(1.3),
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal,
+                          color:values.alarmActivated== true?Colors.red: Colors.black,
+                          fontWeight:values.alarmActivated== true? FontWeight.w600:FontWeight.normal,
                           letterSpacing:  -0.28,)),
                 ],
               ),
             ),
           ],
-        ),
+        )
+    
+        
+        // Consumer<HomeController> (builder: (_, values, __) { 
+          
+        //   return  
+          
+          
+    
+        // },)
+        
+    
       ),
-      onLongPress:onTap,
+      onLongPress:values.alarmActivated== true? null :onTap
     );
+  
+  
+      },);
+   
+  
+  
   }
 }

@@ -41,11 +41,11 @@ class _MyAppState extends State<MyApp> {
         
       },
     );
-    //  FirebaseService.getFirebaseToken().then((token) {
-    //   print("Firebase Token: $token");
-    // });
+     FirebaseService.getFirebaseToken().then((token) {
+      print("Firebase Token: $token");
+    });
 
-    // FirebaseService.configureFirebaseMessaging();
+    FirebaseService.configureFirebaseMessaging();
   }
 
 
@@ -55,64 +55,7 @@ class _MyAppState extends State<MyApp> {
 
     return   MultiProvider(
       providers: [
-        //  ChangeNotifierProvider(create: (_) => InitProvider()),
-        //  ChangeNotifierProxyProvider<InitProvider, SocketService>(
-        //   create: (_) => SocketService(InitProvider()),
-        //   update: (_, authProvider, sockeProvider) {
-        //     sockeProvider!.authProvider = authProvider;
-        //     return sockeProvider;
-        //   },
-        // ),
-
-            //  ChangeNotifierProvider(create: (_) => AuthProvider()),
-            //  ChangeNotifierProvider(create: (_) => SocketService()),
-//  ChangeNotifierProxyProvider<AuthProvider, SocketService>(
-//   create: (_) => SocketService(),  // Create an instance without the AuthProvider
-//   update: (_, authProvider, socketService) {
-//     socketService!.authProvider = authProvider;
-//     return socketService;
-//   },
-// ),     
-//
-//
-//ChangeNotifierProvider(create: (_) => AuthProvider()),
-    //  ChangeNotifierProvider(create: (_) => AuthProvider()),
-    //     ChangeNotifierProxyProvider<AuthProvider, SocketService>(
-    //       create: (_) => SocketService(),
-    //       update: (_, authProvider, socketService) {
-    //         socketService!.authProvider = authProvider;
-    //         return socketService;
-    //       },
-    //     ),
-//
-//
-
-//  ChangeNotifierProvider(create: (context) => AuthProvider()),
-//         ChangeNotifierProxyProvider<AuthProvider, SocketProvider>(
-//           create: (context) => SocketProvider(),
-//           update: (context, authProvider, socketProvider) {
-//             socketProvider!._createSocket(authProvider);
-//             return socketProvider;
-//           },
-//         ),
-
-// ChangeNotifierProvider(create: (_) => AuthProvider()),
-//         ChangeNotifierProvider(create: (_) => SocketProvider()),
-
-
-
-
-
-      // ChangeNotifierProvider(create: (_) => AuthProvider()),
-      //   ChangeNotifierProxyProvider<AuthProvider, SocketProvider>(
-      //     create: (_) => SocketProvider(),
-      //     update: (_, authProvider, socketProvider) {
-      //       // Actualiza el SocketProvider cuando cambian las credenciales de autenticación
-      //       socketProvider!.updateCredentials(authProvider.token, authProvider.rucempresa);
-      //       return socketProvider;
-      //     },
-      //   ),
-
+  
 
          ChangeNotifierProvider(create: (_) => SocketModel()),
          ChangeNotifierProvider(create: (_) => HomeController()),

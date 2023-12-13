@@ -598,6 +598,7 @@ return jsonMap['nombre'];
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
+          snaks.NotificatiosnService.showSnackBarDanger("Debe inciar sesión nuevamente");
 
         return null;
       }
@@ -629,6 +630,7 @@ return jsonMap['nombre'];
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
+         snaks.NotificatiosnService.showSnackBarDanger("Debe inciar sesión nuevamente");
 
         return null;
       }
@@ -668,6 +670,7 @@ return jsonMap['nombre'];
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
+         snaks.NotificatiosnService.showSnackBarDanger("Debe inciar sesión nuevamente");
 
         return null;
       }
@@ -716,6 +719,7 @@ return jsonMap['nombre'];
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
+         snaks.NotificatiosnService.showSnackBarDanger("Debe inciar sesión nuevamente");
 
         return null;
       }

@@ -353,7 +353,8 @@ class _LoginPageState extends State<LoginPage> {
             // var _ctrlAuth = Provider.of<AuthProvider>(context, listen: false);
             var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
               _ctrlSocket.connectToSocket("${infoUser!['token']}", "${infoUser!['rucempresa']}");
-                
+                 context.read<HomeController>().buscarNoticias(context);
+                 context.read<HomeController>().buscarNotificaciones(context);
         
               _ctrlSocket.emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
             //  SocketService(_ctrlInitProvider);
