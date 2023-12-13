@@ -1,6 +1,8 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +13,7 @@ import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/init_provider.dart';
+import 'package:ultrared/src/pages/auxilio_page.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
 import 'package:ultrared/src/pages/lista_grupos_chat.dart';
 import 'package:ultrared/src/pages/lista_notificaciones.dart';
@@ -43,19 +46,50 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       //  setUpNotificationPlugins();
+      // initializeNotifications();
 
       initData();
     });
     super.initState();
-    //  FirebaseService.getFirebaseToken().then((token) {
-    //   final ctrlHome =context.read <HomeController>();
-    //   ctrlHome.setTokennotificacion(token, 'guardar');
+     FirebaseService.getFirebaseToken().then((token) {
+      final ctrlHome =context.read <HomeController>();
+      ctrlHome.setTokennotificacion(token, 'guardar');
 
-    //   // print("Firebase Token: $token");
-    // });
+      // print("Firebase Token: $token");
+    });
 
-    // FirebaseService.configureFirebaseMessaging();
+    FirebaseService.configureFirebaseMessaging();
   }
+
+
+
+//  void initializeNotifications() {
+//     AwesomeNotifications().initialize(
+//       'resource://drawable/app_icon',
+//       [
+//         NotificationChannel(
+//           channelKey: 'basic_channel',
+//           channelName: 'Basic notifications',
+//           channelDescription: 'Notification channel for basic notifications',
+//           defaultColor: Colors.teal,
+//           ledColor: Colors.teal,
+//         ),
+//       ],
+//     );
+//   }
+
+//   void showLocalNotification() {
+//     AwesomeNotifications().createNotification(
+//       content: NotificationContent(
+//         id: 0,
+//         channelKey: 'basic_channel',
+//         title: 'Notificación local',
+//         body: '¡Esta es una notificación local!',
+//       ),
+//     );
+//   }
+
+
 
 // ======================= OBSERVABLE  ==========================//
 
@@ -92,12 +126,148 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
 
     var ctrlHome = context.read<HomeController>();
+
+     // Obtén el token de registro de Firebase
+  String? firebaseToken = await FirebaseMessaging.instance.getToken();
+  print("Firebase ok Token: $firebaseToken");
+
+
+      await Auth.internal().saveTokenFireBase(firebaseToken.toString());
+      ctrlHome.setTokennotificacion(firebaseToken, 'guardar');
+
+    //------------------------------------//
+
+  @override
+  void dispose() {
+
+
+    
+    WidgetsBinding.instance!.removeObserver(this);
+
+    // if (mounted) {
+      // Asegúrate de limpiar la suscripción cuando el widget es desmontado
+      // FirebaseMessaging.onMessage.drain();
+      // FirebaseMessaging.onMessageOpenedApp.drain();
+    // }
+   
+    super.dispose();
+  }
+
+
+
+    //------------------------------------//
+
+     // Manejar la notificación cuando la aplicación está en primer plano
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("Notificación recibida: $message");
+
+      // Aquí puedes dirigir al usuario a la pantalla deseada
+
+
+
+
+
+
+      final _infoNotificacion={
+			"notId": 5,
+			"notTipo": "ALERTA AYUDA",
+			"notIdPersona": 14049,
+			"notIdPerPertenece": 2,
+			"notVisto": "NO",
+			"notTitulo": "Alerta Ayuda",
+			"notContenido": "Solicitó Ayuda",
+			"notUser": "2122232425",
+			"notEmpresa": "ULTRA2022",
+			"id_registro": 0,
+			"url_web": "",
+			"notFecReg": "2023-12-11T15:16:09.000Z",
+			"notFecUpd": "2023-12-11T15:16:16.000Z",
+			"perDocNumero": "0102030405",
+			"perNombre": "Gomez Pedro",
+			"perFoto": "https://documentos.neitor.com/contable/fotoperfil/ULTRA2022/96eee234-93e9-4a4c-9fb7-7d12ba3b3c5a.png",
+			"perFotoCasa": "https://documentos.neitor.com/contable/fotocasa/ULTRA2022/b2ed4c5b-e7db-4e34-8ba3-c32a9480f6c0.png",
+			"perFotoVehiculo": "",
+			"perPerfil": [
+				"CLIENTE"
+			],
+			"notInformacionAdicional": {
+				"tipoServicio": "HOGAR",
+				"coordenadas": {
+					"latitud": -0.239079,
+					"longitud": -79.171853
+				}
+			}
+		};  ctrlHome.setInfoNotificacion(_infoNotificacion);
+
+     Navigator.of(context).pushNamed('auxilo');
+     
+        //  Navigator.of(context).push(MaterialPageRoute(
+        //                                             builder: (context) =>
+        //                                                 const AuxilioPage()));
+
+
+
+
+    });
+
+    // Manejar la notificación cuando la aplicación se abre desde la barra de notificaciones
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print("Notificación abierta desde la aplicación: $message");
+      // Aquí puedes dirigir al usuario a la pantalla deseada
+
+
+            final _infoNotificacion={
+			"notId": 5,
+			"notTipo": "ALERTA AYUDA",
+			"notIdPersona": 14049,
+			"notIdPerPertenece": 2,
+			"notVisto": "NO",
+			"notTitulo": "Alerta Ayuda",
+			"notContenido": "Solicitó Ayuda",
+			"notUser": "2122232425",
+			"notEmpresa": "ULTRA2022",
+			"id_registro": 0,
+			"url_web": "",
+			"notFecReg": "2023-12-11T15:16:09.000Z",
+			"notFecUpd": "2023-12-11T15:16:16.000Z",
+			"perDocNumero": "0102030405",
+			"perNombre": "Gomez Pedro",
+			"perFoto": "https://documentos.neitor.com/contable/fotoperfil/ULTRA2022/96eee234-93e9-4a4c-9fb7-7d12ba3b3c5a.png",
+			"perFotoCasa": "https://documentos.neitor.com/contable/fotocasa/ULTRA2022/b2ed4c5b-e7db-4e34-8ba3-c32a9480f6c0.png",
+			"perFotoVehiculo": "",
+			"perPerfil": [
+				"CLIENTE"
+			],
+			"notInformacionAdicional": {
+				"tipoServicio": "HOGAR",
+				"coordenadas": {
+					"latitud": -0.239079,
+					"longitud": -79.171853
+				}
+			}
+		}; 
+     ctrlHome.setInfoNotificacion(_infoNotificacion);
+
+
+        Navigator.of(context).pushNamed('notificaciones');
+
+      // Navigator.of(context).push(MaterialPageRoute(
+      //                                               builder: (context) =>
+      //                                                   const ListaNotificaciones()));
+    });
+  
+
+    //------------------------------------//
+
+
+
+
     // FirebaseService.getFirebaseToken().then((token) async {
     //   // final ctrlHome =context.read <HomeController>();
     //   await Auth.internal().saveTokenFireBase(token.toString());
     //   ctrlHome.setTokennotificacion(token, 'guardar');
 
-    //   // print("Firebase Token: $token");
+    //   print("Firebase Token: $token");
     // });
 
     // FirebaseService.configureFirebaseMessaging();
@@ -112,47 +282,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     // }
   }
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
-    super.dispose();
-  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
-    // final List<String> imageUrls = [
-    //   'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
-
-    //   // Agrega más URLs según sea necesario
-    // ];
-
-    // final List<Map<String, dynamic>> _listaInfoPublicidad = [
-    //   {
-    //     "tipo": 'promociones',
-    //     "url":
-    //         'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
-    //     "titulo": 'Promocioes',
-    //     "descripcion": 'El tituloLa Descripcion',
-    //   },
-
-    //   {
-    //     "tipo": 'comunicado',
-    //     "url": '',
-    //     "titulo": 'Reunión de la Comunidad',
-    //     "descripcion":
-    //         'Se realizara en la casa comunal a las 17:hoo para tratar temas relacionados con la vialidad',
-    //   },
-    //   {
-    //     "tipo": 'publicidad',
-    //     "url":
-    //         'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
-    //     "titulo": 'Publicidad',
-    //     "descripcion": 'La Descripcion de la publicidad',
-    //   },
-
-    //   // Agrega más URLs según sea necesario
-    // ];
-
+  
     @override
     final Responsive size = Responsive.of(context);
     // var socketProvider = context.read<SocketService>();
@@ -292,11 +428,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
                                     // color: Colors.red,
                                     child: Container(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
+                                      alignment: Alignment.center,
+                                      child: Wrap(
+                                        alignment : WrapAlignment.center,
+                                        crossAxisAlignment : WrapCrossAlignment.center,
+                                        // mainAxisAlignment:
+                                        //     MainAxisAlignment.spaceAround,
                                         children: [
-                                          ElementosHome(
+                                         _ctrl.getUser!['isClient']=='SI'
+                                          ?ElementosHome(
                                               enabled: true,
                                               size: size,
                                               image: 'assets/imgs/document.png',
@@ -305,9 +445,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                   'Verifica tu estado de cuenta',
                                               onTap: () {
 
-                                                //  FirebaseService.showTestNotification()  ;
-
-
+                                            NotificationHelper().showNotification(
+                title: 'Título de la notificación',
+                body: 'Cuerpo de la notificación',
+              );
 
                                               }
                                               // () => Navigator.pushNamed(
@@ -317,7 +458,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                               //       builder: (context) =>
                                               //           const SubmenuMascotas()));
                                               // },
-                                              ),
+                                              ): Container(),
                                           ElementosSOS(
                                               enabled: true,
                                               size: size,
@@ -378,6 +519,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                       ),
                                     ),
                                   ),
+                                    _ctrl.getUser!['isClient']=='SI'
+                                          ?
                                   Container(
                                     width: size.wScreen(100.0),
                                     height: size.wScreen(40.0),
@@ -461,7 +604,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                         ),
                                       ],
                                     ),
-                                  ),
+                                  ) : Container(),
                                   Expanded(
                                     child: Container(
                                       width: size.wScreen(100.0),
@@ -621,46 +764,19 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     );
   }
 
-  // Future<void> showNotification() async {
-  //   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  //       FlutterLocalNotificationsPlugin();
+ 
 
-  //   const AndroidInitializationSettings initializationSettingsAndroid =
-  //       AndroidInitializationSettings('app_icon');
 
-  //   final IOSInitializationSettings initializationSettingsIOS =
-  //       IOSInitializationSettings(
-  //           onDidReceiveLocalNotification: (int id, String? title, String? body, String? payload) async {});
 
-  //   final InitializationSettings initializationSettings =
-  //       InitializationSettings(
-  //           android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
 
-  //   await flutterLocalNotificationsPlugin.initialize(
-  //     initializationSettings,
-  //     onSelectNotification: (String? payload) async {},
-  //   );
 
-  //   const AndroidNotificationDetails androidPlatformChannelSpecifics =
-  //       AndroidNotificationDetails(
-  //     'your channel id',
-  //     'your channel name',
-  //         channelDescription: 'Channel description',
-  //     importance: Importance.max,
-  //     priority: Priority.high,
-  //     showWhen: false,
-  //   );
 
-  //   const NotificationDetails platformChannelSpecifics =
-  //       NotificationDetails(android: androidPlatformChannelSpecifics);
 
-  //   await flutterLocalNotificationsPlugin.show(
-  //     0,
-  //     'Título de la notificación',
-  //     'Cuerpo de la notificación',
-  //     platformChannelSpecifics,
-  //     payload: 'Default_Sound',
-  //   );
-  // }
+
+
+
+
+
+
 
 }

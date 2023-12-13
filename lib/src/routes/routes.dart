@@ -5,6 +5,7 @@ import 'package:ultrared/src/pages/chat_page.dart';
 import 'package:ultrared/src/pages/foto_casa_page.dart';
 import 'package:ultrared/src/pages/foto_perfil_page.dart';
 import 'package:ultrared/src/pages/home_page.dart';
+import 'package:ultrared/src/pages/lista_notificaciones.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
 import 'package:ultrared/src/pages/login_page.dart';
 import 'package:ultrared/src/pages/password_page.dart';
@@ -30,9 +31,9 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
 
   // 'home': (_) => const SeleccionaPlanPage(),
 
-  'home': (_) => const FotosPerfilPage(),
-  'auxilo': (_) => const AuxilioPage()
-  // 'home': (_) => const FotosCasaPage()
+  // 'home': (_) => const FotosPerfilPage(),
+  'auxilo': (_) => const AuxilioPage(),
+  'notificaciones': (_) => const ListaNotificaciones(),
   // 'home': (_) => const FotosCasaPage()
   // 'home': (_) => const ListaUsuariosChat()
   // 'home': (_) =>   ChatPage()

@@ -21,6 +21,9 @@ class DrawerMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
+
+     final  _ctrl =context.read <HomeController>();
+                                          
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -116,14 +119,15 @@ class DrawerMenu extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          ListTile(
+          _ctrl.getUser!['isClient']=='SI'
+                                          ?  ListTile(
             leading: Icon(Icons.list_alt_outlined),
             title: Text('Estado de Cuenta'),
             onTap: () {
               // Acción al hacer clic en "Inicio"
               Navigator.pop(context);
             },
-          ),
+          ): Container(),
           ListTile(
             leading: const Icon(Icons.notifications_active),
             title: Text('Notificaciones'),

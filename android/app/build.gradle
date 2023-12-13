@@ -32,7 +32,7 @@ apply plugin: 'com.google.gms.google-services'
        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
    }
 android {
-    compileSdkVersion 32
+    compileSdkVersion 31
     // compileSdkVersion 33
       lintOptions {
         checkReleaseBuilds false
@@ -51,7 +51,7 @@ android {
         // versionCode flutterVersionCode.toInteger()
         // versionName flutterVersionName
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 31
         versionCode 2
         versionName '1.0.0'
 

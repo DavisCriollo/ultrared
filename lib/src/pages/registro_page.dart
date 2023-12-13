@@ -155,6 +155,7 @@ class _RegistroPageState extends State<RegistroPage> {
                                     //   },
                                     // ),
                                     Container(
+                                      // color:  Colors.red,
                                   width: size.wScreen(100.0),
                                   child: TextFormField(
                                     maxLength: 10,

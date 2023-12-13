@@ -129,96 +129,6 @@ notifyListeners();
      
   }
 
-  // Future<void> getLocation( BuildContext context) async {
-  //   try {
-  //     var status = await Permission.location.status;
-  //     if (status == PermissionStatus.denied) {
-  //       await Permission.location.request();
-  //       status = await Permission.location.status;
-  //     }
-
-  //     if (status == PermissionStatus.granted) {
-  //       Position position = await Geolocator.getCurrentPosition(
-  //           desiredAccuracy: LocationAccuracy.high);
-
-  //       // _locationGPS = "Latitud: ${position.latitude}, Longitud: ${position.longitude}";
-  //       _locationGPS = "${position.latitude},${position.longitude}";
-
-  //     } else if (status == PermissionStatus.denied) {
-  //     //  setItemGPS('');
-  //     //   Position position;
-  //       _showSettingsDialog(context);
-  //     }
-
-  //     // Notificar a los oyentes (widgets que están escuchando cambios en este provider)
-  //     notifyListeners();
-  //   } catch (e) {
-  //     if (e is LocationServiceDisabledException) {
-  //       _showLocationServiceDisabledDialog( context );
-  //     } else {
-  //       print("Error: $e");
-  //     }
-  //   }
-  // }
-  // Future<void> getLocation(BuildContext context) async {
-
-  // // void _showSettingsDialog( BuildContext context) {
-  // //   showDialog(
-  // //     context: context,
-  // //     builder: (BuildContext context) {
-  // //       return AlertDialog(
-  // //         title: Text("Permisos de ubicación"),
-  // //         content: Text(
-  // //             "La ubicación está desactivada. Por favor, active los permisos de ubicación en la configuración del dispositivo."),
-  // //         actions: <Widget>[
-  // //           TextButton(
-  // //             onPressed: () {
-  // //               Navigator.pop(context);
-  // //             },
-  // //             child: Text("Cancelar"),
-  // //           ),
-  // //           TextButton(
-  // //             onPressed: () {
-  // //               Navigator.pop(context);
-  // //               // _openLocationSettings();
-  // //                openAppSettings();
-  // //             },
-  // //             child: Text("Configuración"),
-  // //           ),
-  // //         ],
-  // //       );
-  // //     },
-  // //   );
-  // // }
-  // // void _openLocationSettings() async {
-  // //   if (await canLaunch('package:com.android.settings')) {
-  // //     await launch('package:com.android.settings');
-  // //     openAppSettings();
-  // //   } else {
-  // //     print("No se pudo abrir la configuración de ubicación");
-  // //   }
-  // // }
-
-  // // void _showLocationServiceDisabledDialog(  BuildContext context) {
-  // //   showDialog(
-  // //     context: context,
-  // //     builder: (BuildContext context) {
-  // //       return AlertDialog(
-  // //         title: Text("Servicio de ubicación desactivado"),
-  // //         content: Text("Por favor, active el servicio de ubicación en su dispositivo."),
-  // //         actions: <Widget>[
-  // //           TextButton(
-  // //             onPressed: () {
-  // //               Navigator.pop(context);
-  // //             },
-  // //             child: Text("Cerrar"),
-  // //           ),
-  // //         ],
-  // //       );
-  // //     },
-  // //   );
-
-  // }
 
 //--------------- LISTA DE CIUDAD -------------//
   String _ciudadItem = '';
@@ -387,7 +297,7 @@ notifyListeners();
 
   void seItemCelulars(String? valor) {
     _itemCelulares = valor;
-    print('item Celulars: $_itemCelulares');
+    // print('item Celulars: $_itemCelulares');
     notifyListeners();
   }
 
@@ -733,7 +643,7 @@ String? _itemCedulaRecupera = '';
 
     _listaTodasLasNoticias = _data;
 
-    print('_listaTodasLasNoticias: $_listaTodasLasNoticias');
+    // print('_listaTodasLasNoticias: $_listaTodasLasNoticias');
 
     notifyListeners();
   }
@@ -1251,6 +1161,10 @@ Future getUrlsServerVehiculo( ) async {
 
     if (response != null) {
       _errorGuardatoken = true;
+
+
+// print('el token se guardo $response');
+
       return response;
     }
     if (response == null) {

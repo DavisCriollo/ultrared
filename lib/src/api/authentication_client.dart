@@ -105,7 +105,7 @@ class Auth {
   Future<void> saveTokenFireBase(String data) async {
 // GUARDAMOS LA INFORMACION DEL DISPOSITIVO
     await _storage.write(key: keyTOKENFIREBASE, value: data);
-      print('TOKEN FCM guardad :$data');
+      // print('TOKEN FCM guardad :$data');
   }
 
   // OBTEMENOS EL TOKENFIREBASE   DEL DISPOSITIVO
@@ -119,7 +119,7 @@ class Auth {
 
   // ELIMINA TOKEN FIREBASE
   Future<void> deleteTokenFireBase() async {
-    print('turno FCM eliminado:$keyTOKENFIREBASE');
+    // print('turno FCM eliminado:$keyTOKENFIREBASE');
     await _storage.delete(key: keyTOKENFIREBASE);
   }
 

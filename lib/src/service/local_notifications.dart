@@ -69,3 +69,140 @@
 
 
 // }
+
+
+
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+// class NotificationHelper {
+//   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+//       FlutterLocalNotificationsPlugin();
+
+//   Future<void> initialize() async {
+//     var initializationSettingsAndroid =
+//         AndroidInitializationSettings('@mipmap/ic_launcher');
+//     var initializationSettingsIOS = IOSInitializationSettings();
+//     var initializationSettings = InitializationSettings(
+//       android: initializationSettingsAndroid,
+//       iOS: initializationSettingsIOS,
+//     );
+
+//     await flutterLocalNotificationsPlugin.initialize(
+//       initializationSettings,
+//       onSelectNotification: onSelectNotification,
+//     );
+//   }
+
+//   Future onSelectNotification(String? payload) async {
+//     print("Notificación seleccionada con payload: $payload");
+//   }
+
+//   Future<void> showNotification({required String title, required String body}) async {
+//     var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+//       'your_channel_id',
+//       'your_channel_name',
+//       'your_channel_description',
+//       importance: Importance.max,
+//       priority: Priority.high,
+//       playSound: true,
+//       sound: RawResourceAndroidNotificationSound('notificationsapp'),
+//       enableVibration: true,
+//       icon: '@mipmap/ic_launcher',
+      
+//     );
+//     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+//     var platformChannelSpecifics = NotificationDetails(
+//       android: androidPlatformChannelSpecifics,
+//       iOS: iOSPlatformChannelSpecifics,
+//     );
+
+//     await flutterLocalNotificationsPlugin.show(
+//       0,
+//       title,
+//       body,
+//       platformChannelSpecifics,
+//       payload: 'Notificación payload',
+//     );
+//   }
+// }
+
+class NotificationHelper {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  Future<void> initialize() async {
+    var initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsIOS = IOSInitializationSettings();
+    var initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onSelectNotification: onSelectNotification,
+    );
+
+    configureFirebaseMessaging();
+  }
+
+  Future<void> onSelectNotification(String? payload) async {
+    print("Notificación seleccionada con payload: $payload");
+  }
+
+  void configureFirebaseMessaging() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      // Manejar la notificación recibida mientras la aplicación está en primer plano
+      print("Notificación recibida: $message");
+      showNotification(
+        title: message.notification?.title ?? 'Notificación',
+        body: message.notification?.body ?? '',
+      );
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      // Manejar la notificación cuando la aplicación se abre desde la barra de notificaciones
+      print("Notificación abierta desde la aplicación: $message");
+      // Puedes manejar la navegación a una pantalla específica aquí
+    });
+  }
+
+  Future<void> showNotification({required String title, required String body}) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'your_channel_id',
+      'your_channel_name',
+      'your_channel_description',
+       importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('notificationsapp'),
+      enableVibration: true,
+      icon: '@mipmap/ic_launcher',
+    );
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      platformChannelSpecifics,
+      payload: 'Notificación payload',
+    );
+  }
+}
+
+Future<void> requestNotificationPermission() async {
+  final status = await Permission.notification.request();
+  if (status.isGranted) {
+    print('Permiso para notificaciones concedido.');
+  } else {
+    print('Permiso para notificaciones denegado.');
+  }
+}

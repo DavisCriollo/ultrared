@@ -1,3 +1,5 @@
+import 'package:audioplayers/notifications.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +9,7 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 
 
 import 'package:ultrared/src/routes/routes.dart';
+import 'package:ultrared/src/service/local_notifications.dart';
 import 'package:ultrared/src/service/notification_push.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
 
@@ -17,6 +20,13 @@ void main()  async{
 
    WidgetsFlutterBinding.ensureInitialized();
 await FirebaseService.initializeFirebase();
+
+//  final notificationService = NotificationService();
+//  await NotificationHelper().initialize();
+await Firebase.initializeApp();
+  await NotificationHelper().initialize();
+  await requestNotificationPermission();
+
   runApp(const MyApp());
 }
 
@@ -41,11 +51,11 @@ class _MyAppState extends State<MyApp> {
         
       },
     );
-     FirebaseService.getFirebaseToken().then((token) {
-      print("Firebase Token: $token");
-    });
+    //  FirebaseService.getFirebaseToken().then((token) {
+    //   print("Firebase Token: $token");
+    // });
 
-    FirebaseService.configureFirebaseMessaging();
+    // FirebaseService.configureFirebaseMessaging();
   }
 
 

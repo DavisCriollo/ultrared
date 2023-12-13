@@ -63,8 +63,9 @@ dependencies:
   intl_phone_field: ^3.1.0
   dotted_border: 
   cross_file: ^0.3.3+2
-  # flutter_local_notifications: ^9.5.3+1
-  awesome_notifications: ^0.6.13
+  flutter_local_notifications: ^8.0.0
+  awesome_notifications: ^0.6.20
+  # flutter_local_notifications_plus: ^5.0.0+4
 
 
 
