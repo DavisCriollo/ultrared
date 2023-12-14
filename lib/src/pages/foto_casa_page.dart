@@ -449,9 +449,11 @@ void _onSubmit(BuildContext context, HomeController controller, size) async {
     ProgressDialog.show(context);
     final response = await controller.crearUsuario(context);
     ProgressDialog.dissmiss(context);
-    if (response != null) {
+    if (response != null  && response.containsKey('res') ) {
+       NotificatiosnService.showSnackBarDanger( response['msg']);
+    } else if (response != null  && !response.containsKey('res')) {
       _modalMessageResponse(context, response['msg'], size);
-    } 
+    }
    
   } else {
     NotificatiosnService.showSnackBarDanger('Agregar foto de Casa');

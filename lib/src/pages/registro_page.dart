@@ -16,7 +16,8 @@ import 'package:ultrared/src/widgets/botonBase.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class RegistroPage extends StatefulWidget {
-  const RegistroPage({Key? key}) : super(key: key);
+  final String? action;
+  const RegistroPage({Key? key, required this.action}) : super(key: key);
 
   @override
   State<RegistroPage> createState() => _RegistroPageState();
@@ -38,6 +39,7 @@ class _RegistroPageState extends State<RegistroPage> {
 
   @override
   Widget build(BuildContext context) {
+       final  _action = widget.action;
     final Responsive size = Responsive.of(context);
     final _control = context.read<HomeController>();
     // context.read<SocketService>();
@@ -50,7 +52,11 @@ class _RegistroPageState extends State<RegistroPage> {
           centerTitle: true, // Centra el título en el AppBar
           elevation: 0,
           backgroundColor: cuaternaryColor, // Fondo blanco
-          title: Text('REGISTRO',
+          title: 
+          
+          //  _action == 'CREATE' || _action == 'EXTRA'
+          //         ? 
+                      Text(  _action == 'CREATE'? 'REGISTRO' :'EDITAR REGISTRO',
               style: GoogleFonts.poppins(
                 fontSize: size.iScreen(2.0),
                 fontWeight: FontWeight.w700,
@@ -58,7 +64,13 @@ class _RegistroPageState extends State<RegistroPage> {
                 letterSpacing: -0.40,
               ) // Color del título en negro
               ),
-        ),
+                    ),
+                 
+          
+          
+          
+          
+        
         body: Container(
             // alignment: Alignment.center,
             // color: Colors.red,
@@ -120,7 +132,7 @@ class _RegistroPageState extends State<RegistroPage> {
                         //*****************************************/
                         Container(
                           // color: Colors.red,
-                          width: size.wScreen(80.0),
+                          width: size.wScreen(90.0),
                           padding: EdgeInsets.all(size.wScreen(0.0)),
                           child: Center(
                             child: Container(
@@ -129,63 +141,48 @@ class _RegistroPageState extends State<RegistroPage> {
                                     vertical: size.iScreen(0.0)),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
-
+                            
                                   // border: Border.all(
                                   //   color: Colors.grey,
                                   //   width: 1.0,
                                   // ),
                                 ),
                                 child:
+                            
+                                  
+                                    TextFormField(
+                                       initialValue: widget.action == 'CREATE'
+                        ? ''
+                        : _control.getInfoUsuarioById['perId'].toString(),
 
-                                    // TextFormField(
-
-                                    //   decoration: const InputDecoration(
-                                    //     suffixIcon: Icon(Icons.assignment_ind),
-                                    //     hintText: 'CÉDULA',
-                                    //     border: InputBorder.none,
-                                    //   ),
-                                    //   keyboardType: TextInputType.number,
-                                    //   inputFormatters: <TextInputFormatter>[
-                                    //     FilteringTextInputFormatter.allow(
-                                    //         RegExp(r'[0-9]')),
-                                    //   ],
-                                    //   onChanged: (text) {
-                                    //     _control.setItemCedua(text.trim());
-
-                                    //   },
-                                    // ),
-                                    Container(
-                                      // color:  Colors.red,
-                                  width: size.wScreen(100.0),
-                                  child: TextFormField(
-                                    maxLength: 10,
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.allow(
-                                          RegExp(r'[0-9]')),
-                                    ],
-                                    decoration: InputDecoration(
-                                      suffixIcon:
-                                          const Icon(Icons.assignment_ind),
-                                      hintText: 'CÉDULA',
-                                      // border: InputBorder.none,
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          10.0, 15.0, 0.0, 0.0),
-                                      focusedBorder: const OutlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.grey)),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
+                        readOnly: widget.action == 'CREATE'?false:true,
+                                      maxLength: 10,
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp(r'[0-9]')),
+                                      ],
+                                      decoration: InputDecoration(
+                                        suffixIcon:
+                                            const Icon(Icons.assignment_ind),
+                                        hintText: 'CÉDULA',
+                                        // border: InputBorder.none,
+                                        contentPadding: const EdgeInsets.fromLTRB(
+                                            10.0, 15.0, 0.0, 0.0),
+                                        focusedBorder: const OutlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.grey)),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                    
+                                        // labelText: 'Nome',
                                       ),
-
-                                      // labelText: 'Nome',
-                                    ),
-                                    onChanged: (text) {
-                                      _control.setItemCedua(text.trim());
-                                    },
-                                  ),
-                                )),
+                                      onChanged: (text) {
+                                        _control.setItemCedua(text.trim());
+                                      },
+                                    )),
                           ),
                         ),
                         //***********************************************/
@@ -439,8 +436,7 @@ class _RegistroPageState extends State<RegistroPage> {
                                               ),
                                       ),
                                       Icon(
-                                        Icons
-                                            .stay_current_portrait_outlined, // Cambia el icono según tus necesidades
+                                        Icons.whatsapp_outlined, // Cambia el icono según tus necesidades
                                         color: valuCelular.getItemCelulars == ""
                                             ? Colors.grey
                                             : tercearyColor, // Color del icono

@@ -575,6 +575,38 @@ return jsonMap['nombre'];
     }
   }
 //=========================GET ALL GRUPOS CHAT =====================================//
+  Future getUsuarioById({
+    BuildContext? context,
+    String? token,
+    String? idUser,
+    
+  }) async {
+    try {
+      final url = Uri.parse(
+          '$_dirURL/proveedores/usuarioById/$idUser');
+
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
+      final respo = jsonDecode(dataResp.body);
+      if (dataResp.statusCode == 200) {
+        return respo;
+      }
+
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+        Auth.instance.deleteSesion(context!);
+           snaks.NotificatiosnService.showSnackBarDanger("Debe inciar sesión nuevamente");
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+//=========================GET ALL GRUPOS CHAT =====================================//
   Future getAllNoticias({
     BuildContext? context,
     String? token,

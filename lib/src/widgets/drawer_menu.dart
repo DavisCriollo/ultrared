@@ -1,3 +1,5 @@
+
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +10,11 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/acercaDe.dart';
 import 'package:ultrared/src/pages/lista_notificaciones.dart';
 import 'package:ultrared/src/pages/login_page.dart';
+import 'package:ultrared/src/pages/registro_page.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
 import 'package:ultrared/src/pages/splash_screen.dart';
+import 'package:ultrared/src/service/notification_push.dart';
+import 'package:ultrared/src/service/notifications_service.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
@@ -39,24 +44,56 @@ class DrawerMenu extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 user!['foto'].isNotEmpty
-                    ? Container(
-                        width: size.iScreen(9.0),
-                        height: size.iScreen(9.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.blue, width: 2.0),
-                        ),
-                        child: ClipOval(
-                          child: CachedNetworkImage(
-                            imageUrl:
-                                '${user!['foto']}', // Reemplaza con la URL de tu imagen
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
-                            fit: BoxFit.cover,
+                    ? Row(
+                      mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                            width: size.iScreen(9.0),
+                            height: size.iScreen(9.0),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.blue, width: 2.0),
+                            ),
+                            child: ClipOval(
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    '${user!['foto']}', // Reemplaza con la URL de tu imagen
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                                fit: BoxFit.cover,
+                              ),
+                            )),
+                        InkWell(
+                          onTap: ()  {
+                              Navigator.pop(context);
+              _ctrl.buscaUsuarioById(context);
+
+              if (_ctrl.getInfoUsuarioById.isNotEmpty) {
+                
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RegistroPage( action: 'EDIT',)));
+              }
+              else {
+                 NotificatiosnService.showSnackBarDanger('No puede editar su perfil este momento..');
+              }
+//
+
+                          },
+                          child: Column(
+                            children: [
+                              Text('Editar Perfil',style: GoogleFonts.poppins(
+                          fontSize: size.iScreen(1.5),
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white),),
+                               Icon(Icons.manage_accounts_outlined,size: size.iScreen(3.5),color: Colors.white,),
+                            ],
                           ),
-                        ))
+                        )
+                      ],
+                    )
                     : ClipOval(
                         child: Image.asset(
                           'assets/imgs/no-image.png', // Reemplaza con la ruta de tu imagen en los activos
@@ -145,14 +182,14 @@ class DrawerMenu extends StatelessWidget {
                                         const ListaNotificaciones()));
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.share),
-            title:  const Text('Compartir'),
-            onTap: () {
-              // Acción al hacer clic en "Configuración"
-              Navigator.pop(context);
-            },
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.share),
+          //   title:  const Text('Compartir'),
+          //   onTap: () {
+          //     // Acción al hacer clic en "Configuración"
+          //     Navigator.pop(context);
+          //   },
+          // ),
           ListTile(
             leading: const Icon(Icons.info),
             title: const Text('Acerca de'),
@@ -170,10 +207,9 @@ class DrawerMenu extends StatelessWidget {
                  var ctrlHome = context.read<HomeController>();
                final _tokenFCM = await Auth.instance.getTokenFireBase();
                   ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
+                 await FirebaseService.deleteFirebaseInstance();
               context.read<SocketModel>().disconnectSocket();
-              // Acción al hacer clic en "Salir"
-              // Navigator.pop(context);
-              await Auth.instance.deleteTokenFireBase();
+               await Auth.instance.deleteTokenFireBase();
               await Auth.instance.deleteSesion(context);
 
               // Navigator.push(context,

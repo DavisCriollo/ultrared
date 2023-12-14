@@ -80,7 +80,7 @@ class SerClientePage extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: ((context) =>
-                                                RegistroPage())));
+                                                const RegistroPage(action: 'CREATE',))));
                         },
                           child: BotonBase(
                         size: size,

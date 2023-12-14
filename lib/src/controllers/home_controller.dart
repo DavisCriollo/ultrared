@@ -123,9 +123,10 @@ notifyListeners();
 
      _fotoTipo= "";
      _urlImage= "";
-     _urlImageCasa= " ";
+     _urlImageCasa= "";
      _urlImagePerfil= "";
      _urlImageVehiculo= "";
+     _planItem = '';
      
   }
 
@@ -736,10 +737,6 @@ bool? _errorCrearUsuario; // sera nulo la primera vez
     "fotoPerfil": _urlImagePerfil,
     "fotoCasa": _urlImageCasa,
     "gps": _locationGPS,
-    // {
-    //     "laitud": -7,
-    //     "longitud": -90
-    // },
     "fotoVehiculo": _urlImageVehiculo,
     "placa": _itemPlaca,
     "marca": _itemMarca,
@@ -1201,11 +1198,70 @@ notifyListeners();
     notifyListeners();
 
     // Esperar 5 segundos antes de desactivar la alarma
-    Timer(Duration(seconds: 5), () {
+    Timer(Duration(seconds: 40), () {
       _alarmActivated = false;
       notifyListeners();
     });
   }
+//----------------GET INFO PERFIL------------------//
+
+Map<String,dynamic> _infoUsuarioById ={};
+Map<String,dynamic> get getInfoUsuarioById =>_infoUsuarioById;
+
+
+void setIngoUsuario(Map<String,dynamic>  _info ){
+  _infoUsuarioById ={};
+  _infoUsuarioById =_info;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ print('_infoUsuarioById  : $_infoUsuarioById');
+
+notifyListeners();
+}
+
+
+
+  bool? _errorUserById; // sera nulo la primera vez
+  bool? get getErrorUserById => _errorUserById;
+
+  Future? buscaUsuarioById(BuildContext context) async {
+       final dataUser = await Auth.instance.getSession();
+
+    final response = await _api.getUsuarioById(
+      context: context,token: dataUser['token'],idUser: dataUser['id'].toString()  );
+    if (response != null) {
+      _errorUserById = true;
+      setIngoUsuario(response['data']);
+
+      // setListaTodasLasRazas(response['data'][0]['espRazas']);
+
+      notifyListeners();
+      return response;
+    }
+    if (response == null) {
+      _errorUserById = false;
+      notifyListeners();
+      return null;
+    }
+    return null;
+  }
+
+
+
 //-----------------------------------//
 
 

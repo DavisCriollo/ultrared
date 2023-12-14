@@ -131,6 +131,14 @@ class FirebaseService {
     return await FirebaseMessaging.instance.getToken();
   }
 
+  static Future<void> deleteFirebaseInstance() async {
+    
+    await FirebaseMessaging.instance.deleteToken();
+
+
+    print('SE Eliminar el token y desconectar la instancia de FirebaseMessaging');
+  }
+
   static void configureFirebaseMessaging() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("Got a message while in the foreground!");
@@ -149,5 +157,9 @@ class FirebaseService {
         print("Message also contained a notification: ${message.notification}");
       }
     });
+
+
+    
   }
+ 
 }
