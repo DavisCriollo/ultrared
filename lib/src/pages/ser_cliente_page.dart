@@ -21,7 +21,8 @@ class SerClientePage extends StatelessWidget {
           width: size.wScreen(100.0),
           height: size.hScreen(100.0),
           child: SingleChildScrollView(
-            child: Column(
+            child: 
+            Column(
               
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -30,20 +31,25 @@ class SerClientePage extends StatelessWidget {
                   height: size.hScreen(60),
                   width: size.wScreen(100),
                   // color: Colors.blue, // Puedes ajustar el color según tus preferencias
-                  // child: Image.asset(
-                  //   'assets/imgs/banner1.png',
-                  //   fit: BoxFit.cover, // URL de la imagen
-                  // ),
+                  child: Image.asset(
+                    'assets/imgs/Banner.png',
+                    fit: BoxFit.cover, // URL de la imagen
+                  ),
                 ),
                  
                 // Segundo Container (40% de la pantalla)
                 Container(
+                  // color:Colors.red,
                   height: size.hScreen(40),
                   width: size.wScreen(100),
                   // color: Colors.green, // Puedes ajustar el color según tus preferencias
                   // Puedes agregar contenido adicional en este contenedor
                   child: Column(
                     children: [
+                        SizedBox(
+                        height: size.hScreen(2.0),
+                      ),
+          
                       Container(
                       height: size.hScreen(8),
                       width: size.wScreen(100),
@@ -90,56 +96,7 @@ class SerClientePage extends StatelessWidget {
                         height: size.hScreen(4.0),
                       ),
           
-          //               Text.rich(
-          //   TextSpan(
-          //     children: [
-          //       TextSpan(
-          //         text: 'Ya soy cliente. ',
-          //         style:
-          //         // TextStyle(
-          //         //   color: Color(0xFF080623),
-          //         //   fontSize: 12,
-          //         //   fontFamily: 'Poppins',
-          //         //   fontWeight: FontWeight.w400,
-          //         //   height: 0.08,
-          //         // ),
-          //         GoogleFonts.poppins(
-          //                         fontSize: size.iScreen(1.5),
-          //                         fontWeight: FontWeight.w400,
-          //                         // color: Colors.white
-          
-          //                         ),
-          //       ),
-          //       TextSpan(
-          //         text: ' ',
-          //         style:
-          //         // TextStyle(
-          //         //   color: Color(0xFF24A59E),
-          //         //   fontSize: 12,
-          //         //   fontFamily: 'Poppins',
-          //         //   fontWeight: FontWeight.w600,
-          //         //   height: 0.08,
-          //         // ),
-          //          GoogleFonts.poppins(
-          //                         fontSize: size.iScreen(1.5),
-          //                         fontWeight: FontWeight.w600,
-          //                         // color: Colors.white
-          
-          //                         ),
-          //       ),
-          //       TextSpan(
-          //         text: 'INICIAR SESIÓN',
-          //         style: TextStyle(
-          //           color: Color(0xFFB32523),
-          //           fontSize: 12,
-          //           fontFamily: 'Poppins',
-          //           fontWeight: FontWeight.w600,
-          //           height: 0.08,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // )
+         
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -178,7 +135,72 @@ class SerClientePage extends StatelessWidget {
                 ),
               ],
             ),
-          )),
+          
+          
+          
+      //     Column(
+      //   children: [
+      //     // Primer contenedor que ocupa el 60% de la pantalla
+      //     Container(
+      //       width: size.wScreen(100.0),
+      //     height: size.hScreen(60.0),
+      //       child: Container(
+      //         color: Colors.blue,
+      //         child: Image.network(
+      //           'https://pbs.twimg.com/media/CFUO8nQUsAATjgm?format=jpg&name=medium', // Reemplaza con la URL de tu imagen
+      //           fit: BoxFit.cover,
+      //         ),
+      //       ),
+      //     ),
+      //     // Segundo contenedor que ocupa el 40% de la pantalla
+      //     Container(
+      //        width: size.wScreen(100.0),
+      //     height: size.hScreen(40.0),
+      //       child: Container(
+      //         color: Colors.green,
+      //         padding: EdgeInsets.all(16.0),
+      //         child: Column(
+      //           mainAxisAlignment: MainAxisAlignment.center,
+      //           children: [
+      //             // Dos input text
+      //             TextField(
+      //               decoration: InputDecoration(labelText: 'Ingrese texto 1'),
+      //             ),
+      //             SizedBox(height: 16.0),
+      //             TextField(
+      //               decoration: InputDecoration(labelText: 'Ingrese texto 2'),
+      //             ),
+      //             SizedBox(height: 16.0),
+      //             // Botón
+      //             ElevatedButton(
+      //               onPressed: () {
+      //                 // Acción al presionar el botón
+      //               },
+      //               child: Text('Enviar'),
+      //             ),
+      //             SizedBox(height: 16.0),
+      //             // Imagen en el segundo contenedor
+      //             Image.network(
+      //               'https://pbs.twimg.com/media/CFUO8nQUsAATjgm?format=jpg&name=medium', // Reemplaza con la URL de tu imagen
+      //               width: double.infinity,
+      //               height: 100.0,
+      //               fit: BoxFit.cover,
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //     ),
+      //   ],
+      // ),
+    
+    
+    
+    
+    
+    )
+          
+          
+          )
     );
   }
 }

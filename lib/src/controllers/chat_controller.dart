@@ -17,7 +17,7 @@ class ChatController extends ChangeNotifier {
 
 
   final _api = ApiProvider();
-
+//  final _ctrlSocket= SocketModel();
 
   
   List _messages = [];
@@ -237,10 +237,18 @@ class ChatController extends ChangeNotifier {
   // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
   List get getListaTodoLosChatPaginacion => _listaTodoLosChatPaginacion;
 
-  void setInfoBusquedaTodoLosChatPaginacion(List data) {
+  void setInfoBusquedaTodoLosChatPaginacion(List data ,SocketModel _crtlSocket) {
      _listaTodoLosChatPaginacion.clear();
+                    _crtlSocket.setListaDeMensajesChat({});
+
     _listaTodoLosChatPaginacion.addAll(data);
     // print('TodoLosChat####################>:${_listaTodoLosChatPaginacion}');
+
+ for (var item in _listaTodoLosChatPaginacion) {
+                    _crtlSocket.setListaDeMensajesChat(item);
+                  }
+
+    // _ctrlSocket.setListaDeMensajesChat(data);
 
     notifyListeners();
   }
@@ -301,7 +309,7 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
     notifyListeners();
   }
 
-  Future buscaAllTodoLosChatPaginacion(String? _search, bool _isSearch, int _idChat) async {
+  Future buscaAllTodoLosChatPaginacion(String? _search, bool _isSearch, int _idChat ,SocketModel _crtlSocket) async {
     final dataUser = await Auth.instance.getSession();
 // print('usuario : ${dataUser!.rucempresa}');
     final response = await _api.getAllTodoLosChatPaginacion(
@@ -317,7 +325,7 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
 
     if (response != null) {
       if (response == 401) {
-        setInfoBusquedaTodoLosChatPaginacion([]);
+        setInfoBusquedaTodoLosChatPaginacion([],_crtlSocket);
         _error401TodoLosChatPaginacion = true;
         notifyListeners();
         return response;
@@ -332,7 +340,11 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
 
         setPage(response['data']['pagination']['next']);
 
-        setInfoBusquedaTodoLosChatPaginacion(response['data']['results']);
+          List dataSort = [];
+      dataSort = response['data']['results'];
+      dataSort.sort((a, b) => b['msg_FecReg']!.compareTo(a['msg_FecReg']!));
+
+        setInfoBusquedaTodoLosChatPaginacion(dataSort,_crtlSocket);
         notifyListeners();
         return response;
       }

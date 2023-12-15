@@ -36,19 +36,22 @@ class ApiProvider {
         "usuario": usuario,
         "password": password,
         "empresa": empresa,
-  //   "usuario": "admin",
-	// "password": "Admin**+21",
-	// "empresa": "ULTRA2022"
+  
       });
       final respo = jsonDecode(dataResp.body);
 
-      // print('LA DATA ---------------------->: $respo');
+   
 
       if (dataResp.statusCode == 404) {
         snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
-        return null;
+        return respo;
       }
       if (dataResp.statusCode == 200) {
+        // final responsData = AuthResponse.fromMap(respo);
+        // return responsData;
+        return respo;
+      }
+      if (dataResp.statusCode == 403) {
         // final responsData = AuthResponse.fromMap(respo);
         // return responsData;
         return respo;
@@ -56,10 +59,11 @@ class ApiProvider {
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
 
-        return null;
+        return respo;
       }
     } catch (e) {
-      print('-ERROR -> $e');
+       snaks.NotificatiosnService.showSnackBarDanger("$e}");
+      // print('-ERROR -> $e');
     }
   }
 
@@ -179,7 +183,7 @@ class ApiProvider {
 
 
       final respo = jsonDecode(dataResp.body);
-      print('la data $respo');
+      // print('la data $respo');
 
   snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
       if (dataResp.statusCode == 404) {
@@ -233,6 +237,9 @@ class ApiProvider {
       }
       if (dataResp.statusCode == 200) {
         final responseData = jsonDecode(dataResp.body);
+
+
+          //  print('EL TOKEN DE FIREBASE SE GUARDO EN SERVER : $responseData');
 
         return responseData;
       }

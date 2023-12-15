@@ -15,7 +15,17 @@ class SocketModel with ChangeNotifier {
   List get getListaGruposChat => _listaGruposChat;
   List _listaNotificaciones = [];
   List get getListaNotificaciones => _listaNotificaciones;
+  List<Map<String,dynamic>> _listaDeMensajeChat = [];
+    List<Map<String,dynamic>>  get getListaDeMensajeChat => _listaDeMensajeChat;
+ void setListaDeMensajesChat ( Map<String,dynamic> _msg){
 
+_listaDeMensajeChat.insert(0,_msg);
+// _listaDeMensajeChat.reversed;
+
+// print('Los MENSAJES DEL SERVIDOR   ------->>>>   : $_listaDeMensajeChat');
+
+notifyListeners();
+ }
   Map<String, dynamic> _mensajeChat = {};
   Map<String, dynamic> get getMensajeChat => _mensajeChat;
 
@@ -71,9 +81,10 @@ class SocketModel with ChangeNotifier {
 
     //ESCUCHA LOS MENSAJES CHAT
     _socket.on('server:send-mensaje', (data) {
-      // print('MENSAJE CHAT: $data');
-      _mensajeChat = {};
-      _mensajeChat = data;
+      print('MENSAJE CHAT: $data');
+      // _mensajeChat = {};
+      setListaDeMensajesChat(data);
+      // _mensajeChat = data;
       // _crtlChat.setInfoBusquedaTodoLosChatPaginacion([{data}]);
       notifyListeners();
       // setMensajeDesdeServidor(data); // Actualizar el mensaje en el modelo
@@ -97,6 +108,7 @@ class SocketModel with ChangeNotifier {
   // Método para emitir eventos al servidor
   void emitEvent(String eventName, dynamic data) {
     _socket.emit(eventName, data);
+      print('SE EMITE ESTO AL SERVIDOR : $data');
   }
 
   // Método para establecer la información recibida
@@ -106,18 +118,18 @@ class SocketModel with ChangeNotifier {
   List _listaUsuariosChat = [];
   List get getListaUsuariosChat => _listaUsuariosChat;
 
-  void setMensajeDesdeServidor(List _data) {
-    if (_data.contains('chat_type')) {
-      _listaGruposChat = [];
-      _listaGruposChat = _data;
-      notifyListeners();
-    } else {
-      _listaUsuariosChat = [];
+  // void setMensajeDesdeSerUvidor(List _data) {
+  //   if (_data.contains('chat_type')) {
+  //     _listaGruposChat = [];
+  //     _listaGruposChat = _data;
+  //     notifyListeners();
+  //   } else {
+  //     _listaUsuariosChat = [];
 
-      _listaUsuariosChat = _data;
-      notifyListeners();
-    }
-  }
+  //     _listaUsuariosChat = _data;
+  //     notifyListeners();
+  //   }
+  // }
 
   void reset() {
     _mensajeDesdeServidor = [];

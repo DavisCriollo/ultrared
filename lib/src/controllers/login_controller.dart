@@ -65,10 +65,13 @@ class LoginController extends ChangeNotifier {
         usuario: _usuario!.trim(),
         password: _clave!.trim());
 
-    if (response != null) {
+
+        // print('LA DATA EN CONTROLL : $response');
+
+    if (response != null ) {
      
-      await Auth.instance.saveSession(response);
-      infoUser = await Auth.instance.getSession();
+      // await Auth.instance.saveSession(response);
+      // infoUser = await Auth.instance.getSession();
       // if (_recuerdaCredenciales == true) {
       //   await Auth.instance.saveDataRecordarme(_creddenciales);
       // }
@@ -77,7 +80,7 @@ class LoginController extends ChangeNotifier {
       return response;
     }
     if (response == null) {
-      return null;
+      return response;
     }
   }
 
