@@ -67,11 +67,10 @@ notifyListeners();
       _listaNotificaciones = data;
 
       notifyListeners();
-    });
-
+    }); 
     // Ejemplo de cómo manejar un evento personalizado
     _socket.on('server:lista-usuarios', (data) {
-      // print('Mensaje desde el servidor: $data');
+      print('LISTA DE LOS USUARIOS DEL GRUPO   ------->> : $data');
 
       _listaUsuariosChat = [];
 
@@ -118,18 +117,18 @@ notifyListeners();
   List _listaUsuariosChat = [];
   List get getListaUsuariosChat => _listaUsuariosChat;
 
-  // void setMensajeDesdeSerUvidor(List _data) {
-  //   if (_data.contains('chat_type')) {
-  //     _listaGruposChat = [];
-  //     _listaGruposChat = _data;
-  //     notifyListeners();
-  //   } else {
-  //     _listaUsuariosChat = [];
+  void setMensajeDesdeSerUvidor(List _data) {
+    if (_data.contains('chat_type')) {
+      _listaGruposChat = [];
+      _listaGruposChat = _data;
+      notifyListeners();
+    } else {
+      _listaUsuariosChat = [];
 
-  //     _listaUsuariosChat = _data;
-  //     notifyListeners();
-  //   }
-  // }
+      _listaUsuariosChat = _data;
+      notifyListeners();
+    }
+  }
 
   void reset() {
     _mensajeDesdeServidor = [];

@@ -38,6 +38,21 @@ class _SplashPageState extends State<SplashPage> {
       _chechLogin();
     });
   }
+    @override
+  void dispose() {
+
+
+    
+    // WidgetsBinding.instance!.removeObserver(this);
+//  Provider.of<SocketModel>(context, listen: false).disconnectSocket();
+    // if (mounted) {
+      // Asegúrate de limpiar la suscripción cuando el widget es desmontado
+      // FirebaseMessaging.onMessage.drain();
+      // FirebaseMessaging.onMessageOpenedApp.drain();
+    // }
+   
+    super.dispose();
+  }
 // ======================= CHECAMOS LA VERSION DE LA APP  ==========================//
 //  void checkVersion() async {
 //     _checker.checkUpdate().then((value)  async{
@@ -128,14 +143,21 @@ class _SplashPageState extends State<SplashPage> {
 
     if (session != null) {
 
-     final _ctrlSocket =context.read<SocketModel>();
+
+     var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
+              _ctrlSocket.connectToSocket("${session['token']}", "${session['rucempresa']}");
+
+    //           _ctrlSocket.connectToSocket("${infoUser!['token']}", "${infoUser!['rucempresa']}");
+    //              context.read<HomeController>().buscarNoticias(context);
+    //              context.read<HomeController>().buscarNotificaciones(context);
+
+    //  final _ctrlSocket =context.read<SocketModel>();
                 // final _ctrlAuth =context.read<AuthProvider>();
 //                   SocketService(_ctrlInitProvider);
 //     controllerHome.checkConnectivity(); 
     // final Map<String, dynamic>? session = await Auth.instance.getSession();
 
   //  var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
-              _ctrlSocket.connectToSocket("${session['token']}", "${session['rucempresa']}");
     // _ctrlAuth.setCredentials("${session!['token']}", "${session['rucempresa']}");
             
     //         // Inicializa y conecta el socket
@@ -199,6 +221,7 @@ class _SplashPageState extends State<SplashPage> {
           MaterialPageRoute(builder: (context) => const SerClientePage()),
           (Route<dynamic> route) => false);
     }
+    
   }
 
   @override

@@ -16,6 +16,7 @@ import 'package:ultrared/src/pages/splash_screen.dart';
 import 'package:ultrared/src/service/notification_push.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
 import 'package:ultrared/src/service/socket_service.dart';
+import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 
@@ -43,8 +44,8 @@ class DrawerMenu extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                user!['foto'].isNotEmpty
-                    ? Row(
+                
+                    Row(
                       mainAxisAlignment:  MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
@@ -52,9 +53,10 @@ class DrawerMenu extends StatelessWidget {
                             height: size.iScreen(9.0),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.blue, width: 2.0),
+                              border: Border.all(color: Colors.white, width: 2.0),
                             ),
-                            child: ClipOval(
+                            child: 
+                            user!['foto'].isNotEmpty?ClipOval(
                               child: CachedNetworkImage(
                                 imageUrl:
                                     '${user!['foto']}', // Reemplaza con la URL de tu imagen
@@ -64,44 +66,58 @@ class DrawerMenu extends StatelessWidget {
                                     const Icon(Icons.error),
                                 fit: BoxFit.cover,
                               ),
-                            )),
-                        InkWell(
-                          onTap: ()  {
-                              Navigator.pop(context);
-              _ctrl.buscaUsuarioById(context);
-
-              if (_ctrl.getInfoUsuarioById.isNotEmpty) {
-                
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RegistroPage( action: 'EDIT',)));
-              }
-              else {
-                 NotificatiosnService.showSnackBarDanger('No puede editar su perfil este momento..');
-              }
-//
-
-                          },
-                          child: Column(
-                            children: [
-                              Text('Editar Perfil',style: GoogleFonts.poppins(
-                          fontSize: size.iScreen(1.5),
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white),),
-                               Icon(Icons.manage_accounts_outlined,size: size.iScreen(3.5),color: Colors.white,),
-                            ],
-                          ),
-                        )
-                      ],
-                    )
-                    : ClipOval(
+                            ) : ClipOval(
                         child: Image.asset(
                           'assets/imgs/no-image.png', // Reemplaza con la ruta de tu imagen en los activos
                           width: size.iScreen(7.5),
                           height: size.iScreen(7.5),
                           fit: BoxFit.cover,
                         ),
-                      ),
+                      ),),
+                        InkWell(
+                          onTap: () async {
+
+                                //--------------------//
+
+          _ctrl.buscaUsuarioById(context);
+
+            //   if(_ctrl.getInfoUsuarioById.isEmpty){
+            //                       ProgressDialog.show(context);
+
+            // ProgressDialog.dissmiss(context);
+
+            //   }
+           
+                                //--------------------//
+
+            // ProgressDialog.dissmiss(context);
+
+              if (_ctrl.getInfoUsuarioById.isNotEmpty) {
+                
+                              Navigator.pop(context);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RegistroPage( action: 'EDIT',)));
+                //  NotificatiosnService.showSnackBarDanger('No puede editar su perfil este momento..');
+              }
+              
+// 
+
+                          },
+                          child: Column(
+                            children: [
+                              Text('Editar Perfil',style: GoogleFonts.poppins(
+                          fontSize: size.iScreen(1.3),
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white),),
+                               Icon(Icons.manage_accounts_outlined,size: size.iScreen(3.0),color: Colors.white,),
+                            ],
+                          ),
+                        ),
+                       
+                      ],
+                    ),
+                   
                 Container(
                   width: size.wScreen(80.0),
                   child: Text(

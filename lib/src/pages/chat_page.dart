@@ -283,12 +283,13 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 // }
 
                             return 
+                         menssaje.isNotEmpty?
                             MessageChat(
                               type: 'text',
                               user:_ctrlHome.getUser!,
                               messaje:menssaje,
                              
-                               ) ;
+                               ):Container() ;
 
                             // Text('data');
 

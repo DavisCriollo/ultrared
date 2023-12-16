@@ -29,7 +29,7 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
   'serCliente': (_) => const SerClientePage(),
   // 'login': (_) => const SerClientePage(),
 
-  // 'home': (_) => const SeleccionaPlanPage(),
+  'home': (_) => const HomePage(),
 
   // 'home': (_) => const FotosPerfilPage(),
   'auxilo': (_) => const AuxilioPage(),

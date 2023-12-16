@@ -197,10 +197,17 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
                                   color: Colors.black,
                                   letterSpacing: -0.40,
                                 )),
-                            subtitle: Text(
-                              _usuario['perOnline'] == 1
-                                  ? 'Disponible'
-                                  : 'No Disponible',
+                            subtitle: 
+                                  Text(
+                            _usuario['perOnline'] == 1
+                                  ?  'Disponible':'No Disponible', style: GoogleFonts.poppins(
+                                  fontSize: size.iScreen(1.5),
+                                  fontWeight: FontWeight.normal,
+                                  color: _usuario['perOnline'] == 1
+                                  ?  Colors.green:Colors.black,
+                                  letterSpacing: -0.40,
+                                ),
+                                  
                             ),
                             onTap: () {
                               // Acción al hacer clic en el ListTile
@@ -373,7 +380,7 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
                   for (var item in _crtl.getListaTodoLosChatPaginacion) {
                     _crtlSocket.setListaDeMensajesChat(item);
                   }
-
+                    //  _crtlSocket.setListaDeMensajesChat(_info);
                   Navigator.push(
                       context,
                       MaterialPageRoute(

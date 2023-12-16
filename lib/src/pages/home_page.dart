@@ -42,6 +42,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Map<String, dynamic>? user = {};
 
+        final ctrlHome =HomeController();
   @override
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -52,7 +53,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     });
     super.initState();
      FirebaseService.getFirebaseToken().then((token) {
-      final ctrlHome =context.read <HomeController>();
+      // final ctrlHome =context.read <HomeController>();
       ctrlHome.setTokennotificacion(token, 'guardar');
 
       // print("Firebase Token: $token");
@@ -95,16 +96,19 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    final homeController = context.read<HomeController>();
+  
 
     if (state == AppLifecycleState.resumed) {
       // await homeController.validaInicioDeSesion(context);
       print('EL ESTADO ES ------: $state');
-      homeController.getLocation();
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute<void>(
-              builder: (BuildContext context) => const SplashPage()));
+      ctrlHome.getLocation();
+
+  // Navigator.pushNamed(context, 'splash');
+
+      // Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute<void>(
+      //         builder: (BuildContext context) => const SplashPage()));
 
 //  final _isTurned=
 // homeController.buscaNotificacionesPush('');
@@ -115,9 +119,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
     if (state == AppLifecycleState.inactive) {
       print('EL ESTADO ES: $state');
+      //  Provider.of<SocketModel>(context, listen: false).disconnectSocket();
     }
     if (state == AppLifecycleState.paused) {
       print('EL ESTADO ES: $state');
+      //  Provider.of<SocketModel>(context, listen: false).disconnectSocket();
     }
   }
 
@@ -143,7 +149,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     
     WidgetsBinding.instance!.removeObserver(this);
-
+ Provider.of<SocketModel>(context, listen: false).disconnectSocket();
     // if (mounted) {
       // Asegúrate de limpiar la suscripción cuando el widget es desmontado
       // FirebaseMessaging.onMessage.drain();
@@ -577,7 +583,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                       .read<SocketModel>();
 
                                                   // serviceSocket.emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
-                                                  // // serviceSocket.emitEvent( 'client:lista-chats-grupos', {} );
+                                                  serviceSocket.emitEvent( 'client:lista-chats-grupos', {} );
 
                                                   // _chatCtrl.buscaGruposChat(context);
                                                   //      final infoUser  = await Auth.instance.getSession();

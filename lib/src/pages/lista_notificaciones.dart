@@ -189,8 +189,17 @@ class _ListaNotificacionesState extends State<ListaNotificaciones> {
                     color: Colors.black,
                     letterSpacing: -0.40,
                   ) ),
-                    subtitle: Text('${_notificacion['notTipo']}',
-                    ),
+                    subtitle:
+                    Text('${_notificacion['notTipo']}',
+                    style: GoogleFonts.poppins(
+                    fontSize: size.iScreen(1.3),
+                    fontWeight: FontWeight.normal,
+                    // color: _notificacion['notTipo']=='NO'? Colors.green:  Colors.black,
+                    color: _notificacion['notTipo']=='NO'?Colors.black: Colors.green,
+                    letterSpacing: -0.40,
+                  ) ),
+                    //
+                  
                     onTap: () {
 
 
@@ -199,7 +208,7 @@ class _ListaNotificacionesState extends State<ListaNotificaciones> {
  final _data= {
   "tabla": "notificacion-leido", // default
   "rucempresa": "ULTRA2022", // login
-  "notId":_notificacion['notTipo'],
+  "notId":_notificacion['notId'],
   "notTipo":_notificacion['notTipo'],
   "notIdPersona":_notificacion['notIdPersona'],
   "notVisto":_notificacion['notVisto'],
@@ -235,6 +244,12 @@ class _ListaNotificacionesState extends State<ListaNotificaciones> {
                 ctrlSocket.emitEvent('client:actualizarData', _data);
 
                       final ctrlHome =context.read<HomeController>();
+
+
+
+                                   ctrlHome .buscarNotificaciones(context);
+
+
                       ctrlHome.setInfoNotificacion(_notificacion);
                          Navigator.push(
                                       context,

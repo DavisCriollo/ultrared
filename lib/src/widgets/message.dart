@@ -157,8 +157,6 @@ import 'package:ultrared/src/utils/theme.dart';
 //     ),
 //   );
 
-
-
 // }
 
 // Container _messajeVideo(Responsive size) {
@@ -323,7 +321,7 @@ import 'package:ultrared/src/utils/theme.dart';
 // }
 
 class MessageChat extends StatelessWidget {
-  final Map<String,dynamic> messaje;
+  final Map<String, dynamic> messaje;
   final String type;
   // final Map<String, dynamic>sessionUser;
   final Map<String, dynamic> user;
@@ -341,45 +339,45 @@ class MessageChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
-// String fechaString = "${messaje['msg_FecReg']}";
+    String fechaString = "${messaje['msg_FecReg']}";
 
-  // // Convertir la cadena a DateTime
-  // DateTime fecha = DateTime.parse(fechaString);
+    // Convertir la cadena a DateTime
+    DateTime fecha = DateTime.parse(fechaString);
 
-  // // Convertir a la zona horaria local
-  // DateTime fechaLocal = fecha.toLocal();
+    // Convertir a la zona horaria local
+    DateTime fechaLocal = fecha.toLocal();
 
-  // // String horaFormateada = "${fechaLocal.hour}:${fechaLocal.minute}:${fechaLocal.second}";
-  // String horaFormateada =   "${fechaLocal.hour < 10 ? '0' : ''}${fechaLocal.hour}:${fechaLocal.minute < 10 ? '0' : ''}${fechaLocal.minute}";
-  // // Formatear la fecha para mostrar solo la hora
+    // String horaFormateada = "${fechaLocal.hour}:${fechaLocal.minute}:${fechaLocal.second}";
+    String horaFormateada =
+        "${fechaLocal.hour < 10 ? '0' : ''}${fechaLocal.hour}:${fechaLocal.minute < 10 ? '0' : ''}${fechaLocal.minute}";
+    // Formatear la fecha para mostrar solo la hora
 
-  // print("Hora local formateada: $horaFormateada");
+    print("Hora local formateada: $horaFormateada");
 
-  // DateFormat.Hm().format(myDate.toLocal())
+    // DateFormat.Hm().format(myDate.toLocal())
 
+//     String horaFormateada ='';
+//   if (messaje['msg_FecReg'] != null) {
 
-    String horaFormateada ='';
-  if (messaje['msg_FecReg'] != null) {
-
-   horaFormateada =DateFormat.jm().format(DateTime.parse("${messaje['msg_FecReg']}").toLocal());
-  // Resto del código
-} else {
-  // Manejo del caso cuando la fecha es nula
-  horaFormateada='';
-}
-
+//    horaFormateada =DateFormat.jm().format(DateTime.parse("${messaje['msg_FecReg']}").toLocal());
+//   // Resto del código
+// } else {
+//   // Manejo del caso cuando la fecha es nula
+//   horaFormateada='';
+// }
 
     return Container(
       child: user['id'] == messaje['person_id']
-          ? _myChat(size, messaje, type,horaFormateada)
-          : Text('data')//_noChat(size, messaje, type,horaFormateada),
+          ? _myChat(size, messaje, type, horaFormateada)
+          // : Text('data')/
+          : _noChat(size, messaje, type, horaFormateada),
     );
   }
 }
 
-_myChat(Responsive size, Map<String, dynamic> messaje, String type,String _hora) {
-  return
-   Align(
+_myChat(
+    Responsive size, Map<String, dynamic> messaje, String type, String _hora) {
+  return Align(
     alignment: Alignment.centerRight,
     child: Container(
       // color:  Colors.red,
@@ -389,28 +387,64 @@ _myChat(Responsive size, Map<String, dynamic> messaje, String type,String _hora)
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-           Container(
-                        width: size.iScreen(4.0),
-                        height: size.iScreen(4.0),
-                        margin:EdgeInsets.symmetric(horizontal:size.iScreen(0.3)),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.grey, width: 2.0),
-                        ),
-                        child: ClipOval(
-                          child: CachedNetworkImage(
-                            imageUrl:
-                                '${messaje['foto']}', // Reemplaza con la URL de tu imagen
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
-                            fit: BoxFit.cover,
-                          ),
-                        )),
+          //  Container(
+          //               width: size.iScreen(4.0),
+          //               height: size.iScreen(4.0),
+          //               margin:EdgeInsets.symmetric(horizontal:size.iScreen(0.3)),
+          //               decoration: BoxDecoration(
+          //                 shape: BoxShape.circle,
+          //                 border: Border.all(color: Colors.grey, width: 2.0),
+          //               ),
+          //               child: ClipOval(
+          //                 child: CachedNetworkImage(
+          //                   imageUrl:
+          //                       '${messaje['foto']}', // Reemplaza con la URL de tu imagen
+          //                   placeholder: (context, url) =>
+          //                       const CircularProgressIndicator(),
+          //                   errorWidget: (context, url, error) =>
+          //                       Icon(Icons.error),
+          //                   fit: BoxFit.cover,
+          //                 ),
+          //               )),
+
+          messaje['foto'].isNotEmpty
+              ? Container(
+                  width: size.iScreen(4.0),
+                  height: size.iScreen(4.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.grey, width: 2.0),
+                  ),
+                  child: ClipOval(
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          '${messaje['foto']}', // Reemplaza con la URL de tu imagen
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      fit: BoxFit.cover,
+                    ),
+                  ))
+              : Container(
+                //  decoration: BoxDecoration(
+                //     shape: BoxShape.circle,
+                //     border: Border.all(color: Colors.grey.shade500, width: 2.0),
+                //   ),
+                child: ClipOval(
+                    child: Image.asset(
+                      'assets/imgs/no-image.png',
+                      // color: Colors.grey.shade200, // Reemplaza con la ruta de tu imagen en los activos
+                      width: size.iScreen(4.0),
+                      height: size.iScreen(4.0),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+              ),
+
           Container(
               // color: Colors.red ,
               // width: size.wScreen(60.0),
+              margin:EdgeInsets.only(left: size.iScreen(0.2)),
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.symmetric(
                 horizontal: size.iScreen(1.0),
@@ -487,9 +521,6 @@ _myChat(Responsive size, Map<String, dynamic> messaje, String type,String _hora)
           borderRadius: BorderRadius.circular(8)),
     ),
   );
-
-
-
 }
 
 Container _messajeVideo(Responsive size) {
@@ -550,7 +581,8 @@ Text _messajeTexto(String messaje, Responsive size) {
   );
 }
 
-_noChat(Responsive size, Map<String, dynamic> messaje, String type,String _hora) {
+_noChat(
+    Responsive size, Map<String, dynamic> messaje, String type, String _hora) {
   return Align(
     alignment: Alignment.centerLeft,
     child: Container(
@@ -561,25 +593,50 @@ _noChat(Responsive size, Map<String, dynamic> messaje, String type,String _hora)
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-                        width: size.iScreen(4.0),
-                        height: size.iScreen(4.0),
-                        margin:EdgeInsets.symmetric(horizontal:size.iScreen(0.3)),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.grey, width: 2.0),
-                        ),
-                        child: ClipOval(
-                          child: CachedNetworkImage(
-                            imageUrl:
-                                '${messaje['foto']}', // Reemplaza con la URL de tu imagen
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
-                            fit: BoxFit.cover,
-                          ),
-                        )),
+          // Container(
+          //     width: size.iScreen(4.0),
+          //     height: size.iScreen(4.0),
+          //     margin: EdgeInsets.symmetric(horizontal: size.iScreen(0.3)),
+          //     decoration: BoxDecoration(
+          //       shape: BoxShape.circle,
+          //       border: Border.all(color: Colors.grey, width: 2.0),
+          //     ),
+          //     child: ClipOval(
+          //       child: CachedNetworkImage(
+          //         imageUrl:
+          //             '${messaje['foto']}', // Reemplaza con la URL de tu imagen
+          //         placeholder: (context, url) =>
+          //             const CircularProgressIndicator(),
+          //         errorWidget: (context, url, error) => Icon(Icons.error),
+          //         fit: BoxFit.cover,
+          //       ),
+          //     )),
+          messaje['foto'].isNotEmpty
+              ? Container(
+                  width: size.iScreen(4.0),
+                  height: size.iScreen(4.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.grey, width: 2.0),
+                  ),
+                  child: ClipOval(
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          '${messaje['foto']}', // Reemplaza con la URL de tu imagen
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      fit: BoxFit.cover,
+                    ),
+                  ))
+              : ClipOval(
+                  child: Image.asset(
+                    'assets/imgs/no-image.png', // Reemplaza con la ruta de tu imagen en los activos
+                    width: size.iScreen(4.0),
+                    height: size.iScreen(4.0),
+                    fit: BoxFit.cover,
+                  ),
+                ),
           Container(
               // color: Colors.red ,
               // width: size.wScreen(60.0),
@@ -602,7 +659,7 @@ _noChat(Responsive size, Map<String, dynamic> messaje, String type,String _hora)
                         // width: size.wScreen(60.0),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                         '${messaje['nombres']} ',
+                          '${messaje['nombres']} ',
                           textAlign: TextAlign.left,
                           style: GoogleFonts.poppins(
                             fontSize: size.iScreen(1.5),
@@ -612,7 +669,26 @@ _noChat(Responsive size, Map<String, dynamic> messaje, String type,String _hora)
                           ),
                         ),
                       ),
-                      Container(
+                      // Container(
+                      //   // constraints: BoxConstraints(maxWidth: size.wScreen(60.0)),
+                      //   // alignment: Alignment.centerLeft,
+                      //   constraints: BoxConstraints(
+                      //       // minHeight: size.wScreen(5.0), // Altura mínima
+
+                      //       minWidth: size.wScreen(5.0),
+                      //       maxWidth: size.wScreen(60.0) // Ancho máximo
+                      //       ),
+                      //   child:messaje['message_text']._messajeTexto(messaje['message_text'], size)
+                      //   //  Text('data'),
+                      // ),
+                      // type == 'text'
+                      //     ? messaje['message_text']._messajeTexto(messaje['message_text'], size)
+                      //     : type == 'img'
+                      //         ? _messajeImagen(size)
+                      //         : type == 'video'
+                      //             ? _messajeVideo(size)
+                      //             : _messajeAudio(size)),
+                       Container(
                           // constraints: BoxConstraints(maxWidth: size.wScreen(60.0)),
                           // alignment: Alignment.centerLeft,
                           constraints: BoxConstraints(
