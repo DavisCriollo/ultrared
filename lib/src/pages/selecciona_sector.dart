@@ -13,7 +13,8 @@ import 'package:ultrared/src/widgets/botonBase.dart';
 import 'package:ultrared/src/widgets/no_data.dart';
 
 class SeleccionaSector extends StatefulWidget {
-  const SeleccionaSector({Key? key}) : super(key: key);
+  final String? action;
+  const SeleccionaSector({Key? key, required this.action}) : super(key: key);
 
   @override
   State<SeleccionaSector> createState() => _SeleccionaSectorState();
@@ -22,6 +23,7 @@ class SeleccionaSector extends StatefulWidget {
 class _SeleccionaSectorState extends State<SeleccionaSector> {
   @override
   Widget build(BuildContext context) {
+    final _action = widget.action;
     final Responsive size = Responsive.of(context);
     final _ctrl = context.read<HomeController>();
     return GestureDetector(
@@ -33,7 +35,7 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
           centerTitle: true, // Centra el título en el AppBar
           elevation: 0,
           backgroundColor: cuaternaryColor, // Fondo blanco
-          title: Text('REGISTRO',
+          title: Text(_action == 'CREATE' ? 'REGISTRO' : 'EDITAR REGISTRO',
               style: GoogleFonts.poppins(
                 fontSize: size.iScreen(2.0),
                 fontWeight: FontWeight.w700,
@@ -50,694 +52,746 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
             height: size.hScreen(100.0),
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: size.hScreen(8),
-                    width: size.wScreen(100),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
+              child: Form(
+                // key: _ctrl,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: size.hScreen(8),
+                      width: size.wScreen(100),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
 
-                    // color: Colors.blue, // Puedes ajustar el color según tus preferencias
-                    child: Image.asset(
-                      'assets/imgs/LetrasNegro.png',
-                      fit: BoxFit.contain, // URL de la imagen
+                      // color: Colors.blue, // Puedes ajustar el color según tus preferencias
+                      child: Image.asset(
+                        'assets/imgs/LetrasNegro.png',
+                        fit: BoxFit.contain, // URL de la imagen
+                      ),
                     ),
-                  ),
-                  //***********************************************/
+                    //***********************************************/
 
-                  SizedBox(
-                    height: size.iScreen(3.0),
-                  ),
-                  //*****************************************/
-                  Container(
-                    // height: size.hScreen(40),
-                    width: size.wScreen(100),
-                    // color: Colors.green, // Puedes ajustar el color según tus preferencias
-                    // Puedes agregar contenido adicional en este contenedor
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: size.hScreen(2.0),
-                        ),
-                        SizedBox(
-                          width: size.wScreen(80),
-                          height: size.hScreen(8.0),
-                          child: Text(
-                            'Internet por Fibra Óptica',
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.poppins(
-                                fontSize: size.iScreen(2.5),
-                                fontWeight: FontWeight.w500,
-                                color: secondaryColor),
+                    SizedBox(
+                      height: size.iScreen(3.0),
+                    ),
+                    //*****************************************/
+                    Container(
+                      // height: size.hScreen(40),
+                      width: size.wScreen(100),
+                      // color: Colors.green, // Puedes ajustar el color según tus preferencias
+                      // Puedes agregar contenido adicional en este contenedor
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: size.hScreen(2.0),
                           ),
-                        ),
-                        //***********************************************/
-
-                        SizedBox(
-                          height: size.iScreen(1.0),
-                        ),
-                        //*****************************************/
-                        //***********************************************/
-                        GestureDetector(
-                           onTap: () {
-                                            
-                                          final _ctrl =
-                                              context.read<HomeController>();
-                                          _modalActivaServicioEn(
-                                              context, size, _ctrl);
-                                      
-                                          },
-                          child: Container(
-                              width: size.wScreen(80.0),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: size.iScreen(2.0),
-                                  vertical: size.iScreen(1.0)),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                              child: Consumer<HomeController>(
-                                builder: (_, valueServicio, __) {
-                                  return Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      // Espacio entre el icono y el texto
-                                      Container(
-                                        // color: Colors.red,
-                                        width: size.wScreen(60.0),
-                                        child: Text(
-                                          valueServicio.getItemLugarServicio != ""
-                                              ? valueServicio
-                                                  .getItemLugarServicio!
-                                              : 'ACTIVAR SERVICIO EN:   ',
-                                          style: GoogleFonts.poppins(
-                                            fontSize: size.iScreen(
-                                                2.0), // Ajusta según tus necesidades
-                                            fontWeight: FontWeight.w400,
-                                            color: valueServicio
-                                                        .getItemLugarServicio !=
-                                                    ""
-                                                ? Colors.black
-                                                : Colors.grey,
-                                          ),
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons
-                                            .keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
-                                        color: Colors.grey, // Color del icono
-                                      ),
-                                    ],
-                                  );
-                                },
-                              )),
-                        ),
-                        //***********************************************/
-
-                        SizedBox(
-                          height: size.iScreen(1.0),
-                        ),
-                        //*****************************************/
-                        //***********************************************/
-                        GestureDetector(
-                           onTap: () {
-                                        final _ctrl =
-                                            context.read<HomeController>();
-                                        _ctrl.buscaPlanesSinToken();
-                                        _modalPlan(context, size, _ctrl);
-                                      },
-                          child: Container(
-                              width: size.wScreen(80.0),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: size.iScreen(2.0),
-                                  vertical: size.iScreen(1.0)),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                              child: Consumer<HomeController>(
-                                builder: (_, valuegPlan, __) {
-                                  return Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      // Espacio entre el icono y el texto
-                                      Container(
-                                        // color: Colors.red,
-                                        width: size.wScreen(60.0),
-                                        child: Text(
-                                          valuegPlan.getPlanItem !=""
-                                              ? valuegPlan.getPlanItem
-                                              : 'SELECCIONA TU PLAN  ',
-                                          style: GoogleFonts.poppins(
-                                            fontSize: size.iScreen(
-                                                2.0), // Ajusta según tus necesidades
-                                            fontWeight: FontWeight.w400,
-                                            color: valuegPlan
-                                                        .getPlanItem !=
-                                                    ""
-                                                ? Colors.black
-                                                : Colors.grey,
-                                          ),
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons
-                                            .keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
-                                        color: Colors.grey, // Color del icono
-                                      ),
-                                    ],
-                                  );
-                                },
-                              )),
-                        ),
-
-                        SizedBox(
-                          height: size.iScreen(1.0),
-                        ),
-                        //*****************************************/
-                        //***********************************************/
-                        GestureDetector(
-                           onTap: () {
-                                        final _ctrl =
-                                            context.read<HomeController>();
-                                        _ctrl.buscaCiudades();
-                                        _modalCiudad(context, size, _ctrl);
-                                      },
-                          child: Container(
-                              width: size.wScreen(80.0),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: size.iScreen(2.0),
-                                  vertical: size.iScreen(1.0)),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                              child: Consumer<HomeController>(
-                                builder: (_, valuegetCiudadItem, __) {
-                                  return Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      // Espacio entre el icono y el texto
-                                      Container(
-                                        // color: Colors.red,
-                                        width: size.wScreen(60.0),
-                                        child: Text(
-                                          valuegetCiudadItem.getCiudadItem != ""
-                                              ? valuegetCiudadItem.getCiudadItem
-                                              : 'SELECCIONA TU CIUDAD  ',
-                                          style: GoogleFonts.poppins(
-                                            fontSize: size.iScreen(
-                                                2.0), // Ajusta según tus necesidades
-                                            fontWeight: FontWeight.w400,
-                                            color: valuegetCiudadItem
-                                                        .getCiudadItem !=
-                                                    ""
-                                                ? Colors.black
-                                                : Colors.grey,
-                                          ),
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons
-                                            .keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
-                                        color: Colors.grey, // Color del icono
-                                      ),
-                                    ],
-                                  );
-                                },
-                              )),
-                        ),
-                        //***********************************************/
-                        Consumer<HomeController >(builder: (_, valuesSector,__) { 
-                          return valuesSector.getCiudadItem != ""
-                       ? GestureDetector(
-                         onTap: () {
-                                            _modalSectores(
-                                                context, size, _ctrl);
-                                          },
-                         child: Column(
-                            children: [
-                              SizedBox(
-                                height: size.iScreen(1.0),
-                              ),
-                              Container(
-                                  width: size.wScreen(80.0),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: size.iScreen(2.0),
-                                      vertical: size.iScreen(1.0)),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  child: Consumer<HomeController>(
-                                    builder: (_, valueSector, __) {
-                                      return Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          // Espacio entre el icono y el texto
-                                          Container(
-                                            // color: Colors.red,
-                                            width: size.wScreen(60.0),
-                                            child: Text(
-                                              valueSector.getSectorItem != ""
-                                                  ? valueSector.getSectorItem
-                                                  : 'SELECCIONA TU SECTOR',
-                                              style: GoogleFonts.poppins(
-                                                fontSize: size.iScreen(
-                                                    2.0), // Ajusta según tus necesidades
-                                                fontWeight: FontWeight.w400,
-                                                color:
-                                                    valueSector.getSectorItem !=
-                                                            ""
-                                                        ? Colors.black
-                                                        : Colors.grey,
-                                              ),
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              // _modalSectores(
-                                              //     context, size, _ctrl);
-                                            },
-                                            child: Icon(
-                                              Icons
-                                                  .keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
-                                              color:
-                                                  Colors.grey, // Color del icono
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  )),
-                            ],
-                          ),
-                       ): Container();
-                        //*****************************************/
-                         },),
- 
-                        //***********************************************/
-                        //***********************************************/
-
-                        SizedBox(
-                          height: size.iScreen(1.0),
-                        ),
-                        //*****************************************/
-                        Container(
-                          // color: Colors.red,
-                          width: size.wScreen(80.0),
-                          padding: EdgeInsets.all(size.wScreen(0.0)),
-                          child: Center(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: size.hScreen(2.0),
-                                  vertical: size.iScreen(0.0)),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 1.0,
-                                ),
-                              ),
-                              child: TextFormField(
-                                maxLines: 3,
-                                minLines: 1,
-                                decoration: const InputDecoration(
-                                  suffixIcon: Icon(
-                                    Icons.message_outlined,
-                                    color: secondaryColor,
-                                  ),
-                                  hintText: 'ESCRIBE UNA REFERENCIA ',
-                                  border: InputBorder.none,
-                                  
-                                ),
-                                 onChanged: (text) {
-                                  _ctrl.setItemReferencia(text.trim());
-                                },
-                              ),
-                              
+                          SizedBox(
+                            width: size.wScreen(80),
+                            height: size.hScreen(8.0),
+                            child: Text(
+                              'Internet por Fibra Óptica',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.poppins(
+                                  fontSize: size.iScreen(2.5),
+                                  fontWeight: FontWeight.w500,
+                                  color: secondaryColor),
                             ),
                           ),
-                        ),
-                        //***********************************************/
-                        Consumer<HomeController>(
-                          builder: (_, valuePlaca, __) {
-                            return valuePlaca.getItemLugarServicio ==
-                                    "TRANSPORTE"
-                                ? Column(
-                                    children: [
-                                      //*****************************************/
-                                      SizedBox(
-                                        height: size.iScreen(1.0),
-                                      ),
-                                      //*****************************************/
-                                      Container(
-                                        // color: Colors.red,
-                                        width: size.wScreen(80.0),
-                                        padding:
-                                            EdgeInsets.all(size.wScreen(0.0)),
-                                        child: Center(
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: size.hScreen(2.0),
-                                                vertical: size.iScreen(0.0)),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              border: Border.all(
-                                                color: Colors.grey,
-                                                width: 1.0,
-                                              ),
-                                            ),
-                                            child: TextFormField(
-                                                 inputFormatters: [
-                                  UpperCaseText(),
-                                ],
-                                              decoration: const InputDecoration(
-                                                suffixIcon: Icon(
-                                                  Icons.message_outlined,
-                                                  color: secondaryColor,
-                                                ),
-                                                hintText: 'ESCRIBE PLACA DEL VEHICULO',
-                                                border: InputBorder.none,
-                                              ),
-                                                onChanged: (text) {
-                                  _ctrl.setItemPlaca(text.trim());
-                                },
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      //*****************************************/
-                                      SizedBox(
-                                        height: size.iScreen(1.0),
-                                      ),
-                                      //*****************************************/
-                                      Container(
-                                        // color: Colors.red,
-                                        width: size.wScreen(80.0),
-                                        padding:
-                                            EdgeInsets.all(size.wScreen(0.0)),
-                                        child: Center(
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: size.hScreen(2.0),
-                                                vertical: size.iScreen(0.0)),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              border: Border.all(
-                                                color: Colors.grey,
-                                                width: 1.0,
-                                              ),
-                                            ),
-                                            child: TextFormField(
-                                                 inputFormatters: [
-                                  UpperCaseText(),
-                                ],
-                                              decoration: const InputDecoration(
-                                                suffixIcon: Icon(
-                                                  Icons.message_outlined,
-                                                  color: secondaryColor,
-                                                ),
-                                                hintText: 'ESCRIBE MARCA DEL VEHICULO',
-                                                border: InputBorder.none,
-                                              ),
-                                                onChanged: (text) {
-                                  _ctrl.setItemMarca(text.trim());
-                                },
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      //*****************************************/
-                                      SizedBox(
-                                        height: size.iScreen(1.0),
-                                      ),
-                                      //*****************************************/
-                                      Container(
-                                        // color: Colors.red,
-                                        width: size.wScreen(80.0),
-                                        padding:
-                                            EdgeInsets.all(size.wScreen(0.0)),
-                                        child: Center(
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: size.hScreen(2.0),
-                                                vertical: size.iScreen(0.0)),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              border: Border.all(
-                                                color: Colors.grey,
-                                                width: 1.0,
-                                              ),
-                                            ),
-                                            child: TextFormField(
-                                                 inputFormatters: [
-                                  UpperCaseText(),
-                                ],
-                                              decoration: const InputDecoration(
-                                                suffixIcon: Icon(
-                                                  Icons.message_outlined,
-                                                  color: secondaryColor,
-                                                ),
-                                                hintText: 'ESCRIBE MODELO DEL VEHICULO',
-                                                border: InputBorder.none,
-                                              ),
-                                                onChanged: (text) {
-                                  _ctrl.setItemModelo(text.trim());
-                                },
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      //*****************************************/
-                                      SizedBox(
-                                        height: size.iScreen(1.0),
-                                      ),
-                                      //*****************************************/
-                                      Container(
-                                        // color: Colors.red,
-                                        width: size.wScreen(80.0),
-                                        padding:
-                                            EdgeInsets.all(size.wScreen(0.0)),
-                                        child: Center(
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: size.hScreen(2.0),
-                                                vertical: size.iScreen(0.0)),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              border: Border.all(
-                                                color: Colors.grey,
-                                                width: 1.0,
-                                              ),
-                                            ),
-                                            child: TextFormField(
-                                                 inputFormatters: [
-                                  UpperCaseText(),
-                                ],
-                                              decoration: const InputDecoration(
-                                                suffixIcon: Icon(
-                                                  Icons.message_outlined,
-                                                  color: secondaryColor,
-                                                ),
-                                                hintText: 'ESCRIBE COLOR DEL VEHICULO',
-                                                border: InputBorder.none,
-                                              ),
-                                                onChanged: (text) {
-                                  _ctrl.setItemColor(text.trim());
-                                },
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : Container();
-                          },
-                        ),
+                          //***********************************************/
 
-                        Consumer<HomeController>(
-                          builder: (_, valueGPS, __) {
-                            return valueGPS.getItemLugarServicio == "HOGAR"
-                                ? GestureDetector(
-                                    onTap: () async {
-                                                      //    valueGPS.setItemGPS('');
-
-                                                      // valueGPS.getLocation( );
-
-                                                      final status =
-                                                          await Permission
-                                                              .location
-                                                              .request();
-                                                      if (status ==
-                                                          PermissionStatus
-                                                              .granted) {
-                                                        //   // print('============== SI TIENE PERMISOS');
-                                                        await _ctrl
-                                                            .getLocation();
-                                                        if (_ctrl
-                                                            .getGPSPositione) {
-                                                          // Navigator.of(context).pushAndRemoveUntil(
-                                                          //     MaterialPageRoute(
-                                                          //         builder: (context) => HomePage(
-                                                          //               // validaTurno: validaTurno,
-                                                          //               // tipo: session.rol,
-                                                          //               // user: session,
-                                                          //               // ubicacionGPS: controllerHome.getCoords,
-                                                          //             )),
-                                                          //     (Route<dynamic> route) => false);
-                                                          // ModalRoute.withName('/');
-                                                        }
-                                                      } else {
-                                                        Navigator.pushNamed(
-                                                            context, 'gps');
-                                                      }
-                                                    },
-                                  child: Column(
+                          SizedBox(
+                            height: size.iScreen(1.0),
+                          ),
+                          //*****************************************/
+                          //***********************************************/
+                          GestureDetector(
+                            onTap: () {
+                              final _ctrl = context.read<HomeController>();
+                              _modalActivaServicioEn(context, size, _ctrl);
+                            },
+                            child: Container(
+                                width: size.wScreen(80.0),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.iScreen(2.0),
+                                    vertical: size.iScreen(1.0)),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Consumer<HomeController>(
+                                  builder: (_, valueServicio, __) {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
+                                        // Espacio entre el icono y el texto
+                                        Container(
+                                          // color: Colors.red,
+                                          width: size.wScreen(60.0),
+                                          child: Text(
+                                            valueServicio
+                                                        .getItemLugarServicio !=
+                                                    ""
+                                                ? valueServicio
+                                                    .getItemLugarServicio!
+                                                : 'ACTIVAR SERVICIO EN:   ',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: size.iScreen(
+                                                  2.0), // Ajusta según tus necesidades
+                                              fontWeight: FontWeight.w400,
+                                              color: valueServicio
+                                                          .getItemLugarServicio !=
+                                                      ""
+                                                  ? Colors.black
+                                                  : Colors.grey,
+                                            ),
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons
+                                              .keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
+                                          color: Colors.grey, // Color del icono
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                )),
+                          ),
+                          // //***********************************************/
+
+                          // SizedBox(
+                          //   height: size.iScreen(1.0),
+                          // ),
+                          // //*****************************************/
+                          // //***********************************************/
+                          // GestureDetector(
+                          //    onTap: () {
+                          //                 final _ctrl =
+                          //                     context.read<HomeController>();
+                          //                 _ctrl.buscaPlanesSinToken();
+                          //                 _modalPlan(context, size, _ctrl);
+                          //               },
+                          //   child: Container(
+                          //       width: size.wScreen(80.0),
+                          //       padding: EdgeInsets.symmetric(
+                          //           horizontal: size.iScreen(2.0),
+                          //           vertical: size.iScreen(1.0)),
+                          //       decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.circular(10.0),
+                          //         border: Border.all(
+                          //           color: Colors.grey,
+                          //           width: 1.0,
+                          //         ),
+                          //       ),
+                          //       child: Consumer<HomeController>(
+                          //         builder: (_, valuegPlan, __) {
+                          //           return Row(
+                          //             mainAxisAlignment:
+                          //                 MainAxisAlignment.spaceBetween,
+                          //             children: [
+                          //               // Espacio entre el icono y el texto
+                          //               Container(
+                          //                 // color: Colors.red,
+                          //                 width: size.wScreen(60.0),
+                          //                 child: Text(
+                          //                   valuegPlan.getPlanItem !=""
+                          //                       ? valuegPlan.getPlanItem
+                          //                       : 'SELECCIONA TU PLAN  ',
+                          //                   style: GoogleFonts.poppins(
+                          //                     fontSize: size.iScreen(
+                          //                         2.0), // Ajusta según tus necesidades
+                          //                     fontWeight: FontWeight.w400,
+                          //                     color: valuegPlan
+                          //                                 .getPlanItem !=
+                          //                             ""
+                          //                         ? Colors.black
+                          //                         : Colors.grey,
+                          //                   ),
+                          //                 ),
+                          //               ),
+                          //               Icon(
+                          //                 Icons
+                          //                     .keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
+                          //                 color: Colors.grey, // Color del icono
+                          //               ),
+                          //             ],
+                          //           );
+                          //         },
+                          //       )),
+                          // ),
+
+                          SizedBox(
+                            height: size.iScreen(1.0),
+                          ),
+                          //*****************************************/
+                          //***********************************************/
+                          GestureDetector(
+                            onTap: () {
+                              final _ctrl = context.read<HomeController>();
+                              _ctrl.buscaCiudades();
+                              _modalCiudad(context, size, _ctrl);
+                            },
+                            child: Container(
+                                width: size.wScreen(80.0),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.iScreen(2.0),
+                                    vertical: size.iScreen(1.0)),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Consumer<HomeController>(
+                                  builder: (_, valuegetCiudadItem, __) {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        // Espacio entre el icono y el texto
+                                        Container(
+                                          // color: Colors.red,
+                                          width: size.wScreen(60.0),
+                                          child: Text(
+                                            valuegetCiudadItem.getCiudadItem !=
+                                                    ""
+                                                ? valuegetCiudadItem
+                                                    .getCiudadItem
+                                                : 'SELECCIONA TU CIUDAD  ',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: size.iScreen(
+                                                  2.0), // Ajusta según tus necesidades
+                                              fontWeight: FontWeight.w400,
+                                              color: valuegetCiudadItem
+                                                          .getCiudadItem !=
+                                                      ""
+                                                  ? Colors.black
+                                                  : Colors.grey,
+                                            ),
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons
+                                              .keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
+                                          color: Colors.grey, // Color del icono
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                )),
+                          ),
+                          //***********************************************/
+                          Consumer<HomeController>(
+                            builder: (_, valuesSector, __) {
+                              return valuesSector.getCiudadItem != ""
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        _modalSectores(context, size, _ctrl);
+                                      },
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: size.iScreen(1.0),
+                                          ),
+                                          Container(
+                                              width: size.wScreen(80.0),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: size.iScreen(2.0),
+                                                  vertical: size.iScreen(1.0)),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                border: Border.all(
+                                                  color: Colors.grey,
+                                                  width: 1.0,
+                                                ),
+                                              ),
+                                              child: Consumer<HomeController>(
+                                                builder: (_, valueSector, __) {
+                                                  return Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      // Espacio entre el icono y el texto
+                                                      Container(
+                                                        // color: Colors.red,
+                                                        width:
+                                                            size.wScreen(60.0),
+                                                        child: Text(
+                                                          valueSector.getSectorItem !=
+                                                                  ""
+                                                              ? valueSector
+                                                                  .getSectorItem
+                                                              : 'SELECCIONA TU SECTOR',
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                            fontSize: size.iScreen(
+                                                                2.0), // Ajusta según tus necesidades
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color: valueSector
+                                                                        .getSectorItem !=
+                                                                    ""
+                                                                ? Colors.black
+                                                                : Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          // _modalSectores(
+                                                          //     context, size, _ctrl);
+                                                        },
+                                                        child: Icon(
+                                                          Icons
+                                                              .keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
+                                                          color: Colors
+                                                              .grey, // Color del icono
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              )),
+                                        ],
+                                      ),
+                                    )
+                                  : Container();
+                              //*****************************************/
+                            },
+                          ),
+
+                          //***********************************************/
+                          //***********************************************/
+
+                          SizedBox(
+                            height: size.iScreen(1.0),
+                          ),
+                          //*****************************************/
+                          Container(
+                            // color: Colors.red,
+                            width: size.wScreen(80.0),
+                            padding: EdgeInsets.all(size.wScreen(0.0)),
+                            child: Center(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.hScreen(2.0),
+                                    vertical: size.iScreen(0.0)),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: TextFormField(
+                                  initialValue: widget.action == 'CREATE'
+                                      ? ''
+                                      : _ctrl.getItemReferencia,
+                                  maxLines: 3,
+                                  minLines: 1,
+                                  decoration: const InputDecoration(
+                                    suffixIcon: Icon(
+                                      Icons.message_outlined,
+                                      color: secondaryColor,
+                                    ),
+                                    hintText: 'ESCRIBE UNA REFERENCIA ',
+                                    border: InputBorder.none,
+                                  ),
+                                  onChanged: (text) {
+                                    _ctrl.setItemReferencia(text.trim());
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          //***********************************************/
+                          Consumer<HomeController>(
+                            builder: (_, valuePlaca, __) {
+                              return valuePlaca.getItemLugarServicio ==
+                                      "TRANSPORTE"
+                                  ? Column(
+                                      children: [
+                                        //*****************************************/
                                         SizedBox(
                                           height: size.iScreen(1.0),
                                         ),
-                                        //***********************************************/
+                                        //*****************************************/
                                         Container(
-                                            width: size.wScreen(80.0),
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: size.iScreen(2.0),
-                                                vertical: size.iScreen(1.0)),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              border: Border.all(
-                                                color: Colors.grey,
-                                                width: 1.0,
+                                          // color: Colors.red,
+                                          width: size.wScreen(80.0),
+                                          padding:
+                                              EdgeInsets.all(size.wScreen(0.0)),
+                                          child: Center(
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: size.hScreen(2.0),
+                                                  vertical: size.iScreen(0.0)),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                border: Border.all(
+                                                  color: Colors.grey,
+                                                  width: 1.0,
+                                                ),
+                                              ),
+                                              child: TextFormField(
+                                                initialValue:
+                                                    widget.action == 'CREATE'
+                                                        ? ''
+                                                        : _ctrl.getItemPlaca,
+                                                inputFormatters: [
+                                                  UpperCaseText(),
+                                                ],
+                                                decoration:
+                                                    const InputDecoration(
+                                                  suffixIcon: Icon(
+                                                    Icons.message_outlined,
+                                                    color: secondaryColor,
+                                                  ),
+                                                  hintText:
+                                                      'ESCRIBE PLACA DEL VEHICULO',
+                                                  border: InputBorder.none,
+                                                ),
+                                                onChanged: (text) {
+                                                  _ctrl.setItemPlaca(
+                                                      text.trim());
+                                                },
                                               ),
                                             ),
-                                            child: Consumer<HomeController>(
-                                              builder: (_, valueGPS, __) {
-                                                return Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Container(
-                                                      // color: Colors.red,
-                                                      width: size.wScreen(60.0),
-                                                      child: valueGPS
-                                                                  .getLocationMessage ==
-                                                              ""
-                                                          ? Text(
-                                                              'UBICACIÓN GPS  ',
-                                                              style: GoogleFonts
-                                                                  .poppins(
-                                                                fontSize:
-                                                                    size.iScreen(
-                                                                        2.0), // Ajusta según tus necesidades
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                color: valueGPS
-                                                                            .getLocationMessage !=
-                                                                        ""
-                                                                    ? Colors.black
-                                                                    : Colors.grey,
-                                                              ),
-                                                            )
-                                                          : Text(
-                                                              '${valueGPS.getLocationMessage}  ',
-                                                              style: GoogleFonts
-                                                                  .poppins(
-                                                                fontSize:
-                                                                    size.iScreen(
-                                                                        2.0), // Ajusta según tus necesidades
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                color: valueGPS
-                                                                            .getLocationMessage !=
-                                                                        ""
-                                                                    ? Colors.black
-                                                                    : Colors.grey,
-                                                              ),
-                                                            ),
-                                                    ),
-                                                    Icon(
-                                                      Icons
-                                                          .location_on_outlined, // Cambia el icono según tus necesidades
-                                                      color: valueGPS
-                                                                  .getLocationMessage ==
-                                                              ""
-                                                          ? Colors.grey
-                                                          : tercearyColor, // Color del icono
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            )),
+                                          ),
+                                        ),
+                                        //*****************************************/
+                                        SizedBox(
+                                          height: size.iScreen(1.0),
+                                        ),
+                                        //*****************************************/
+                                        Container(
+                                          // color: Colors.red,
+                                          width: size.wScreen(80.0),
+                                          padding:
+                                              EdgeInsets.all(size.wScreen(0.0)),
+                                          child: Center(
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: size.hScreen(2.0),
+                                                  vertical: size.iScreen(0.0)),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                border: Border.all(
+                                                  color: Colors.grey,
+                                                  width: 1.0,
+                                                ),
+                                              ),
+                                              child: TextFormField(
+                                                initialValue:
+                                                    widget.action == 'CREATE'
+                                                        ? ''
+                                                        : _ctrl.getItemMarca,
+                                                inputFormatters: [
+                                                  UpperCaseText(),
+                                                ],
+                                                decoration:
+                                                    const InputDecoration(
+                                                  suffixIcon: Icon(
+                                                    Icons.message_outlined,
+                                                    color: secondaryColor,
+                                                  ),
+                                                  hintText:
+                                                      'ESCRIBE MARCA DEL VEHICULO',
+                                                  border: InputBorder.none,
+                                                ),
+                                                onChanged: (text) {
+                                                  _ctrl.setItemMarca(
+                                                      text.trim());
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        //*****************************************/
+                                        SizedBox(
+                                          height: size.iScreen(1.0),
+                                        ),
+                                        //*****************************************/
+                                        Container(
+                                          // color: Colors.red,
+                                          width: size.wScreen(80.0),
+                                          padding:
+                                              EdgeInsets.all(size.wScreen(0.0)),
+                                          child: Center(
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: size.hScreen(2.0),
+                                                  vertical: size.iScreen(0.0)),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                border: Border.all(
+                                                  color: Colors.grey,
+                                                  width: 1.0,
+                                                ),
+                                              ),
+                                              child: TextFormField(
+                                                initialValue:
+                                                    widget.action == 'CREATE'
+                                                        ? ''
+                                                        : _ctrl.getItemModelo,
+                                                inputFormatters: [
+                                                  UpperCaseText(),
+                                                ],
+                                                decoration:
+                                                    const InputDecoration(
+                                                  suffixIcon: Icon(
+                                                    Icons.message_outlined,
+                                                    color: secondaryColor,
+                                                  ),
+                                                  hintText:
+                                                      'ESCRIBE MODELO DEL VEHICULO',
+                                                  border: InputBorder.none,
+                                                ),
+                                                onChanged: (text) {
+                                                  _ctrl.setItemModelo(
+                                                      text.trim());
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        //*****************************************/
+                                        SizedBox(
+                                          height: size.iScreen(1.0),
+                                        ),
+                                        //*****************************************/
+                                        Container(
+                                          // color: Colors.red,
+                                          width: size.wScreen(80.0),
+                                          padding:
+                                              EdgeInsets.all(size.wScreen(0.0)),
+                                          child: Center(
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: size.hScreen(2.0),
+                                                  vertical: size.iScreen(0.0)),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                border: Border.all(
+                                                  color: Colors.grey,
+                                                  width: 1.0,
+                                                ),
+                                              ),
+                                              child: TextFormField(
+                                                initialValue:
+                                                    widget.action == 'CREATE'
+                                                        ? ''
+                                                        : _ctrl.getItemColor,
+                                                inputFormatters: [
+                                                  UpperCaseText(),
+                                                ],
+                                                decoration:
+                                                    const InputDecoration(
+                                                  suffixIcon: Icon(
+                                                    Icons.message_outlined,
+                                                    color: secondaryColor,
+                                                  ),
+                                                  hintText:
+                                                      'ESCRIBE COLOR DEL VEHICULO',
+                                                  border: InputBorder.none,
+                                                ),
+                                                onChanged: (text) {
+                                                  _ctrl.setItemColor(
+                                                      text.trim());
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ],
-                                    ),
-                                )
-                                : Container();
-                          },
-                        ),
-                        //*****************************************/
-
-                        //***********************************************/
-                         Consumer<HomeController>(
-                          builder: (_, valueSize, __) {
-                            return 
-
-                       SizedBox(
-                          height: valueSize.getItemLugarServicio == "HOGAR"
-                                ?size.iScreen(10.0):size.iScreen(2.0)
-                        );
-                        }),
-                        //*****************************************/
-
-                        GestureDetector(
-                          onTap: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: ((context) => FotosPerfilPage())));
-                               final control=context.read<HomeController>();
-                              // control.setFotoTipo('fotoperfil'); 
-                            _next(context, _ctrl);
-                          },
-                          child: BotonBase(
-                            size: size,
-                            label: 'SIGUIENTE',
+                                    )
+                                  : Container();
+                            },
                           ),
-                        ),
 
-                        SizedBox(
-                          height: size.hScreen(5.0),
-                        ),
-                      ],
+                          Consumer<HomeController>(
+                            builder: (_, valueGPS, __) {
+                              return valueGPS.getItemLugarServicio == "HOGAR"
+                                  ? GestureDetector(
+                                      onTap: () async {
+                                        //    valueGPS.setItemGPS('');
+
+                                        // valueGPS.getLocation( );
+
+                                        final status =
+                                            await Permission.location.request();
+                                        if (status ==
+                                            PermissionStatus.granted) {
+                                          //   // print('============== SI TIENE PERMISOS');
+                                          await _ctrl.getLocation();
+                                          if (_ctrl.getGPSPositione) {
+                                            // Navigator.of(context).pushAndRemoveUntil(
+                                            //     MaterialPageRoute(
+                                            //         builder: (context) => HomePage(
+                                            //               // validaTurno: validaTurno,
+                                            //               // tipo: session.rol,
+                                            //               // user: session,
+                                            //               // ubicacionGPS: controllerHome.getCoords,
+                                            //             )),
+                                            //     (Route<dynamic> route) => false);
+                                            // ModalRoute.withName('/');
+                                          }
+                                        } else {
+                                          Navigator.pushNamed(context, 'gps');
+                                        }
+                                      },
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: size.iScreen(1.0),
+                                          ),
+                                          //***********************************************/
+                                          Container(
+                                              width: size.wScreen(80.0),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: size.iScreen(2.0),
+                                                  vertical: size.iScreen(1.0)),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                border: Border.all(
+                                                  color: Colors.grey,
+                                                  width: 1.0,
+                                                ),
+                                              ),
+                                              child: Consumer<HomeController>(
+                                                builder: (_, valueGPS, __) {
+                                                  return Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        // color: Colors.red,
+                                                        width:
+                                                            size.wScreen(60.0),
+                                                        child:
+                                                            valueGPS.getLocationMessage ==
+                                                                    ""
+                                                                ? Text(
+                                                                    'UBICACIÓN GPS  ',
+                                                                    style: GoogleFonts
+                                                                        .poppins(
+                                                                      fontSize:
+                                                                          size.iScreen(
+                                                                              2.0), // Ajusta según tus necesidades
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      color: valueGPS.getLocationMessage !=
+                                                                              ""
+                                                                          ? Colors
+                                                                              .black
+                                                                          : Colors
+                                                                              .grey,
+                                                                    ),
+                                                                  )
+                                                                : Text(
+                                                                    '${valueGPS.getLocationMessage}  ',
+                                                                    style: GoogleFonts
+                                                                        .poppins(
+                                                                      fontSize:
+                                                                          size.iScreen(
+                                                                              2.0), // Ajusta según tus necesidades
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      color: valueGPS.getLocationMessage !=
+                                                                              ""
+                                                                          ? Colors
+                                                                              .black
+                                                                          : Colors
+                                                                              .grey,
+                                                                    ),
+                                                                  ),
+                                                      ),
+                                                      Icon(
+                                                        Icons
+                                                            .location_on_outlined, // Cambia el icono según tus necesidades
+                                                        color: valueGPS
+                                                                    .getLocationMessage ==
+                                                                ""
+                                                            ? Colors.grey
+                                                            : tercearyColor, // Color del icono
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              )),
+                                        ],
+                                      ),
+                                    )
+                                  : Container();
+                            },
+                          ),
+                          //*****************************************/
+
+                          //***********************************************/
+                          Consumer<HomeController>(builder: (_, valueSize, __) {
+                            return SizedBox(
+                                height:
+                                    valueSize.getItemLugarServicio == "HOGAR"
+                                        ? size.iScreen(10.0)
+                                        : size.iScreen(2.0));
+                          }),
+                          //*****************************************/
+
+                          GestureDetector(
+                            onTap:  () {
+                                    //  final control=context.read<HomeController>();
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: ((context) => FotosPerfilPage())));
+                                    // control.setFotoTipo('fotoperfil');
+
+//                                if (_ctrl.getItemLugarServicio == 'HOGAR'){
+
+//          if (
+//         _ctrl.getCiudadItem.isEmpty ||
+//         _ctrl.getSectorItem .isEmpty ||
+//         _ctrl.getItemReferencia! .isEmpty||
+//         _ctrl.getLocationMessage .isEmpty) {
+//       NotificatiosnService.showSnackBarDanger('Falta agregar  información HOME');
+//        }
+//   else {
+//          NotificatiosnService.showSnackBarDanger('CORRECTO HOME');
+//       }
+
+// }
+
+                                    _next(context, _ctrl);
+                                  },
+                                
+                            child: BotonBase(
+                              size: size,
+                              label: 'SIGUIENTE',
+                            ),
+                          ),
+
+                          SizedBox(
+                            height: size.hScreen(5.0),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             )),
       ),
@@ -953,7 +1007,7 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                     return ListTile(
                       onTap: () {
 // print('ESPECIE: ${especiesList['aliNombre']}');
-                       
+
                         controller.setPlanItem(_plan['planNombre']);
                         // e['sexNombre']);
 // print('RAZA: ${e['nombre']}');
@@ -1011,28 +1065,108 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
   }
 
   void _next(BuildContext context, HomeController controller) {
-
-    if (controller.getItemLugarServicio!.isEmpty ||
-        controller.getCiudadItem.isEmpty ||
-        controller.getSectorItem.isEmpty ||
-        controller.getItemReferencia!.isEmpty) {
-      NotificatiosnService.showSnackBarDanger('Falta agregar  información');
-    } 
-    else if (controller.getItemLugarServicio == 'HOGAR' && controller.getLocationMessage.isEmpty) {
-      NotificatiosnService.showSnackBarDanger('Falta agregar  información');
-    } 
-     else if (controller.getItemLugarServicio == 'TRANSPORTE' &&controller.getItemPlaca=='' 
-     
-    //  ||controller.getItemMarca==''||controller.getItemModelo==''||controller.getItemColor==''
-      ) {
-      // if( controller.getItemPlaca=='' ||controller.getItemMarca==''||controller.getItemModelo==''||controller.getItemColor=='')
-      NotificatiosnService.showSnackBarDanger('Falta agregar  información');
-    } else{
-          // controller.setFotoTipo('fotoperfil');
-      Navigator.push(context,
-          MaterialPageRoute(builder: ((context) => FotosPerfilPage())));
+    if (controller.getItemLugarServicio!.isEmpty) {
+      NotificatiosnService.showSnackBarDanger('Seleccione Tipo de Servicio');
     }
 
-    
+    if (controller.getItemLugarServicio == 'HOGAR') {
+      if (controller.getCiudadItem.isEmpty ||
+          controller.getSectorItem.isEmpty ||
+          controller.getItemReferencia!.isEmpty ||
+          controller.getLocationMessage.isEmpty) {
+        NotificatiosnService.showSnackBarDanger(
+            'Falta agregar  información ');
+      } else {
+     
+                 controller.setFotoTipo('fotoperfil');
+    Navigator.push(context,
+        MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
+      }
+    }
+    if (controller.getItemLugarServicio == 'TRANSPORTE') {
+      if (controller.getCiudadItem.isNotEmpty &&
+          controller.getSectorItem.isNotEmpty &&
+          controller.getItemReferencia!.isNotEmpty &&
+          controller.getItemPlaca!.isNotEmpty &&
+          controller.getItemMarca!.isNotEmpty &&
+          controller.getItemModelo!.isNotEmpty &&
+          controller.getItemColor!.isNotEmpty) {
+                        controller.setFotoTipo('fotoperfil');
+    Navigator.push(context,
+        MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
+      
+
+      } else {
+        NotificatiosnService.showSnackBarDanger(
+            'Falta agregar  información ');
+      }
+    }
+
+    //    if (controller.getItemLugarServicio == 'HOGAR'){
+
+    //        if (
+    //       controller.getCiudadItem.isEmpty ||
+    //       controller.getSectorItem .isEmpty ||
+    //       controller.getItemReferencia! .isEmpty||
+    //       controller.getLocationMessage .isEmpty) {
+    //     NotificatiosnService.showSnackBarDanger('Falta agregar  información HOME');
+    //      }
+    // else {
+    //        NotificatiosnService.showSnackBarDanger('CORRECTO HOME');
+    //     }
+
+    //    }
+
+    //    if (controller.getItemLugarServicio == 'TRANSPORTE'){
+
+    //        if (
+
+    //      controller.getItemPlaca!.isEmpty ||
+    //       controller.getItemMarca!.isEmpty ||
+    //       controller.getItemModelo!.isEmpty||
+    //       controller.getItemColor!.isEmpty) {
+    //     NotificatiosnService.showSnackBarDanger('Falta agregar  información TRANSPORTE');
+    //      }
+    // else {
+    //        NotificatiosnService.showSnackBarDanger('CORRECTO TRANSPORTE');
+    //     }
+
+    //    }
+
+    //  if (controller.getItemLugarServicio == 'TRANSPORTE'){
+
+    //   if (
+    //     controller.getItemPlaca! ==""||
+    //     controller.getItemMarca! =="" ||
+    //     controller.getItemModelo! ==""||
+    //     controller.getItemColor! =="")
+    //     {
+    //           NotificatiosnService.showSnackBarDanger('Falta agregar  información de vehículo');
+    //    }
+    //   else {
+    //     NotificatiosnService.showSnackBarDanger('CORRECTO  VEHICULO');
+    //   }
   }
+
+// }
+
+  // else{
+
+  //       NotificatiosnService.showSnackBarDanger('CORRECTO VEHICULO');
+
+  // }
+
+  //   else if(widget.action == 'CREATE'){
+
+  //          // controller.setFotoTipo('fotoperfil');
+  //   Navigator.push(context,
+  //       MaterialPageRoute(builder: ((context) => FotosPerfilPage())));
+
+  // }
+  //  else if(widget.action == 'EDIT'){
+  //   Navigator.push(context,
+  //       MaterialPageRoute(builder: ((context) => FotosPerfilPage())));
+  //  NotificatiosnService.showSnackBarDanger('SE VA A EDITAR');
+  // }
+
 }

@@ -30,7 +30,8 @@ enum ConnectionStatus { unknown, mobile, wifi, none }
 
 class HomeController extends ChangeNotifier {
   GlobalKey<FormState> celularFormKey = GlobalKey<FormState>();
-  GlobalKey<FormState> correoFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> correoFormKey = GlobalKey<FormState>(); 
+  GlobalKey<FormState> transporteFormKey = GlobalKey<FormState>(); 
 
   final _api = ApiProvider();
 
@@ -69,6 +70,14 @@ notifyListeners();
 
   bool validateFormCorreo() {
     if (correoFormKey.currentState!.validate()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+ 
+  bool validateFormTransporte() {
+    if (transporteFormKey.currentState!.validate()) {
       return true;
     } else {
       return false;
@@ -126,7 +135,7 @@ notifyListeners();
      _urlImageCasa= "";
      _urlImagePerfil= "";
      _urlImageVehiculo= "";
-     _planItem = '';
+     _planItem = 'NINGUNO';
      
   }
 
@@ -168,7 +177,7 @@ notifyListeners();
   }
 
 //--------------- LISTA DE PLANER -------------//
-  String _planItem = '';
+  String _planItem = 'NINGUNO';
   String get getPlanItem => _planItem;
   void setPlanItem(String _item) {
     _planItem = _item;
@@ -406,7 +415,7 @@ notifyListeners();
   String? get getItemModelo => _itemModelo;
 
   void setItemModelo(String? valor) {
-    _itemDireccion = valor;
+    _itemModelo = valor;
 
     notifyListeners();
   }
@@ -523,7 +532,7 @@ String? _fotoTipo = '';
 
    
     
-// print('LA _fotoTipo $_fotoTipo');
+print('LA _fotoTipo $_fotoTipo');
     notifyListeners();
   }
 
@@ -681,7 +690,7 @@ String? _itemCedulaRecupera = '';
 
     _listaTodasLasNotificaciones = _data;
 
-    // print('_listaTodasLasNotificaciones: $_listaTodasLasNotificaciones');
+    print('_listaTodasLasNotificaciones: $_listaTodasLasNotificaciones');
 
     notifyListeners();
   }
@@ -730,7 +739,7 @@ bool? _errorCrearUsuario; // sera nulo la primera vez
     "celular": _itemCelulares,
     "email": _itemCorreos,
     "direccion":_itemDireccion,
-    "plan": _planItem,
+    "plan": 'NINGUNO',
     "ciudad": _ciudadItem,
     "sector": _sectorItem,
     "referencia": _itemReferencia,
@@ -744,6 +753,57 @@ bool? _errorCrearUsuario; // sera nulo la primera vez
     "color": _itemColor
 }
    );
+    if (response != null) {
+      _errorCrearUsuario = true;
+      
+
+      notifyListeners();
+      return response;
+    }
+    if (response == null) {
+      _errorCrearUsuario = false;
+      notifyListeners();
+      return null;
+    }
+    return null;
+  }
+
+//================================== CREAR NUEVO  ==============================//
+
+bool? _errorEditarUsuario; // sera nulo la primera vez
+  bool? get getErrorEditarUsuario => _errorEditarUsuario;
+
+  Future? editarUsuario(BuildContext context) async {
+    // "rucempresa": "ULTRA2022",
+
+    // "tabla": "usuario",
+          final dataUser = await Auth.instance.getSession();
+
+    final response = await _api.putUsuarioById(
+      context: context,token: dataUser['token'],idUser:_idUsuario, data: 
+   {
+    "tipoServicio": _itemLugarServicio,
+    "cedula": _itemCedua,
+    "nombres": _itemNombre,
+    "apellidos": _itemApellido,
+    "celular": _itemCelulares,
+    "email": _itemCorreos,
+    "direccion":_itemDireccion,
+    "plan": _planItem,
+    "ciudad": _ciudadItem,
+    "sector": _sectorItem,
+    "referencia": _itemReferencia,
+    "fotoPerfil": _urlImagePerfil,
+    "fotoCasa": _urlImageCasa,
+    "gps": _locationGPS,
+    "fotoVehiculo": _urlImageVehiculo,
+    "placa": _itemPlaca,
+    "marca": _itemMarca,
+    "modelo": _itemModelo,
+    "color": _itemColor
+});
+   
+
     if (response != null) {
       _errorCrearUsuario = true;
       
@@ -1207,12 +1267,68 @@ notifyListeners();
 
 Map<String,dynamic> _infoUsuarioById ={};
 Map<String,dynamic> get getInfoUsuarioById =>_infoUsuarioById;
-
+String? _idUsuario="";
 
 void setIngoUsuario(Map<String,dynamic>  _info ){
   _infoUsuarioById ={};
+  _idUsuario="";
   _infoUsuarioById =_info;
 
+  _itemCedua=getUser!['usuario'];
+  _idUsuario =_infoUsuarioById['perId'].toString();
+  _itemNombre=_infoUsuarioById['nombres'];
+  _itemApellido=_infoUsuarioById['nombres'];
+  _itemDireccion=_infoUsuarioById['direccion'];
+  _itemCorreos=_infoUsuarioById['email'];
+  _itemCelulares=_infoUsuarioById['celular'];
+ _itemIsEdad = true;
+  _ciudadItem=_infoUsuarioById['ciudad']??'';
+  _sectorItem=_infoUsuarioById['sector'] ??'';
+  _itemReferencia =_infoUsuarioById['referencia'] ??'';
+  _urlImagePerfil=_infoUsuarioById['fotoPerfil'] ??'';
+  _urlImageCasa=_infoUsuarioById['fotoCasa'] ??''; 
+  _urlImageVehiculo=_infoUsuarioById['fotoVehiculo'] ??''; 
+
+  _locationGPS= 
+  
+  {
+        "latitud": _infoUsuarioById['latitud'],
+        "longitud":_infoUsuarioById['longitud'],
+    };
+  
+  _infoUsuarioById['gps'] ??''; 
+
+  _itemLugarServicio=_infoUsuarioById['tipoServicio'] ??''; 
+
+  _itemPlaca=_infoUsuarioById['placa'] ??'';
+  _itemColor=_infoUsuarioById['color'] ??'';
+  _itemMarca=_infoUsuarioById['marca'] ??'';
+  _itemModelo=_infoUsuarioById['modelo'] ??'';
+  
+
+
+
+
+
+	// "data": {
+	// 	"perId": 14049,
+	// 	"nombres": "Gomez Pedro",
+	// 	"celular": "+593958766850",
+	// 	"email": "pgomez@gmail.com",
+	// 	"direccion": "Calle 1",
+	// 	"ciudad": "BORBONES",
+	// 	"sector": "sector 1",
+	// 	"referencia": "Casa numero 1",
+	// 	"fotoPerfil": "https://documentos.neitor.com/contable/fotoperfil/ULTRA2022/96eee234-93e9-4a4c-9fb7-7d12ba3b3c5a.png",
+	// 	"fotoCasa": "https://documentos.neitor.com/contable/fotocasa/ULTRA2022/b2ed4c5b-e7db-4e34-8ba3-c32a9480f6c0.png",
+	// 	"fotoVehiculo": "",
+	// 	"gps": {
+	// 		"latitud": "-0.253396",
+	// 		"longitud": "-79.176296"
+	// 	},
+	// 	"tipoServicio": "HOGAR",
+	// 	"placa": "ZZZ9999"
+	// }
 
 
 
@@ -1225,10 +1341,7 @@ void setIngoUsuario(Map<String,dynamic>  _info ){
 
 
 
-
-
-
- print('_infoUsuarioById  : $_infoUsuarioById');
+//  print('_infoUsuarioById  : $_infoUsuarioById');
 
 notifyListeners();
 }
@@ -1262,7 +1375,29 @@ notifyListeners();
 
 
 
-//-----------------------------------//
+
+//====== VALIDA LA SESION DEL USUARIO ==========//
+
+  Future validaInicioDeSesion(BuildContext context) async {
+    final dataUser = await Auth.instance.getSession();
+    final response = await _api.validaTokenUsuarios(
+      token: dataUser!['token'],
+    );
+
+    if (response != null) {
+
+      // print('EL TOQUEN NUEVO: $response');
+       await Auth.instance.saveSession(response);
+
+      return response;
+    }
+    if (response == null) {
+      await Auth.instance.deleteSesion(context);
+
+      return null;
+    }
+  }
+//---------------------------------//
 
 
 

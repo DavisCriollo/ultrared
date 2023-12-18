@@ -108,8 +108,7 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                     ),
                   );
                 } 
-
-                return ListView.builder(
+                    return ListView.builder(
                   shrinkWrap: true,
                   itemCount: valueChat.getListaGruposChat.length,
                   itemBuilder: (context, index) {
@@ -167,11 +166,11 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
 
 
 
-                            final _ctrlSocket = Provider.of<SocketModel>(
-                                context,
-                                listen: false);
+                            // final _ctrlSocket = Provider.of<SocketModel>(
+                            //     context,
+                            //     listen: false);
 
-                            _ctrlSocket.emitEvent('client:lista-usuarios',  {"chat_id": _grupo['chat_id']});
+                            valueChat.emitEvent('client:lista-usuarios',  {"chat_id": _grupo['chat_id']});
 
 
 
@@ -209,6 +208,8 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                     );
                   },
                 );
+
+            
               },
             )),
       ),

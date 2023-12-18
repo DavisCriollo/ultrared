@@ -17,10 +17,14 @@ class LoginController extends ChangeNotifier {
   String? _usuario = "", _clave = "";
   void onChangeUser(String text) {
     _usuario = text;
+    //  print('USUARIO: $_usuario');
+    notifyListeners();
   }
 
   void onChangeClave(String text) {
     _clave = text;
+      print('CLAVE: $_clave');
+    notifyListeners();
   }
 
   bool? get getRecuerdaCredenciales => _recuerdaCredenciales;
@@ -42,6 +46,7 @@ class LoginController extends ChangeNotifier {
 
   void setLabelNombreEmpresa(String value) {
     _textNombreEmpresa = value;
+    // print('EMPRESA: $_textNombreEmpresa');
     notifyListeners();
   }
 
@@ -59,7 +64,7 @@ class LoginController extends ChangeNotifier {
   }
   //========================== LOGIN =======================//
   Future loginApp(BuildContext context) async {
-    // List _creddenciales = [];
+    List _creddenciales = [];
     final response = await _api.login(
         empresa: _textNombreEmpresa!.trim(),
         usuario: _usuario!.trim(),
@@ -69,12 +74,20 @@ class LoginController extends ChangeNotifier {
         // print('LA DATA EN CONTROLL : $response');
 
     if (response != null ) {
+      _creddenciales.addAll([
+        '$_recuerdaCredenciales',
+        '$_textNombreEmpresa',
+        '$_usuario',
+        '$_clave'
+      ]);
      
-      // await Auth.instance.saveSession(response);
-      // infoUser = await Auth.instance.getSession();
-      // if (_recuerdaCredenciales == true) {
-      //   await Auth.instance.saveDataRecordarme(_creddenciales);
-      // }
+      await Auth.instance.deleteDataRecordarme();
+
+      await Auth.instance.saveSession(response);
+      infoUser = await Auth.instance.getSession();
+      if (_recuerdaCredenciales == true) {
+        await Auth.instance.saveDataRecordarme(_creddenciales);
+      }
       // _dataLogin = response;
       
       return response;
@@ -87,6 +100,8 @@ class LoginController extends ChangeNotifier {
   //====================================== RECORDAR CLAVE ======================================//
   void onRecuerdaCredenciales(bool value) {
     _recuerdaCredenciales = value;
+
+        // print('LA DATA EN CONTROLL : $_recuerdaCredenciales');
     notifyListeners();
     }
 

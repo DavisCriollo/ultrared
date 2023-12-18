@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
+import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/service/provider_socket.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -10,6 +11,7 @@ class SocketModel with ChangeNotifier {
   IO.Socket get socket => _socket;
 
   final ChatController _crtlChat = ChatController();
+  final HomeController _crtlHome = HomeController();
 
   List _listaGruposChat = [];
   List get getListaGruposChat => _listaGruposChat;
@@ -62,6 +64,7 @@ notifyListeners();
     });
     _socket.on('server:nuevanotificacion', (data) {
       print('las NOTIFICACIONES  ------->   : $data');
+      
 
       _listaNotificaciones = [];
       _listaNotificaciones = data;

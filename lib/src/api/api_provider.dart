@@ -343,9 +343,9 @@ var response = await request.send();
     //for getting and decoding the response into json format
     var responsed = await _http.Response.fromStream(response);
     // final responseData = json.decode(responsed.body);
-print('LISTA SERVER ***** : ${responsed.statusCode}');
-print('LISTA SERVER ***** : ${responsed}');
-print('LISTA SERVER ***** : ${responsed.body}');
+// print('LISTA SERVER ***** : ${responsed.statusCode}');
+// print('LISTA SERVER ***** : ${responsed}');
+// print('LISTA SERVER ***** : ${responsed.body}');
       if (responsed.statusCode == 404) {
         snaks.NotificatiosnService.showSnackBarDanger(
             "No se puede agregar Contenido");
@@ -597,6 +597,45 @@ return jsonMap['nombre'];
         headers: {"x-auth-token": '$token'},
       );
       final respo = jsonDecode(dataResp.body);
+      if (dataResp.statusCode == 200) {
+        return respo;
+      }
+
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+        Auth.instance.deleteSesion(context!);
+           snaks.NotificatiosnService.showSnackBarDanger("Debe inciar sesión nuevamente");
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+//=========================GET ALL GRUPOS CHAT =====================================//
+  Future putUsuarioById({
+    BuildContext? context,
+    String? token,
+    String? idUser,
+    Map<String,dynamic>? data,
+    
+  }) async {
+    try {
+      final url = Uri.parse(
+          '$_dirURL/proveedores/usuario/$idUser');
+
+      final dataResp = await _http.put(
+        url,
+        headers: {'Content-Type':'application/json',"x-auth-token":'$token'},
+        body: jsonEncode(data)
+      );
+   print(' LA DETA DEL PUT: ${dataResp.body}');  
+      final respo = jsonDecode(dataResp.body);
+
+  //  print(' LA DETA DEL PUT: $respo');
+
+
       if (dataResp.statusCode == 200) {
         return respo;
       }

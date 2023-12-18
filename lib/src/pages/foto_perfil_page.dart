@@ -9,12 +9,14 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/foto_casa_page.dart';
 import 'package:ultrared/src/pages/foto_vehiculo.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
+import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
 
 class FotosPerfilPage extends StatefulWidget {
-  const FotosPerfilPage({Key? key}) : super(key: key);
+    final String? action;
+  const FotosPerfilPage({Key? key, this.action}) : super(key: key);
 
   @override
   State<FotosPerfilPage> createState() => _FotosPerfilPageState();
@@ -23,6 +25,7 @@ class FotosPerfilPage extends StatefulWidget {
 class _FotosPerfilPageState extends State<FotosPerfilPage> {
   @override
   Widget build(BuildContext context) {
+        final _action = widget.action;
     final Responsive size = Responsive.of(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -33,14 +36,25 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
           centerTitle: true, // Centra el título en el AppBar
           elevation: 0,
           backgroundColor: cuaternaryColor, // Fondo blanco
-          title: Text('FOTO DE PERFIL',
-              style: GoogleFonts.poppins(
-                fontSize: size.iScreen(2.0),
-                fontWeight: FontWeight.w700,
-                color: Colors.black,
-                letterSpacing: -0.40,
-              ) // Color del título en negro
-              ),
+          title: 
+          
+          
+          // Text('FOTO DE PERFIL',
+          //     style: GoogleFonts.poppins(
+          //       fontSize: size.iScreen(2.0),
+          //       fontWeight: FontWeight.w700,
+          //       color: Colors.black,
+          //       letterSpacing: -0.40,
+          //     ) // Color del título en negro
+          //     ),
+           Text(_action == 'CREATE' ? 'REGISTRO FOTO PERFIL' : 'EDITAR  FOTO PERFIL',
+                  style: GoogleFonts.poppins(
+                    fontSize: size.iScreen(2.0),
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                    letterSpacing: -0.40,
+                  ) // Color del título en negro
+                  ),
         ),
         body: Container(
             // alignment: Alignment.center,
@@ -250,23 +264,25 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
                         ),
                         //*****************************************/
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async{
 
                              final control=context.read<HomeController>();
 
-                              if (control.getUrlPerfil.isNotEmpty) {
+                        // if (_action=='CREATE') {
+
+                            if (control.getUrlPerfil.isNotEmpty) {
                                  if ( control.getItemLugarServicio=='HOGAR') {
                                     
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: ((context) => FotosCasaPage())));
+                                    builder: ((context) =>  FotosCasaPage( action: widget.action))));
                                   }else
                                   {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: ((context) => FotosVehiculoPage())));
+                                    builder: ((context) =>  FotosVehiculoPage(action: widget.action))));
 
                                   }
 
@@ -274,6 +290,49 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
                               } else {
                                 NotificatiosnService.showSnackBarDanger('Agregar foto de Perfil');
                               }
+                          
+                        // } else {
+                        //    NotificatiosnService.showSnackBarDanger('ESTA EDITANDO');
+
+                        //      final control = context.read<HomeController>();
+
+  // if (control.getUrlCasa.isNotEmpty) {
+  //   ProgressDialog.show(context);
+  //   final response = await control.crearUsuario(context);
+  //   ProgressDialog.dissmiss(context);
+  //   if (response != null  && response.containsKey('res') ) {
+  //      NotificatiosnService.showSnackBarDanger( response['msg']);
+  //   } else if (response != null  && !response.containsKey('res')) {
+  //     _modalMessageResponse(context, response['msg'], size);
+  //   }
+   
+  // } else {
+  //   NotificatiosnService.showSnackBarDanger('Agregar foto de Casa');
+
+
+                        // }
+
+
+                            //   if (control.getUrlPerfil.isNotEmpty) {
+                            //      if ( control.getItemLugarServicio=='HOGAR') {
+                                    
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: ((context) => FotosCasaPage())));
+                            //       }else
+                            //       {
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: ((context) => FotosVehiculoPage())));
+
+                            //       }
+
+                                
+                            //   } else {
+                            //     NotificatiosnService.showSnackBarDanger('Agregar foto de Perfil');
+                            //   }
 
 
                                  

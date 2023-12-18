@@ -47,32 +47,32 @@ class SerClientePage extends StatelessWidget {
                   child: Column(
                     children: [
                         SizedBox(
-                        height: size.hScreen(2.0),
+                        height: size.hScreen(0.0),
                       ),
           
                       Container(
-                      height: size.hScreen(8),
+                      height: size.hScreen(15),
                       width: size.wScreen(100),
                       padding:
                           EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
           
                       // color: Colors.blue, // Puedes ajustar el color según tus preferencias
                       child: Image.asset(
-                        'assets/imgs/LetrasNegro.png',
+                        'assets/imgs/icon.png', scale: 3.0,
                         fit: BoxFit.contain, // URL de la imagen
                       ),
                     ),
                       SizedBox(
-                      height: size.hScreen(4.0),
+                      height: size.hScreen(0.0),
                     ),
                       SizedBox(
                         width: size.wScreen(80),
                         height: size.hScreen(8.0),
                         child: Text(
-                          'Internet por Fibra Óptica',
+                          'Seguridad Móvil',
                           textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
-                              fontSize: size.iScreen(2.0),
+                              fontSize: size.iScreen(3.0),
                               fontWeight: FontWeight.w500,
                               color: secondaryColor),
                         ),

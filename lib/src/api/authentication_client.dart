@@ -88,7 +88,7 @@ class Auth {
   Future<void> deleteSesion(BuildContext context) async {
     // await _storage.deleteAll();
     await _storage.delete(key: keySESION);
-    //  print('SESION ELIMINADA:$keySESION');
+     print('SESION ELIMINADA:$keySESION');
     Navigator.pushNamedAndRemoveUntil(context, 'serCliente', (_) => false);
   }
   // CIERRO SESSION
@@ -155,6 +155,7 @@ class Auth {
     final String value = jsonEncode(_recordarme);
 // GUARDAMOS LA INFORMACION DEL DISPOSITIVO
     await _storage.write(key: keyCREDENCIALES, value: value);
+      //  print('credenciles guardado:$value');
   }
 
 // OBTEMENOS LA INFORMACION DEL credenciales

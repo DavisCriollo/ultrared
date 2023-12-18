@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
+import 'package:ultrared/src/pages/foto_perfil_page.dart';
 import 'package:ultrared/src/pages/selecciona_planes_page.dart';
 import 'package:ultrared/src/pages/selecciona_sector.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
@@ -39,7 +40,7 @@ class _RegistroPageState extends State<RegistroPage> {
 
   @override
   Widget build(BuildContext context) {
-       final  _action = widget.action;
+    final _action = widget.action;
     final Responsive size = Responsive.of(context);
     final _control = context.read<HomeController>();
     // context.read<SocketService>();
@@ -52,25 +53,19 @@ class _RegistroPageState extends State<RegistroPage> {
           centerTitle: true, // Centra el título en el AppBar
           elevation: 0,
           backgroundColor: cuaternaryColor, // Fondo blanco
-          title: 
-          
-          //  _action == 'CREATE' || _action == 'EXTRA'
-          //         ? 
-                      Text(  _action == 'CREATE'? 'REGISTRO' :'EDITAR REGISTRO',
-              style: GoogleFonts.poppins(
-                fontSize: size.iScreen(2.0),
-                fontWeight: FontWeight.w700,
-                color: Colors.black,
-                letterSpacing: -0.40,
-              ) // Color del título en negro
-              ),
-                    ),
-                 
-          
-          
-          
-          
-        
+          title:
+
+              //  _action == 'CREATE' || _action == 'EXTRA'
+              //         ?
+              Text(_action == 'CREATE' ? 'REGISTRO' : 'EDITAR REGISTRO',
+                  style: GoogleFonts.poppins(
+                    fontSize: size.iScreen(2.0),
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                    letterSpacing: -0.40,
+                  ) // Color del título en negro
+                  ),
+        ),
         body: Container(
             // alignment: Alignment.center,
             // color: Colors.red,
@@ -108,7 +103,7 @@ class _RegistroPageState extends State<RegistroPage> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: size.hScreen(2.0),
+                          height: size.hScreen(1.0),
                         ),
                         SizedBox(
                           width: size.wScreen(80),
@@ -127,7 +122,7 @@ class _RegistroPageState extends State<RegistroPage> {
                         //***********************************************/
 
                         SizedBox(
-                          height: size.iScreen(0.5),
+                          height: size.iScreen(0.0),
                         ),
                         //*****************************************/
                         Container(
@@ -141,55 +136,51 @@ class _RegistroPageState extends State<RegistroPage> {
                                     vertical: size.iScreen(0.0)),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
-                            
+
                                   // border: Border.all(
                                   //   color: Colors.grey,
                                   //   width: 1.0,
                                   // ),
                                 ),
-                                child:
-                            
-                                  
-                                    TextFormField(
-                                       initialValue: widget.action == 'CREATE'
-                        ? ''
-                        : _control.getInfoUsuarioById['perId'].toString(),
+                                child: TextFormField(
+                                  initialValue: widget.action == 'CREATE'
+                                      ? ''
+                                      : _control.getUser!['usuario'].toString(),
+                                  readOnly:
+                                      widget.action == 'CREATE' ? false : true,
+                                  maxLength: 13,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'[0-9]')),
+                                  ],
+                                  decoration: InputDecoration(
+                                    suffixIcon:
+                                        const Icon(Icons.assignment_ind),
+                                    hintText: 'CÉDULA',
+                                    // border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.fromLTRB(
+                                        10.0, 15.0, 0.0, 0.0),
+                                    focusedBorder: const OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.grey)),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
 
-                        readOnly: widget.action == 'CREATE'?false:true,
-                                      maxLength: 10,
-                                      keyboardType: TextInputType.number,
-                                      inputFormatters: <TextInputFormatter>[
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp(r'[0-9]')),
-                                      ],
-                                      decoration: InputDecoration(
-                                        suffixIcon:
-                                            const Icon(Icons.assignment_ind),
-                                        hintText: 'CÉDULA',
-                                        // border: InputBorder.none,
-                                        contentPadding: const EdgeInsets.fromLTRB(
-                                            10.0, 15.0, 0.0, 0.0),
-                                        focusedBorder: const OutlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.grey)),
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                    
-                                        // labelText: 'Nome',
-                                      ),
-                                      onChanged: (text) {
-                                        _control.setItemCedua(text.trim());
-                                      },
-                                    )),
+                                    // labelText: 'Nome',
+                                  ),
+                                  onChanged: (text) {
+                                    _control.setItemCedua(text.trim());
+                                  },
+                                )),
                           ),
                         ),
                         //***********************************************/
                         //***********************************************/
 
                         SizedBox(
-                          height: size.iScreen(2.0),
+                          height: size.iScreen(1.0),
                         ),
                         //*****************************************/
                         Container(
@@ -209,7 +200,9 @@ class _RegistroPageState extends State<RegistroPage> {
                                 ),
                               ),
                               child: TextFormField(
-                                // maxLength: 1,
+                              initialValue: widget.action == 'CREATE'
+                                      ? ''
+                                      :_control.getItemNombre,
                                 decoration: InputDecoration(
                                   suffixIcon: Icon(Icons.person),
                                   hintText: 'NOMBRES',
@@ -246,6 +239,9 @@ class _RegistroPageState extends State<RegistroPage> {
                                 ),
                               ),
                               child: TextFormField(
+                                 initialValue: widget.action == 'CREATE'
+                                      ? ''
+                                      :_control.getItemApellido,
                                 // maxLength: 1,
                                 decoration: const InputDecoration(
                                   suffixIcon: Icon(Icons.person),
@@ -283,7 +279,9 @@ class _RegistroPageState extends State<RegistroPage> {
                                 ),
                               ),
                               child: TextFormField(
-                                // maxLength: 1,
+                                initialValue: widget.action == 'CREATE'
+                                      ? ''
+                                      :_control.getItemDireccion,
                                 decoration: const InputDecoration(
                                   suffixIcon: Icon(Icons.directions),
                                   hintText: 'DIRECCIÒN',
@@ -349,7 +347,7 @@ class _RegistroPageState extends State<RegistroPage> {
                                                 '${valuCorreo.getItemCorreos}  ',
                                                 style: GoogleFonts.poppins(
                                                   fontSize: size.iScreen(
-                                                      2.0), // Ajusta según tus necesidades
+                                                      1.8), // Ajusta según tus necesidades
                                                   fontWeight: FontWeight.w400,
                                                   letterSpacing: 0.5,
                                                   color: valuCorreo
@@ -424,7 +422,7 @@ class _RegistroPageState extends State<RegistroPage> {
                                                 '${valuCelular.getItemCelulars}  ',
                                                 style: GoogleFonts.poppins(
                                                   fontSize: size.iScreen(
-                                                      2.0), // Ajusta según tus necesidades
+                                                      1.8), // Ajusta según tus necesidades
                                                   fontWeight: FontWeight.w400,
                                                   letterSpacing: 0.5,
                                                   color: valuCelular
@@ -436,7 +434,8 @@ class _RegistroPageState extends State<RegistroPage> {
                                               ),
                                       ),
                                       Icon(
-                                        Icons.whatsapp_outlined, // Cambia el icono según tus necesidades
+                                        Icons
+                                            .whatsapp_outlined, // Cambia el icono según tus necesidades
                                         color: valuCelular.getItemCelulars == ""
                                             ? Colors.grey
                                             : tercearyColor, // Color del icono
@@ -451,7 +450,7 @@ class _RegistroPageState extends State<RegistroPage> {
                         //***********************************************/
 
                         SizedBox(
-                          height: size.iScreen(1.0),
+                          height: size.iScreen(0.5),
                         ),
                         //*****************************************/
 
@@ -463,16 +462,26 @@ class _RegistroPageState extends State<RegistroPage> {
                           height: size.hScreen(8.0),
                           child: Row(
                             children: [
-                              Checkbox(
-                                value: _isChecked,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _isChecked = value!;
+                              Consumer <HomeController>(builder: (_, valueCheck, __) { 
 
-                                    _control.setItemIsEdad(_isChecked);
-                                  });
+                                return  Checkbox(
+                                value:  _control.getItemIsEdad,
+                                onChanged: (value) {
+
+                                  // setState(() {
+                                  //   // _isChecked = value!;
+
+                                  // });
+                                    _control.setItemIsEdad(value);
+
+
+
                                 },
-                              ),
+                              );
+
+                               },),
+
+                             
                               Text(
                                 'Confirmo que soy mayor de 18 años.',
                                 textAlign: TextAlign.center,
@@ -488,7 +497,7 @@ class _RegistroPageState extends State<RegistroPage> {
                         //***********************************************/
 
                         SizedBox(
-                          height: size.iScreen(3.0),
+                          height: size.iScreen(2.0),
                         ),
                         //*****************************************/
                         //***********************************************/
@@ -562,8 +571,8 @@ class _RegistroPageState extends State<RegistroPage> {
                     ),
                     TextButton(
                         onPressed: () {
-                          controller.seItemCelulars(controller.getItemCelulars );
-                              // .replaceAll('+593', '0'));
+                          controller.seItemCelulars(controller.getItemCelulars);
+                          // .replaceAll('+593', '0'));
 
                           final isValidS = controller.validateFormCelular();
                           if (!isValidS) return;
@@ -733,18 +742,23 @@ class _RegistroPageState extends State<RegistroPage> {
   void _next(BuildContext context, HomeController controller) {
     if (controller.getItemCedua!.isEmpty ||
         controller.getItemCedua!.length < 10 ||
-        controller.getItemCedua!.length > 10) {
+        controller.getItemCedua!.length > 13) {
       NotificatiosnService.showSnackBarDanger('Cédula incorrecta');
-    } else if (controller.getItemNombre!.isEmpty ||
-        controller.getItemApellido!.isEmpty ||
-        controller.getItemDireccion!.isEmpty ||
-        controller.getItemCorreos!.isEmpty |
-            controller.getItemCelulars!.isEmpty ||
-        controller.getItemIsEdad == false) {
-      NotificatiosnService.showSnackBarDanger('Falta agregar  información');
-    } else {
+    } 
+    else if (controller.getItemNombre!.isNotEmpty &&       
+      controller.getItemApellido!.isNotEmpty &&
+        controller.getItemDireccion!.isNotEmpty &&
+        controller.getItemCorreos!.isNotEmpty |
+            controller.getItemCelulars!.isNotEmpty &&
+      
+        controller.getItemIsEdad == true) {
       Navigator.push(context,
-          MaterialPageRoute(builder: ((context) => SeleccionaSector())));
+          MaterialPageRoute(builder: ((context) => SeleccionaSector(
+            action:widget.action,
+          ))));
+    }else{
+NotificatiosnService.showSnackBarDanger('Falta agregar  información');
     }
+   
   }
 }

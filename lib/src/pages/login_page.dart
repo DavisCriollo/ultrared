@@ -29,6 +29,40 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+   TextEditingController? _textUsuario = TextEditingController();
+  TextEditingController? _textClave = TextEditingController();
+ final logData = LoginController();
+    @override
+  void dispose() {
+    _textUsuario!.clear(); 
+    _textClave!.clear(); 
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    inicialData();
+    super.initState();
+  }
+
+  void inicialData() async {
+    final datosRecordarme = await Auth.instance.getDataRecordarme();
+    if (datosRecordarme != null && datosRecordarme[0] == 'true') {
+   
+      _textUsuario!.text = '${datosRecordarme[2]}';
+      _textClave!.text = '${datosRecordarme[3]}';
+
+      logData.onRecuerdaCredenciales(true);
+
+      logData.setLabelNombreEmpresa(datosRecordarme[1]);
+      logData.onChangeUser(datosRecordarme[2]);
+      logData.onChangeClave(datosRecordarme[3]);
+    } else if (datosRecordarme == null || datosRecordarme[0] == 'false') {
+   
+      _textUsuario!.text = '';
+      _textClave!.text = '';
+    }
+  }
 
    bool _obscureText = true;
   @override
@@ -113,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                 
                 // Segundo Container (40% de la pantalla)
                 Container(
-                  height: size.hScreen(50),
+                  // height: size.hScreen(50),
                   width:size.wScreen(100),
                   // color: Colors.green, // Puedes ajustar el color según tus preferencias
                   // Puedes agregar contenido adicional en este contenedor
@@ -122,10 +156,10 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       children: [
                            SizedBox(
-                        height: size.hScreen(2.0),
+                        height: size.hScreen(0.5),
                       ),
                           Container(
-                        height: size.hScreen(8),
+                        height: size.hScreen(7),
                         width: size.wScreen(100),
                         padding:
                             EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
@@ -137,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                         SizedBox(
-                        height: size.hScreen(1.0),
+                        height: size.hScreen(0.0),
                       ),
                        SizedBox(
                         width: size.wScreen(80),
@@ -168,6 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     child: TextFormField(
+                       controller: _textUsuario,
                       decoration: const InputDecoration(
                          suffixIcon:Icon(Icons.account_circle_rounded),
                         hintText: 'ESCRIBE TU USUARIO',
@@ -183,6 +218,9 @@ class _LoginPageState extends State<LoginPage> {
                                         return 'Usuario Incorrecto';
                                       }
                                     },
+                                     onSaved: (value) {
+                                  controller.onChangeUser(value!);
+                                },
                     ),
                                 ),
                         ),
@@ -210,6 +248,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     child: TextFormField(
+                       controller: _textClave,
                       // decoration: InputDecoration(
                         
                       //   hintText: 'Ingresa tu texto',
@@ -247,15 +286,92 @@ class _LoginPageState extends State<LoginPage> {
                                         return 'Contraseña Incorrecta';
                                       }
                                     },
+                                      onSaved: (value) {
+                                  controller.onChangeClave(value!);
+                                },
                                          
                     ),
                                 ),
                         ),
                       ),
+                       //***********************************************/
+
+                        SizedBox(
+                          height: size.iScreen(0.0),
+                        ),
+                        //*****************************************/
+
+                        //***********************************************/
+
+                        //     )),
+                        SizedBox(
+                          width: size.wScreen(80),
+                          height: size.hScreen(7.0),
+                          child: 
+                          
+                          // Row(
+                          //   children: [
+                          //     Consumer <HomeController>(builder: (_, valueCheck, __) { 
+
+                          //       return  Checkbox(
+                          //       value:  valueCheck.getItemIsEdad,
+                          //       onChanged: (value) {
+
+                          //         // setState(() {
+                          //         //   // _isChecked = value!;
+
+                          //         // });
+                          //           valueCheck.setItemIsEdad(value);
+
+
+
+                          //       },
+                          //     );
+
+                          //      },),
+
+                             
+                          //     Text(
+                          //       'Recordar usuario',
+                          //       textAlign: TextAlign.center,
+                          //       style: GoogleFonts.poppins(
+                          //           fontSize: size.iScreen(1.5),
+                          //           fontWeight: FontWeight.w400,
+                          //           color: secondaryColor),
+                          //     ),
+                          //   ],
+                          // ),
+                          Row(
+                              children: [
+                                Consumer<LoginController>(
+                                  builder: (_, provider, __) {
+                                    return Container(
+                                      // color: Colors.red,
+                                      child: Checkbox(
+                                          focusColor: Colors.white,
+                                          value:
+                                              provider.getRecuerdaCredenciales,
+                                          onChanged: (value) {
+                                            provider
+                                                .onRecuerdaCredenciales(value!);
+                                            // print(value);
+                                          }),
+                                    );
+                                  },
+                                ),
+                                Text(
+                                  'Recordarme',
+                                  style: GoogleFonts.lexendDeca(
+                                      fontSize: size.iScreen(1.7),
+                                      color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                        ),
                                       //***********************************************/
                               
                                       SizedBox(
-                                        height: size.iScreen(1.5),
+                                        height: size.iScreen(1.0),
                                       ),
                                       //*****************************************/
                       GestureDetector(onTap: () {
@@ -266,8 +382,11 @@ class _LoginPageState extends State<LoginPage> {
                         //                 builder: ((context) => HomePage())));
                       },child: BotonBase(size: size,label: 'INICIAR SESIÓN',)),
                       
+                       
+                        //***********************************************/
+
                       SizedBox(
-                        height: size.hScreen(3.0),
+                        height: size.hScreen(2.0),
                       ),
                                     
                                  GestureDetector(

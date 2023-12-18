@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/init_provider.dart';
+import 'package:ultrared/src/pages/foto_perfil_page.dart';
 import 'package:ultrared/src/pages/login_page.dart';
+import 'package:ultrared/src/pages/selecciona_sector.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
 import 'package:ultrared/src/service/socket_service.dart';
@@ -17,7 +20,8 @@ import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
 
 class FotosVehiculoPage extends StatefulWidget {
-  const FotosVehiculoPage({Key? key}) : super(key: key);
+     final String? action;
+  const FotosVehiculoPage({Key? key, required this.action}) : super(key: key);
 
   @override
   State<FotosVehiculoPage> createState() => _FotosVehiculoPageState();
@@ -34,6 +38,7 @@ class _FotosVehiculoPageState extends State<FotosVehiculoPage> {
 
   @override
   Widget build(BuildContext context) {
+      final _action = widget.action;
     final Responsive size = Responsive.of(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -331,7 +336,7 @@ class _FotosVehiculoPageState extends State<FotosVehiculoPage> {
                           onTap: () {
                             final _crtl = context.read<HomeController>();
                             // final _crtlSocket =context.read <SocketService>();
-                            _onSubmit(context, _crtl, size);
+                            _onSubmit(context, _crtl, size,_action!);
                             // _crtl.resetValues();
                           },
                           child: BotonBase(
@@ -442,17 +447,44 @@ class _FotosVehiculoPageState extends State<FotosVehiculoPage> {
   }
 }
 
-void _onSubmit(BuildContext context, HomeController controller, size) async {
+void _onSubmit(BuildContext context, HomeController controller, size,String _action) async {
   final control = context.read<HomeController>();
 
   if (control.getUrlVehiculo.isNotEmpty) {
+    dynamic response;
     ProgressDialog.show(context);
-    final response = await controller.crearUsuario(context);
+
+     
+         if (_action=='CREATE') {
+    ProgressDialog.show(context);
+ final response = await controller.crearUsuario(context);
+   ProgressDialog.dissmiss(context);
+    if (response != null  && response.containsKey('res') ) {
+       NotificatiosnService.showSnackBarDanger( response['msg']);
+    } else if (response != null  && !response.containsKey('res')) {
+      _modalMessageResponse(context, response['msg'], size,_action);
+    }
+         
+       } 
+           if (_action=='EDIT')  {
+
+ ProgressDialog.show(context);
+ final response = await controller.editarUsuario(context);
+   ProgressDialog.dissmiss(context);
+    if (response != null  && response.containsKey('res') ) {
+       NotificatiosnService.showSnackBarDanger( response['msg']);
+    } else if (response != null  && !response.containsKey('res')) {
+      _modalMessageResponse(context, response['msg'], size,_action);
+    }
+       }
+
+
+
     ProgressDialog.dissmiss(context);
     if (response != null && response.containsKey('res')) {
       NotificatiosnService.showSnackBarDanger(response['msg']);
     } else if (response != null && !response.containsKey('res')) {
-      _modalMessageResponse(context, response['msg'], size);
+      _modalMessageResponse(context, response['msg'], size, _action);
     }
   } else {
     NotificatiosnService.showSnackBarDanger('Agregar foto de Vehículo');
@@ -477,7 +509,9 @@ void _onSubmit(BuildContext context, HomeController controller, size) async {
 // }
 
 Future<void> _modalMessageResponse(
-    BuildContext context, String _message, Responsive size) {
+    BuildContext context, String _message, Responsive size,String _action) {
+      // final _crtlHome=context.read<HomeController>();
+
   return showDialog<String>(
     barrierDismissible: false,
     context: context,
@@ -487,7 +521,7 @@ Future<void> _modalMessageResponse(
           // height: size.hScreen(50.0),
           width: double.maxFinite,
           child: ListTile(
-            title: Text(_message),
+            title:_action=='CREATE'?Text(_message) :Text('${_message}, Es necesario iniciar sesión nuevamente'),
           ),
         ),
         actions: <Widget>[
@@ -495,11 +529,11 @@ Future<void> _modalMessageResponse(
             width: size.wScreen(100),
             // color: Colors.red,
             child: TextButton(
-              onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                        builder: (context) => const SerClientePage()),
-                    (Route<dynamic> route) => false);
+              onPressed: () async{
+                 await Auth.instance.deleteSesion(context);
+            Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const SerClientePage()),
+          (Route<dynamic> route) => false);
               },
               child: const Text('OK'),
             ),

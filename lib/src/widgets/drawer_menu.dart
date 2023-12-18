@@ -1,5 +1,6 @@
 
 
+import 'package:awesome_icons/awesome_icons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
+
 
 class DrawerMenu extends StatelessWidget {
   final Map<String, dynamic>? user;
@@ -78,6 +80,7 @@ class DrawerMenu extends StatelessWidget {
                           onTap: () async {
 
                                 //--------------------//
+                                  // _ctrl.resetAllValues();
 
           _ctrl.buscaUsuarioById(context);
 
@@ -95,6 +98,7 @@ class DrawerMenu extends StatelessWidget {
               if (_ctrl.getInfoUsuarioById.isNotEmpty) {
                 
                               Navigator.pop(context);
+                          
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
                                         const RegistroPage( action: 'EDIT',)));
@@ -110,7 +114,19 @@ class DrawerMenu extends StatelessWidget {
                           fontSize: size.iScreen(1.3),
                           fontWeight: FontWeight.w600,
                           color: Colors.white),),
-                               Icon(Icons.manage_accounts_outlined,size: size.iScreen(3.0),color: Colors.white,),
+                              // Icon(Icons.manage_accounts_outlined,size: size.iScreen(3.0),color: Colors.white,),
+                
+                              // Icon(Icons.manage_accounts_outlined,size: size.iScreen(3.0),color: Colors.white,),
+                              ClipOval(
+                        child: Image.asset(
+                          'assets/imgs/user.png',color:Colors.white, // Reemplaza con la ruta de tu imagen en los activos
+                          width: size.iScreen(4),
+                          height: size.iScreen(4),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                       
+                     
                             ],
                           ),
                         ),
@@ -224,7 +240,7 @@ class DrawerMenu extends StatelessWidget {
                final _tokenFCM = await Auth.instance.getTokenFireBase();
                   ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
                  await FirebaseService.deleteFirebaseInstance();
-              context.read<SocketModel>().disconnectSocket();
+              // context.read<SocketModel>().disconnectSocket();
                await Auth.instance.deleteTokenFireBase();
               await Auth.instance.deleteSesion(context);
 

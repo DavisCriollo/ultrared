@@ -426,18 +426,22 @@ _myChat(
                     ),
                   ))
               : Container(
-                //  decoration: BoxDecoration(
-                //     shape: BoxShape.circle,
-                //     border: Border.all(color: Colors.grey.shade500, width: 2.0),
-                //   ),
+                padding: EdgeInsets.all(size.iScreen(0.5)),
+                 decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.grey.shade500, width: 2.0),
+                  ),
                 child: ClipOval(
-                    child: Image.asset(
-                      'assets/imgs/no-image.png',
-                      // color: Colors.grey.shade200, // Reemplaza con la ruta de tu imagen en los activos
-                      width: size.iScreen(4.0),
-                      height: size.iScreen(4.0),
-                      fit: BoxFit.cover,
-                    ),
+                    child: Icon( Icons.person,color: Colors.grey.shade400,size: size.iScreen(2.8),)
+                    
+                    
+                    // Image.asset(
+                    //   'assets/imgs/no-image.png',
+                    //   // color: Colors.grey.shade200, // Reemplaza con la ruta de tu imagen en los activos
+                    //   width: size.iScreen(4.0),
+                    //   height: size.iScreen(4.0),
+                    //   fit: BoxFit.cover,
+                    // ),
                   ),
               ),
 
