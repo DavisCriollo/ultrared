@@ -652,6 +652,75 @@ return jsonMap['nombre'];
       return null;
     }
   }
+//=========================CIERRA SESEION APP =====================================//
+  Future putSessionUser({
+    BuildContext? context,
+    String? token,
+     
+  }) async {
+    try {
+      final url = Uri.parse(
+          '$_dirURL/auth/logout');
+
+      final dataResp = await _http.put(
+        url,
+        headers: {'Content-Type':'application/json',"x-auth-token":'$token'},
+    
+      );
+   print(' DELETTE SESION  PUT: ${dataResp.body}');  
+      final respo = jsonDecode(dataResp.body);
+
+  //  print(' LA DETA DEL PUT: $respo');
+
+
+      if (dataResp.statusCode == 200) {
+        return respo;
+      }
+
+      if (dataResp.statusCode == 401||dataResp.statusCode == 404|| dataResp.statusCode == 500) {
+        return null;
+      }
+     
+    } catch (e) {
+      return null;
+    }
+  }
+//========================= ACTUALIZAZ CLAVE =====================================//
+  Future putActualizaClave({
+    BuildContext? context,
+    String? token,
+    String? idUser,
+    Map<String,dynamic>? nuevaClave,
+     
+  }) async {
+    try {
+      final url = Uri.parse(
+          '$_dirURL/proveedores/password/$idUser');
+
+      final dataResp = await _http.put(
+        url,
+        headers: {'Content-Type':'application/json',"x-auth-token":'$token'},
+        body: jsonEncode(nuevaClave)
+    
+      );
+   print(' actualiza  PUT: ${dataResp.body}');  
+      final respo = jsonDecode(dataResp.body);
+
+  //  print(' LA DETA DEL PUT: $respo');
+
+
+      if (dataResp.statusCode == 200) {
+        return respo;
+      }
+
+      if (dataResp.statusCode == 401||dataResp.statusCode == 404|| dataResp.statusCode == 500) {
+        return null;
+      }
+     
+    } catch (e) {
+      return null;
+    }
+  }
 //=========================GET ALL GRUPOS CHAT =====================================//
   Future getAllNoticias({
     BuildContext? context,

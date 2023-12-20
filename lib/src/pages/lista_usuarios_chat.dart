@@ -360,67 +360,67 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
               // );
               //           },)
             ),
-            Positioned(
-              bottom: size.wScreen(2),
-              right: size.wScreen(2.0),
-              child: GestureDetector(
-                onTap: () {
-                  final _crtl = context.read<ChatController>();
-                  final _crtlSocket = context.read<SocketModel>();
+            // Positioned(
+            //   bottom: size.wScreen(2),
+            //   right: size.wScreen(2.0),
+            //   child: GestureDetector(
+            //     onTap: () {
+            //       final _crtl = context.read<ChatController>();
+            //       final _crtlSocket = context.read<SocketModel>();
 
-                  final _info = {
-                    "opcion": "GROUP", // 'INDIVIDUAL' | 'GROUP'
-                    "grupo": widget.infoGrupo,
-                    "chat_id": widget.infoGrupo['chat_id'],
-                    "idUsuario": user,
-                    // tomar del grupo del chat
-                  };
-                  _crtl.buscaAllTodoLosChatPaginacion(
-                      '', false, widget.infoGrupo['chat_id'],_crtlSocket);
-                  for (var item in _crtl.getListaTodoLosChatPaginacion) {
-                    _crtlSocket.setListaDeMensajesChat(item);
-                  }
-                    //  _crtlSocket.setListaDeMensajesChat(_info);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => ChatPage(
-                                infoChat: _info,
-                              ))));
-                },
-                child: Container(
-                  width: size.wScreen(25.0),
-                  height: size.hScreen(6.0),
-                  padding: EdgeInsets.all(size.iScreen(1.0)),
-                  decoration: ShapeDecoration(
-                    color: Color(0xFFB32623),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    shadows: [
-                      BoxShadow(
-                        color: Color(0x33123B93),
-                        blurRadius: 20,
-                        offset: Offset(8, 8),
-                        spreadRadius: 0,
-                      )
-                    ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Ir al Chat',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                        fontSize: size.iScreen(1.5),
-                        fontWeight: FontWeight.normal,
-                        color: Colors.white,
-                        // letterSpacing: -0.40,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            )
+            //       final _info = {
+            //         "opcion": "GROUP", // 'INDIVIDUAL' | 'GROUP'
+            //         "grupo": widget.infoGrupo,
+            //         "chat_id": widget.infoGrupo['chat_id'],
+            //         "idUsuario": user,
+            //         // tomar del grupo del chat
+            //       };
+            //       _crtl.buscaAllTodoLosChatPaginacion(
+            //           '', false, widget.infoGrupo['chat_id'],_crtlSocket);
+            //       for (var item in _crtl.getListaTodoLosChatPaginacion) {
+            //         _crtlSocket.setListaDeMensajesChat(item);
+            //       }
+            //         //  _crtlSocket.setListaDeMensajesChat(_info);
+            //       Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //               builder: ((context) => ChatPage(
+            //                     infoChat: _info,
+            //                   ))));
+            //     },
+            //     child: Container(
+            //       width: size.wScreen(25.0),
+            //       height: size.hScreen(6.0),
+            //       padding: EdgeInsets.all(size.iScreen(1.0)),
+            //       decoration: ShapeDecoration(
+            //         color: Color(0xFFB32623),
+            //         shape: RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(16),
+            //         ),
+            //         shadows: [
+            //           BoxShadow(
+            //             color: Color(0x33123B93),
+            //             blurRadius: 20,
+            //             offset: Offset(8, 8),
+            //             spreadRadius: 0,
+            //           )
+            //         ],
+            //       ),
+            //       child: Center(
+            //         child: Text(
+            //           'Ir al Chat',
+            //           textAlign: TextAlign.center,
+            //           style: GoogleFonts.poppins(
+            //             fontSize: size.iScreen(1.5),
+            //             fontWeight: FontWeight.normal,
+            //             color: Colors.white,
+            //             // letterSpacing: -0.40,
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),

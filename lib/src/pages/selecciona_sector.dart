@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/foto_perfil_page.dart';
 import 'package:ultrared/src/pages/password_page.dart';
+import 'package:ultrared/src/pages/registro_page.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
 import 'package:ultrared/src/utils/letras_mayusculas_minusculas.dart';
 import 'package:ultrared/src/utils/responsive.dart';
@@ -57,24 +58,28 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      height: size.hScreen(8),
-                      width: size.wScreen(100),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
+                    // Container(
+                    //   height: size.hScreen(8),
+                    //   width: size.wScreen(100),
+                    //   padding:
+                    //       EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
 
-                      // color: Colors.blue, // Puedes ajustar el color según tus preferencias
-                      child: Image.asset(
-                        'assets/imgs/LetrasNegro.png',
-                        fit: BoxFit.contain, // URL de la imagen
-                      ),
-                    ),
-                    //***********************************************/
+                    //   // color: Colors.blue, // Puedes ajustar el color según tus preferencias
+                    //   child: Image.asset(
+                    //     'assets/imgs/LetrasNegro.png',
+                    //     fit: BoxFit.contain, // URL de la imagen
+                    //   ),
+                    // ),
+                    // //***********************************************/
 
-                    SizedBox(
-                      height: size.iScreen(3.0),
-                    ),
-                    //*****************************************/
+                    // SizedBox(
+                    //   height: size.iScreen(3.0),
+                    // ),
+                    // //*****************************************/
+
+                          
+
+
                     Container(
                       // height: size.hScreen(40),
                       width: size.wScreen(100),
@@ -82,22 +87,57 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                       // Puedes agregar contenido adicional en este contenedor
                       child: Column(
                         children: [
-                          SizedBox(
-                            height: size.hScreen(2.0),
+                          // SizedBox(
+                          //   height: size.hScreen(2.0),
+                          // ),
+                          // SizedBox(
+                          //   width: size.wScreen(80),
+                          //   height: size.hScreen(8.0),
+                          //   child: Text(
+                          //     'Internet por Fibra Óptica',
+                          //     textAlign: TextAlign.center,
+                          //     style: GoogleFonts.poppins(
+                          //         fontSize: size.iScreen(2.5),
+                          //         fontWeight: FontWeight.w500,
+                          //         color: secondaryColor),
+                          //   ),
+                          // ),
+                          // //***********************************************/
+
+                            //***********************************************/
+                  Container(
+                    // color:  Colors.red,
+                    child: Column(
+                      children: [
+                         Container(
+                      height: size.hScreen(9.0),
+                      width: size.wScreen(100),
+                      padding:
+                         EdgeInsets.symmetric(horizontal: size.iScreen(0.0)),
+
+                      // color: Colors.blue, // Puedes ajustar el color según tus preferencias
+                      child: Image.asset(
+                        'assets/imgs/letras_UR.png', scale: 1.0,
+                        fit: BoxFit.contain, // URL de la imagen
+                      ),
+                    ),
+                        SizedBox(
+                          width: size.wScreen(80),
+                          height: size.hScreen(6.0),
+                          child: Text(
+                            'Seguridad Móvil',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                                fontSize: size.iScreen(2.5),
+                                fontWeight: FontWeight.w500,
+                                color: secondaryColor),
                           ),
-                          SizedBox(
-                            width: size.wScreen(80),
-                            height: size.hScreen(8.0),
-                            child: Text(
-                              'Internet por Fibra Óptica',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.poppins(
-                                  fontSize: size.iScreen(2.5),
-                                  fontWeight: FontWeight.w500,
-                                  color: secondaryColor),
-                            ),
-                          ),
-                          //***********************************************/
+                        ),
+                       
+                      ],
+                    ),
+                  ),
+                  //***********************************************/
 
                           SizedBox(
                             height: size.iScreen(1.0),
@@ -367,49 +407,49 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                           ),
 
                           //***********************************************/
-                          //***********************************************/
+                          // //***********************************************/
 
-                          SizedBox(
-                            height: size.iScreen(1.0),
-                          ),
-                          //*****************************************/
-                          Container(
-                            // color: Colors.red,
-                            width: size.wScreen(80.0),
-                            padding: EdgeInsets.all(size.wScreen(0.0)),
-                            child: Center(
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: size.hScreen(2.0),
-                                    vertical: size.iScreen(0.0)),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                child: TextFormField(
-                                  initialValue: widget.action == 'CREATE'
-                                      ? ''
-                                      : _ctrl.getItemReferencia,
-                                  maxLines: 3,
-                                  minLines: 1,
-                                  decoration: const InputDecoration(
-                                    suffixIcon: Icon(
-                                      Icons.message_outlined,
-                                      color: secondaryColor,
-                                    ),
-                                    hintText: 'ESCRIBE UNA REFERENCIA ',
-                                    border: InputBorder.none,
-                                  ),
-                                  onChanged: (text) {
-                                    _ctrl.setItemReferencia(text.trim());
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
+                          // SizedBox(
+                          //   height: size.iScreen(1.0),
+                          // ),
+                          // //*****************************************/
+                          // Container(
+                          //   // color: Colors.red,
+                          //   width: size.wScreen(80.0),
+                          //   padding: EdgeInsets.all(size.wScreen(0.0)),
+                          //   child: Center(
+                          //     child: Container(
+                          //       padding: EdgeInsets.symmetric(
+                          //           horizontal: size.hScreen(2.0),
+                          //           vertical: size.iScreen(0.0)),
+                          //       decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.circular(10.0),
+                          //         border: Border.all(
+                          //           color: Colors.grey,
+                          //           width: 1.0,
+                          //         ),
+                          //       ),
+                          //       child: TextFormField(
+                          //         initialValue: widget.action == 'CREATE'
+                          //             ? ''
+                          //             : _ctrl.getItemReferencia,
+                          //         maxLines: 3,
+                          //         minLines: 1,
+                          //         decoration: const InputDecoration(
+                          //           suffixIcon: Icon(
+                          //             Icons.message_outlined,
+                          //             color: secondaryColor,
+                          //           ),
+                          //           hintText: 'ESCRIBE UNA REFERENCIA ',
+                          //           border: InputBorder.none,
+                          //         ),
+                          //         onChanged: (text) {
+                          //           _ctrl.setItemReferencia(text.trim());
+                          //         },
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           //***********************************************/
                           Consumer<HomeController>(
                             builder: (_, valuePlaca, __) {
@@ -417,6 +457,33 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                                       "TRANSPORTE"
                                   ? Column(
                                       children: [
+                                        //*****************************************/
+                                        SizedBox(
+                                          height: size.iScreen(1.0),
+                                        ),
+                                        //*****************************************/
+                                            Container(
+                                              
+                                          // color: Colors.red,
+                                          width: size.wScreen(80.0),
+                                          padding:
+                                              EdgeInsets.all(size.wScreen(1.0)),
+                                          child: Center(
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: size.hScreen(2.0),
+                                                  vertical: size.iScreen(0.0)),
+                                             
+                                              child: Text('INFORMACIÓN DEL VEHÍCULO', style: GoogleFonts.poppins(
+                                              fontSize: size.iScreen(
+                                                  1.5), // Ajusta según tus necesidades
+                                              fontWeight: FontWeight.w400,
+                                              color:  Colors.black
+                                                 
+                                            ),),
+                                            ),
+                                          ),
+                                        ),
                                         //*****************************************/
                                         SizedBox(
                                           height: size.iScreen(1.0),
@@ -618,7 +685,50 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                                   : Container();
                             },
                           ),
+                             //***********************************************/
 
+                          SizedBox(
+                            height: size.iScreen(1.0),
+                          ),
+                          //*****************************************/
+                          Container(
+                            // color: Colors.red,
+                            width: size.wScreen(80.0),
+                            padding: EdgeInsets.all(size.wScreen(0.0)),
+                            child: Center(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.hScreen(2.0),
+                                    vertical: size.iScreen(0.0)),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: TextFormField(
+                                  initialValue: widget.action == 'CREATE'
+                                      ? ''
+                                      : _ctrl.getItemReferencia,
+                                  maxLines: 3,
+                                  minLines: 1,
+                                  decoration: const InputDecoration(
+                                    suffixIcon: Icon(
+                                      Icons.mark_unread_chat_alt_outlined,
+                                      color: secondaryColor,
+                                    ),
+                                    hintText: 'ESCRIBE UNA REFERENCIA ',
+                                    border: InputBorder.none,
+                                  ),
+                                  onChanged: (text) {
+                                    _ctrl.setItemReferencia(text.trim());
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          //***********************************************/
                           Consumer<HomeController>(
                             builder: (_, valueGPS, __) {
                               return valueGPS.getItemLugarServicio == "HOGAR"
@@ -684,7 +794,7 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                                                             valueGPS.getLocationMessage ==
                                                                     ""
                                                                 ? Text(
-                                                                    'UBICACIÓN GPS  ',
+                                                                    'UBICACIÓN DE TU HOGAR',
                                                                     style: GoogleFonts
                                                                         .poppins(
                                                                       fontSize:
@@ -721,8 +831,7 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                                                                   ),
                                                       ),
                                                       Icon(
-                                                        Icons
-                                                            .location_on_outlined, // Cambia el icono según tus necesidades
+                                                        Icons.explore_outlined, // Cambia el icono según tus necesidades
                                                         color: valueGPS
                                                                     .getLocationMessage ==
                                                                 ""
@@ -775,7 +884,7 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
 
 // }
 
-                                    _next(context, _ctrl);
+                                    _next(context, _ctrl,_action!);
                                   },
                                 
                             child: BotonBase(
@@ -1064,7 +1173,7 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
     );
   }
 
-  void _next(BuildContext context, HomeController controller) {
+  void _next(BuildContext context, HomeController controller, String _action) {
     if (controller.getItemLugarServicio!.isEmpty) {
       NotificatiosnService.showSnackBarDanger('Seleccione Tipo de Servicio');
     }
@@ -1078,10 +1187,21 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
             'Falta agregar  información ');
       } else {
      
-                 controller.setFotoTipo('fotoperfil');
-    Navigator.push(context,
-        MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
+    // controller.setFotoTipo('fotoperfil');
+    // Navigator.push(context,
+    //     MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
+
+
+ Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: ((context) =>
+                                                     RegistroPage(action: _action))));
+
+
+
       }
+
     }
     if (controller.getItemLugarServicio == 'TRANSPORTE') {
       if (controller.getCiudadItem.isNotEmpty &&
@@ -1091,9 +1211,15 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
           controller.getItemMarca!.isNotEmpty &&
           controller.getItemModelo!.isNotEmpty &&
           controller.getItemColor!.isNotEmpty) {
-                        controller.setFotoTipo('fotoperfil');
-    Navigator.push(context,
-        MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
+    //                     controller.setFotoTipo('fotoperfil');
+    // Navigator.push(context,
+    //     MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
+
+     Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: ((context) =>
+                                                     RegistroPage(action: _action))));
       
 
       } else {
@@ -1102,71 +1228,9 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
       }
     }
 
-    //    if (controller.getItemLugarServicio == 'HOGAR'){
-
-    //        if (
-    //       controller.getCiudadItem.isEmpty ||
-    //       controller.getSectorItem .isEmpty ||
-    //       controller.getItemReferencia! .isEmpty||
-    //       controller.getLocationMessage .isEmpty) {
-    //     NotificatiosnService.showSnackBarDanger('Falta agregar  información HOME');
-    //      }
-    // else {
-    //        NotificatiosnService.showSnackBarDanger('CORRECTO HOME');
-    //     }
-
-    //    }
-
-    //    if (controller.getItemLugarServicio == 'TRANSPORTE'){
-
-    //        if (
-
-    //      controller.getItemPlaca!.isEmpty ||
-    //       controller.getItemMarca!.isEmpty ||
-    //       controller.getItemModelo!.isEmpty||
-    //       controller.getItemColor!.isEmpty) {
-    //     NotificatiosnService.showSnackBarDanger('Falta agregar  información TRANSPORTE');
-    //      }
-    // else {
-    //        NotificatiosnService.showSnackBarDanger('CORRECTO TRANSPORTE');
-    //     }
-
-    //    }
-
-    //  if (controller.getItemLugarServicio == 'TRANSPORTE'){
-
-    //   if (
-    //     controller.getItemPlaca! ==""||
-    //     controller.getItemMarca! =="" ||
-    //     controller.getItemModelo! ==""||
-    //     controller.getItemColor! =="")
-    //     {
-    //           NotificatiosnService.showSnackBarDanger('Falta agregar  información de vehículo');
-    //    }
-    //   else {
-    //     NotificatiosnService.showSnackBarDanger('CORRECTO  VEHICULO');
-    //   }
+    
   }
 
-// }
 
-  // else{
-
-  //       NotificatiosnService.showSnackBarDanger('CORRECTO VEHICULO');
-
-  // }
-
-  //   else if(widget.action == 'CREATE'){
-
-  //          // controller.setFotoTipo('fotoperfil');
-  //   Navigator.push(context,
-  //       MaterialPageRoute(builder: ((context) => FotosPerfilPage())));
-
-  // }
-  //  else if(widget.action == 'EDIT'){
-  //   Navigator.push(context,
-  //       MaterialPageRoute(builder: ((context) => FotosPerfilPage())));
-  //  NotificatiosnService.showSnackBarDanger('SE VA A EDITAR');
-  // }
 
 }

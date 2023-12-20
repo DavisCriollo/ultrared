@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
+import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
 import 'package:ultrared/src/service/socket_service.dart';
@@ -135,19 +136,7 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                                 width: size.iScreen(5.0),
                                 scale: 1.0, // URL de la imagen
                               ),
-                              // CachedNetworkImage(
-                              //                               imageUrl: 'https://www.recetasnestle.com.mx/sites/default/files/inline-images/comidas-fritas-plato-apanado-ensalada.jpg',
-                              //                               fit: BoxFit.contain,
-                              //                               placeholder: (context,
-                              //                                       url) =>
-                              //                                   const CupertinoActivityIndicator(),
-                              //                               // Image.asset(
-                              //                               //     'assets/imgs/loader.gif'),
-
-                              //                               errorWidget: (context, url,
-                              //                                       error) =>
-                              //                                   const Icon(Icons.error),
-                              //                             ),
+                            
                             ),
                           ),
                           title: Text('${_grupo['chat_name']}',
@@ -173,34 +162,53 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                             valueChat.emitEvent('client:lista-usuarios',  {"chat_id": _grupo['chat_id']});
 
 
+                              //---------------------------------------------------------------// 
+                               
+                  final _crtlSocket = context.read<SocketModel>();
+                  final _crtlHome = context.read<HomeController>();
+                  final _crtl = context.read<ChatController>();
+
+                  final _info = {
+                    "opcion": "GROUP", // 'INDIVIDUAL' | 'GROUP'
+                    "grupo": _grupo,
+                    "chat_id": _grupo['chat_id'],
+                    "idUsuario": _crtlHome.getUser,
+                    // tomar del grupo del chat
+                  };
+                  _crtl.buscaAllTodoLosChatPaginacion(
+                      '', false, _grupo['chat_id'],_crtlSocket);
+                  for (var item in _crtl.getListaTodoLosChatPaginacion) {
+                    _crtlSocket.setListaDeMensajesChat(item);
+                  }
+                    //  _crtlSocket.setListaDeMensajesChat(_info);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => ChatPage(
+                                infoChat: _info,
+                              ))));
+              
+                              //---------------------------------------------------------------// 
+
+
+
+
+
 
                             // _ctrl.setListaTodosLosUsuariosChat(_ctrlSocket.mensajeDesdeServidor);
 
 
 
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => ListaUsuariosChat(
-                                          infoGrupo: _grupo,
-                                        ))));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: ((context) => ListaUsuariosChat(
+                            //               infoGrupo: _grupo,
+                            //             ))));
                             // Acción al hacer clic en el ListTile
                             // print('Clic en el ListTile $index');
                           },
-                          //   trailing:  Text('11:35',style: GoogleFonts.poppins(
-                          //   fontSize: size.iScreen(1.6),
-                          //   fontWeight: FontWeight.normal,
-                          //   color: Colors.black,
-                          //   // letterSpacing: -0.40,
-                          // )
-                          // ),
-                          //   trailing:  Text('11:35',style: GoogleFonts.poppins(
-                          //   fontSize: size.iScreen(1.6),
-                          //   fontWeight: FontWeight.normal,
-                          //   color: Colors.black,
-                          //   // letterSpacing: -0.40,
-                          // )
-                          // ),
+                         
                           trailing: Icon(Icons.chevron_right_outlined),
                         ),
                         Divider()

@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
+import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
@@ -132,7 +133,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
             elevation: 0,
             backgroundColor: cuaternaryColor, // Fondo blanco
             title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                  
                Container(
@@ -150,10 +151,10 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                           fit: BoxFit.cover,
                         ),
                       ),),
-                Spacer(),
+                // Spacer(),
                 Container(
                   // color: Colors.red,
-                  width: size.wScreen(65),
+                  width: size.wScreen(45),
                   child: Text(
                      '${widget.infoChat['grupo']['chat_name']}', 
                     style: GoogleFonts.poppins(
@@ -163,6 +164,38 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                       letterSpacing: -0.40,
                     ),
                     overflow: TextOverflow.ellipsis, // Color del título en negro
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => ListaUsuariosChat(
+                                          infoGrupo: widget.infoChat['grupo'],
+                                        ))));
+                  },
+                  child: Container(
+                    width: size.wScreen(12.0),
+                    height: size.hScreen(5.0),
+                    padding: EdgeInsets.all(size.iScreen(0.2)),
+                    decoration: ShapeDecoration(
+                      color: Color(0xFFB32623),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      shadows: [
+                        BoxShadow(
+                          color: Color(0x33123B93),
+                          blurRadius: 20,
+                          offset: Offset(8, 8),
+                          spreadRadius: 0,
+                        )
+                      ],
+                    ),
+                    child: Center(
+                      child: Icon(Icons.segment_outlined,color:  Colors.white,)
+                    ),
                   ),
                 ),
               ],

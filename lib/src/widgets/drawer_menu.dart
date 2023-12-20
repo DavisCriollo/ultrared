@@ -1,7 +1,10 @@
 
 
+
+
 import 'package:awesome_icons/awesome_icons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,9 +12,11 @@ import 'package:provider/provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/acercaDe.dart';
+import 'package:ultrared/src/pages/actualiza_clave.dart';
 import 'package:ultrared/src/pages/lista_notificaciones.dart';
 import 'package:ultrared/src/pages/login_page.dart';
 import 'package:ultrared/src/pages/registro_page.dart';
+import 'package:ultrared/src/pages/selecciona_sector.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
 import 'package:ultrared/src/pages/splash_screen.dart';
 import 'package:ultrared/src/service/notification_push.dart';
@@ -20,20 +25,82 @@ import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
+import 'package:ultrared/src/widgets/no_data.dart';
 
 
-class DrawerMenu extends StatelessWidget {
+class DrawerMenu extends StatefulWidget {
   final Map<String, dynamic>? user;
 
   const DrawerMenu({Key? key, required this.user}) : super(key: key);
+
+  @override
+  State<DrawerMenu> createState() => _DrawerMenuState();
+}
+
+class _DrawerMenuState extends State<DrawerMenu> {
+    final  _ctrl =HomeController();
+
+  @override
+  void initState() {
+   inicio();
+    super.initState();
+  }
+
+void inicio() async{
+   final  _ctrl =context.read <HomeController>();
+    _ctrl.buscaUsuarioById(context);
+
+
+}
+
+
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
-
-     final  _ctrl =context.read <HomeController>();
+  final  _ctrl =context.read <HomeController>();
+  
                                           
-    return Drawer(
-      child: ListView(
+    return 
+    
+    
+    
+    
+    
+    Drawer(
+      child: 
+      Consumer<HomeController>(builder: (_, value, __) { 
+
+                if (value.getInfoUsuarioById.isEmpty) {
+
+                 
+                return Center(
+                  // child: CircularProgressIndicator(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Cargando Datos...',
+                        style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(1.5),
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      //***********************************************/
+                      SizedBox(
+                        height: size.iScreen(1.0),
+                      ),
+                      //*****************************************/
+                      const CircularProgressIndicator(),
+                    ],
+                  ),
+                );
+              } else if (value.getInfoUsuarioById.isEmpty) {
+                return const NoData(
+                  label: 'Cargando Datos....',
+                );
+              }  
+
+        return  ListView(
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
@@ -58,10 +125,10 @@ class DrawerMenu extends StatelessWidget {
                               border: Border.all(color: Colors.white, width: 2.0),
                             ),
                             child: 
-                            user!['foto'].isNotEmpty?ClipOval(
+                           value.getInfoUsuarioById['fotoPerfil'].isNotEmpty?ClipOval(
                               child: CachedNetworkImage(
                                 imageUrl:
-                                    '${user!['foto']}', // Reemplaza con la URL de tu imagen
+                                    '${value.getInfoUsuarioById['fotoPerfil']}', // Reemplaza con la URL de tu imagen
                                 placeholder: (context, url) =>
                                     const CircularProgressIndicator(),
                                 errorWidget: (context, url, error) =>
@@ -82,18 +149,9 @@ class DrawerMenu extends StatelessWidget {
                                 //--------------------//
                                   // _ctrl.resetAllValues();
 
-          _ctrl.buscaUsuarioById(context);
+          // _ctrl.buscaUsuarioById(context);
 
-            //   if(_ctrl.getInfoUsuarioById.isEmpty){
-            //                       ProgressDialog.show(context);
-
-            // ProgressDialog.dissmiss(context);
-
-            //   }
-           
-                                //--------------------//
-
-            // ProgressDialog.dissmiss(context);
+          
 
               if (_ctrl.getInfoUsuarioById.isNotEmpty) {
                 
@@ -101,11 +159,11 @@ class DrawerMenu extends StatelessWidget {
                           
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
-                                        const RegistroPage( action: 'EDIT',)));
-                //  NotificatiosnService.showSnackBarDanger('No puede editar su perfil este momento..');
+                                        const SeleccionaSector( action: 'EDIT',)));
+               
               }
               
-// 
+
 
                           },
                           child: Column(
@@ -137,7 +195,7 @@ class DrawerMenu extends StatelessWidget {
                 Container(
                   width: size.wScreen(80.0),
                   child: Text(
-                    '${user!['nombre']}',
+                    '${value.getInfoUsuarioById['nombres']}',
                     overflow: TextOverflow.ellipsis,
                     // maxLines: 2,
 
@@ -168,7 +226,7 @@ class DrawerMenu extends StatelessWidget {
                             color: Colors.black),
                       ),
                       Text(
-                        '${user!['id']}  ',
+                        '${value.getInfoUsuarioById['perId']}  ',
                         style: GoogleFonts.poppins(
                             fontSize: size.iScreen(1.5),
                             fontWeight: FontWeight.w700,
@@ -197,6 +255,16 @@ class DrawerMenu extends StatelessWidget {
               Navigator.pop(context);
             },
           ): Container(),
+          ListTile(
+             leading: const Icon(Icons.lock_outline_rounded),
+            title: const Text('Cambiar Contraseña'),
+            onTap: () {
+              // Acción al hacer clic en "Acerca de"
+              Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: ((context) => ActualizaClave())));
+            },
+          ),
           ListTile(
             leading: const Icon(Icons.notifications_active),
             title: Text('Notificaciones'),
@@ -236,28 +304,35 @@ class DrawerMenu extends StatelessWidget {
             leading: Icon(Icons.exit_to_app),
             title: Text('Cerrar Sesión'),
             onTap: () async {
-                 var ctrlHome = context.read<HomeController>();
-               final _tokenFCM = await Auth.instance.getTokenFireBase();
-                  ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
-                 await FirebaseService.deleteFirebaseInstance();
-              // context.read<SocketModel>().disconnectSocket();
-               await Auth.instance.deleteTokenFireBase();
-              await Auth.instance.deleteSesion(context);
+        
+                 
+                var ctrlHome = context.read<HomeController>();
+        
+             ProgressDialog.show(context);
+            final response = await ctrlHome.cierreSesionUsuario(context);
+            ProgressDialog.dissmiss(context);
 
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: ((context) => SplashPage())));
+if (response != null ) {
+     
+  //----------------------------------------------------//
+           final _tokenFCM = await Auth.instance.getTokenFireBase();
+           ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
+           await FirebaseService.deleteFirebaseInstance();
+           await Auth.instance.deleteTokenFireBase();
+           Navigator.pop(context);
+           await Auth.instance.deleteSesion(context);
+     
+              //----------------------------------------------------//
 
-              Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (context) => SerClientePage(
-                        // validaTurno: validaTurno,
-                        // tipo: session.rol,
-                        // user: session,
-                        // ubicacionGPS: controllerHome.getCoords,
-                      )),
-              (Route<dynamic> route) => false);
-          ModalRoute.withName('/');
 
+
+    }else  {
+
+       NotificatiosnService.showSnackBarDanger( response.toString());
+      
+    } 
+    
+         //----------------------------------------------------//
 
             },
           ),
@@ -282,7 +357,16 @@ class DrawerMenu extends StatelessWidget {
             ),
           )
         ],
-      ),
+      );
+   
+   
+       },)
+      
+      
+     
+      
+     
+   
     );
   }
 }

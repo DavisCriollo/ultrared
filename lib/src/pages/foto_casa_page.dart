@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/init_provider.dart';
+import 'package:ultrared/src/pages/home_page.dart';
 import 'package:ultrared/src/pages/login_page.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
@@ -457,6 +458,7 @@ void _onSubmit(BuildContext context, HomeController controller, size,String _act
     if (response != null  && response.containsKey('res') ) {
        NotificatiosnService.showSnackBarDanger( response['msg']);
     } else if (response != null  && !response.containsKey('res')) {
+
       _modalMessageResponse(context, response['msg'], size,_action);
     }
          
@@ -465,8 +467,9 @@ void _onSubmit(BuildContext context, HomeController controller, size,String _act
 
  ProgressDialog.show(context);
  final response = await controller.editarUsuario(context);
+ final responseSeseion = await controller.cierreSesionUsuario(context);
    ProgressDialog.dissmiss(context);
-    if (response != null  && response.containsKey('res') ) {
+    if (response != null  && response.containsKey('res') && responseSeseion != null) {
        NotificatiosnService.showSnackBarDanger( response['msg']);
     } else if (response != null  && !response.containsKey('res')) {
       _modalMessageResponse(context, response['msg'], size,_action);
@@ -494,7 +497,7 @@ Future<void> _modalMessageResponse(
           // height: size.hScreen(50.0),
           width: double.maxFinite,
           child: ListTile(
-            title:_action=='CREATE'?Text(_message) :Text('${_message}, Es necesario iniciar sesión nuevamente'),
+            title:Text(_message),
           ),
         ),
         actions: <Widget>[
@@ -503,10 +506,27 @@ Future<void> _modalMessageResponse(
             // color: Colors.red,
             child: TextButton(
               onPressed: () async{
-                 await Auth.instance.deleteSesion(context);
+
+               if ( _action=='CREATE') {
+                   await Auth.instance.deleteSesion(context);
+
             Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const SerClientePage()),
           (Route<dynamic> route) => false);
+                 
+               } if ( _action=='EDIT') {
+
+           Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const HomePage(
+                     
+                      )));
+               }
+                
+
+
+
               },
               child: const Text('OK'),
             ),

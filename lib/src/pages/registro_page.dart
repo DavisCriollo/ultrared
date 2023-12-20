@@ -77,18 +77,52 @@ class _RegistroPageState extends State<RegistroPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    height: size.hScreen(8),
-                    width: size.wScreen(100),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
+                  // Container(
+                  //   height: size.hScreen(8),
+                  //   width: size.wScreen(100),
+                  //   padding:
+                  //       EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
 
-                    // color: Colors.blue, // Puedes ajustar el color según tus preferencias
-                    child: Image.asset(
-                      'assets/imgs/LetrasNegro.png',
-                      fit: BoxFit.contain, // URL de la imagen
+                  //   // color: Colors.blue, // Puedes ajustar el color según tus preferencias
+                  //   child: Image.asset(
+                  //     'assets/imgs/LetrasNegro.png',
+                  //     fit: BoxFit.contain, // URL de la imagen
+                  //   ),
+                  // ),
+                  //***********************************************/
+                  Container(
+                    // color:  Colors.red,
+                    child: Column(
+                      children: [
+                         Container(
+                      height: size.hScreen(9.0),
+                      width: size.wScreen(100),
+                      padding:
+                         EdgeInsets.symmetric(horizontal: size.iScreen(0.0)),
+
+                      // color: Colors.blue, // Puedes ajustar el color según tus preferencias
+                      child: Image.asset(
+                        'assets/imgs/letras_UR.png', scale: 1.0,
+                        fit: BoxFit.contain, // URL de la imagen
+                      ),
+                    ),
+                        SizedBox(
+                          width: size.wScreen(80),
+                          height: size.hScreen(6.0),
+                          child: Text(
+                            'Seguridad Móvil',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                                fontSize: size.iScreen(2.5),
+                                fontWeight: FontWeight.w500,
+                                color: secondaryColor),
+                          ),
+                        ),
+                       
+                      ],
                     ),
                   ),
+                  //***********************************************/
                   //***********************************************/
 
                   SizedBox(
@@ -103,20 +137,9 @@ class _RegistroPageState extends State<RegistroPage> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: size.hScreen(1.0),
+                          height: size.hScreen(0.0),
                         ),
-                        SizedBox(
-                          width: size.wScreen(80),
-                          height: size.hScreen(8.0),
-                          child: Text(
-                            'Internet por Fibra Óptica',
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.poppins(
-                                fontSize: size.iScreen(2.5),
-                                fontWeight: FontWeight.w500,
-                                color: secondaryColor),
-                          ),
-                        ),
+
                         //***********************************************/
 
                         //***********************************************/
@@ -200,9 +223,9 @@ class _RegistroPageState extends State<RegistroPage> {
                                 ),
                               ),
                               child: TextFormField(
-                              initialValue: widget.action == 'CREATE'
-                                      ? ''
-                                      :_control.getItemNombre,
+                                initialValue: widget.action == 'CREATE'
+                                    ? ''
+                                    : _control.getItemNombre,
                                 decoration: InputDecoration(
                                   suffixIcon: Icon(Icons.person),
                                   hintText: 'NOMBRES',
@@ -239,9 +262,9 @@ class _RegistroPageState extends State<RegistroPage> {
                                 ),
                               ),
                               child: TextFormField(
-                                 initialValue: widget.action == 'CREATE'
-                                      ? ''
-                                      :_control.getItemApellido,
+                                initialValue: widget.action == 'CREATE'
+                                    ? ''
+                                    : _control.getItemApellido,
                                 // maxLength: 1,
                                 decoration: const InputDecoration(
                                   suffixIcon: Icon(Icons.person),
@@ -280,10 +303,10 @@ class _RegistroPageState extends State<RegistroPage> {
                               ),
                               child: TextFormField(
                                 initialValue: widget.action == 'CREATE'
-                                      ? ''
-                                      :_control.getItemDireccion,
+                                    ? ''
+                                    : _control.getItemDireccion,
                                 decoration: const InputDecoration(
-                                  suffixIcon: Icon(Icons.directions),
+                                  suffixIcon: Icon(Icons.edit),
                                   hintText: 'DIRECCIÒN',
                                   border: InputBorder.none,
                                 ),
@@ -462,26 +485,20 @@ class _RegistroPageState extends State<RegistroPage> {
                           height: size.hScreen(8.0),
                           child: Row(
                             children: [
-                              Consumer <HomeController>(builder: (_, valueCheck, __) { 
+                              Consumer<HomeController>(
+                                builder: (_, valueCheck, __) {
+                                  return Checkbox(
+                                    value: _control.getItemIsEdad,
+                                    onChanged: (value) {
+                                      // setState(() {
+                                      //   // _isChecked = value!;
 
-                                return  Checkbox(
-                                value:  _control.getItemIsEdad,
-                                onChanged: (value) {
-
-                                  // setState(() {
-                                  //   // _isChecked = value!;
-
-                                  // });
-                                    _control.setItemIsEdad(value);
-
-
-
+                                      // });
+                                      _control.setItemIsEdad(value);
+                                    },
+                                  );
                                 },
-                              );
-
-                               },),
-
-                             
+                              ),
                               Text(
                                 'Confirmo que soy mayor de 18 años.',
                                 textAlign: TextAlign.center,
@@ -739,26 +756,129 @@ class _RegistroPageState extends State<RegistroPage> {
     );
   }
 
+  // void _next(BuildContext context, HomeController controller) {
+  //   if (controller.getItemCedua!.isEmpty ||
+  //       controller.getItemCedua!.length < 10 ||
+  //       controller.getItemCedua!.length > 13) {
+  //     NotificatiosnService.showSnackBarDanger('Cédula incorrecta');
+  //   } else if (controller.getItemNombre!.isNotEmpty &&
+  //       controller.getItemApellido!.isNotEmpty &&
+  //       controller.getItemDireccion!.isNotEmpty &&
+  //       controller.getItemCorreos!.isNotEmpty |
+  //           controller.getItemCelulars!.isNotEmpty &&
+  //       controller.getItemIsEdad == true) {
+  //     Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //             builder: ((context) => SeleccionaSector(
+  //                   action: widget.action,
+  //                 ))));
+  //   }
+  // else {
+  //     NotificatiosnService.showSnackBarDanger('Falta agregar  información');
+  //   }
+  // }
   void _next(BuildContext context, HomeController controller) {
     if (controller.getItemCedua!.isEmpty ||
         controller.getItemCedua!.length < 10 ||
         controller.getItemCedua!.length > 13) {
       NotificatiosnService.showSnackBarDanger('Cédula incorrecta');
-    } 
-    else if (controller.getItemNombre!.isNotEmpty &&       
-      controller.getItemApellido!.isNotEmpty &&
+    } else if (controller.getItemNombre!.isNotEmpty &&
+        controller.getItemApellido!.isNotEmpty &&
         controller.getItemDireccion!.isNotEmpty &&
         controller.getItemCorreos!.isNotEmpty |
             controller.getItemCelulars!.isNotEmpty &&
-      
         controller.getItemIsEdad == true) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: ((context) => SeleccionaSector(
-            action:widget.action,
-          ))));
-    }else{
-NotificatiosnService.showSnackBarDanger('Falta agregar  información');
-    }
-   
-  }
+
+    Navigator.push(context,
+        MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
+      //        if (controller.getItemLugarServicio == 'HOGAR') {
+      //            controller.setFotoTipo('fotoperfil');
+      // }
+              
+            }  else {
+        NotificatiosnService.showSnackBarDanger(
+            'Falta agregar  información ');
+      }
+
+
+
+            }
+
+
+
+
+    //          if (controller.getItemLugarServicio == 'HOGAR') {
+    //              controller.setFotoTipo('fotoperfil');
+    // Navigator.push(context,
+    //     MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
+    //   }
+              
+    //         } 
+    //          if (controller.getItemLugarServicio == 'HOGAR') {
+    //              controller.setFotoTipo('fotoperfil');
+    // Navigator.push(context,
+    //     MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
+    //   }
+              
+            // } 
+            
+            
+            // else {
+            // }
+
+
+//       Navigator.push(
+//           context,
+//           MaterialPageRoute(
+//               builder: ((context) => SeleccionaSector(
+//                     action: widget.action,
+//                   ))));
+//     }
+//   else {
+//       NotificatiosnService.showSnackBarDanger('Falta agregar  información');
+//     }
+  
+
+//  if (controller.getItemLugarServicio!.isEmpty) {
+//       NotificatiosnService.showSnackBarDanger('Seleccione Tipo de Servicio');
+//     }
+
+//     if (controller.getItemLugarServicio == 'HOGAR') {
+//       if (controller.getCiudadItem.isEmpty ||
+//           controller.getSectorItem.isEmpty ||
+//           controller.getItemReferencia!.isEmpty ||
+//           controller.getLocationMessage.isEmpty) {
+//         NotificatiosnService.showSnackBarDanger(
+//             'Falta agregar  información ');
+//       } else {
+     
+//     controller.setFotoTipo('fotoperfil');
+//     Navigator.push(context,
+//         MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
+//       }
+//     }
+//     if (controller.getItemLugarServicio == 'TRANSPORTE') {
+//       if (controller.getCiudadItem.isNotEmpty &&
+//           controller.getSectorItem.isNotEmpty &&
+//           controller.getItemReferencia!.isNotEmpty &&
+//           controller.getItemPlaca!.isNotEmpty &&
+//           controller.getItemMarca!.isNotEmpty &&
+//           controller.getItemModelo!.isNotEmpty &&
+//           controller.getItemColor!.isNotEmpty) {
+//                         controller.setFotoTipo('fotoperfil');
+//     Navigator.push(context,
+//         MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
+      
+
+//       } else {
+//         NotificatiosnService.showSnackBarDanger(
+//             'Falta agregar  información ');
+//       }
+//     }
+
+
+
+
+
 }

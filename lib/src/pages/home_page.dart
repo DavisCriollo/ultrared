@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
      // Manejar la notificación cuando la aplicación está en primer plano
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("Notificación recibida: $message");
+      print("Notificación recibida primer plano ************* >: $message");
 
       // Aquí puedes dirigir al usuario a la pantalla deseada
 
@@ -221,7 +221,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     // Manejar la notificación cuando la aplicación se abre desde la barra de notificaciones
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print("Notificación abierta desde la aplicación: $message");
+      print("Notificación abierta desde la aplicación se abre desde la barra de notificaciones ********* >: $message");
       // Aquí puedes dirigir al usuario a la pantalla deseada
 
 
@@ -325,11 +325,27 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 // color:Colors.blue,
                 width: size.wScreen(80.0),
                 height: size.wScreen(17.0),
-                child: Image.asset(
-                  'assets/imgs/LetrasNegro.png',
-                  scale: 1.0,
-                  // fit: BoxFit.,
-                  // width: size.1Screen(5.0), // URL de la imagen
+                child: Row(
+                  children: [
+
+                    Image.asset(
+                      'assets/imgs/letras_UR.png',
+                      scale: 1.0,
+                      // fit: BoxFit.,
+                      // width: size.1Screen(5.0), // URL de la imagen
+                    ),
+
+                      Text(
+                              ' Seguridad Móvil',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.poppins(
+                                  fontSize: size.iScreen(2.2),
+                                  fontWeight: FontWeight.w500,
+                                  color: secondaryColor),
+                            ),
+
+
+                  ],
                 ),
               ),
               actions: [
@@ -375,7 +391,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               ],
             ),
             drawer: values.connectionStatus != ConnectionStatus.none
-                ? DrawerMenu(user: user)
+                ? 
+                DrawerMenu(user: user)
                 : null,
             body: Container(
               height: size.hScreen(90),
@@ -583,12 +600,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                               onTap: () async {
                                                 final serviceSocket = context
                                                     .read<SocketModel>();
+                                                final _ctrlChat = context
+                                                    .read< ChatController>();
 
                                                 // serviceSocket.emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
                                                 serviceSocket.emitEvent( 'client:lista-chats-grupos', {} );
 
                                                 // _chatCtrl.buscaGruposChat(context);
                                                 //      final infoUser  = await Auth.instance.getSession();
+                                                _ctrlChat.buscaGruposChat(context);
 
                                                 Navigator.push(
                                                     context,

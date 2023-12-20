@@ -23,39 +23,30 @@ import 'package:ultrared/src/service/socket_service.dart';
 // import 'package:ultrared/src/service/socket_service.dart';
 // import 'package:ultrared/src/utils/valida_cedula.dart';
 
-
-
 // import 'package:neitor_vet/src/api/api_provider.dart';
 enum ConnectionStatus { unknown, mobile, wifi, none }
 
 class HomeController extends ChangeNotifier {
   GlobalKey<FormState> celularFormKey = GlobalKey<FormState>();
-  GlobalKey<FormState> correoFormKey = GlobalKey<FormState>(); 
-  GlobalKey<FormState> transporteFormKey = GlobalKey<FormState>(); 
+  GlobalKey<FormState> correoFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> transporteFormKey = GlobalKey<FormState>();
 
   final _api = ApiProvider();
 
+  Map<String, dynamic>? _user = {};
+  Map<String, dynamic>? get getUser => _user;
+  void setUserApp(Map<String, dynamic>? _data) {
+    _user = _data;
 
- Map<String, dynamic>? _user = {};
- Map<String, dynamic>? get getUser =>_user;
- void setUserApp(Map<String, dynamic>? _data){
-_user=_data;
+    notifyListeners();
+  }
 
-notifyListeners();
-
- }
-
-
-
-
-
-  
-   String _locationMessage ='';
-  Map<String,dynamic> _locationGPS = {};
-   Map<String,dynamic> get getLocationGPS => _locationGPS;
-  void setItemGPS( Map<String,dynamic> _item) {
+  String _locationMessage = '';
+  Map<String, dynamic> _locationGPS = {};
+  Map<String, dynamic> get getLocationGPS => _locationGPS;
+  void setItemGPS(Map<String, dynamic> _item) {
     _locationGPS = _item;
-   
+
     print('es el gps-------------$_locationGPS');
     notifyListeners();
   }
@@ -75,7 +66,7 @@ notifyListeners();
       return false;
     }
   }
- 
+
   bool validateFormTransporte() {
     if (transporteFormKey.currentState!.validate()) {
       return true;
@@ -83,68 +74,64 @@ notifyListeners();
       return false;
     }
   }
- 
 
+  String get getLocationMessage => _locationMessage;
 
-   String get getLocationMessage => _locationMessage;
+  void resetValues() {
+    _itemLugarServicio = "";
+    _itemCedua = "";
+    _itemNombre = "";
+    _itemApellido = "";
+    _itemCelulares = "";
+    _itemCorreos = "";
+    _itemDireccion = "";
 
+    _ciudadItem = "";
+    _sectorItem = "";
+    _itemReferencia = "";
 
-  void resetValues(){
-       _itemLugarServicio= "";
-    _itemCedua= "";
-     _itemNombre= "";
-     _itemApellido= "";
-     _itemCelulares= "";
-     _itemCorreos= "";
-     _itemDireccion= "";
-  
-     _ciudadItem= "";
-     _sectorItem= "";
-     _itemReferencia= "";
-    
-     _locationGPS= {};
-   
-     _itemPlaca= "";
-     _itemMarca= "";
-     _itemModelo= "";
-     _itemColor= "";
-  }
-  void resetAllValues(){
-    _itemLugarServicio= "";
-    _itemCedua= "";
-     _itemNombre= "";
-     _itemApellido= "";
-     _itemCelulares= "";
-     _itemCorreos= "";
-     _itemDireccion= "";
-  
-     _ciudadItem= "";
-     _sectorItem= "";
-     _itemReferencia= "";
-    
-     _locationGPS= {};
-     _gpsPositione = false;
-   
-     _itemPlaca= "";
-     _itemMarca= "";
-     _itemModelo= "";
-     _itemColor= "";
+    _locationGPS = {};
 
-     _fotoTipo= "";
-     _urlImage= "";
-     _urlImageCasa= "";
-     _urlImagePerfil= "";
-     _urlImageVehiculo= "";
-     _planItem = 'NINGUNO';
-     
+    _itemPlaca = "";
+    _itemMarca = "";
+    _itemModelo = "";
+    _itemColor = "";
   }
 
+  void resetAllValues() {
+    _itemLugarServicio = "";
+    _itemCedua = "";
+    _itemNombre = "";
+    _itemApellido = "";
+    _itemCelulares = "";
+    _itemCorreos = "";
+    _itemDireccion = "";
+
+    _ciudadItem = "";
+    _sectorItem = "";
+    _itemReferencia = "";
+
+    _locationGPS = {};
+    _gpsPositione = false;
+
+    _itemPlaca = "";
+    _itemMarca = "";
+    _itemModelo = "";
+    _itemColor = "";
+
+    _fotoTipo = "";
+    _urlImage = "";
+    _urlImageCasa = "";
+    _urlImagePerfil = "";
+    _urlImageVehiculo = "";
+    _planItem = 'NINGUNO';
+  }
 
 //--------------- LISTA DE CIUDAD -------------//
   String _ciudadItem = '';
   String get getCiudadItem => _ciudadItem;
   void setCiudadItem(Map<String, dynamic> _item) {
-     _listaSectores = [];
+    _listaSectores = [];
     _ciudadItem = _item['ciuNombre'].toString();
 
     if (_item['ciuSectores'].isNotEmpty) {
@@ -159,13 +146,6 @@ notifyListeners();
 
     notifyListeners();
   }
-
-
-
-
-
-
-
 
   List _listaCiudad = [];
   List get getlistaCiudad => _listaCiudad;
@@ -250,16 +230,16 @@ notifyListeners();
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
       // _locationGPS = "Latitud: ${position.latitude}, Longitud: ${position.longitude}";
-       _locationMessage ='';
+      _locationMessage = '';
       _locationGPS = {
         "latitud": position.latitude,
         "longitud": position.longitude,
-    };
-    _locationMessage =  "${position.latitude},${position.longitude}";
+      };
+      _locationMessage = "${position.latitude},${position.longitude}";
       setGPSPositione(true);
     } catch (e) {
       _locationGPS = {};
-       _locationMessage ='';
+      _locationMessage = '';
       setGPSPositione(false);
       Geolocator.openAppSettings();
     }
@@ -331,7 +311,7 @@ notifyListeners();
     //   _itemCodeCelulares = '+$valor' ;
     //   // _itemCodeCelulares = '0';
     // } else {
-      _itemCodeCelulares = '+$valor';
+    _itemCodeCelulares = '+$valor';
     // }
 
     // print('item _itemCodeCelulares: $_itemCodeCelulares');
@@ -377,6 +357,7 @@ notifyListeners();
 
     notifyListeners();
   }
+
   bool? _itemIsEdad = false;
   bool? get getItemIsEdad => _itemIsEdad;
 
@@ -403,6 +384,7 @@ notifyListeners();
 
     notifyListeners();
   }
+
   String? _itemMarca = '';
   String? get getItemMarca => _itemMarca;
 
@@ -411,6 +393,7 @@ notifyListeners();
 
     notifyListeners();
   }
+
   String? _itemModelo = '';
   String? get getItemModelo => _itemModelo;
 
@@ -419,6 +402,7 @@ notifyListeners();
 
     notifyListeners();
   }
+
   String? _itemColor = '';
   String? get getItemColor => _itemColor;
 
@@ -441,15 +425,14 @@ notifyListeners();
   String? get getItemLugarServicio => _itemLugarServicio;
 
   void setItemLugarServicio(String? valor) {
-   _itemPlaca = '';
-   _locationGPS = {};
-    _locationMessage ='';
-   _itemMarca = '';
-   _itemModelo = '';
-   _itemColor = '';
-   _itemLugarServicio = '';
- 
-   
+    _itemPlaca = '';
+    _locationGPS = {};
+    _locationMessage = '';
+    _itemMarca = '';
+    _itemModelo = '';
+    _itemColor = '';
+    _itemLugarServicio = '';
+
     _itemLugarServicio = valor;
 
 // setFotoTipo( valor);
@@ -485,8 +468,6 @@ notifyListeners();
 
     _listaTodasLasCiudades = _data;
 
-
-
     notifyListeners();
   }
 
@@ -512,33 +493,25 @@ notifyListeners();
     return null;
   }
 
-
-
 //-------------------- TOMAR FOTO------------------//
 
-String? _fotoTipo = '';
+  String? _fotoTipo = '';
   String? get getFotoTipo => _fotoTipo;
 
   void setFotoTipo(String? _valor) {
     _fotoTipo = '';
 
-      if (_valor=='HOGAR') {
-     _fotoTipo = 'fotocasa';
-  } else if (_valor=='TRANSPORTE') {
-     _fotoTipo = 'fotovehiculo';
-  } else{
-     _fotoTipo = _valor;
-  }
+    if (_valor == 'HOGAR') {
+      _fotoTipo = 'fotocasa';
+    } else if (_valor == 'TRANSPORTE') {
+      _fotoTipo = 'fotovehiculo';
+    } else {
+      _fotoTipo = _valor;
+    }
 
-   
-    
-print('LA _fotoTipo $_fotoTipo');
+    print('LA _fotoTipo $_fotoTipo');
     notifyListeners();
   }
-
-
-
-
 
 //   File? _image;
 
@@ -549,23 +522,12 @@ print('LA _fotoTipo $_fotoTipo');
 
 // guarImagenServer();
 
-
 //     notifyListeners();
 //   }
 
-
-
-
-
-
-
-
-
-
-
 //---------------------RECUPERA CORREO-----------------------------//
 
-String? _itemCedulaRecupera = '';
+  String? _itemCedulaRecupera = '';
   String? get getItemCedulaRecupera => _itemCedulaRecupera;
 
   void setItemCedulaRecupera(String? valor) {
@@ -576,16 +538,14 @@ String? _itemCedulaRecupera = '';
 
 //================================== RECUPERA CLAVE ==============================//
 
- String _empresaRecuperaClave= 'ULTRA2022';
+  String _empresaRecuperaClave = 'ULTRA2022';
 
   bool? _errorRecuperaClave; // sera nulo la primera vez
   bool? get getErrorRecuperaClave => _errorRecuperaClave;
 
   Future? buscaRecuperaClave() async {
     final response = await _api.recuperaClave(
-      usuario: _itemCedulaRecupera,
-      empresa: _empresaRecuperaClave
-    );
+        usuario: _itemCedulaRecupera, empresa: _empresaRecuperaClave);
     if (response != null) {
       _errorRecuperaClave = true;
       // setListaTodasLasRecuperaClave(response['data']);
@@ -603,10 +563,6 @@ String? _itemCedulaRecupera = '';
     return null;
   }
 
-
-
-
-
 //================================== LISTAR PLANES  ==============================//
 
   List _listaTodosLosPlanes = [];
@@ -616,8 +572,6 @@ String? _itemCedulaRecupera = '';
     _listaTodosLosPlanes = [];
 
     _listaTodosLosPlanes = _data;
-
-  
 
     notifyListeners();
   }
@@ -662,16 +616,15 @@ String? _itemCedulaRecupera = '';
   bool? get getErrorNoticias => _errorNoticias;
 
   Future? buscarNoticias(BuildContext context) async {
-       final dataUser = await Auth.instance.getSession();
+    final dataUser = await Auth.instance.getSession();
 
-    final response = await _api.getAllNoticias(
-      context: 
-     context,token: dataUser['token'] );
+    final response =
+        await _api.getAllNoticias(context: context, token: dataUser['token']);
     if (response != null) {
       _errorNoticias = true;
       setListaTodasLasNoticias(response['data']);
 
-          notifyListeners();
+      notifyListeners();
       return response;
     }
     if (response == null) {
@@ -681,6 +634,7 @@ String? _itemCedulaRecupera = '';
     }
     return null;
   }
+
 //================================== LISTAR TODAS LA NOTIFICACIONES  ==============================//
   List _listaTodasLasNotificaciones = [];
   List get getListaTodasLasNotificaciones => _listaTodasLasNotificaciones;
@@ -699,16 +653,15 @@ String? _itemCedulaRecupera = '';
   bool? get getErrorNotificaciones => _errorNotificaciones;
 
   Future? buscarNotificaciones(BuildContext context) async {
-       final dataUser = await Auth.instance.getSession();
+    final dataUser = await Auth.instance.getSession();
 
     final response = await _api.getAllNotificaciones(
-      context: 
-     context,token: dataUser['token'] );
+        context: context, token: dataUser['token']);
     if (response != null) {
       _errorNotificaciones = true;
       setListaTodasLasNotificaciones(response['data']);
 
-          notifyListeners();
+      notifyListeners();
       return response;
     }
     if (response == null) {
@@ -719,43 +672,37 @@ String? _itemCedulaRecupera = '';
     return null;
   }
 
-
-
 //================================== CREAR NUEVO  ==============================//
 
-bool? _errorCrearUsuario; // sera nulo la primera vez
+  bool? _errorCrearUsuario; // sera nulo la primera vez
   bool? get getErrorCrearUsuario => _errorCrearUsuario;
 
   Future? crearUsuario(BuildContext context) async {
-
-   final response = await _api.createUserSinToken(context: context,data: 
-   {
-    "tabla": "usuario",
-    "rucempresa": "ULTRA2022",
-    "tipoServicio": _itemLugarServicio,
-    "cedula": _itemCedua,
-    "nombres": _itemNombre,
-    "apellidos": _itemApellido,
-    "celular": _itemCelulares,
-    "email": _itemCorreos,
-    "direccion":_itemDireccion,
-    "plan": 'NINGUNO',
-    "ciudad": _ciudadItem,
-    "sector": _sectorItem,
-    "referencia": _itemReferencia,
-    "fotoPerfil": _urlImagePerfil,
-    "fotoCasa": _urlImageCasa,
-    "gps": _locationGPS,
-    "fotoVehiculo": _urlImageVehiculo,
-    "placa": _itemPlaca,
-    "marca": _itemMarca,
-    "modelo": _itemModelo,
-    "color": _itemColor
-}
-   );
+    final response = await _api.createUserSinToken(context: context, data: {
+      "tabla": "usuario",
+      "rucempresa": "ULTRA2022",
+      "tipoServicio": _itemLugarServicio,
+      "cedula": _itemCedua,
+      "nombres": _itemNombre,
+      "apellidos": _itemApellido,
+      "celular": _itemCelulares,
+      "email": _itemCorreos,
+      "direccion": _itemDireccion,
+      "plan": 'NINGUNO',
+      "ciudad": _ciudadItem,
+      "sector": _sectorItem,
+      "referencia": _itemReferencia,
+      "fotoPerfil": _urlImagePerfil,
+      "fotoCasa": _urlImageCasa,
+      "gps": _locationGPS,
+      "fotoVehiculo": _urlImageVehiculo,
+      "placa": _itemPlaca,
+      "marca": _itemMarca,
+      "modelo": _itemModelo,
+      "color": _itemColor
+    });
     if (response != null) {
       _errorCrearUsuario = true;
-      
 
       notifyListeners();
       return response;
@@ -770,43 +717,43 @@ bool? _errorCrearUsuario; // sera nulo la primera vez
 
 //================================== CREAR NUEVO  ==============================//
 
-bool? _errorEditarUsuario; // sera nulo la primera vez
+  bool? _errorEditarUsuario; // sera nulo la primera vez
   bool? get getErrorEditarUsuario => _errorEditarUsuario;
 
   Future? editarUsuario(BuildContext context) async {
     // "rucempresa": "ULTRA2022",
 
     // "tabla": "usuario",
-          final dataUser = await Auth.instance.getSession();
+    final dataUser = await Auth.instance.getSession();
 
     final response = await _api.putUsuarioById(
-      context: context,token: dataUser['token'],idUser:_idUsuario, data: 
-   {
-    "tipoServicio": _itemLugarServicio,
-    "cedula": _itemCedua,
-    "nombres": _itemNombre,
-    "apellidos": _itemApellido,
-    "celular": _itemCelulares,
-    "email": _itemCorreos,
-    "direccion":_itemDireccion,
-    "plan": _planItem,
-    "ciudad": _ciudadItem,
-    "sector": _sectorItem,
-    "referencia": _itemReferencia,
-    "fotoPerfil": _urlImagePerfil,
-    "fotoCasa": _urlImageCasa,
-    "gps": _locationGPS,
-    "fotoVehiculo": _urlImageVehiculo,
-    "placa": _itemPlaca,
-    "marca": _itemMarca,
-    "modelo": _itemModelo,
-    "color": _itemColor
-});
-   
+        context: context,
+        token: dataUser['token'],
+        idUser: _idUsuario,
+        data: {
+          "tipoServicio": _itemLugarServicio,
+          "cedula": _itemCedua,
+          "nombres": _itemNombre,
+          "apellidos": _itemApellido,
+          "celular": _itemCelulares,
+          "email": _itemCorreos,
+          "direccion": _itemDireccion,
+          "plan": _planItem,
+          "ciudad": _ciudadItem,
+          "sector": _sectorItem,
+          "referencia": _itemReferencia,
+          "fotoPerfil": _urlImagePerfil,
+          "fotoCasa": _urlImageCasa,
+          "gps": _locationGPS,
+          "fotoVehiculo": _urlImageVehiculo,
+          "placa": _itemPlaca,
+          "marca": _itemMarca,
+          "modelo": _itemModelo,
+          "color": _itemColor
+        });
 
     if (response != null) {
       _errorCrearUsuario = true;
-      
 
       notifyListeners();
       return response;
@@ -819,79 +766,68 @@ bool? _errorEditarUsuario; // sera nulo la primera vez
     return null;
   }
 
-
-
 //========================== PROCESO DE TOMAR FOTO DE CAMARA =======================//
-  String  _urlImage = "";
-  String  get getUrlImage =>_urlImage;
-   void setUrlImge(String data, String _tipo) {
+  String _urlImage = "";
+  String get getUrlImage => _urlImage;
+  void setUrlImge(String data, String _tipo) {
     _urlImage = "";
-     _urlImage = data;
+    _urlImage = data;
     // print('IMAGEN URL: $_urlImage');
 
     notifyListeners();
   }
 
-  String  _urlImagePerfil = "";
-  String  get getUrlPerfil =>_urlImagePerfil;
+  String _urlImagePerfil = "";
+  String get getUrlPerfil => _urlImagePerfil;
 
   void setUrlPerfil(String _data) {
     _urlImagePerfil = "";
     _urlImagePerfil = _data;
     // print('PERFIL URL: $_urlImagePerfil');
- 
+
     notifyListeners();
   }
 
-  String  _urlImageCasa = "";
-    String  get getUrlCasa =>_urlImageCasa;
+  String _urlImageCasa = "";
+  String get getUrlCasa => _urlImageCasa;
 
   void setUrlCasa(String _data) {
     _urlImageCasa = "";
     _urlImageCasa = _data;
     print('CASA URL: $_urlImageCasa');
- 
+
     notifyListeners();
   }
-  String  _urlImageVehiculo = "";
-  
 
-     String  get getUrlVehiculo =>_urlImageVehiculo;
+  String _urlImageVehiculo = "";
+
+  String get getUrlVehiculo => _urlImageVehiculo;
 
   void setUrlVehiculo(String _data) {
     _urlImageVehiculo = "";
     _urlImageVehiculo = _data;
     print('VEHICULO URL: $_urlImageVehiculo');
- 
+
     notifyListeners();
   }
 
-
-
-  bool  _errorUrl =true;
-  bool  get getErrorUrl =>_errorUrl;
+  bool _errorUrl = true;
+  bool get getErrorUrl => _errorUrl;
   void setErrorUrl(bool _data) {
     _errorUrl = _data;
     notifyListeners();
   }
 
-
-
-Future eliminaUrlServerPerfil( String _url) async {
-
-
-final Map<String,dynamic>_urlImageDelete=
-{
-	"urls": [
-		{
-			"url": _url
-		}
-	],
-	"rucempresa": "ULTRA2022"
-};
+  Future eliminaUrlServerPerfil(String _url) async {
+    final Map<String, dynamic> _urlImageDelete = {
+      "urls": [
+        {"url": _url}
+      ],
+      "rucempresa": "ULTRA2022"
+    };
 
     final response = await _api.deleteUrlDelServidor(
-         datos:_urlImageDelete,
+      datos: _urlImageDelete,
       // token: '${dataUser!.token}',
     );
 
@@ -900,7 +836,7 @@ final Map<String,dynamic>_urlImageDelete=
       // setListaUrlse(response['data']);
       // print('ES LOS URLS: ${response}');
       setUrlPerfil('');
-    // image== null;
+      // image== null;
 
       // print('las variables : image - $_urlImage');
       notifyListeners();
@@ -908,31 +844,24 @@ final Map<String,dynamic>_urlImageDelete=
       // return response;
     }
 
-
     if (response == null) {
       _errorUrl = false;
-        print('ES LOS URLS: ${response}');
+      print('ES LOS URLS: ${response}');
       notifyListeners();
       return 'false';
-
     }
- 
   }
-Future eliminaUrlServerCasa( String _url) async {
 
-
-final Map<String,dynamic>_urlImageDelete=
-{
-	"urls": [
-		{
-			"url": _url
-		}
-	],
-	"rucempresa": "ULTRA2022"
-};
+  Future eliminaUrlServerCasa(String _url) async {
+    final Map<String, dynamic> _urlImageDelete = {
+      "urls": [
+        {"url": _url}
+      ],
+      "rucempresa": "ULTRA2022"
+    };
 
     final response = await _api.deleteUrlDelServidor(
-         datos:_urlImageDelete,
+      datos: _urlImageDelete,
       // token: '${dataUser!.token}',
     );
 
@@ -941,7 +870,7 @@ final Map<String,dynamic>_urlImageDelete=
       // setListaUrlse(response['data']);
       // print('ES LOS URLS: ${response}');
       setUrlCasa('');
-    // image== null;
+      // image== null;
 
       // print('las variables : image - $_urlImage');
       notifyListeners();
@@ -949,31 +878,24 @@ final Map<String,dynamic>_urlImageDelete=
       // return response;
     }
 
-
     if (response == null) {
       _errorUrl = false;
-        print('ES LOS URLS: ${response}');
+      print('ES LOS URLS: ${response}');
       notifyListeners();
       return 'false';
-
     }
- 
   }
-Future eliminaUrlServerVehiculo( String _url) async {
 
-
-final Map<String,dynamic>_urlImageDelete=
-{
-	"urls": [
-		{
-			"url": _url
-		}
-	],
-	"rucempresa": "ULTRA2022"
-};
+  Future eliminaUrlServerVehiculo(String _url) async {
+    final Map<String, dynamic> _urlImageDelete = {
+      "urls": [
+        {"url": _url}
+      ],
+      "rucempresa": "ULTRA2022"
+    };
 
     final response = await _api.deleteUrlDelServidor(
-         datos:_urlImageDelete,
+      datos: _urlImageDelete,
       // token: '${dataUser!.token}',
     );
 
@@ -982,7 +904,7 @@ final Map<String,dynamic>_urlImageDelete=
       // setListaUrlse(response['data']);
       // print('ES LOS URLS: ${response}');
       setUrlCasa('');
-    // image== null;
+      // image== null;
 
       // print('las variables : image - $_urlImage');
       notifyListeners();
@@ -990,43 +912,33 @@ final Map<String,dynamic>_urlImageDelete=
       // return response;
     }
 
-
     if (response == null) {
       _errorUrl = false;
-        print('ES LOS URLS: ${response}');
+      print('ES LOS URLS: ${response}');
       notifyListeners();
       return 'false';
-
     }
- 
   }
-
 
 //-------------------------------------//
-///AGREGAMOS LA IMAGEN EN PANTALLA ////
-  String _url ='' ; 
- File? _selectedImage;
+  ///AGREGAMOS LA IMAGEN EN PANTALLA ////
+  String _url = '';
+  File? _selectedImage;
 
   File? get selectedImage => _selectedImage;
 
-  void setImage(File image,String _tipo) {
+  void setImage(File image, String _tipo) {
     _selectedImage = image;
-    _url=_selectedImage!.path;
-    if (_tipo=='fotoperfil' ) {
-       getUrlsServerPerfil( );
-      
+    _url = _selectedImage!.path;
+    if (_tipo == 'fotoperfil') {
+      getUrlsServerPerfil();
+    } else if (_tipo == 'fotocasa') {
+      getUrlsServerCasa();
+    } else if (_tipo == 'fotovehiculo') {
+      getUrlsServerVehiculo();
     }
-    else if ( _tipo=='fotocasa' ) {
-         getUrlsServerCasa( );
-  }
-    else if (_tipo=='fotovehiculo' ) {
-        getUrlsServerVehiculo( );
-  }
-    
 
     // getUrlsServer( )
-  
-
 
     notifyListeners();
   }
@@ -1035,7 +947,8 @@ final Map<String,dynamic>_urlImageDelete=
     _selectedImage = null;
     notifyListeners();
   }
-void deleteImage() {
+
+  void deleteImage() {
     if (_selectedImage != null) {
       _selectedImage!.delete();
       clearImage();
@@ -1043,14 +956,11 @@ void deleteImage() {
   }
 
 // Future getUrlsServer( ) async {
- 
-
-
 
 //     final response = await _api.getUrlsServer(
 //         _selectedImage,
 //          _fotoTipo!
-   
+
 //     );
 
 //     if (response != null && _fotoTipo=='fotoperfil' ) {
@@ -1079,123 +989,84 @@ void deleteImage() {
 //     }
 //   //  return response;
 
-
-
-
 //   }
-Future getUrlsServerPerfil( ) async {
- 
-   try {
+  Future getUrlsServerPerfil() async {
+    try {
+      final response = await _api.getUrlsServer(_selectedImage, 'fotoperfil');
 
-     final response = await _api.getUrlsServer(
-        _selectedImage,
-        'fotoperfil'
-   
-    );
+      if (response != null) {
+        _errorUrl = true;
+        setUrlPerfil(
+          response.toString(),
+        );
+        notifyListeners();
+        return response;
+      }
 
-    if (response != null ) {
-      _errorUrl = true;
-       setUrlPerfil(response.toString(),);
-       notifyListeners();
-      return response;
+      if (response == null) {
+        _errorUrl = false;
+
+        notifyListeners();
+      }
+    } catch (e) {
+      return false;
     }
-   
-    if (response == null) {
-      _errorUrl = false;
-
-      notifyListeners();
-
-    }
-     
-   } catch (e) {
-
-   return false;
-   }
-
-
-
-
-  }
-Future getUrlsServerCasa( ) async {
- 
-   try {
-
-     final response = await _api.getUrlsServer(
-        _selectedImage,
-        'fotocasa'
-   
-    );
-
-    if (response != null ) {
-      _errorUrl = true;
-       setUrlCasa(response.toString(),);
-       notifyListeners();
-      return response;
-    }
-   
-    if (response == null) {
-      _errorUrl = false;
-
-      notifyListeners();
-
-    }
-     
-   } catch (e) {
-
-   return false;
-   }
-
-
-
-
-  }
-Future getUrlsServerVehiculo( ) async {
- 
-   try {
-
-     final response = await _api.getUrlsServer(
-        _selectedImage,
-        'fotovehiculo'
-   
-    );
-
-    if (response != null ) {
-      _errorUrl = true;
-       setUrlVehiculo(response.toString(),);
-       notifyListeners();
-      return response;
-    }
-   
-    if (response == null) {
-      _errorUrl = false;
-
-      notifyListeners();
-
-    }
-     
-   } catch (e) {
-
-   return false;
-   }
-
-
-
-
   }
 
+  Future getUrlsServerCasa() async {
+    try {
+      final response = await _api.getUrlsServer(_selectedImage, 'fotocasa');
 
+      if (response != null) {
+        _errorUrl = true;
+        setUrlCasa(
+          response.toString(),
+        );
+        notifyListeners();
+        return response;
+      }
 
+      if (response == null) {
+        _errorUrl = false;
+
+        notifyListeners();
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future getUrlsServerVehiculo() async {
+    try {
+      final response = await _api.getUrlsServer(_selectedImage, 'fotovehiculo');
+
+      if (response != null) {
+        _errorUrl = true;
+        setUrlVehiculo(
+          response.toString(),
+        );
+        notifyListeners();
+        return response;
+      }
+
+      if (response == null) {
+        _errorUrl = false;
+
+        notifyListeners();
+      }
+    } catch (e) {
+      return false;
+    }
+  }
 
 //========================== GUARDA TOKEN DDE LA NOTIFICACION =======================//
   String? _tokennotificacion;
 
   String? get getTokennotificacion => _tokennotificacion;
-  Future? setTokennotificacion(String? _tokenFM,String _option) async {
+  Future? setTokennotificacion(String? _tokenFM, String _option) async {
     _tokennotificacion = _tokenFM;
 
-
 // print('el token es :$_tokenFM');
-
 
     sentToken(_option);
     notifyListeners();
@@ -1208,8 +1079,8 @@ Future getUrlsServerVehiculo( ) async {
     notifyListeners();
   }
 
-  Future sentToken( String _option) async {
-   final  _infoUser = await Auth.instance.getSession();
+  Future sentToken(String _option) async {
+    final _infoUser = await Auth.instance.getSession();
     final response = await _api.sentTokenFCM(
       option: _option,
       tokennotificacion: _tokennotificacion,
@@ -1218,7 +1089,6 @@ Future getUrlsServerVehiculo( ) async {
 
     if (response != null) {
       _errorGuardatoken = true;
-
 
 // print('el token se guardo $response');
 
@@ -1233,23 +1103,18 @@ Future getUrlsServerVehiculo( ) async {
 
 //-------------obtiene informacion dde la NOTIFICACIONES -----------------------//
 
-Map<String, dynamic> _infoNotificaacion={};
-Map<String, dynamic> get getInfoNotificacion =>_infoNotificaacion;
+  Map<String, dynamic> _infoNotificaacion = {};
+  Map<String, dynamic> get getInfoNotificacion => _infoNotificaacion;
 
-
- void setInfoNotificacion(Map<String, dynamic>_data) {
-
-_infoNotificaacion=_data;
+  void setInfoNotificacion(Map<String, dynamic> _data) {
+    _infoNotificaacion = _data;
 
 //  print('ESTA ES LA INFO DE NOTIFICACION  : $_infoNotificaacion');
-notifyListeners();
- }
-
-
-
+    notifyListeners();
+  }
 
 //---------------MUESTRA ESTADO DE LA ALARMA PRESIONADA--------------------//
- bool _alarmActivated = false;
+  bool _alarmActivated = false;
 
   bool get alarmActivated => _alarmActivated;
 
@@ -1265,97 +1130,79 @@ notifyListeners();
   }
 //----------------GET INFO PERFIL------------------//
 
-Map<String,dynamic> _infoUsuarioById ={};
-Map<String,dynamic> get getInfoUsuarioById =>_infoUsuarioById;
-String? _idUsuario="";
+  Map<String, dynamic> _infoUsuarioById = {};
+  Map<String, dynamic> get getInfoUsuarioById => _infoUsuarioById;
+  String? _idUsuario = "";
 
-void setIngoUsuario(Map<String,dynamic>  _info ){
-  _infoUsuarioById ={};
-  _idUsuario="";
-  _infoUsuarioById =_info;
+  void setIngoUsuario(Map<String, dynamic> _info) {
+    _infoUsuarioById = {};
+    _idUsuario = "";
+    _infoUsuarioById = _info;
 
-  _itemCedua=getUser!['usuario'];
-  _idUsuario =_infoUsuarioById['perId'].toString();
-  _itemNombre=_infoUsuarioById['nombres'];
-  _itemApellido=_infoUsuarioById['nombres'];
-  _itemDireccion=_infoUsuarioById['direccion'];
-  _itemCorreos=_infoUsuarioById['email'];
-  _itemCelulares=_infoUsuarioById['celular'];
- _itemIsEdad = true;
-  _ciudadItem=_infoUsuarioById['ciudad']??'';
-  _sectorItem=_infoUsuarioById['sector'] ??'';
-  _itemReferencia =_infoUsuarioById['referencia'] ??'';
-  _urlImagePerfil=_infoUsuarioById['fotoPerfil'] ??'';
-  _urlImageCasa=_infoUsuarioById['fotoCasa'] ??''; 
-  _urlImageVehiculo=_infoUsuarioById['fotoVehiculo'] ??''; 
+    _itemCedua = getUser!['usuario'];
+    _idUsuario = _infoUsuarioById['perId'].toString();
+    _itemNombre = _infoUsuarioById['nombres'];
+    _itemApellido = _infoUsuarioById['nombres'];
+    _itemDireccion = _infoUsuarioById['direccion'];
+    _itemCorreos = _infoUsuarioById['email'];
+    _itemCelulares = _infoUsuarioById['celular'];
+    _itemIsEdad = true;
+    _ciudadItem = _infoUsuarioById['ciudad'] ?? '';
+    _sectorItem = _infoUsuarioById['sector'] ?? '';
+    _itemReferencia = _infoUsuarioById['referencia'] ?? '';
+    _urlImagePerfil = _infoUsuarioById['fotoPerfil'] ?? '';
+    _urlImageCasa = _infoUsuarioById['fotoCasa'] ?? '';
+    _urlImageVehiculo = _infoUsuarioById['fotoVehiculo'] ?? '';
 
-  _locationGPS= 
-  
-  {
-        "latitud": _infoUsuarioById['latitud'],
-        "longitud":_infoUsuarioById['longitud'],
+    _locationGPS = {
+      "latitud": _infoUsuarioById['latitud'],
+      "longitud": _infoUsuarioById['longitud'],
     };
-  
-  _infoUsuarioById['gps'] ??''; 
 
-  _itemLugarServicio=_infoUsuarioById['tipoServicio'] ??''; 
+    _infoUsuarioById['gps'] ?? '';
 
-  _itemPlaca=_infoUsuarioById['placa'] ??'';
-  _itemColor=_infoUsuarioById['color'] ??'';
-  _itemMarca=_infoUsuarioById['marca'] ??'';
-  _itemModelo=_infoUsuarioById['modelo'] ??'';
-  
+    _itemLugarServicio = _infoUsuarioById['tipoServicio'] ?? '';
 
+    _itemPlaca = _infoUsuarioById['placa'] ?? '';
+    _itemColor = _infoUsuarioById['color'] ?? '';
+    _itemMarca = _infoUsuarioById['marca'] ?? '';
+    _itemModelo = _infoUsuarioById['modelo'] ?? '';
 
-
-
-
-	// "data": {
-	// 	"perId": 14049,
-	// 	"nombres": "Gomez Pedro",
-	// 	"celular": "+593958766850",
-	// 	"email": "pgomez@gmail.com",
-	// 	"direccion": "Calle 1",
-	// 	"ciudad": "BORBONES",
-	// 	"sector": "sector 1",
-	// 	"referencia": "Casa numero 1",
-	// 	"fotoPerfil": "https://documentos.neitor.com/contable/fotoperfil/ULTRA2022/96eee234-93e9-4a4c-9fb7-7d12ba3b3c5a.png",
-	// 	"fotoCasa": "https://documentos.neitor.com/contable/fotocasa/ULTRA2022/b2ed4c5b-e7db-4e34-8ba3-c32a9480f6c0.png",
-	// 	"fotoVehiculo": "",
-	// 	"gps": {
-	// 		"latitud": "-0.253396",
-	// 		"longitud": "-79.176296"
-	// 	},
-	// 	"tipoServicio": "HOGAR",
-	// 	"placa": "ZZZ9999"
-	// }
-
-
-
-
-
-
-
-
-
-
-
+    // "data": {
+    // 	"perId": 14049,
+    // 	"nombres": "Gomez Pedro",
+    // 	"celular": "+593958766850",
+    // 	"email": "pgomez@gmail.com",
+    // 	"direccion": "Calle 1",
+    // 	"ciudad": "BORBONES",
+    // 	"sector": "sector 1",
+    // 	"referencia": "Casa numero 1",
+    // 	"fotoPerfil": "https://documentos.neitor.com/contable/fotoperfil/ULTRA2022/96eee234-93e9-4a4c-9fb7-7d12ba3b3c5a.png",
+    // 	"fotoCasa": "https://documentos.neitor.com/contable/fotocasa/ULTRA2022/b2ed4c5b-e7db-4e34-8ba3-c32a9480f6c0.png",
+    // 	"fotoVehiculo": "",
+    // 	"gps": {
+    // 		"latitud": "-0.253396",
+    // 		"longitud": "-79.176296"
+    // 	},
+    // 	"tipoServicio": "HOGAR",
+    // 	"placa": "ZZZ9999"
+    // }
 
 //  print('_infoUsuarioById  : $_infoUsuarioById');
 
-notifyListeners();
-}
-
-
+    notifyListeners();
+  }
 
   bool? _errorUserById; // sera nulo la primera vez
   bool? get getErrorUserById => _errorUserById;
 
   Future? buscaUsuarioById(BuildContext context) async {
-       final dataUser = await Auth.instance.getSession();
+    final dataUser = await Auth.instance.getSession();
 
     final response = await _api.getUsuarioById(
-      context: context,token: dataUser['token'],idUser: dataUser['id'].toString()  );
+        context: context,
+        token: dataUser['token'],
+        idUser: dataUser['id'].toString());
     if (response != null) {
       _errorUserById = true;
       setIngoUsuario(response['data']);
@@ -1373,9 +1220,6 @@ notifyListeners();
     return null;
   }
 
-
-
-
 //====== VALIDA LA SESION DEL USUARIO ==========//
 
   Future validaInicioDeSesion(BuildContext context) async {
@@ -1385,9 +1229,8 @@ notifyListeners();
     );
 
     if (response != null) {
-
       // print('EL TOQUEN NUEVO: $response');
-       await Auth.instance.saveSession(response);
+      await Auth.instance.saveSession(response);
 
       return response;
     }
@@ -1398,7 +1241,65 @@ notifyListeners();
     }
   }
 //---------------------------------//
+//====== CIERRA LA SESION DEL USUARIO ==========//
+
+  Future cierreSesionUsuario(BuildContext context) async {
+    final dataUser = await Auth.instance.getSession();
+    final response = await _api.putSessionUser(
+      context: context,
+      token: dataUser!['token'],
+    );
+
+    if (response != null) {
+      return response;
+    }
+    if (response == null) {
+      return null;
+    }
+  }
+//---------------------------------//
+
+  String? _claveActual = "";
+    String? _claveNueva = "";
+    String?  _verificaClaveNueva = "";
 
 
+     String? get getClaveActual => _claveActual;
+  void onChangeClaveActual(String text) {
+    _claveActual = text;
+    //  print('USUARIO: $_usuario');
+    notifyListeners();
+  }
+     String? get getClaveNueva => _claveNueva;
+  void onChangeClaveNueva(String text) {
+    _claveNueva = text;
+    //  print('USUARIO: $_usuario');
+    notifyListeners();
+  }
+ String? get getVerificaClaveNueva => _verificaClaveNueva;
+  void onChangeVerificaClaveNueva(String text) {
+    _verificaClaveNueva = text;
+    //  print('USUARIO: $_usuario');
+    notifyListeners();
+  }
+
+//====== ACTUALIZA CLAVE DEL USUARIO ==========//
+
+  Future actualizaClaveUsuario(BuildContext context) async {
+    final dataUser = await Auth.instance.getSession();
+    final response = await _api.putActualizaClave(
+        context: context,
+        token: dataUser!['token'],
+        idUser: dataUser!['id'].toString(),
+        nuevaClave: {"newpassword": _claveNueva});
+
+    if (response != null) {
+      return response;
+    }
+    if (response == null) {
+      return null;
+    }
+  }
+//---------------------------------//
 
 }

@@ -9,6 +9,7 @@ import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/init_provider.dart';
 import 'package:ultrared/src/pages/foto_perfil_page.dart';
+import 'package:ultrared/src/pages/home_page.dart';
 import 'package:ultrared/src/pages/login_page.dart';
 import 'package:ultrared/src/pages/selecciona_sector.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
@@ -451,10 +452,7 @@ void _onSubmit(BuildContext context, HomeController controller, size,String _act
   final control = context.read<HomeController>();
 
   if (control.getUrlVehiculo.isNotEmpty) {
-    dynamic response;
-    ProgressDialog.show(context);
-
-     
+  
          if (_action=='CREATE') {
     ProgressDialog.show(context);
  final response = await controller.crearUsuario(context);
@@ -478,14 +476,9 @@ void _onSubmit(BuildContext context, HomeController controller, size,String _act
     }
        }
 
-
-
-    ProgressDialog.dissmiss(context);
-    if (response != null && response.containsKey('res')) {
-      NotificatiosnService.showSnackBarDanger(response['msg']);
-    } else if (response != null && !response.containsKey('res')) {
-      _modalMessageResponse(context, response['msg'], size, _action);
-    }
+    // final response = await controller.crearUsuario(context);
+  
+   
   } else {
     NotificatiosnService.showSnackBarDanger('Agregar foto de Vehículo');
   }
@@ -530,10 +523,33 @@ Future<void> _modalMessageResponse(
             // color: Colors.red,
             child: TextButton(
               onPressed: () async{
-                 await Auth.instance.deleteSesion(context);
+          //        await Auth.instance.deleteSesion(context);
+          //   Navigator.of(context).pushAndRemoveUntil(
+          // MaterialPageRoute(builder: (context) => const SerClientePage()),
+          // (Route<dynamic> route) => false);
+
+
+              if ( _action=='CREATE') {
+                   await Auth.instance.deleteSesion(context);
+
             Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const SerClientePage()),
           (Route<dynamic> route) => false);
+                 
+               } if ( _action=='EDIT') {
+
+           Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const HomePage(
+                     
+                      )));
+               }
+                
+
+
+
+
               },
               child: const Text('OK'),
             ),

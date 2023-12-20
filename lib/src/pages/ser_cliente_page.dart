@@ -1,9 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/login_page.dart';
 import 'package:ultrared/src/pages/registro_page.dart';
+import 'package:ultrared/src/pages/selecciona_sector.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
@@ -44,92 +47,153 @@ class SerClientePage extends StatelessWidget {
                   width: size.wScreen(100),
                   // color: Colors.green, // Puedes ajustar el color según tus preferencias
                   // Puedes agregar contenido adicional en este contenedor
-                  child: Column(
+                  child: Stack(
                     children: [
-                        SizedBox(
-                        height: size.hScreen(0.0),
-                      ),
+                      Column(
+                        children: [
+                            SizedBox(
+                            height: size.hScreen(0.0),
+                          ),
+                          BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5), // Ajusta los valores según sea necesario
+                child: Container(
+                      color: Colors.transparent,
+                ),
+              ),
           
-                      Container(
-                      height: size.hScreen(15),
-                      width: size.wScreen(100),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
-          
-                      // color: Colors.blue, // Puedes ajustar el color según tus preferencias
-                      child: Image.asset(
-                        'assets/imgs/icon.png', scale: 3.0,
-                        fit: BoxFit.contain, // URL de la imagen
-                      ),
-                    ),
-                      SizedBox(
-                      height: size.hScreen(0.0),
-                    ),
-                      SizedBox(
-                        width: size.wScreen(80),
-                        height: size.hScreen(8.0),
-                        child: Text(
-                          'Seguridad Móvil',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                              fontSize: size.iScreen(3.0),
-                              fontWeight: FontWeight.w500,
-                              color: secondaryColor),
+                          // Container(
+                          // height: size.hScreen(8),
+                          // width: size.wScreen(100),
+                          // padding:
+                          //     EdgeInsets.symmetric(horizontal: size.iScreen(0.0)),
+                                  
+                          // // color: Colors.blue, // Puedes ajustar el color según tus preferencias
+                          // child: Image.asset(
+                          //   'assets/imgs/letras_UR.png', scale: 1.0,
+                          //   fit: BoxFit.contain, // URL de la imagen
+                          // ),
+                          //                       ),
+                         
+                          SizedBox(
+                          height: size.hScreen(11.0),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap:(){
-                               final _ctrlHome= context.read<HomeController>();
-                            _ctrlHome.resetAllValues();
-                          
-                          Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: ((context) =>
-                                                const RegistroPage(action: 'CREATE',))));
-                        },
-                          child: BotonBase(
-                        size: size,
-                        label: 'NUEVO USUARIO',
-                      )),
-                      SizedBox(
-                        height: size.hScreen(4.0),
-                      ),
+                          SizedBox(
+                            width: size.wScreen(80),
+                            height: size.hScreen(6.0),
+                            child: Text(
+                              'Seguridad Móvil',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.poppins(
+                                  fontSize: size.iScreen(2.1),
+                                  fontWeight: FontWeight.w500,
+                                  color: secondaryColor),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap:(){
+                              //      final _ctrlHome= context.read<HomeController>();
+                              //   _ctrlHome.resetAllValues();
+                              
+                              // Navigator.push(
+                              //               context,
+                              //               MaterialPageRoute(
+                              //                   builder: ((context) =>
+                              //                       const RegistroPage(action: 'CREATE',))));
+                                   final _ctrlHome= context.read<HomeController>();
+                                _ctrlHome.resetAllValues();
+                                _ctrlHome.setItemLugarServicio('HOGAR');
+                              
+                              Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: ((context) =>
+                                                    const SeleccionaSector(action: 'CREATE',))));
+                            },
+                              child: BotonBase(
+                            size: size,
+                            label: 'NUEVO USUARIO',
+                          )),
+                          SizedBox(
+                            height: size.hScreen(4.0),
+                          ),
           
          
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: ((context) =>
-                                                LoginPage())));
-                        },
-                        child: Text.rich(
-                          TextSpan(
-                            children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: ((context) =>
+                                                    LoginPage())));
+                            },
+                            child: Text.rich(
                               TextSpan(
-                                text: 'Ya soy cliente. ',
-                                style: GoogleFonts.poppins(
-                                  fontSize: size.iScreen(1.5),
-                                  fontWeight: FontWeight.w400,
-                                  // color: Colors.white
-                                ),
+                                children: [
+                                  TextSpan(
+                                    text: 'Ya soy cliente. ',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: size.iScreen(1.5),
+                                      fontWeight: FontWeight.w400,
+                                      // color: Colors.white
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: 'INICIAR SESIÓN',
+                                    style: TextStyle(
+                                      color: Color(0xFFB32523),
+                                      fontSize: size.iScreen(1.5),
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                      height: size.iScreen(0.1),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              TextSpan(
-                                text: 'INICIAR SESIÓN',
-                                style: TextStyle(
-                                  color: Color(0xFFB32523),
-                                  fontSize: size.iScreen(1.3),
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w600,
-                                  height: size.iScreen(0.1),
+                            ),
+                          ),
+                           Container(
+                          height: size.hScreen(10),
+                          width: size.wScreen(100),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: size.iScreen(0.0)),
+                                  
+                          // color: Colors.blue, // Puedes ajustar el color según tus preferencias
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Provider to  ', style: TextStyle(
+                                      color: Color(0xFF080623),
+                                      fontSize: size.iScreen(1.7),
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w400,
+                                      height: size.iScreen(0.1),
+                                    ),),
+                              Container(
+                                height: size.iScreen(4.0),
+                                child: Image.asset(
+                                  'assets/imgs/LetrasNegro.png', scale: 1.0,
+                                  fit: BoxFit.contain, // URL de la imagen
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      )
+                                                )
+                        ],
+                      ),
+                      Positioned( 
+                        top: -4.0,
+                        child:  Container(
+                          height: size.hScreen(12),
+                          width: size.wScreen(100),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: size.iScreen(0.0)),
+                                  
+                          // color: Colors.blue, // Puedes ajustar el color según tus preferencias
+                          child: Image.asset(
+                            'assets/imgs/letras_UR.png', scale: 1.0,
+                            fit: BoxFit.contain, // URL de la imagen
+                          ),
+                                                ),)
                     ],
                   ),
                 ),
