@@ -503,7 +503,7 @@ void _onSubmit(BuildContext context, HomeController controller, size,String _act
 
 Future<void> _modalMessageResponse(
     BuildContext context, String _message, Responsive size,String _action) {
-      // final _crtlHome=context.read<HomeController>();
+      final _crtlHome=context.read<HomeController>();
 
   return showDialog<String>(
     barrierDismissible: false,
@@ -514,7 +514,7 @@ Future<void> _modalMessageResponse(
           // height: size.hScreen(50.0),
           width: double.maxFinite,
           child: ListTile(
-            title:_action=='CREATE'?Text(_message) :Text('${_message}, Es necesario iniciar sesión nuevamente'),
+            title:Text(_message),
           ),
         ),
         actions: <Widget>[
@@ -538,12 +538,19 @@ Future<void> _modalMessageResponse(
                  
                } if ( _action=='EDIT') {
 
-           Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute<void>(
-                      builder: (BuildContext context) => const HomePage(
-                     
-                      )));
+              final _dataAntigua = await Auth.instance.getSession();
+
+                  _dataAntigua["nombre"] = _crtlHome.getItemNombre;
+                  _dataAntigua["foto"] = _crtlHome.getUrlPerfil;
+
+                  Map<String, dynamic> userModificado = _dataAntigua;
+
+                  await Auth.instance.saveSession(userModificado);
+
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute<void>(
+                          builder: (BuildContext context) => const HomePage()));
                }
                 
 

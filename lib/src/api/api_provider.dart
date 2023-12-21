@@ -722,6 +722,46 @@ return jsonMap['nombre'];
     }
   }
 //=========================GET ALL GRUPOS CHAT =====================================//
+  Future getVerificaCedulaNuevoCliente({
+
+    String? cedula,
+
+   
+    
+  }) async {
+    try {
+    final url = Uri.parse(
+          '$_dirURL/proveedores/exitscedula/$cedula?rucempresa=ULTRA2022');
+
+      final dataResp = await _http.get(
+        url,
+     
+      
+    
+      );
+   print(' DATA DESDE SERVER VERIFICA CEDULA : ${dataResp.body}');  
+      final respo = jsonDecode(dataResp.body);
+
+
+
+
+
+      print('objectLA RESPUESTA DE VALIDAR CEDULA $respo');
+      if (dataResp.statusCode == 200) {
+        return 200;
+      }
+
+       if (dataResp.statusCode == 404) {
+        return 404;
+      }
+       if (dataResp.statusCode == 401 || dataResp.statusCode == 500) {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+//=========================GET ALL GRUPOS CHAT =====================================//
   Future getAllNoticias({
     BuildContext? context,
     String? token,
@@ -906,32 +946,45 @@ return jsonMap['nombre'];
   }
 
 
-// void uploadImagenServer() async {
-//   var url = Uri.parse('$_dirURL/upload_delete_multiple_files/uploadNotToken');
-//   var request = _http.MultipartRequest('POST', url);
+//=========================GET ALL GRUPOS CHAT =====================================//
+  Future getNotificacionId({
+    BuildContext? context,
+    String? token,
+    String? idUsuario,
+    
+  }) async {
+    try {
+      final url = Uri.parse(
+          '$_dirURL/notificaciones/id/$idUsuario');
 
-//   // Get image file from local directory
-//   final directory = await getApplicationDocumentsDirectory();
-//   File imageFile = File('${directory.path}/image.jpg');
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
 
-//   // Add parameters to the request
-//   request.fields['tipo'] = 'fotoperfil';
-//   request.fields['rucempresa'] = 'ULTRA2022';
 
-//   // Add the image file to the request
-//   request.files.add(await _http.MultipartFile.fromPath(
-//     'archivo',
-//     imageFile.path,
-//   ));
 
-//   // Send the request
-//   var response = await request.send();
-//   if (response.statusCode == 200) {
-//     print('Image uploaded successfully.');
-//   } else {
-//     print('Image upload failed.');
-//   }
-// }
+// print('INFO DE LA NOTIFICACION POR ID ${dataResp.body}');
+
+      final respo = jsonDecode(dataResp.body);
+      if (dataResp.statusCode == 200) {
+        print('INFO DE LA NOTIFICACION POR ID ${respo['data']}');
+        return respo['data'];
+      }
+
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+        Auth.instance.deleteSesion(context!);
+         snaks.NotificatiosnService.showSnackBarDanger("Debe inciar sesión nuevamente");
+
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 
 
 

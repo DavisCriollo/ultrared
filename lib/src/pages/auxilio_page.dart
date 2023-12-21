@@ -12,6 +12,7 @@ import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
+import 'package:ultrared/src/pages/vista_imagen.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
@@ -19,6 +20,7 @@ import 'package:ultrared/src/widgets/botonBase.dart';
 import 'package:ultrared/src/widgets/no_data.dart';
 import 'package:latlong2/latlong.dart'
     as latlng; // Nota: latlong2 es la versión más reciente del paquete
+
 
 class AuxilioPage extends StatefulWidget {
   const AuxilioPage({Key? key}) : super(key: key);
@@ -59,17 +61,16 @@ AudioCache player = AudioCache();
 
 
   void initData() async {
-    final loadInfo = context.read<HomeController>();
+    // final loadInfo = context.read<HomeController>();
 
   }
 
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
-    final ctrHome = context.read<HomeController>();
+    // final ctrHome = context.read<HomeController>();
 
-     double?  _latitud=  double.tryParse('${ctrHome.getInfoNotificacion['notInformacionAdicional']['coordenadas']['latitud']}');
-     double?  _longitud=  double.tryParse('${ctrHome.getInfoNotificacion['notInformacionAdicional']['coordenadas']['longitud']}');
+   
    
     
     return GestureDetector(
@@ -96,8 +97,44 @@ AudioCache player = AudioCache();
 
             width: size.wScreen(100.0),
             height: size.hScreen(100.0),
-            child: Consumer<SocketModel>(
-              builder: (_, valueChat, __) {
+            child: Consumer<HomeController>(
+              builder: (_, ctrHome, __) {
+
+
+              
+
+                  if (ctrHome.getInfoNotificacion.isEmpty) {
+                return Center(
+                  // child: CircularProgressIndicator(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Cargando Datos...',
+                        style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(1.5),
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      //***********************************************/
+                      SizedBox(
+                        height: size.iScreen(1.0),
+                      ),
+                      //*****************************************/
+                      const CircularProgressIndicator(),
+                    ],
+                  ),
+                );
+              } else if (ctrHome.getListaTodasLasNotificaciones.isEmpty) {
+                return const NoData(
+                  label: 'No existen datos para mostar',
+                );
+                // Text("sin datos");
+              } 
+
+  double?  _latitud=  double.tryParse('${ctrHome.getInfoNotificacion['notInformacionAdicional']['coordenadas']['latitud']}');
+     double?  _longitud=  double.tryParse('${ctrHome.getInfoNotificacion['notInformacionAdicional']['coordenadas']['longitud']}');
+
                 return Column(
                   children: [
                     Container(
@@ -251,19 +288,30 @@ AudioCache player = AudioCache();
                                     ),
                                     child: Column(
                                       children: [
-                                        Container(
-                                          width: size.iScreen(13),
-                                          height: size.iScreen(15),
-                                          decoration: ShapeDecoration(
-                                            image: DecorationImage(
-                                              image: NetworkImage(
-                                                '${ctrHome.getInfoNotificacion['perFotoCasa']}',
+                                        GestureDetector(
+                                          onTap: () {
+                                            final _infoImage={"id":1,"lugar":'CASA', "url":'${ctrHome.getInfoNotificacion['perFotoCasa']}'};
+                                               Navigator.push(context,
+        MaterialPageRoute(builder: ((context) => PreviewPhoto(infoImage:_infoImage))));
+                                            
+                                          },
+                                          child: Hero(
+                                             tag:1,
+                                            child: Container(
+                                              width: size.iScreen(13),
+                                              height: size.iScreen(15),
+                                              decoration: ShapeDecoration(
+                                                image: DecorationImage(
+                                                  image: NetworkImage(
+                                                    '${ctrHome.getInfoNotificacion['perFotoCasa']}',
+                                                  ),
+                                                  fit: BoxFit.fill,
+                                                ),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
                                               ),
-                                              fit: BoxFit.fill,
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
                                             ),
                                           ),
                                         ),
@@ -291,19 +339,30 @@ AudioCache player = AudioCache();
                                     ),
                                     child: Column(
                                       children: [
-                                        Container(
-                                          width: size.iScreen(13),
-                                          height: size.iScreen(15),
-                                          decoration: ShapeDecoration(
-                                            image: DecorationImage(
-                                              image: NetworkImage(
-                                                '${ctrHome.getInfoNotificacion['perFotoVehiculo']}',
+                                        GestureDetector(
+                                           onTap: () {
+                                            final _infoImage={"id":2,"lugar":'VEHÍCULO', "url":'${ctrHome.getInfoNotificacion['perFotoVehiculo']}'};
+                                               Navigator.push(context,
+        MaterialPageRoute(builder: ((context) => PreviewPhoto(infoImage:_infoImage))));
+                                            
+                                          },
+                                          child: Hero(
+                                            tag:2,
+                                            child: Container(
+                                              width: size.iScreen(13),
+                                              height: size.iScreen(15),
+                                              decoration: ShapeDecoration(
+                                                image: DecorationImage(
+                                                  image: NetworkImage(
+                                                    '${ctrHome.getInfoNotificacion['perFotoVehiculo']}',
+                                                  ),
+                                                  fit: BoxFit.fill,
+                                                ),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
                                               ),
-                                              fit: BoxFit.fill,
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
                                             ),
                                           ),
                                         ),
@@ -318,7 +377,7 @@ AudioCache player = AudioCache();
                                       ],
                                     ),
                                   ):Container(),
-
+                                  
                                 ],
                               ),
 

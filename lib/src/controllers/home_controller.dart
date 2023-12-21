@@ -217,7 +217,7 @@ class HomeController extends ChangeNotifier {
 
   // String _locationMessage = "";
 
-  // String get locationMessage => _locationMessage;
+  String get locationMessage => _locationMessage;
   bool _gpsPositione = false;
   bool get getGPSPositione => _gpsPositione;
   void setGPSPositione(bool _position) {
@@ -417,6 +417,8 @@ class HomeController extends ChangeNotifier {
 
   void setItemReferencia(String? valor) {
     _itemReferencia = valor;
+
+    print('LA REFERENCIA $_itemReferencia');
 
     notifyListeners();
   }
@@ -637,14 +639,14 @@ class HomeController extends ChangeNotifier {
 
 //================================== LISTAR TODAS LA NOTIFICACIONES  ==============================//
   List _listaTodasLasNotificaciones = [];
-  List get getListaTodasLasNotificaciones => _listaTodasLasNotificaciones;
+    List get getListaTodasLasNotificaciones => _listaTodasLasNotificaciones;
 
-  void setListaTodasLasNotificaciones(List _data) {
+  void setListaTodasLasNotificaciones(_data) {
     _listaTodasLasNotificaciones = [];
 
-    _listaTodasLasNotificaciones = _data;
+    _listaTodasLasNotificaciones.add(_data);
 
-    print('_listaTodasLasNotificaciones: $_listaTodasLasNotificaciones');
+    // print('_listaTodasLasNotificaciones: $_listaTodasLasNotificaciones');
 
     notifyListeners();
   }
@@ -1109,7 +1111,7 @@ class HomeController extends ChangeNotifier {
   void setInfoNotificacion(Map<String, dynamic> _data) {
     _infoNotificaacion = _data;
 
-//  print('ESTA ES LA INFO DE NOTIFICACION  : $_infoNotificaacion');
+ print('ESTA ES LA INFO DE NOTIFICACION  : $_infoNotificaacion');
     notifyListeners();
   }
 
@@ -1147,17 +1149,18 @@ class HomeController extends ChangeNotifier {
     _itemCorreos = _infoUsuarioById['email'];
     _itemCelulares = _infoUsuarioById['celular'];
     _itemIsEdad = true;
-    _ciudadItem = _infoUsuarioById['ciudad'] ?? '';
-    _sectorItem = _infoUsuarioById['sector'] ?? '';
-    _itemReferencia = _infoUsuarioById['referencia'] ?? '';
-    _urlImagePerfil = _infoUsuarioById['fotoPerfil'] ?? '';
-    _urlImageCasa = _infoUsuarioById['fotoCasa'] ?? '';
-    _urlImageVehiculo = _infoUsuarioById['fotoVehiculo'] ?? '';
+    _ciudadItem = _infoUsuarioById['ciudad'];
+    _sectorItem = _infoUsuarioById['sector'];
+    setItemReferencia(_infoUsuarioById['referencia']);
+      _urlImagePerfil = _infoUsuarioById['fotoPerfil'];
+    _urlImageCasa = _infoUsuarioById['fotoCasa'];
+    _urlImageVehiculo = _infoUsuarioById['fotoVehiculo'];
 
     _locationGPS = {
-      "latitud": _infoUsuarioById['latitud'],
-      "longitud": _infoUsuarioById['longitud'],
+      "latitud": _infoUsuarioById['gps']['latitud'],
+      "longitud": _infoUsuarioById['gps']['longitud'],
     };
+    _locationMessage='${_infoUsuarioById['gps']['latitud']},${_infoUsuarioById['gps']['latitud']}';
 
     _infoUsuarioById['gps'] ?? '';
 
@@ -1294,6 +1297,45 @@ class HomeController extends ChangeNotifier {
         nuevaClave: {"newpassword": _claveNueva});
 
     if (response != null) {
+      return response;
+    }
+    if (response == null) {
+      return null;
+    }
+  }
+//---------------------------------//
+//====== ACTUALIZA CLAVE DEL USUARIO ==========//
+
+  Future verificaCedulaNuevoCliente(BuildContext context) async {
+  
+    final response = await _api.getVerificaCedulaNuevoCliente(
+          cedula: _itemCedua);
+
+    if (response != null) {
+      return response;
+    }
+    if (response == null) {
+      return null;
+    }
+  }
+//---------------------------------//
+
+
+
+//====== BUSCA NOTIFICACION POR ID FIREBASE==========//
+
+  Future buscaNotificacionPorId(BuildContext context, String _idFirebase) async {
+  
+
+    final dataUser = await Auth.instance.getSession();
+    final response = await _api.getNotificacionId(
+        context: context,
+        token: dataUser!['token'],
+        idUsuario: _idFirebase.toString());
+       
+
+    if (response != null) {
+     setInfoNotificacion(response);
       return response;
     }
     if (response == null) {

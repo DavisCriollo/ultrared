@@ -9,6 +9,7 @@ import 'package:ultrared/src/pages/selecciona_planes_page.dart';
 import 'package:ultrared/src/pages/selecciona_sector.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
 import 'package:ultrared/src/service/socket_service.dart';
+import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/letras_mayusculas_minusculas.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
@@ -171,7 +172,7 @@ class _RegistroPageState extends State<RegistroPage> {
                                       : _control.getUser!['usuario'].toString(),
                                   readOnly:
                                       widget.action == 'CREATE' ? false : true,
-                                  maxLength: 13,
+                                  maxLength: 10,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter.allow(
@@ -756,32 +757,19 @@ class _RegistroPageState extends State<RegistroPage> {
     );
   }
 
-  // void _next(BuildContext context, HomeController controller) {
-  //   if (controller.getItemCedua!.isEmpty ||
-  //       controller.getItemCedua!.length < 10 ||
-  //       controller.getItemCedua!.length > 13) {
-  //     NotificatiosnService.showSnackBarDanger('Cédula incorrecta');
-  //   } else if (controller.getItemNombre!.isNotEmpty &&
-  //       controller.getItemApellido!.isNotEmpty &&
-  //       controller.getItemDireccion!.isNotEmpty &&
-  //       controller.getItemCorreos!.isNotEmpty |
-  //           controller.getItemCelulars!.isNotEmpty &&
-  //       controller.getItemIsEdad == true) {
-  //     Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //             builder: ((context) => SeleccionaSector(
-  //                   action: widget.action,
-  //                 ))));
-  //   }
-  // else {
-  //     NotificatiosnService.showSnackBarDanger('Falta agregar  información');
-  //   }
-  // }
-  void _next(BuildContext context, HomeController controller) {
-    if (controller.getItemCedua!.isEmpty ||
+
+  void _next(BuildContext context, HomeController controller) async {
+    
+     ProgressDialog.show(context);
+      final response = await controller.verificaCedulaNuevoCliente(context);
+      ProgressDialog.dissmiss(context);
+      if (response != null && response==200) {
+        NotificatiosnService.showSnackBarDanger("El número ${controller.getItemCedua} ya se encuentra registrado");
+      } else {
+        
+         if (controller.getItemCedua!.isEmpty ||
         controller.getItemCedua!.length < 10 ||
-        controller.getItemCedua!.length > 13) {
+        controller.getItemCedua!.length > 10) {
       NotificatiosnService.showSnackBarDanger('Cédula incorrecta');
     } else if (controller.getItemNombre!.isNotEmpty &&
         controller.getItemApellido!.isNotEmpty &&
@@ -792,90 +780,37 @@ class _RegistroPageState extends State<RegistroPage> {
 
     Navigator.push(context,
         MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
-      //        if (controller.getItemLugarServicio == 'HOGAR') {
-      //            controller.setFotoTipo('fotoperfil');
-      // }
-              
+                   
             }  else {
         NotificatiosnService.showSnackBarDanger(
             'Falta agregar  información ');
       }
+      }
+    
+    // if (controller.getItemCedua!.isEmpty ||
+    //     controller.getItemCedua!.length < 10 ||
+    //     controller.getItemCedua!.length > 10) {
+    //   NotificatiosnService.showSnackBarDanger('Cédula incorrecta');
+    // } else if (controller.getItemNombre!.isNotEmpty &&
+    //     controller.getItemApellido!.isNotEmpty &&
+    //     controller.getItemDireccion!.isNotEmpty &&
+    //     controller.getItemCorreos!.isNotEmpty |
+    //         controller.getItemCelulars!.isNotEmpty &&
+    //     controller.getItemIsEdad == true) {
+
+    // Navigator.push(context,
+    //     MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
+                   
+    //         }  else {
+    //     NotificatiosnService.showSnackBarDanger(
+    //         'Falta agregar  información ');
+    //   }
 
 
 
             }
 
 
-
-
-    //          if (controller.getItemLugarServicio == 'HOGAR') {
-    //              controller.setFotoTipo('fotoperfil');
-    // Navigator.push(context,
-    //     MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
-    //   }
-              
-    //         } 
-    //          if (controller.getItemLugarServicio == 'HOGAR') {
-    //              controller.setFotoTipo('fotoperfil');
-    // Navigator.push(context,
-    //     MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
-    //   }
-              
-            // } 
-            
-            
-            // else {
-            // }
-
-
-//       Navigator.push(
-//           context,
-//           MaterialPageRoute(
-//               builder: ((context) => SeleccionaSector(
-//                     action: widget.action,
-//                   ))));
-//     }
-//   else {
-//       NotificatiosnService.showSnackBarDanger('Falta agregar  información');
-//     }
-  
-
-//  if (controller.getItemLugarServicio!.isEmpty) {
-//       NotificatiosnService.showSnackBarDanger('Seleccione Tipo de Servicio');
-//     }
-
-//     if (controller.getItemLugarServicio == 'HOGAR') {
-//       if (controller.getCiudadItem.isEmpty ||
-//           controller.getSectorItem.isEmpty ||
-//           controller.getItemReferencia!.isEmpty ||
-//           controller.getLocationMessage.isEmpty) {
-//         NotificatiosnService.showSnackBarDanger(
-//             'Falta agregar  información ');
-//       } else {
-     
-//     controller.setFotoTipo('fotoperfil');
-//     Navigator.push(context,
-//         MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
-//       }
-//     }
-//     if (controller.getItemLugarServicio == 'TRANSPORTE') {
-//       if (controller.getCiudadItem.isNotEmpty &&
-//           controller.getSectorItem.isNotEmpty &&
-//           controller.getItemReferencia!.isNotEmpty &&
-//           controller.getItemPlaca!.isNotEmpty &&
-//           controller.getItemMarca!.isNotEmpty &&
-//           controller.getItemModelo!.isNotEmpty &&
-//           controller.getItemColor!.isNotEmpty) {
-//                         controller.setFotoTipo('fotoperfil');
-//     Navigator.push(context,
-//         MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
-      
-
-//       } else {
-//         NotificatiosnService.showSnackBarDanger(
-//             'Falta agregar  información ');
-//       }
-//     }
 
 
 

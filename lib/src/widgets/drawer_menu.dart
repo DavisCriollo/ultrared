@@ -29,35 +29,36 @@ import 'package:ultrared/src/widgets/no_data.dart';
 
 
 class DrawerMenu extends StatefulWidget {
-  final Map<String, dynamic>? user;
+  // final Map<String, dynamic>? user;
 
-  const DrawerMenu({Key? key, required this.user}) : super(key: key);
+  const DrawerMenu({Key? key,}) : super(key: key);
 
   @override
   State<DrawerMenu> createState() => _DrawerMenuState();
 }
 
 class _DrawerMenuState extends State<DrawerMenu> {
-    final  _ctrl =HomeController();
+    // final  _ctrl =HomeController();
 
   @override
   void initState() {
-   inicio();
+  //  inicio();
     super.initState();
   }
 
-void inicio() async{
-   final  _ctrl =context.read <HomeController>();
-    _ctrl.buscaUsuarioById(context);
+// void inicio() async{
+//    final  _ctrl =context.read <HomeController>();
+//     _ctrl.buscaUsuarioById(context);
 
 
-}
+// }
 
 
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
   final  _ctrl =context.read <HomeController>();
+        //  _ctrl.getUser
   
                                           
     return 
@@ -70,35 +71,35 @@ void inicio() async{
       child: 
       Consumer<HomeController>(builder: (_, value, __) { 
 
-                if (value.getInfoUsuarioById.isEmpty) {
+              //   if (value.getInfoUsuarioById.isEmpty) {
 
                  
-                return Center(
-                  // child: CircularProgressIndicator(),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Cargando Datos...',
-                        style: GoogleFonts.lexendDeca(
-                            fontSize: size.iScreen(1.5),
-                            color: Colors.black87,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      //***********************************************/
-                      SizedBox(
-                        height: size.iScreen(1.0),
-                      ),
-                      //*****************************************/
-                      const CircularProgressIndicator(),
-                    ],
-                  ),
-                );
-              } else if (value.getInfoUsuarioById.isEmpty) {
-                return const NoData(
-                  label: 'Cargando Datos....',
-                );
-              }  
+              //   return Center(
+              //     // child: CircularProgressIndicator(),
+              //     child: Column(
+              //       mainAxisSize: MainAxisSize.min,
+              //       children: [
+              //         Text(
+              //           'Cargando Datos...',
+              //           style: GoogleFonts.lexendDeca(
+              //               fontSize: size.iScreen(1.5),
+              //               color: Colors.black87,
+              //               fontWeight: FontWeight.bold),
+              //         ),
+              //         //***********************************************/
+              //         SizedBox(
+              //           height: size.iScreen(1.0),
+              //         ),
+              //         //*****************************************/
+              //         const CircularProgressIndicator(),
+              //       ],
+              //     ),
+              //   );
+              // } else if (value.getInfoUsuarioById.isEmpty) {
+              //   return const NoData(
+              //     label: 'Cargando Datos....',
+              //   );
+              // }  
 
         return  ListView(
         padding: EdgeInsets.zero,
@@ -125,10 +126,10 @@ void inicio() async{
                               border: Border.all(color: Colors.white, width: 2.0),
                             ),
                             child: 
-                           value.getInfoUsuarioById['fotoPerfil'].isNotEmpty?ClipOval(
+                           value.getUser!['foto'].isNotEmpty?ClipOval(
                               child: CachedNetworkImage(
                                 imageUrl:
-                                    '${value.getInfoUsuarioById['fotoPerfil']}', // Reemplaza con la URL de tu imagen
+                                    '${value.getUser!['foto']}', // Reemplaza con la URL de tu imagen
                                 placeholder: (context, url) =>
                                     const CircularProgressIndicator(),
                                 errorWidget: (context, url, error) =>
@@ -147,19 +148,17 @@ void inicio() async{
                           onTap: () async {
 
                                 //--------------------//
-                                  // _ctrl.resetAllValues();
+                                  _ctrl.resetAllValues();
 
-          // _ctrl.buscaUsuarioById(context);
+          _ctrl.buscaUsuarioById(context);
 
           
 
               if (_ctrl.getInfoUsuarioById.isNotEmpty) {
                 
-                              Navigator.pop(context);
-                          
+                                Navigator.pop(context);
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SeleccionaSector( action: 'EDIT',)));
+                                    builder: (context) => const SeleccionaSector( action: 'EDIT',)));
                
               }
               
@@ -195,7 +194,7 @@ void inicio() async{
                 Container(
                   width: size.wScreen(80.0),
                   child: Text(
-                    '${value.getInfoUsuarioById['nombres']}',
+                    '${value.getUser!['nombre']}',
                     overflow: TextOverflow.ellipsis,
                     // maxLines: 2,
 
@@ -226,7 +225,7 @@ void inicio() async{
                             color: Colors.black),
                       ),
                       Text(
-                        '${value.getInfoUsuarioById['perId']}  ',
+                        '${value.getUser!['id']}  ',
                         style: GoogleFonts.poppins(
                             fontSize: size.iScreen(1.5),
                             fontWeight: FontWeight.w700,

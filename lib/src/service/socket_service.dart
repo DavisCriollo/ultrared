@@ -15,8 +15,8 @@ class SocketModel with ChangeNotifier {
 
   List _listaGruposChat = [];
   List get getListaGruposChat => _listaGruposChat;
-   List<Map<String,dynamic>>  _listaNotificaciones = [];
-   List<Map<String,dynamic>>  get getListaNotificaciones => _listaNotificaciones;
+   Map<String,dynamic>  _listaNotificaciones = {};
+    Map<String,dynamic>  get getListaNotificaciones => _listaNotificaciones;
   List<Map<String,dynamic>> _listaDeMensajeChat = [];
     List<Map<String,dynamic>>  get getListaDeMensajeChat => _listaDeMensajeChat;
  void setListaDeMensajesChat ( Map<String,dynamic> _msg){
@@ -63,12 +63,12 @@ notifyListeners();
       notifyListeners();
     });
     _socket.on('server:nuevanotificacion', (data) {
-      print('las NOTIFICACIONES  ------->   : $data');
+      // print('las NOTIFICACIONES  ------->   : $data');
       
 
-      _listaNotificaciones = [];
+      _listaNotificaciones = {};
       _listaNotificaciones = data;
-      _crtlHome.setListaTodasLasNotificaciones(data);
+      _crtlHome.setListaTodasLasNotificaciones([data]);
 
       notifyListeners();
     }); 

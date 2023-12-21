@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       // print("Firebase Token: $token");
     });
 
-    FirebaseService.configureFirebaseMessaging();
+    // FirebaseService.configureFirebaseMessaging();
   }
 
 
@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
      // Manejar la notificación cuando la aplicación está en primer plano
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("Notificación recibida primer plano ************* >: $message");
+      print("Notificación recibida primer plano ************* >: ${message.data}");
 
       // Aquí puedes dirigir al usuario a la pantalla deseada
 
@@ -177,7 +177,38 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
 
 
-      final _infoNotificacion={
+    //   final _infoNotificacion={
+		// 	"notId": 5,
+		// 	"notTipo": "ALERTA AYUDA",
+		// 	"notIdPersona": 14049,
+		// 	"notIdPerPertenece": 2,
+		// 	"notVisto": "NO",
+		// 	"notTitulo": "Alerta Ayuda",
+		// 	"notContenido": "Solicitó Ayuda",
+		// 	"notUser": "2122232425",
+		// 	"notEmpresa": "ULTRA2022",
+		// 	"id_registro": 0,
+		// 	"url_web": "",
+		// 	"notFecReg": "2023-12-11T15:16:09.000Z",
+		// 	"notFecUpd": "2023-12-11T15:16:16.000Z",
+		// 	"perDocNumero": "0102030405",
+		// 	"perNombre": "Gomez Pedro",
+		// 	"perFoto": "https://documentos.neitor.com/contable/fotoperfil/ULTRA2022/96eee234-93e9-4a4c-9fb7-7d12ba3b3c5a.png",
+		// 	"perFotoCasa": "https://documentos.neitor.com/contable/fotocasa/ULTRA2022/b2ed4c5b-e7db-4e34-8ba3-c32a9480f6c0.png",
+		// 	"perFotoVehiculo": "",
+		// 	"perPerfil": [
+		// 		"CLIENTE"
+		// 	],
+		// 	"notInformacionAdicional": {
+		// 		"tipoServicio": "HOGAR",
+		// 		"coordenadas": {
+		// 			"latitud": -0.239079,
+		// 			"longitud": -79.171853
+		// 		}
+		// 	}
+		// }; 
+      final _infoNotificacion=
+      {
 			"notId": 5,
 			"notTipo": "ALERTA AYUDA",
 			"notIdPersona": 14049,
@@ -206,7 +237,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 					"longitud": -79.171853
 				}
 			}
-		};  ctrlHome.setInfoNotificacion(_infoNotificacion);
+		}; 
+    
+    
+    
+     ctrlHome.buscaNotificacionPorId(context,message.data['notId']);
+    //  ctrlHome.setInfoNotificacion(_infoNotificacion);
+
+
+
+
+
 
      Navigator.of(context).pushNamed('auxilo');
      
@@ -221,7 +262,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     // Manejar la notificación cuando la aplicación se abre desde la barra de notificaciones
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print("Notificación abierta desde la aplicación se abre desde la barra de notificaciones ********* >: $message");
+      print("Notificación abierta desde la aplicación se abre desde la barra de notificaciones ********* >: ${message.data}");
       // Aquí puedes dirigir al usuario a la pantalla deseada
 
 
@@ -255,8 +296,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 				}
 			}
 		}; 
-     ctrlHome.setInfoNotificacion(_infoNotificacion);
-
+     ctrlHome.buscaNotificacionPorId(context,message.data['notId']);
 
         Navigator.of(context).pushNamed('notificaciones');
 
@@ -392,7 +432,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             ),
             drawer: values.connectionStatus != ConnectionStatus.none
                 ? 
-                DrawerMenu(user: user)
+                // DrawerMenu(user: user)
+                DrawerMenu()
                 : null,
             body: Container(
               height: size.hScreen(90),

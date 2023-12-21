@@ -195,7 +195,7 @@ class _ActualizaClaveState extends State<ActualizaClave> {
 
 
                                                     
-                                  hintText: 'INGRESA TU CONTRASEÑA ACTUAL',
+                                  hintText: 'CLAVE ACTUAL',
                                   border: InputBorder.none,
                                 ),
                                    obscureText: _obscureTextClaveA,
@@ -251,7 +251,7 @@ class _ActualizaClaveState extends State<ActualizaClave> {
                                                     Icons.visibility_off_outlined)
                                                 : const Icon(
                                                     Icons.remove_red_eye_outlined)),
-                                  hintText: 'INGRESA TU CONTRASEÑA NUEVA',
+                                  hintText: 'CLAVE NUEVA',
                                   border: InputBorder.none,
                                 ),
                                   obscureText: _obscureTextClaveB,
@@ -308,7 +308,7 @@ class _ActualizaClaveState extends State<ActualizaClave> {
                                                     Icons.visibility_off_outlined)
                                                 : const Icon(
                                                     Icons.remove_red_eye_outlined)),
-                                  hintText: 'VERIFICA TU CONTRASEÑA',
+                                  hintText: 'VERIFICA CLAVE NUEVA',
                                   border: InputBorder.none,
                                 ),
                                   obscureText: _obscureTextRecuperaClaveB,

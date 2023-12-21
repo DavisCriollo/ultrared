@@ -22,6 +22,10 @@ class SeleccionaSector extends StatefulWidget {
 }
 
 class _SeleccionaSectorState extends State<SeleccionaSector> {
+
+
+
+
   @override
   Widget build(BuildContext context) {
     final _action = widget.action;
@@ -711,6 +715,7 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                                   initialValue: widget.action == 'CREATE'
                                       ? ''
                                       : _ctrl.getItemReferencia,
+
                                   maxLines: 3,
                                   minLines: 1,
                                   decoration: const InputDecoration(
@@ -766,7 +771,84 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                                             height: size.iScreen(1.0),
                                           ),
                                           //***********************************************/
-                                          Container(
+                                          // Container(
+                                          //     width: size.wScreen(80.0),
+                                          //     padding: EdgeInsets.symmetric(
+                                          //         horizontal: size.iScreen(2.0),
+                                          //         vertical: size.iScreen(1.0)),
+                                          //     decoration: BoxDecoration(
+                                          //       borderRadius:
+                                          //           BorderRadius.circular(10.0),
+                                          //       border: Border.all(
+                                          //         color: Colors.grey,
+                                          //         width: 1.0,
+                                          //       ),
+                                          //     ),
+                                          //     child: Consumer<HomeController>(
+                                          //       builder: (_, valueGPS, __) {
+                                          //         return Row(
+                                          //           mainAxisAlignment:
+                                          //               MainAxisAlignment
+                                          //                   .spaceBetween,
+                                          //           children: [
+                                          //             Container(
+                                          //               // color: Colors.red,
+                                          //               width:
+                                          //                   size.wScreen(60.0),
+                                          //               child:
+                                          //                   valueGPS.getLocationMessage ==
+                                          //                           ""
+                                          //                       ? Text(
+                                          //                           'UBICACIÓN DE TU HOGAR',
+                                          //                           style: GoogleFonts
+                                          //                               .poppins(
+                                          //                             fontSize:
+                                          //                                 size.iScreen(
+                                          //                                     2.0), // Ajusta según tus necesidades
+                                          //                             fontWeight:
+                                          //                                 FontWeight
+                                          //                                     .w400,
+                                          //                             color: valueGPS.getLocationMessage !=
+                                          //                                     ""
+                                          //                                 ? Colors
+                                          //                                     .black
+                                          //                                 : Colors
+                                          //                                     .grey,
+                                          //                           ),
+                                          //                         )
+                                          //                       : Text(
+                                          //                           '${valueGPS.getLocationMessage}  ',
+                                          //                           style: GoogleFonts
+                                          //                               .poppins(
+                                          //                             fontSize:
+                                          //                                 size.iScreen(
+                                          //                                     2.0), // Ajusta según tus necesidades
+                                          //                             fontWeight:
+                                          //                                 FontWeight
+                                          //                                     .w400,
+                                          //                             color: valueGPS.getLocationMessage !=
+                                          //                                     ""
+                                          //                                 ? Colors
+                                          //                                     .black
+                                          //                                 : Colors
+                                          //                                     .grey,
+                                          //                           ),
+                                          //                         ),
+                                          //             ),
+                                          //             Icon(
+                                          //               Icons.explore_outlined, // Cambia el icono según tus necesidades
+                                          //               color: valueGPS
+                                          //                           .getLocationMessage ==
+                                          //                       ""
+                                          //                   ? Colors.grey
+                                          //                   : tercearyColor, // Color del icono
+                                          //             ),
+                                          //           ],
+                                          //         );
+                                          //       },
+                                          //     )),
+
+                                           Container(
                                               width: size.wScreen(80.0),
                                               padding: EdgeInsets.symmetric(
                                                   horizontal: size.iScreen(2.0),
@@ -786,57 +868,33 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
+                                                      // Espacio entre el icono y el texto
                                                       Container(
                                                         // color: Colors.red,
                                                         width:
                                                             size.wScreen(60.0),
-                                                        child:
-                                                            valueGPS.getLocationMessage ==
+                                                        child: Text(
+                                                          valueGPS.locationMessage.toString()!=
+                                                                  ""
+                                                              ?  valueGPS.locationMessage.toString()
+                                                              :  'UBICACIÓN DE TU HOGAR',
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                            fontSize: size.iScreen(
+                                                                2.0), // Ajusta según tus necesidades
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color: valueGPS.locationMessage.toString() !=
                                                                     ""
-                                                                ? Text(
-                                                                    'UBICACIÓN DE TU HOGAR',
-                                                                    style: GoogleFonts
-                                                                        .poppins(
-                                                                      fontSize:
-                                                                          size.iScreen(
-                                                                              2.0), // Ajusta según tus necesidades
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      color: valueGPS.getLocationMessage !=
-                                                                              ""
-                                                                          ? Colors
-                                                                              .black
-                                                                          : Colors
-                                                                              .grey,
-                                                                    ),
-                                                                  )
-                                                                : Text(
-                                                                    '${valueGPS.getLocationMessage}  ',
-                                                                    style: GoogleFonts
-                                                                        .poppins(
-                                                                      fontSize:
-                                                                          size.iScreen(
-                                                                              2.0), // Ajusta según tus necesidades
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      color: valueGPS.getLocationMessage !=
-                                                                              ""
-                                                                          ? Colors
-                                                                              .black
-                                                                          : Colors
-                                                                              .grey,
-                                                                    ),
-                                                                  ),
+                                                                ? Colors.black
+                                                                : Colors.grey,
+                                                          ),
+                                                        ),
                                                       ),
-                                                      Icon(
+                                                      const Icon(
                                                         Icons.explore_outlined, // Cambia el icono según tus necesidades
-                                                        color: valueGPS
-                                                                    .getLocationMessage ==
-                                                                ""
-                                                            ? Colors.grey
-                                                            : tercearyColor, // Color del icono
+                                                        color: Colors
+                                                            .grey, // Color del icono
                                                       ),
                                                     ],
                                                   );

@@ -19,7 +19,7 @@ import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
 
 class FotosCasaPage extends StatefulWidget {
-     final String? action;
+  final String? action;
   const FotosCasaPage({Key? key, required this.action}) : super(key: key);
 
   @override
@@ -37,7 +37,7 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
 
   @override
   Widget build(BuildContext context) {
-      final _action = widget.action;
+    final _action = widget.action;
     final Responsive size = Responsive.of(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -335,7 +335,7 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
                           onTap: () {
                             final _crtl = context.read<HomeController>();
                             // final _crtlSocket =context.read <SocketService>();
-                            _onSubmit(context, _crtl, size,_action!);
+                            _onSubmit(context, _crtl, size, _action!);
                             // _crtl.resetValues();
                           },
                           child: BotonBase(
@@ -446,47 +446,45 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
   }
 }
 
-void _onSubmit(BuildContext context, HomeController controller, size,String _action) async {
+void _onSubmit(BuildContext context, HomeController controller, size,
+    String _action) async {
   final control = context.read<HomeController>();
 
   if (control.getUrlCasa.isNotEmpty) {
-  
-         if (_action=='CREATE') {
-    ProgressDialog.show(context);
- final response = await controller.crearUsuario(context);
-   ProgressDialog.dissmiss(context);
-    if (response != null  && response.containsKey('res') ) {
-       NotificatiosnService.showSnackBarDanger( response['msg']);
-    } else if (response != null  && !response.containsKey('res')) {
-
-      _modalMessageResponse(context, response['msg'], size,_action);
+    if (_action == 'CREATE') {
+      ProgressDialog.show(context);
+      final response = await controller.crearUsuario(context);
+      ProgressDialog.dissmiss(context);
+      if (response != null && response.containsKey('res')) {
+        NotificatiosnService.showSnackBarDanger(response['msg']);
+      } else if (response != null && !response.containsKey('res')) {
+        _modalMessageResponse(context, response['msg'], size, _action);
+      }
     }
-         
-       } 
-           if (_action=='EDIT')  {
-
- ProgressDialog.show(context);
- final response = await controller.editarUsuario(context);
- final responseSeseion = await controller.cierreSesionUsuario(context);
-   ProgressDialog.dissmiss(context);
-    if (response != null  && response.containsKey('res') && responseSeseion != null) {
-       NotificatiosnService.showSnackBarDanger( response['msg']);
-    } else if (response != null  && !response.containsKey('res')) {
-      _modalMessageResponse(context, response['msg'], size,_action);
+    if (_action == 'EDIT') {
+      ProgressDialog.show(context);
+      final response = await controller.editarUsuario(context);
+      final responseSeseion = await controller.cierreSesionUsuario(context);
+      ProgressDialog.dissmiss(context);
+      if (response != null &&
+          response.containsKey('res') &&
+          responseSeseion != null) {
+        NotificatiosnService.showSnackBarDanger(response['msg']);
+      } else if (response != null && !response.containsKey('res')) {
+        _modalMessageResponse(context, response['msg'], size, _action);
+      }
     }
-       }
 
     // final response = await controller.crearUsuario(context);
-  
-   
+
   } else {
     NotificatiosnService.showSnackBarDanger('Agregar foto de Casa');
   }
 }
 
 Future<void> _modalMessageResponse(
-    BuildContext context, String _message, Responsive size,String _action) {
-      // final _crtlHome=context.read<HomeController>();
+    BuildContext context, String _message, Responsive size, String _action) {
+  final _crtlHome = context.read<HomeController>();
 
   return showDialog<String>(
     barrierDismissible: false,
@@ -497,7 +495,7 @@ Future<void> _modalMessageResponse(
           // height: size.hScreen(50.0),
           width: double.maxFinite,
           child: ListTile(
-            title:Text(_message),
+            title: Text(_message),
           ),
         ),
         actions: <Widget>[
@@ -505,28 +503,32 @@ Future<void> _modalMessageResponse(
             width: size.wScreen(100),
             // color: Colors.red,
             child: TextButton(
-              onPressed: () async{
+              onPressed: () async {
+                if (_action == 'CREATE') {
+                  await Auth.instance.deleteSesion(context);
 
-               if ( _action=='CREATE') {
-                   await Auth.instance.deleteSesion(context);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => const SerClientePage()),
+                      (Route<dynamic> route) => false);
+                }
+                if (_action == 'EDIT') {
 
-            Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const SerClientePage()),
-          (Route<dynamic> route) => false);
-                 
-               } if ( _action=='EDIT') {
+                  final _dataAntigua = await Auth.instance.getSession();
 
-           Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute<void>(
-                      builder: (BuildContext context) => const HomePage(
-                     
-                      )));
-               }
-                
+                  _dataAntigua["nombre"] = _crtlHome.getItemNombre;
+                  _dataAntigua["foto"] = _crtlHome.getUrlPerfil;
 
+                  Map<String, dynamic> userModificado = _dataAntigua;
 
+                  await Auth.instance.saveSession(userModificado);
 
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute<void>(
+                          builder: (BuildContext context) => const HomePage()));
+                          
+                }
               },
               child: const Text('OK'),
             ),
