@@ -207,7 +207,7 @@ final _ctrl = HomeController();
       // Manejar la notificación recibida mientras la aplicación está en primer plano
       // print("Notificación recibida ------> : ${message.data['perNombre']}");
 
-        if (message.data['perNombre']!= 1719972687) {
+        // if (message.data['perNombre']!= 1719972687) {
 
 
             print("Notificación recibida ------> : ${message.data['perNombre']}");
@@ -216,12 +216,12 @@ final _ctrl = HomeController();
         body: message.notification?.body ?? '',
       );
           
-        } else {
+        // } else {
 
           
-              print("LA DATA ES DIFERENTE ------> : ${message.data['perNombre']}");
+              // print("LA DATA ES DIFERENTE ------> : ${message.data['perNombre']}");
 
-        }
+        // }
 
       
 

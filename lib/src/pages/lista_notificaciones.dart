@@ -106,15 +106,15 @@ class _ListaNotificacionesState extends State<ListaNotificaciones> {
             itemBuilder: (context, index) {
 
               final _notificacion=valueNotificaciones.getListaTodasLasNotificaciones[index];
-              String fechaString = "${_notificacion['notFecReg']}";
+             String fechaString = "${_notificacion['notFecReg']}";
 
   // Convertir la cadena a DateTime
-  DateTime fecha = DateTime.parse(fechaString);
+ DateTime fecha = DateTime.parse(fechaString);
 
-  // Convertir a la zona horaria local
-  DateTime fechaLocal = fecha.toLocal();
+//   Convertir a la zona horaria local
+ DateTime fechaLocal = fecha.toLocal();
 
-  // String horaFormateada = "${fechaLocal.hour}:${fechaLocal.minute}:${fechaLocal.second}";
+//   String horaFormateada = "${fechaLocal.hour}:${fechaLocal.minute}:${fechaLocal.second}";
   String horaFormateada =   "${fechaLocal.hour < 10 ? '0' : ''}${fechaLocal.hour}:${fechaLocal.minute < 10 ? '0' : ''}${fechaLocal.minute}";
               return 
               Column(

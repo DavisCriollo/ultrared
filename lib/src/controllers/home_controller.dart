@@ -644,9 +644,9 @@ class HomeController extends ChangeNotifier {
   void setListaTodasLasNotificaciones(_data) {
     _listaTodasLasNotificaciones = [];
 
-    _listaTodasLasNotificaciones.add(_data);
+    _listaTodasLasNotificaciones.addAll(_data);
 
-    // print('_listaTodasLasNotificaciones: $_listaTodasLasNotificaciones');
+    // print('_listaTodasLasNotificaciones: $_listaTodasLasNotificaciones');       
 
     notifyListeners();
   }
@@ -1111,7 +1111,7 @@ class HomeController extends ChangeNotifier {
   void setInfoNotificacion(Map<String, dynamic> _data) {
     _infoNotificaacion = _data;
 
- print('ESTA ES LA INFO DE NOTIFICACION  : $_infoNotificaacion');
+//  print('ESTA ES LA INFO DE NOTIFICACION  : $_infoNotificaacion');
     notifyListeners();
   }
 

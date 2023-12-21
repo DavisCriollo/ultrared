@@ -86,7 +86,7 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
             height: size.hScreen(100.0),
             child: Consumer<SocketModel>(
               builder: (_, valueChat, __) {
-               if (valueChat.getListaGruposChat.isEmpty) {
+               if (valueChat.getListaGruposChat==null) {
                   return Center(
                     // child: CircularProgressIndicator(),
                     child: Column(
@@ -108,7 +108,9 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                       ],
                     ),
                   );
-                } 
+                } else  if (valueChat.getListaGruposChat.isEmpty) {
+                  return const NoData(label: 'No tiene grupo asignado');
+                }
                     return ListView.builder(
                   shrinkWrap: true,
                   itemCount: valueChat.getListaGruposChat.length,
