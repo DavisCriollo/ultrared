@@ -305,7 +305,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
             onTap: () async {
         
                  
-                var ctrlHome = context.read<HomeController>();
+                var ctrlHome = context.read<HomeController>();  
+                  var ctrlSocket = context.read<SocketModel>();  
         
              ProgressDialog.show(context);
             final response = await ctrlHome.cierreSesionUsuario(context);
@@ -318,6 +319,7 @@ if (response != null ) {
            ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
            await FirebaseService.deleteFirebaseInstance();
            await Auth.instance.deleteTokenFireBase();
+           ctrlSocket.disconnectSocket();
            Navigator.pop(context);
            await Auth.instance.deleteSesion(context);
      

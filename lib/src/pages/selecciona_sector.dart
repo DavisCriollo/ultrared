@@ -745,22 +745,21 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
 
                                         final status =
                                             await Permission.location.request();
-                                        if (status ==
-                                            PermissionStatus.granted) {
+                                        if (status ==  PermissionStatus.granted) {
                                           //   // print('============== SI TIENE PERMISOS');
                                           await _ctrl.getLocation();
-                                          if (_ctrl.getGPSPositione) {
-                                            // Navigator.of(context).pushAndRemoveUntil(
-                                            //     MaterialPageRoute(
-                                            //         builder: (context) => HomePage(
-                                            //               // validaTurno: validaTurno,
-                                            //               // tipo: session.rol,
-                                            //               // user: session,
-                                            //               // ubicacionGPS: controllerHome.getCoords,
-                                            //             )),
-                                            //     (Route<dynamic> route) => false);
-                                            // ModalRoute.withName('/');
-                                          }
+                                          // if (_ctrl.getGPSPositione) {
+                                          //   // Navigator.of(context).pushAndRemoveUntil(
+                                          //   //     MaterialPageRoute(
+                                          //   //         builder: (context) => HomePage(
+                                          //   //               // validaTurno: validaTurno,
+                                          //   //               // tipo: session.rol,
+                                          //   //               // user: session,
+                                          //   //               // ubicacionGPS: controllerHome.getCoords,
+                                          //   //             )),
+                                          //   //     (Route<dynamic> route) => false);
+                                          //   // ModalRoute.withName('/');
+                                          // }
                                         } else {
                                           Navigator.pushNamed(context, 'gps');
                                         }

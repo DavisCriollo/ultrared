@@ -1,6 +1,11 @@
 
+import 'dart:io';
+
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:record/record.dart';
 import 'package:ultrared/src/api/api_provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/init_provider.dart';
@@ -28,7 +33,7 @@ class ChatController extends ChangeNotifier {
     //   message
     
     // });
-    print('----> ${message}');
+    // print('----> ${message}');
     notifyListeners();
   }
 
@@ -146,7 +151,7 @@ class ChatController extends ChangeNotifier {
 
     _listaTodosLosUsuariosChat = _data;
 
-    print('_listaTodosLosUsuariosChat: $_listaTodosLosUsuariosChat');
+    // print('_listaTodosLosUsuariosChat: $_listaTodosLosUsuariosChat');
 
     notifyListeners();
   }
@@ -234,14 +239,23 @@ class ChatController extends ChangeNotifier {
  //================= LISTA PROPIETARIOS SIN PAGINACION ===================/
 
   List _listaTodoLosChatPaginacion = [];
+
+  //  List _tempList = [];
   // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
   List get getListaTodoLosChatPaginacion => _listaTodoLosChatPaginacion;
 
   void setInfoBusquedaTodoLosChatPaginacion(List data ,SocketModel _crtlSocket) {
-     _listaTodoLosChatPaginacion.clear();
-                    _crtlSocket.setListaDeMensajesChat({});
+ 
+   List _tempList = []; 
+   
+   _listaTodoLosChatPaginacion.clear();
+   _tempList.addAll(data);
+   _tempList.reversed.toList();
 
-    _listaTodoLosChatPaginacion.addAll(data);
+   _crtlSocket.setListaDeMensajesChat({});
+
+  _listaTodoLosChatPaginacion.addAll(_tempList);
+  
     // print('TodoLosChat####################>:${_listaTodoLosChatPaginacion}');
 
  for (var item in _listaTodoLosChatPaginacion) {
@@ -255,7 +269,7 @@ class ChatController extends ChangeNotifier {
 
 
 void addItemsChatPaginacion(Map<String,dynamic> data) {
-    //  _listaTodoLosChatPaginacion.clear();
+     _listaTodoLosChatPaginacion.clear();
     _listaTodoLosChatPaginacion.addAll({data});
     // print('ITEM AL CHAT ###>:${_listaTodoLosChatPaginacion}');
 
@@ -290,12 +304,12 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
   int? get getpage => _page;
   void setPage(int? _pag) {
     _page = _pag;
-    // print('_page: $_page');
+    print('_page: $_page');
 
     notifyListeners();
   }
 
-  int? _cantidad = 25;
+  int? _cantidad = 6;
   int? get getCantidad => _cantidad;
   void setCantidad(int? _cant) {
     _cantidad = _cant;
@@ -332,7 +346,7 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
       } else {
         _errorTodoLosChatPaginacion = true;
         if (_isSearch == true) {
-          _listaTodoLosChatPaginacion = [];
+          // _listaTodoLosChatPaginacion = [];
             notifyListeners();
         }
         // List<dynamic> dataSort = response['data']['results'];
@@ -342,7 +356,8 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
 
           List dataSort = [];
       dataSort = response['data']['results'];
-      dataSort.sort((a, b) => b['msg_FecReg']!.compareTo(a['msg_FecReg']!));
+       dataSort.sort((a, b) => a["msg_FecReg"].compareTo(b["msg_FecReg"]));
+      // dataSort.sort((a, b) => b['msg_FecReg']!.compareTo(a['msg_FecReg']!));
 
         setInfoBusquedaTodoLosChatPaginacion(dataSort,_crtlSocket);
         notifyListeners();
@@ -414,9 +429,77 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
   @override
   void dispose() {
     _scrollController.dispose();
+     
     super.dispose();
   }
 
+//*********************LOGICA PARA GRABAR AUDIO ***********************/
+bool isRecording = false;
+  String filePath = '';
+  bool isPlaying = false;
+  bool isRecordingStopped = false;
+  bool isSendButtonVisible = false;
+
+  Record _record = Record();
+  AudioPlayer _audioPlayer = AudioPlayer();
+
+  Future<void> startRecording() async {
+    try {
+      await _record.start();
+      isRecording = true;
+      notifyListeners();
+    } catch (e) {
+      // Manejar errores de inicio de grabación
+      print('Error al iniciar la grabación: $e');
+    }
+  }
+
+  Future<void> stopRecording() async {
+    if (isRecording) {
+      String? result = await _record.stop();
+      if (result != null) {
+        filePath = result;
+        isRecordingStopped = true;
+        isSendButtonVisible = true;
+         print('Detuvo la grabación');
+        notifyListeners();
+      } else {
+        print('Error al detener la grabación');
+      }
+    }
+  }
+
+  Future<void> playRecordedFile() async {
+    try {
+      await _audioPlayer.play(filePath, isLocal: true);
+      isPlaying = true;
+      notifyListeners();
+    } catch (e) {
+      print('Error al reproducir el archivo grabado: $e');
+    }
+  }
+
+  Future<void> stopPlaying() async {
+    try {
+      await _audioPlayer.stop();
+      isPlaying = false;
+      notifyListeners();
+    } catch (e) {
+      print('Error al detener la reproducción: $e');
+    }
+  }
+
+  //----------BOTON MUESTRA BOTONES---------------//
+
+ bool? _addFileChat = false;
+  bool? get getFileChat => _addFileChat;
+  void setFileChat(bool? _state) {
+    _addFileChat = _state;
+
+
+    print('ESTADO FILE CHAT :$getFileChat') ;
+    notifyListeners();
+  }
 
 
 

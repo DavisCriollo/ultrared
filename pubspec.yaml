@@ -67,7 +67,9 @@ dependencies:
   awesome_notifications: ^0.6.20
   # flutter_local_notifications_plus: ^5.0.0+4
   photo_view: ^0.14.0
-
+  just_audio: ^0.9.30
+ 
+  record: ^4.4.0
 
 
 

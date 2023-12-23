@@ -79,7 +79,7 @@ class _MyAppState extends State<MyApp> {
         title: 'Utrared App',
         //  initialRoute: 'home',
          initialRoute: 'splash', 
-        //  initialRoute: 'auxilo',
+        //  initialRoute: 'prueba',
          routes: appRoutes,
              scaffoldMessengerKey: NotificatiosnService.messengerKey,
       ),

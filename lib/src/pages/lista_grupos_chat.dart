@@ -149,7 +149,12 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                                 letterSpacing: -0.40,
                               )),
                           subtitle: Text(
-                            ' Disponible',
+                           _grupo['active_persons']==1? 'Disponible':'No Disponible',style: GoogleFonts.poppins(
+                                fontSize: size.iScreen(1.4),
+                                fontWeight: FontWeight.normal,
+                                color: _grupo['active_persons']==1? Colors.green:Colors.grey,
+                                letterSpacing: -0.40,
+                              )
                           ),
                           onTap: () {
                             final _ctrl = context.read<ChatController>();
