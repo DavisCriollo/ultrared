@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:better_player/better_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:record/record.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
@@ -23,6 +26,11 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
+  late Record _record;
+  AudioPlayer _audioPlayer = AudioPlayer();
+    // late BetterPlayerController _betterPlayerController;
+
+  ChatController recorderState = ChatController();
     Map<String, dynamic>? user = {};
 
     final _scrollController = ScrollController();
@@ -34,6 +42,20 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   @override
   void initState() {
   final _crtlChat = context.read<ChatController>();
+
+//*************************/
+
+  _record = Record();
+    _audioPlayer.onAudioPositionChanged.listen((Duration duration) {
+      recorderState.playbackTime = duration.inMilliseconds.toDouble();
+      recorderState.notify();
+    });
+
+    _audioPlayer.onDurationChanged.listen((Duration duration) {
+      recorderState.playbackDuration = duration.inMilliseconds.toDouble();
+      recorderState.notify();
+    });
+//*********************************** */
   _scrollController.addListener(() {
 
       if (_scrollController.position.minScrollExtent ==
@@ -55,6 +77,31 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
         }
       }
     });
+
+
+
+//************v VIDEO INICALIZA VIDEO  *************/
+// _betterPlayerController = BetterPlayerController(
+//       BetterPlayerConfiguration(
+//         autoPlay: true,
+//         fullScreenByDefault: false,
+//         controlsConfiguration: BetterPlayerControlsConfiguration(
+//           showControls: true,
+//           enableFullscreen: true,
+//           enableSubtitles: false,
+//           enableQualities: true,
+//           enableOverflowMenu: true,
+//         ),
+//       ),
+//       betterPlayerDataSource: BetterPlayerDataSource(
+//         BetterPlayerDataSourceType.network,
+//         'https://www.example.com/your_video.mp4',
+//       ),
+//     );
+
+//************************************************/
+
+
     super.initState();
     //  _scrollController.addListener(_scrollListener);
   }
@@ -66,50 +113,6 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   }
 
 
- 
-
-  // final TextEditingController _textController = TextEditingController();
-
-  // final _focusNode = new FocusNode();
-
-
-
-
-  // List<MessageChat> _messaje = [
-  //   MessageChat(
-  //     messaje:
-  //         'hola dasd  a sd  asd  a sdasdadasd asdasd asdasda asdasd asdasd ',
-  //     uid: '123',
-  //     type: 'text', uidUser: '143',
-  //     // animationController: AnimationController(vsync: this ,duration: Duration( milliseconds: 200 ) ),
-  //   ),
-  //   MessageChat(
-  //     messaje: 'hola',
-  //     uid: '122',
-  //     type: 'img', uidUser: '143',
-  //     //  animationController:AnimationController(vsync: this ,duration: Duration( milliseconds: 200 ) ),
-  //   ),
-  //   MessageChat(
-  //     messaje: 'hola',
-  //     uid: '1232',
-  //     type: 'video', uidUser: '143',
-  //     //  animationController:AnimationController(vsync: this ,duration: Duration( milliseconds: 200 ) ),
-  //   ),
-  //   MessageChat(
-  //     messaje: 'hola',
-  //     uid: '123',
-  //     type: 'audio', uidUser: '143',
-  //     //  animationController:AnimationController(vsync: this ,duration: Duration( milliseconds: 200 ) ),
-  //   ),
-  //   MessageChat(
-  //     messaje: 'hola',
-  //     uid: '123',
-  //     type: 'audio', uidUser: '143',
-  //     //  animationController:AnimationController(vsync: this ,duration: Duration( milliseconds: 200 ) ),
-  //   ),
-  // ];
-
-  // final _focusNode = FocusNode();
 
   bool _estaEscribiendo = false;
 
@@ -120,7 +123,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
 
 
-// print('LA INFORMACION : ${widget.infoChat}');
+
 
 
 
@@ -129,7 +132,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     return GestureDetector(
          onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-          backgroundColor: Colors.grey.shade100,
+          // backgroundColor: Colors.grey.shade50,
           appBar: AppBar(
             iconTheme: const IconThemeData(color: Colors.black),
             centerTitle: true, // Centra el título en el AppBar
@@ -218,70 +221,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                   width: size.wScreen(100),
                   child: Column(
                     children: [
-                //       Flexible(child: Consumer<ChatController>(
-                //         builder: (_, values, __) {
-                  
-                  
-                //           return
-                //           //  Wrap( children: ( values.getListaTodoLosChatPaginacion as List).map((e) => MessageChat(
-                //           //       type: 'text',
-                //           //       uid:e['person_id'].toString(),
-                //           //       messaje:e['message_text'],
-                //           //       uidUser: "${_ctrlHome.getUser!['id']}",
-                //           //        ) ).toList());                 
-                //           Stack(
-                //             children: [
-                //               ListView.builder(
-                //                 physics:const BouncingScrollPhysics(),
-                //                 reverse :true,
-                //                controller: _scrollController,
-                  
-                //                 itemCount: values.getListaTodoLosChatPaginacion.length,
-                //                 itemBuilder: (BuildContext context, int index) {
-                //                   final Map<String,dynamic> menssaje = values.getListaTodoLosChatPaginacion[index];
-                //                   return MessageChat(
-                //                     type: 'text',
-                //                     user:menssaje,
-                //                     messaje:'${menssaje['message_text']}',
-                //                     sessionUser: _ctrlHome.getUser!,
-                //                      ) ;
-                //                 },
-                //               ),
-                // //                 Positioned(
-                // //                   bottom: 0.0,
-                // //                   right: size.iScreen(2.0),
-                // //         child:
-                        
-                        
-                // // //          Consumer<ChatController>(
-                // // //   builder: (context, scrollProvider, _) {
-                  
-                    
-                // // //     return  _scrollController.position.maxScrollExtent ==
-                // // //   _scrollController.offset? _BotonFinalListView(size) :Container();
-                // // //   },
-                // // // ),
-                // //         _scrollController.position.maxScrollExtent ==
-                // //   _scrollController.offset? Container(): _BotonFinalListView(size) 
-                        
-                // //       ),
-                //             ],
-                //           );
-                  
-                  
-                  
-                //           // return ListView.builder(
-                //           //   controller: _scrollController,
-                //           //   physics: const BouncingScrollPhysics(),
-                //           //   reverse: true,
-                //           //   itemCount: _messaje.length,
-                //           //   itemBuilder: (BuildContext context, int index) {
-                //           //     final messaje = _messaje[index];
-                //           //     return messaje;
-                //           //   },
-                //           // );
-                //         },
-                //       )),
+               
                       Flexible(child: Consumer<SocketModel>(
                         builder: (_, values, __) {
                   
@@ -290,6 +230,8 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                       
                           Stack(
                             children: [
+
+                            
                               ListView.builder(
                                 physics:const BouncingScrollPhysics(),
                                 reverse :true,
@@ -297,7 +239,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                   
                                 itemCount: values.getListaDeMensajeChat.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                    if (values.getListaDeMensajeChat.isEmpty || values.getListaDeMensajeChat !=null) {
+                                    if (values.getListaDeMensajeChat.isEmpty) {
                                       CircularProgressIndicator();
           
           
@@ -306,27 +248,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                   if (values.getListaDeMensajeChat.isNotEmpty) {
           
                                     final Map<String,dynamic> menssaje = values.getListaDeMensajeChat[index];
-          //                               String horaFormateada ='';
-          
-          // if(menssaje['msg_FecReg']!=null){
-          
-          //   String fechaString = "${menssaje['msg_FecReg']}";
-          
-          //   // Convertir la cadena a DateTime
-          //   DateTime fecha = DateTime.parse(fechaString);
-          
-          //   // Convertir a la zona horaria local
-          //   DateTime fechaLocal = fecha.toLocal();
-          
-          //   // String horaFormateada = "${fechaLocal.hour}:${fechaLocal.minute}:${fechaLocal.second}";
-          //   String horaFormateada =   "${fechaLocal.hour < 10 ? '0' : ''}${fechaLocal.hour}:${fechaLocal.minute < 10 ? '0' : ''}${fechaLocal.minute}";
-          // }
-          // else{
-          // horaFormateada=DateTime.now().hour.toString();
-          
-          
-          // }
-          
+         
                                   return 
                                menssaje.isNotEmpty?
                                   MessageChat(
@@ -336,129 +258,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                    
                                      ):Container() ;
           
-                                  // Text('data');
-          
-                                      //---------------------------------//
-                //                                Align(
-                //   alignment: Alignment.centerRight,
-                //   child: Container(
-                //     // color:  Colors.red,
-                //     padding: EdgeInsets.all(size.iScreen(0.5)),
-                //     margin: EdgeInsets.only(right: 5, bottom: 5, left: 50),
-                //     child: Row(
-                //       mainAxisSize: MainAxisSize.min,
-                //       mainAxisAlignment: MainAxisAlignment.start,
-                //       children: [
-                //          Container(
-                //                       width: size.iScreen(4.0),
-                //                       height: size.iScreen(4.0),
-                //                       margin:EdgeInsets.symmetric(horizontal:size.iScreen(0.3)),
-                //                       decoration: BoxDecoration(
-                //                         shape: BoxShape.circle,
-                //                         border: Border.all(color: Colors.grey, width: 2.0),
-                //                       ),
-                //                       child: ClipOval(
-                //                         child: CachedNetworkImage(
-                //                           imageUrl:
-                //                               '${menssaje['foto']}', // Reemplaza con la URL de tu imagen
-                //                           placeholder: (context, url) =>
-                //                               const CircularProgressIndicator(),
-                //                           errorWidget: (context, url, error) =>
-                //                               Icon(Icons.error),
-                //                           fit: BoxFit.cover,
-                //                         ),
-                //                       )),
-                //         Container(
-                //             // color: Colors.red ,
-                //             // width: size.wScreen(60.0),
-                //             alignment: Alignment.centerLeft,
-                //             padding: EdgeInsets.symmetric(
-                //               horizontal: size.iScreen(1.0),
-                //               vertical: size.iScreen(0.5),
-                //             ),
-                //             decoration: BoxDecoration(
-                //                 color: septinaryColor,
-                //                 // color: Color(0xff4D9EF6),
-                //                 borderRadius: BorderRadius.circular(8)),
-                //             child: Stack(
-                //               children: [
-                //                 Column(
-                //                   crossAxisAlignment: CrossAxisAlignment.start,
-                //                   mainAxisSize: MainAxisSize.min,
-                //                   children: [
-                //                     Container(
-                //                       // width: size.wScreen(60.0),
-                //                       alignment: Alignment.centerLeft,
-                //                       child: Text(
-                //                         '${menssaje['nombres']} ',
-                //                         textAlign: TextAlign.left,
-                //                         style: GoogleFonts.poppins(
-                //                           fontSize: size.iScreen(1.5),
-                //                           fontWeight: FontWeight.w600,
-                //                           color: quinquanaryColor,
-                //                           letterSpacing: -0.40,
-                //                         ),
-                //                       ),
-                //                     ),
-                //                     Container(
-                //                         // constraints: BoxConstraints(maxWidth: size.wScreen(60.0)),
-                //                         // alignment: Alignment.centerLeft,
-                //                         constraints: BoxConstraints(
-                //                             // minHeight: size.wScreen(5.0), // Altura mínima
-          
-                //                             minWidth: size.wScreen(5.0),
-                //                             maxWidth: size.wScreen(60.0) // Ancho máximo
-                //                             ),
-                //                         child: 
-                //                         // type == 'text'
-                //                         //     ? _messajeTexto(messaje, size)
-                //                         //     : type == 'img'
-                //                         //         ? _messajeImagen(size)
-                //                         //         : type == 'video'
-                //                         //             ? _messajeVideo(size)
-                //                         //             : _messajeAudio(size)
-          
-                //                         _messajeTexto(menssaje['message_text'],size),
-                                            
-                //                                     ),
-          
-          
-          
-                                
-                //                     SizedBox(
-                //                       height: size.wScreen(4.0),
-                //                     ),
-                //                   ],
-                //                 ),
-                //                 Positioned(
-                //                   bottom: 0,
-                //                   right: 0,
-                //                   child: Text(
-                //                     '$horaFormateada',
-                //                     style: GoogleFonts.poppins(
-                //                       fontSize: size.iScreen(1.2),
-                //                       fontWeight: FontWeight.w500,
-                //                       color: sextinaryColor,
-                //                       // letterSpacing: -0.40,
-                //                     ),
-                //                     // textAlign: TextAlign.right,
-          
-                //                     // overflow: TextOverflow.ellipsis,
-                //                   ),
-                //                 )
-                //               ],
-                //             )),
-                //       ],
-                //     ),
-                //     decoration: BoxDecoration(
-                //         // color: Color(0xff4D9EF6),
-                //         // color: Colors.red,
-                //         borderRadius: BorderRadius.circular(8)),
-                //   ),
-                // );
-          
-          
-                                      //---------------------------------//
+                               
           
           
           
@@ -473,24 +273,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                   
                                 },
                               ),
-                //                 Positioned(
-                //                   bottom: 0.0,
-                //                   right: size.iScreen(2.0),
-                //         child:
-                        
-                        
-                // //          Consumer<ChatController>(
-                // //   builder: (context, scrollProvider, _) {
-                  
-                    
-                // //     return  _scrollController.position.maxScrollExtent ==
-                // //   _scrollController.offset? _BotonFinalListView(size) :Container();
-                // //   },
-                // // ),
-                //         _scrollController.position.maxScrollExtent ==
-                //   _scrollController.offset? Container(): _BotonFinalListView(size) 
-                        
-                //       ),
+              
            
 
 
@@ -513,13 +296,17 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                       () {
                                          
                                       values.setFileChat(false);
+
+
+ values.playInternetAudio("https://documentos.neitor.com/contable/chats/ULTRA2022/cade09f3-e2a1-4225-8b92-5f4585653ffb.ogg");
+
                                         
                                       } ,
                                   child: Container(
                                     margin: EdgeInsets.symmetric(vertical: size.iScreen(0.4)),
                                     width: size.iScreen(
-                                        4.5), // Puedes ajustar el tamaño del contenedor según tus necesidades
-                                    height: size.iScreen(4.5),
+                                        5.5), // Puedes ajustar el tamaño del contenedor según tus necesidades
+                                    height: size.iScreen(5.5),
                                     decoration: BoxDecoration(
                                       shape: BoxShape
                                           .circle, // Hace que el contenedor sea circular
@@ -546,8 +333,8 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                   child: Container(
                                     margin: EdgeInsets.symmetric(vertical: size.iScreen(0.4)),
                                     width: size.iScreen(
-                                        4.5), // Puedes ajustar el tamaño del contenedor según tus necesidades
-                                    height: size.iScreen(4.5),
+                                        6.0), // Puedes ajustar el tamaño del contenedor según tus necesidades
+                                    height: size.iScreen(6.0),
                                     decoration: BoxDecoration(
                                       shape: BoxShape
                                           .circle, // Hace que el contenedor sea circular
@@ -566,16 +353,36 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                FadeInUp(
                                  child: GestureDetector(
                                   onTap:
-                                      () {
+                                      ()async{
                                          
                                       values.setFileChat(false);
+
+
+                                      //****************************/
+
+
+
+                      if (recorderState.isRecording) {
+                        await recorderState.stopRecording(_record, context);
+                      } else {
+                        await recorderState.startRecording(context,_record, _audioPlayer);
+                      }
+
+
+
+
+
+
+
+                                      //****************************/
+
                                         
                                       } ,
                                   child: Container(
                                     margin: EdgeInsets.symmetric(vertical: size.iScreen(0.4)),
                                     width: size.iScreen(
-                                        4.5), // Puedes ajustar el tamaño del contenedor según tus necesidades
-                                    height: size.iScreen(4.5),
+                                        6.0), // Puedes ajustar el tamaño del contenedor según tus necesidades
+                                    height: size.iScreen(6.0),
                                     decoration: BoxDecoration(
                                       shape: BoxShape
                                           .circle, // Hace que el contenedor sea circular
@@ -612,7 +419,71 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                       )),
                     
                       
-                      _buildInputField(context, size)
+                      _buildInputField(context, size),
+                                                    Consumer<ChatController>(builder: (_, valuesAudio,__) { 
+return    Container(
+                    color: Colors.grey.shade200,
+                    width: size.wScreen(100),
+                    margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                if (valuesAudio.isPlaying) {
+                                  await valuesAudio.stopPlaying(_audioPlayer);
+                                } else {
+                                  await valuesAudio.playRecordedFile(_audioPlayer);
+                                }
+                              },
+                              child: Container(
+                                child: Icon(valuesAudio.isPlaying ? Icons.stop : Icons.play_arrow, size: size.iScreen(3.5)),
+                              ),
+                            ),
+                            Expanded(
+                              child: Slider(
+                                activeColor: Colors.red,
+                                thumbColor: Colors.pink,
+                                min: 0,
+                                value: valuesAudio.playbackTime,
+                                max: valuesAudio.playbackDuration,
+                                onChanged: (double value) {
+                                  _audioPlayer.seek(Duration(milliseconds: value.toInt()));
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              valuesAudio.formatDuration(valuesAudio.playbackTime) +
+                                  ' / ' +
+                                  valuesAudio.formatDuration(valuesAudio.playbackDuration),
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                               },),
+                            
+
+// AudioPlayerWidget(
+//   valuesAudio: recorderState, // Pasa la instancia de RecorderState
+//   audioPlayer: _audioPlayer, // Pasa la instancia de AudioPlayer
+// )
+
+
+   
+
+   
+    
+                         
 
                     ],
                   ),
@@ -968,22 +839,20 @@ final _data={
 //------------MENSAJE TIPO TEXTO---------------//
 
 
-Text _messajeTexto(String messaje, Responsive size) {
-  return Text(
-    messaje.toString(),
-    style: GoogleFonts.poppins(
-      fontSize: size.iScreen(1.5),
-      fontWeight: FontWeight.w400,
-      color: sextinaryColor,
-      // letterSpacing: -0.40,
-    ),
-    textAlign: TextAlign.left,
+// Text _messajeTexto(String messaje, Responsive size) {
+//   return Text(
+//     messaje.toString(),
+//     style: GoogleFonts.poppins(
+//       fontSize: size.iScreen(1.5),
+//       fontWeight: FontWeight.w400,
+//       color: sextinaryColor,
+//       // letterSpacing: -0.40,
+//     ),
+//     textAlign: TextAlign.left,
 
-    maxLines: 2, // Número máximo de líneas permitidas
-    // overflow: TextOverflow.ellipsis,
-  );
-}
-
-
+//     maxLines: 2, // Número máximo de líneas permitidas
+//     // overflow: TextOverflow.ellipsis,
+//   );
+// }
 
 

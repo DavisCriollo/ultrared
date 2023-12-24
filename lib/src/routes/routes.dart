@@ -14,6 +14,7 @@ import 'package:ultrared/src/pages/registro_page.dart';
 import 'package:ultrared/src/pages/selecciona_planes_page.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
 import 'package:ultrared/src/pages/splash_screen.dart';
+import 'package:ultrared/src/pages/view_video_page.dart';
 
 
 
@@ -34,8 +35,9 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
   // 'home': (_) => const FotosPerfilPage(),
   'auxilo': (_) => const AuxilioPage(),
   'notificaciones': (_) => const ListaNotificaciones(),
-  'prueba': (_) =>  VoiceRecorderScreen()
-  // 'home': (_) => const ListaUsuariosChat()
+  'prueba': (_) =>  VideoListScreen(),
+
+  
   // 'home': (_) =>   ChatPage()
   // 'home': (_) => const PasswordPage(),
   // 'home': (_) => const RegistroPage(),

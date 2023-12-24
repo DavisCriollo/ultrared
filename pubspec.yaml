@@ -70,13 +70,16 @@ dependencies:
   just_audio: ^0.9.30
  
   record: ^4.4.0
-
-
+  better_player: ^0.0.81
+  video_player: ^2.3.9
+  chewie: ^1.2.2
+ 
 
 
   firebase_messaging: ^11.4.0
   firebase_core: ^1.17.0
   audioplayers: ^0.20.1
+
   avatar_glow: ^3.0.1
   location: ^4.3.0
 
