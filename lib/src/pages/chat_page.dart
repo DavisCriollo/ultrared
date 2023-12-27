@@ -7,12 +7,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:record/record.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
+import 'package:ultrared/src/service/notifications_service.dart';
 import 'package:ultrared/src/service/socket_service.dart';
+import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/message.dart';
@@ -118,6 +121,9 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
+final _infoChat=widget.infoChat;
+
      final _ctrlHome= context.read<HomeController>();
       final _ctrlChat= context.read<ChatController>();
 
@@ -217,6 +223,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
             child: Stack(
               children: [
                 Container(
+              
                   height: size.hScreen(100),
                   width: size.wScreen(100),
                   child: Column(
@@ -293,12 +300,26 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
           FadeInUp(
             child: GestureDetector(
                                   onTap:
-                                      () {
-                                         
-                                      values.setFileChat(false);
+                                      () async{
+                                       values.setFileChat(false);
 
 
- values.playInternetAudio("https://documentos.neitor.com/contable/chats/ULTRA2022/cade09f3-e2a1-4225-8b92-5f4585653ffb.ogg");
+//  values.playInternetAudio("https://documentos.neitor.com/contable/chats/ULTRA2022/cade09f3-e2a1-4225-8b92-5f4585653ffb.ogg");
+
+
+
+                            values.setTipoMensajeChat('image');
+
+                            // //***************************/
+                            bottomSheetImagen(_ctrlHome,context,size,_infoChat);
+                            // final image = await _getImage(context, ImageSource.camera);
+                            //   if (image != null) {
+                            //     values.setImage(image);
+                            //   }
+                            // _modalImageVideo(context,size,_infoChat);
+                            // //**************************/
+
+
 
                                         
                                       } ,
@@ -328,6 +349,10 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                       () {
                                          
                                       values.setFileChat(false);
+                                      values.setTipoMensajeChat('video');
+                                      bottomSheetVideo(_ctrlHome,context,size,_infoChat);
+
+                                      
                                         
                                       } ,
                                   child: Container(
@@ -354,19 +379,21 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                  child: GestureDetector(
                                   onTap:
                                       ()async{
+
+
+                      // if (recorderState.isRecording) {
+                      //   await recorderState.stopRecording(_record, context);
+                      // } else {
+                      //   await recorderState.startRecording(context,_record, _audioPlayer);
+                      // }
+      
                                          
                                       values.setFileChat(false);
-
-
+                                      values.setTipoMensajeChat('audio');
                                       //****************************/
 
 
 
-                      if (recorderState.isRecording) {
-                        await recorderState.stopRecording(_record, context);
-                      } else {
-                        await recorderState.startRecording(context,_record, _audioPlayer);
-                      }
 
 
 
@@ -420,57 +447,57 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                     
                       
                       _buildInputField(context, size),
-                                                    Consumer<ChatController>(builder: (_, valuesAudio,__) { 
-return    Container(
-                    color: Colors.grey.shade200,
-                    width: size.wScreen(100),
-                    margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            InkWell(
-                              onTap: () async {
-                                if (valuesAudio.isPlaying) {
-                                  await valuesAudio.stopPlaying(_audioPlayer);
-                                } else {
-                                  await valuesAudio.playRecordedFile(_audioPlayer);
-                                }
-                              },
-                              child: Container(
-                                child: Icon(valuesAudio.isPlaying ? Icons.stop : Icons.play_arrow, size: size.iScreen(3.5)),
-                              ),
-                            ),
-                            Expanded(
-                              child: Slider(
-                                activeColor: Colors.red,
-                                thumbColor: Colors.pink,
-                                min: 0,
-                                value: valuesAudio.playbackTime,
-                                max: valuesAudio.playbackDuration,
-                                onChanged: (double value) {
-                                  _audioPlayer.seek(Duration(milliseconds: value.toInt()));
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              valuesAudio.formatDuration(valuesAudio.playbackTime) +
-                                  ' / ' +
-                                  valuesAudio.formatDuration(valuesAudio.playbackDuration),
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                               },),
+//                                                     Consumer<ChatController>(builder: (_, valuesAudio,__) { 
+// return    Container(
+//                     color: Colors.grey.shade200,
+//                     width: size.wScreen(100),
+//                     margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
+//                     child: Column(
+//                       children: [
+//                         Row(
+//                           children: [
+//                             InkWell(
+//                               onTap: () async {
+//                                 if (valuesAudio.isPlaying) {
+//                                   await valuesAudio.stopPlaying(_audioPlayer);
+//                                 } else {
+//                                   await valuesAudio.playRecordedFile(_audioPlayer);
+//                                 }
+//                               },
+//                               child: Container(
+//                                 child: Icon(valuesAudio.isPlaying ? Icons.stop : Icons.play_arrow, size: size.iScreen(3.5)),
+//                               ),
+//                             ),
+//                             Expanded(
+//                               child: Slider(
+//                                 activeColor: Colors.red,
+//                                 thumbColor: Colors.pink,
+//                                 min: 0,
+//                                 value: valuesAudio.playbackTime,
+//                                 max: valuesAudio.playbackDuration,
+//                                 onChanged: (double value) {
+//                                   _audioPlayer.seek(Duration(milliseconds: value.toInt()));
+//                                 },
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                         Row(
+//                           children: [
+//                             Text(
+//                               valuesAudio.formatDuration(valuesAudio.playbackTime) +
+//                                   ' / ' +
+//                                   valuesAudio.formatDuration(valuesAudio.playbackDuration),
+//                               style: TextStyle(
+//                                 fontSize: 16,
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ],
+//                     ),
+//                   );
+//                                },),
                             
 
 // AudioPlayerWidget(
@@ -753,6 +780,7 @@ return    Container(
     // print(value);
     valueChat.setCajaText(value);
     _textController.clear();
+    valueChat.setTipoMensajeChat('message');
     // final _newMessaje =
         //  MessageChat(uid: '123',messaje: valueChat.getCajaTextoChat,animationController: AnimationController(vsync: this ,duration: Duration( milliseconds: 200 )),);
     //     MessageChat(
@@ -856,3 +884,374 @@ final _data={
 // }
 
 
+ Future<void> _modalImagen(BuildContext context,Responsive size ,Map<String,dynamic> infoChat) {
+  final _ctrlSocket=context.read<SocketModel>();
+    final _ctrlHome=context.read<HomeController>();
+ 
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return
+        Consumer<ChatController>(builder: (_, _ctrl, __) { 
+
+  return    AlertDialog(
+          title: Text('Mi Imagen'),
+          content: Container(
+            // width: size.wScreen(100.0),
+            // height: size.hScreen(30.0),
+            child: 
+            _ctrl.getTipoMensajeChat=='image'
+            ?
+            _ctrl.selectedImage!=null
+              ? Image.file(_ctrl.selectedImage!)
+           :Container():Container()
+              
+          )
+          ,
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Cancelar'),
+              onPressed: () {
+
+                _ctrl.deleteImage();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Enviar'),
+              onPressed: () async{
+
+                  ProgressDialog.show(context);
+         await _ctrl.getUrlServerChats();
+                  ProgressDialog.dissmiss(context);
+
+                if (_ctrl.getUrlImagenVideo.isNotEmpty ) {
+                          Navigator.of(context).pop();
+
+                        //****************************************//
+                        final _data={
+  "opcion": "GROUP", // 'INDIVIDUAL' | 'GROUP'
+  "rucempresa": "ULTRA2022", // login
+  "rol": '${ _ctrlHome.getUser!['rol']}',
+  "chat_id": infoChat['chat_id'], // tomar del grupo del chat
+  "person_id": '${ _ctrlHome.getUser!['id']}', // login
+  "message_text": '', //texto
+  "message_audio": "", // vacio de momento
+  "message_fotos": [_ctrl.getUrlImagenVideo], // vacio de momento
+   "message_videos": [] // vacio de momento
+};
+
+
+
+// print('se imprima data para socket $_data');
+  _ctrlSocket.emitEvent('client:send-mensaje', _data);
+
+  _ctrl.addItemsChatPaginacion(_ctrlSocket.getMensajeChat);
+
+
+   //****************************************//
+
+
+
+                      } else {
+
+                          NotificatiosnService.showSnackBarDanger('No se pudo enviar... ');
+                      }
+
+               
+              },
+            ),
+          ],
+        );
+
+         },);
+      
+      },
+    );
+
+  }
+   Future<void> _modalVideo(BuildContext context,Responsive size ,Map<String,dynamic> infoChat) {
+  final _ctrlSocket=context.read<SocketModel>();
+    final _ctrlHome=context.read<HomeController>();
+ 
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return
+        Consumer<ChatController>(builder: (_, _ctrl, __) { 
+
+  return    AlertDialog(
+          title: Text( 'Mi Video'),
+          content: Container(
+            // width: size.wScreen(100.0),
+            // height: size.hScreen(30.0),
+            child: 
+            
+            _ctrl.selectedImage!=null
+              ? _ctrl.getTipoMensajeChat=='video'
+              ?  Container(
+          width: size.wScreen(50),
+          child: Row(
+            children: [
+              Icon(Icons.video_camera_back_outlined,size: size.iScreen(3.5),),
+              SizedBox(width: size.iScreen(1.0),),
+              Text('Ver Video', style: GoogleFonts.poppins(
+                          fontSize: size.iScreen(1.7),
+                          fontWeight: FontWeight.w500,
+                          color: sextinaryColor,
+                          // letterSpacing: -0.40,
+                        )),
+            ],
+          ),
+        ):Container():Container()
+              
+          ),
+          
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Cancelar'),
+              onPressed: () {
+
+                _ctrl.deleteImage();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Enviar'),
+              onPressed: () async{
+
+                  ProgressDialog.show(context);
+         await _ctrl.getUrlServerChats();
+                  ProgressDialog.dissmiss(context);
+
+                if (_ctrl.getUrlImagenVideo.isNotEmpty ) {
+                          Navigator.of(context).pop();
+
+                        //****************************************//
+                        final _data={
+  "opcion": "GROUP", // 'INDIVIDUAL' | 'GROUP'
+  "rucempresa": "ULTRA2022", // login
+  "rol": '${ _ctrlHome.getUser!['rol']}',
+  "chat_id": infoChat['chat_id'], // tomar del grupo del chat
+  "person_id": '${ _ctrlHome.getUser!['id']}', // login
+  "message_text": '', //texto
+  "message_audio": "", // vacio de momento
+  "message_fotos": [], // vacio de momento
+  "message_videos": [_ctrl.getUrlImagenVideo] // vacio de momento
+};
+
+
+
+// print('se imprima data para socket $_data');
+  _ctrlSocket.emitEvent('client:send-mensaje', _data);
+
+  _ctrl.addItemsChatPaginacion(_ctrlSocket.getMensajeChat);
+
+
+   //****************************************//
+
+
+
+                      } else {
+
+                          NotificatiosnService.showSnackBarDanger('No se pudo enviar... ');
+                      }
+
+               
+              },
+            ),
+          ],
+        );
+
+         },);
+      
+      },
+    );
+
+  }
+
+  Future<File?> _getImage(BuildContext context, ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: source);
+
+    if (pickedFile == null) {
+      return null;
+    }
+
+    return File(pickedFile.path);
+  }
+  Future<File?> _getVideo(BuildContext context, ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickVideo(source: source);
+
+    if (pickedFile == null) {
+      return null;
+    }
+
+    return File(pickedFile.path);
+  }
+
+
+
+
+   void bottomSheetImagen(
+    HomeController _controller,
+    BuildContext context,
+    Responsive size,
+    Map<String,dynamic> infoChat
+  ) {
+
+final _ctrlChat=context.read<ChatController>();
+
+
+    showCupertinoModalPopup(
+        context: context,
+        builder: (_) => CupertinoActionSheet(
+              actions: [
+                CupertinoActionSheetAction(
+                  onPressed: () async {
+                   final image = await _getImage(context, ImageSource.camera);
+                              if (image != null) {
+                                _ctrlChat.setImage(image);
+                              }
+                    Navigator.pop(context);
+                            _modalImagen(context,size,infoChat);
+                 
+                    // _getImageFromCamera(context,_controller);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Abrir Cámara',
+                          style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(2.2),
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          )),
+                      Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: size.iScreen(2.0),
+                          ),
+                          child: Icon(Icons.camera_alt_outlined,
+                              size: size.iScreen(3.0))),
+                    ],
+                  ),
+                ),
+                CupertinoActionSheetAction(
+                  onPressed: () async {
+                    final image = await _getImage(context, ImageSource.gallery);
+                              if (image != null) {
+                                _ctrlChat.setImage(image);
+                              }
+                                 Navigator.pop(context);
+                            _modalImagen(context,size,infoChat);
+                    // Navigator.pop(context);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Abrir Galería',
+                          style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(2.2),
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          )),
+                      Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: size.iScreen(2.0),
+                          ),
+                          child: Icon(Icons.image_outlined,
+                              size: size.iScreen(3.0))),
+                    ],
+                  ),
+                ),
+              ],
+            ));
+  }
+
+   void bottomSheetVideo(
+    HomeController _controller,
+    BuildContext context,
+    Responsive size,
+    Map<String,dynamic> infoChat
+  ) {
+
+final _ctrlChat=context.read<ChatController>();
+
+
+    showCupertinoModalPopup(
+        context: context,
+        builder: (_) => CupertinoActionSheet(
+              actions: [
+                CupertinoActionSheetAction(
+                  onPressed: () async {
+                   final image = await _getVideo(context, ImageSource.camera);
+                              if (image != null) {
+                                _ctrlChat.setImage(image);
+                              }
+                    Navigator.pop(context);
+                            _modalVideo(context,size,infoChat);
+                 
+                    // _getImageFromCamera(context,_controller);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Abrir Cámara',
+                          style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(2.2),
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          )),
+                      Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: size.iScreen(2.0),
+                          ),
+                          child: Icon(Icons.camera_alt_outlined,
+                              size: size.iScreen(3.0))),
+                    ],
+                  ),
+                ),
+                CupertinoActionSheetAction(
+                  onPressed: () async {
+                    final image = await _getVideo(context, ImageSource.gallery);
+                              if (image != null) {
+                                _ctrlChat.setImage(image);
+                              }
+                                 Navigator.pop(context);
+                            _modalVideo(context,size,infoChat);
+                    // Navigator.pop(context);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Abrir Galería',
+                          style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(2.2),
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          )),
+                      Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: size.iScreen(2.0),
+                          ),
+                          child: Icon(Icons.image_outlined,
+                              size: size.iScreen(3.0))),
+                    ],
+                  ),
+                ),
+              ],
+            ));
+  }

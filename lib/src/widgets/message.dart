@@ -5,6 +5,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/pages/view_video_page.dart';
 import 'package:ultrared/src/pages/vista_imagen.dart';
 import 'package:ultrared/src/utils/responsive.dart';
@@ -49,7 +51,7 @@ class _MessageChatState extends State<MessageChat> {
         "${fechaLocal.hour < 10 ? '0' : ''}${fechaLocal.hour}:${fechaLocal.minute < 10 ? '0' : ''}${fechaLocal.minute}";
     // Formatear la fecha para mostrar solo la hora
 
-    print("Hora local formateada: $horaFormateada");
+    // print("Hora local formateada: $horaFormateada");
 
     // DateFormat.Hm().format(myDate.toLocal())
 
@@ -64,6 +66,7 @@ class _MessageChatState extends State<MessageChat> {
 // }
 
     return Container(
+      margin: EdgeInsets.symmetric(horizontal:size.iScreen(0.5)),
       child: widget.user['id'] == widget.messaje['person_id']
           ? _myChat(context,size, widget.messaje, widget.type, horaFormateada)
           // : Text('data')/
@@ -77,9 +80,10 @@ _myChat(BuildContext context,
   return Align(
     alignment: Alignment.centerRight,
     child: Container(
+      // width: size.wScreen(60),
       // color:  Colors.red,
-      padding: EdgeInsets.all(size.iScreen(0.5)),
-      margin: EdgeInsets.only(right: 5, bottom: 5, left: 50),
+      padding: EdgeInsets.all(size.iScreen(0.2)),
+      margin: EdgeInsets.only(right: 5, bottom: 2, left: 50),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -145,7 +149,7 @@ _myChat(BuildContext context,
           Container(
               // color: Colors.red ,
               // width: size.wScreen(60.0),
-              margin:EdgeInsets.only(left: size.iScreen(0.2)),
+              margin:EdgeInsets.only(left: size.iScreen(0.0)),
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.symmetric(
                 horizontal: size.iScreen(1.0),
@@ -176,6 +180,7 @@ _myChat(BuildContext context,
                         ),
                       ),
                       Container(
+                        // color:  Colors.red,
                           // constraints: BoxConstraints(maxWidth: size.wScreen(60.0)),
                           // alignment: Alignment.centerLeft,
                           constraints: BoxConstraints(
@@ -187,10 +192,18 @@ _myChat(BuildContext context,
                           child: 
                             Column(
                             children: [
-                           
-                              messaje['message_text'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeTexto( messaje['message_text'],size)):Container(),
+                          
+                              messaje['message_text'].isNotEmpty? Container(
+                                      constraints: BoxConstraints(
+                              // minHeight: size.wScreen(1.0), // Altura mínima
+
+                              minWidth: size.wScreen(5.0),
+                              maxWidth: size.wScreen(60.0) // Ancho máximo
+                              ),
+                              
+                              margin: EdgeInsets.symmetric(vertical:size.iScreen(0.2)),child: _messajeTexto( messaje['message_text'],size)):Container(),
                               messaje['message_fotos'].isNotEmpty?Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeImagen(context, messaje['message_fotos'],size)):Container(),
-                               messaje['message_fotos'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeVideo(context,size)):Container(),
+                               messaje['message_videos'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeVideo(context,messaje['message_videos'],size)):Container(),
                                   messaje['message_audio'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeAudio(context,messaje['message_audio'],size)):Container(),
                               
                             ],
@@ -230,7 +243,7 @@ _myChat(BuildContext context,
   );
 }
 
-Container _messajeVideo(BuildContext context,Responsive size) {
+Container _messajeVideo(BuildContext context,List _listUrl,Responsive size) {
 
 
 
@@ -249,7 +262,7 @@ Container _messajeVideo(BuildContext context,Responsive size) {
       //   30.0,
       // ),
       child: 
-      Container(
+       Wrap(children: _listUrl.map((e) =>   Container(
 
         // color: Colors.red,
          margin: EdgeInsets.symmetric(vertical: size.iScreen(0.5),horizontal: size.iScreen(0.0)),
@@ -258,7 +271,8 @@ Container _messajeVideo(BuildContext context,Responsive size) {
            Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => VideoPlayerScreen(videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" ),
+                  // builder: (context) => VideoPlayerScreen(videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" ),
+                    builder: (context) => VideoPlayerScreen(videoUrl: e),
                 ),
               );
 
@@ -277,7 +291,8 @@ Container _messajeVideo(BuildContext context,Responsive size) {
             ],
           ),
         )),
-      ),
+      )).toList())
+    ,
       
       
           );}
@@ -289,12 +304,66 @@ Container _messajeAudio(BuildContext context,String _urlAudio, size) {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
         color: Colors.grey,
-      ),
+      ),child:  Consumer<ChatController>(builder: (_, valuesAudio,__) { 
+return    Container(
+                    color: Colors.grey.shade200,
+                    // width: size.isScreen(10),
+                    //  height: size.iScreen(30.0),
+                    // margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
+                   
+                    child: 
+                    // Text('data')
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                // if (valuesAudio.isPlaying) {
+                                //   await valuesAudio.stopPlaying(_audioPlayer);
+                                // } else {
+                                //   await valuesAudio.playRecordedFile(_audioPlayer);
+                                // }
+                              },
+                              child: Container(
+                                child: Icon(valuesAudio.isPlaying ? Icons.stop : Icons.play_arrow, size: size.iScreen(3.5)),
+                              ),
+                            ),
+                            Slider(
+                              activeColor: Colors.red,
+                              thumbColor: Colors.pink,
+                              min: 0,
+                              value: valuesAudio.playbackTime,
+                              max: valuesAudio.playbackDuration,
+                              onChanged: (double value) {
+                                // _audioPlayer.seek(Duration(milliseconds: value.toInt()));
+                              },
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              valuesAudio.formatDuration(valuesAudio.playbackTime) +
+                                  ' / ' +
+                                  valuesAudio.formatDuration(valuesAudio.playbackDuration),
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                               }
       // width: size.wScreen(
       //   60.0,
       // ),
-      height: size.iScreen(
-        30.0,
+      // height: size.iScreen(
+      //   30.0,
+      // ),
       ));
 }
 
@@ -324,7 +393,8 @@ Container _messajeImagen(BuildContext context,List _listUrl,Responsive size) {
                               // minHeight: size.wScreen(5.0), // Altura mínima
 
                               minWidth: size.wScreen(5.0),
-                              maxWidth: size.wScreen(60.0) // Ancho máximo
+                              maxWidth: size.wScreen(50.0),
+                              // Ancho máximo
                               ),
           child: FadeInImage(
                                                               placeholder:
@@ -360,7 +430,7 @@ _noChat(BuildContext context,
     alignment: Alignment.centerLeft,
     child: Container(
       // color:  Colors.red,
-      padding: EdgeInsets.all(size.iScreen(0.5)),
+      padding: EdgeInsets.all(size.iScreen(0.2)),
       margin: EdgeInsets.only(right: 50, bottom: 5, left: 5),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -419,7 +489,7 @@ _noChat(BuildContext context,
                 vertical: size.iScreen(0.5),
               ),
               decoration: BoxDecoration(
-                  color: septinaryColor,
+                  color: Colors.grey.shade200,
                   // color: Color(0xff4D9EF6),
                   borderRadius: BorderRadius.circular(8)),
               child: Stack(
@@ -476,16 +546,24 @@ _noChat(BuildContext context,
                            
                               // messaje['message_text'].isNotEmpty? _messajeTexto( messaje['message_text'],size):Container(),
                               // messaje['message_fotos'].isNotEmpty? _messajeImagen(context,messaje['message_fotos'],size):Container(),
-                                 messaje['message_text'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeTexto( messaje['message_text'],size)):Container(),
+                                 messaje['message_text'].isNotEmpty? Container(
+                                  constraints: BoxConstraints(
+                              // minHeight: size.wScreen(1.0), // Altura mínima
+
+                              // minWidth: size.wScreen(5.0),
+                              // maxWidth: size.wScreen(60.0) // Ancho máximo
+                              ),
+                                  // width:size.iScreen(25)
+                                margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeTexto( messaje['message_text'],size)):Container(),
                               messaje['message_fotos'].isNotEmpty?Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeImagen(context, messaje['message_fotos'],size)):Container(),
-                           messaje['message_fotos'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeVideo(context,size)):Container(),
+                           messaje['message_videos'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeVideo(context, messaje['message_videos'],size)):Container(),
                               messaje['message_audio'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeAudio(context,messaje['message_audio'],size)):Container(),   
                             ],
                           )
                                       
                                       ),
                       SizedBox(
-                        height: size.wScreen(4.0),
+                        height: size.wScreen(3.0),
                       )
                     ],
                   ),

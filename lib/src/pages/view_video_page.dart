@@ -85,10 +85,22 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
+      final Responsive size = Responsive.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Reproductor de Video"),
-      ),
+          iconTheme: const IconThemeData(color: Colors.black),
+          centerTitle: true, // Centra el título en el AppBar
+          elevation: 0,
+          backgroundColor: cuaternaryColor, // Fondo blanco
+          title: Text('VIDEO',
+              style: GoogleFonts.poppins(
+                fontSize: size.iScreen(2.0),
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+                letterSpacing: -0.40,
+              ) // Color del título en negro
+              ),
+        ),
       body: _controller.value.isInitialized
           ? Chewie(controller: _chewieController)
           : Center(child: CircularProgressIndicator()),

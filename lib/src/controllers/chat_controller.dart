@@ -272,7 +272,7 @@ class ChatController extends ChangeNotifier {
 void addItemsChatPaginacion(Map<String,dynamic> data) {
      _listaTodoLosChatPaginacion.clear();
     _listaTodoLosChatPaginacion.addAll({data});
-    // print('ITEM AL CHAT ###>:${_listaTodoLosChatPaginacion}');
+    print('ITEM AL CHAT ###>:${_listaTodoLosChatPaginacion}');
 
     notifyListeners();
   }
@@ -582,6 +582,145 @@ Future<void> playInternetAudio(String url) async {
   }
   notify(); // Notificar cambios en el estado
 }
+
+//*************  TIPO DE MENSAJE  ******************/
+
+String? _tipoMensajeChat = '';
+  String? get getTipoMensajeChat => _tipoMensajeChat;
+  void setTipoMensajeChat(String? _tipo) {
+    _tipoMensajeChat = _tipo;
+
+
+print('EL TIPO ES ************ >>> $_tipoMensajeChat');
+
+    notifyListeners();
+  }
+
+
+//-------------------------------------//
+  ///AGREGAMOS LA IMAGEN EN PANTALLA ////
+  String _urlImage = '';
+  File? _selectedImage;
+
+  File? get selectedImage => _selectedImage;
+
+  void setImage(File image) {
+    _selectedImage = image;
+    _urlImage = _selectedImage!.path;
+    // getUrlServerChats( );
+
+    notifyListeners();
+  }
+
+  void clearImage() {
+    _selectedImage = null;
+    notifyListeners();
+  }
+
+  void deleteImage() {
+    if (_selectedImage != null) {
+      _selectedImage!.delete();
+      clearImage();
+    }
+  }
+  //-------------------------------------//
+  ///AGREGAMOS LA IMAGEN EN PANTALLA ////
+  String _urlVideo = '';
+  File? _selectedVideo;
+
+  File? get selectedVideo => _selectedVideo;
+
+  void setVideo(File Video) {
+    _selectedVideo = Video;
+    _urlVideo = _selectedVideo!.path;
+     // getUrlServerChats( );
+
+    notifyListeners();
+  }
+
+  void clearVideo() {
+    _selectedVideo = null;
+    notifyListeners();
+  }
+
+  void deleteVideo() {
+    if (_selectedVideo != null) {
+      _selectedVideo!.delete();
+      clearImage();
+    }
+  }
+
+  Future getUrlServerChats() async {
+    try {
+      final response = await _api.getUrlsServer(_selectedImage, 'chats');
+
+      if (response != null) {
+    
+        setUrlImagenVideo(
+          response.toString(),
+        );
+        notifyListeners();
+        return response;
+      }
+
+      if (response == null) {
+     
+         setUrlImagenVideo("");
+         notifyListeners();
+         return null;
+     
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+  String _urlImageImagenVideo = "";
+  String get getUrlImagenVideo => _urlImageImagenVideo;
+
+  void setUrlImagenVideo(String _data) {
+    _urlImageImagenVideo = "";
+    _urlImageImagenVideo = _data;
+    print('ImagenVideo URL: $_urlImageImagenVideo');
+
+
+    notifyListeners();
+  }
+
+  // Future eliminaUrlServerImagenVideo(String _url) async {
+  //   final Map<String, dynamic> _urlImageDelete = {
+  //     "urls": [
+  //       {"url": _url}
+  //     ],
+  //     "rucempresa": "ULTRA2022"
+  //   };
+
+  //   final response = await _api.deleteUrlDelServidor(
+  //     datos: _urlImageDelete,
+  //     // token: '${dataUser!.token}',
+  //   );
+
+  //   if (response != null) {
+     
+  //     // setListaUrlse(response['data']);
+  //     // print('ES LOS URLS: ${response}');
+  //     setUrlImagenVideo('');
+  //     // image== null;
+
+  //     // print('las variables : image - $_urlImage');
+  //     notifyListeners();
+  //     return 'true';
+  //     // return response;
+  //   }
+
+  //   if (response == null) {
+     
+  //     print('ES LOS URLS: ${response}');
+  //       setUrlImagenVideo('');
+  //     notifyListeners();
+  //     return null;
+  //   }
+  // }
 
 
 }
