@@ -316,44 +316,44 @@ return    Container(
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Row(
-                          children: [
-                            InkWell(
-                              onTap: () async {
-                                // if (valuesAudio.isPlaying) {
-                                //   await valuesAudio.stopPlaying(_audioPlayer);
-                                // } else {
-                                //   await valuesAudio.playRecordedFile(_audioPlayer);
-                                // }
-                              },
-                              child: Container(
-                                child: Icon(valuesAudio.isPlaying ? Icons.stop : Icons.play_arrow, size: size.iScreen(3.5)),
-                              ),
-                            ),
-                            Slider(
-                              activeColor: Colors.red,
-                              thumbColor: Colors.pink,
-                              min: 0,
-                              value: valuesAudio.playbackTime,
-                              max: valuesAudio.playbackDuration,
-                              onChanged: (double value) {
-                                // _audioPlayer.seek(Duration(milliseconds: value.toInt()));
-                              },
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              valuesAudio.formatDuration(valuesAudio.playbackTime) +
-                                  ' / ' +
-                                  valuesAudio.formatDuration(valuesAudio.playbackDuration),
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     InkWell(
+                        //       onTap: () async {
+                        //         // if (valuesAudio.isPlaying) {
+                        //         //   await valuesAudio.stopPlaying(_audioPlayer);
+                        //         // } else {
+                        //         //   await valuesAudio.playRecordedFile(_audioPlayer);
+                        //         // }
+                        //       },
+                        //       child: Container(
+                        //         child: Icon(valuesAudio.isPlaying ? Icons.stop : Icons.play_arrow, size: size.iScreen(3.5)),
+                        //       ),
+                        //     ),
+                        //     Slider(
+                        //       activeColor: Colors.red,
+                        //       thumbColor: Colors.pink,
+                        //       min: 0,
+                        //       value: valuesAudio.playbackTime,
+                        //       max: valuesAudio.playbackDuration,
+                        //       onChanged: (double value) {
+                        //         // _audioPlayer.seek(Duration(milliseconds: value.toInt()));
+                        //       },
+                        //     ),
+                        //   ],
+                        // ),
+                        // Row(
+                        //   children: [
+                        //     Text(
+                        //       valuesAudio.formatDuration(valuesAudio.playbackTime) +
+                        //           ' / ' +
+                        //           valuesAudio.formatDuration(valuesAudio.playbackDuration),
+                        //       style: TextStyle(
+                        //         fontSize: 16,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   );

@@ -436,7 +436,7 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
 
   Future<File?> _getImage(BuildContext context, ImageSource source) async {
     final picker = ImagePicker();
-    final pickedFile = await picker.getImage(source: source);
+    final pickedFile = await picker.pickImage(source: source,imageQuality: 50);
 
     if (pickedFile == null) {
       return null;

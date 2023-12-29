@@ -36,11 +36,8 @@ class ApiProvider {
         "usuario": usuario,
         "password": password,
         "empresa": empresa,
-  
       });
       final respo = jsonDecode(dataResp.body);
-
-   
 
       if (dataResp.statusCode == 404) {
         snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
@@ -62,7 +59,7 @@ class ApiProvider {
         return respo;
       }
     } catch (e) {
-       snaks.NotificatiosnService.showSnackBarDanger("$e}");
+      snaks.NotificatiosnService.showSnackBarDanger("$e}");
       // print('-ERROR -> $e');
     }
   }
@@ -100,8 +97,7 @@ class ApiProvider {
     String? notificacion,
   }) async {
     try {
-      final url = Uri.parse(
-          '$_dirURL/ciudades/filtroNotToken/0');
+      final url = Uri.parse('$_dirURL/ciudades/filtroNotToken/0');
 
       final dataResp = await _http.get(
         url,
@@ -124,6 +120,7 @@ class ApiProvider {
       return null;
     }
   }
+
   //=========================GET ALL CIUDADES =====================================//
   Future getAllPlanesSinToken({
     BuildContext? context,
@@ -131,8 +128,7 @@ class ApiProvider {
     String? notificacion,
   }) async {
     try {
-      final url = Uri.parse(
-          '$_dirURL/planes/filtroNotToken/0');
+      final url = Uri.parse('$_dirURL/planes/filtroNotToken/0');
 
       final dataResp = await _http.get(
         url,
@@ -155,20 +151,16 @@ class ApiProvider {
       return null;
     }
   }
+
   //=========================CREAR USUARIOS =====================================//
   Future createUserSinToken({
     BuildContext? context,
-    Map<String,dynamic>? data,
+    Map<String, dynamic>? data,
   }) async {
-
-
-
-  try {
-
- final uri = Uri.parse('$_dirURL/usuarios');
+    try {
+      final uri = Uri.parse('$_dirURL/usuarios');
       final headers = {
         'Content-Type': 'application/json',
-       
       };
       Map<String, dynamic> body = data!;
       String jsonBody = json.encode(body);
@@ -181,11 +173,10 @@ class ApiProvider {
         encoding: encoding,
       );
 
-
       final respo = jsonDecode(dataResp.body);
       // print('la data $respo');
 
-  snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
+      snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
       if (dataResp.statusCode == 404) {
         snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
         return respo["msg"];
@@ -238,8 +229,7 @@ class ApiProvider {
       if (dataResp.statusCode == 200) {
         final responseData = jsonDecode(dataResp.body);
 
-
-          //  print('EL TOKEN DE FIREBASE SE GUARDO EN SERVER : $responseData');
+        //  print('EL TOKEN DE FIREBASE SE GUARDO EN SERVER : $responseData');
 
         return responseData;
       }
@@ -253,12 +243,7 @@ class ApiProvider {
     }
   }
 
-
-
-
-
-  
- //=========================ENVIA LOS URLTEMPORALES =====================================//
+  //=========================ENVIA LOS URLTEMPORALES =====================================//
 
 // Future saveUrlAlServidor(BuildContext? context,String image,  String? token) async {
 //   try {
@@ -284,7 +269,7 @@ class ApiProvider {
 //             "No se puede agregar Contenido");
 
 //         return null;
-      
+
 //       }
 //       if (responsed.statusCode == 200) {
 //       final responseFoto = FotoUrl.fromJson(responsed.body);
@@ -299,23 +284,17 @@ class ApiProvider {
 
 //       }
 
-
-
 //   } catch (e) {
 //  return null;
 //   }
- 
 
 // }
 
-
-
-
-
-Future saveUrlAlServidor({ BuildContext? context,File? urlFile, String? token}) async {
-  try {
-     var request = _http.MultipartRequest(
-        'POST', Uri.parse('$_dirURL/upload_delete_multiple_files/uploadNotToken'));
+  Future saveUrlAlServidor(
+      {BuildContext? context, File? urlFile, String? token}) async {
+    try {
+      var request = _http.MultipartRequest('POST',
+          Uri.parse('$_dirURL/upload_delete_multiple_files/uploadNotToken'));
 //     var request = _http.MultipartRequest('POST', Uri.parse('$_dirURL/upload_delete_multiple_files/uploadNotToken'));
 //  request.headers.addAll({
 //         'Content-Type': 'multipart/form-data'
@@ -328,21 +307,20 @@ Future saveUrlAlServidor({ BuildContext? context,File? urlFile, String? token}) 
 // request.fields['tipo'] = "fotoperfil";
 // request.fields['rucempresa'] = 'ULTRA2022';
 
+      var response = await request.send();
 
-var response = await request.send();
+      //for token
+      // request.headers.addAll({"x-auth-token": '$token'});
 
-    //for token
-    // request.headers.addAll({"x-auth-token": '$token'});
+      // request.files
+      //     .add(await _http.MultipartFile.fromPath('foto', urlFile!.path));
 
-    // request.files
-    //     .add(await _http.MultipartFile.fromPath('foto', urlFile!.path));
+      //for completeing the request
+      // var response = await request.send();
 
-    //for completeing the request
-    // var response = await request.send();
-
-    //for getting and decoding the response into json format
-    var responsed = await _http.Response.fromStream(response);
-    // final responseData = json.decode(responsed.body);
+      //for getting and decoding the response into json format
+      var responsed = await _http.Response.fromStream(response);
+      // final responseData = json.decode(responsed.body);
 // print('LISTA SERVER ***** : ${responsed.statusCode}');
 // print('LISTA SERVER ***** : ${responsed}');
 // print('LISTA SERVER ***** : ${responsed.body}');
@@ -351,33 +329,24 @@ var response = await request.send();
             "No se puede agregar Contenido");
 
         return null;
-      
       }
       if (responsed.statusCode == 200) {
-      final responseFoto = FotoUrl.fromJson(responsed.body);
-      // print('LISTA foto: ${responseFoto.urls[0].url}');
-     return  responseFoto.urls[0].url;
+        final responseFoto = FotoUrl.fromJson(responsed.body);
+        // print('LISTA foto: ${responseFoto.urls[0].url}');
+        return responseFoto.urls[0].url;
       }
       if (responsed.statusCode == 401) {
         snaks.NotificatiosnService.showSnackBarDanger(
             "Debe inciar sesión nuevamente");
 
         return null;
-
       }
-
-
-
-  } catch (e) {
- return null;
+    } catch (e) {
+      return null;
+    }
   }
 
-   
-
-}
-
-
- //=========================ELIMINA FOTO DEL SERVIDOS=====================================//
+  //=========================ELIMINA FOTO DEL SERVIDOS=====================================//
 
 //   Future deleteUrlDelServidor({Map<String, dynamic>? datos}) async {
 //     try {
@@ -394,7 +363,6 @@ var response = await request.send();
 // // Añade el array de objetos al request
 // // request.fields['tipo'] = arrayDeObjetosJson;
 // // request.fields['rucempresa'] = arrayDeObjetosJson;
-
 
 // var response = await request.send();
 //       // print('=== 200 ===> ${response.reasonPhrase}');
@@ -425,72 +393,62 @@ var response = await request.send();
 //   }
 
   Future deleteUrlDelServidor({Map<String, dynamic>? datos}) async {
-  final String serverUrl = '$_dirURL/upload_delete_multiple_files/deleteNotToken'; // Reemplaza con la URL correcta
-  final Map<String, dynamic> requestData = datos!;
+    final String serverUrl =
+        '$_dirURL/upload_delete_multiple_files/deleteNotToken'; // Reemplaza con la URL correcta
+    final Map<String, dynamic> requestData = datos!;
 
-  try {
-    final response = await _http.post(
-      Uri.parse(serverUrl),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(requestData),
-    );
+    try {
+      final response = await _http.post(
+        Uri.parse(serverUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestData),
+      );
 
-    if (response.statusCode == 200) {
-      print('Imagen eliminada exitosamente');
-      return true;
-    } else {
-      print('Error al eliminar la imagen. Código de estado: ${response.statusCode}');
-      print('Respuesta del servidor: ${response.body}');
+      if (response.statusCode == 200) {
+        print('Imagen eliminada exitosamente');
+        return true;
+      } else {
+        print(
+            'Error al eliminar la imagen. Código de estado: ${response.statusCode}');
+        print('Respuesta del servidor: ${response.body}');
+      }
+    } catch (error) {
+      print('Error al enviar la solicitud: $error');
     }
-  } catch (error) {
-    print('Error al enviar la solicitud: $error');
   }
-}
-
-
-
-
 
 //-------------IMAGEN AL SERVIDOR----------------//
- Future getUrlsServer( File? _file ,String _tipo) async {
-  var url = Uri.parse('$_dirURL/upload_delete_multiple_files/uploadNotToken');
+  Future getUrlsServer(File? _file, String _tipo) async {
+    var url = Uri.parse('$_dirURL/upload_delete_multiple_files/uploadNotToken');
 
+    try {
+      var request = _http.MultipartRequest('POST', url);
 
-try {
-   var request = _http.MultipartRequest('POST', url);
+      File imageFile = File(_file!.path);
 
+      // Add parameters to the request
+      request.fields['tipo'] = _tipo;
+      request.fields['rucempresa'] = 'ULTRA2022';
 
-  File imageFile = File(_file!.path);
+      // Add the image file to the request
+      request.files.add(await _http.MultipartFile.fromPath(
+        'archivo',
+        imageFile.path,
+      ));
 
-  // Add parameters to the request
-  request.fields['tipo'] = _tipo;
-  request.fields['rucempresa'] = 'ULTRA2022';
+      // Send the request
+      var response = await request.send();
 
-  // Add the image file to the request
-  request.files.add(await _http.MultipartFile.fromPath(
-    'archivo',
-    imageFile.path,
-  ));
+      var responsed = await _http.Response.fromStream(response);
 
-  // Send the request
-  var response = await request.send();
+      if (response.statusCode == 200) {
+        // print('Image responsed.body successfully. ${responsed.body}');
+        Map<String, dynamic> jsonMap = json.decode(responsed.body);
 
-    var responsed = await _http.Response.fromStream(response);
-    
-
-     
-
-  if (response.statusCode == 200) {
-    
-    // print('Image responsed.body successfully. ${responsed.body}');
-     Map<String, dynamic> jsonMap = json.decode(responsed.body);
-
-  // Extraer la URL
-return jsonMap['nombre'];
-
-    
-  } 
-   if (response.statusCode == 404) {
+        // Extraer la URL
+        return jsonMap['nombre'];
+      }
+      if (response.statusCode == 404) {
         return null;
       }
       if (response.statusCode == 401) {
@@ -498,20 +456,15 @@ return jsonMap['nombre'];
 
         return null;
       }
-  
-  
-} catch (e) {
-   print('=== response.statusCode ===> ${e}');
+    } catch (e) {
+      print('=== response.statusCode ===> ${e}');
       return false;
+    }
 
-}
-
- 
-  
-  // else {
-  //   print('Image upload failed.');
-  // }
-}
+    // else {
+    //   print('Image upload failed.');
+    // }
+  }
   // Future uploadImage({
   //   required File image,
   //    required String imageType,
@@ -547,18 +500,13 @@ return jsonMap['nombre'];
   //   }
   // }
 
-
-
-
 //=========================GET ALL GRUPOS CHAT =====================================//
   Future getAllGruposChat({
     BuildContext? context,
     String? token,
-    
   }) async {
     try {
-      final url = Uri.parse(
-          '$_dirURL/messages/byPerId/0');
+      final url = Uri.parse('$_dirURL/messages/byPerId/0');
 
       final dataResp = await _http.get(
         url,
@@ -581,16 +529,15 @@ return jsonMap['nombre'];
       return null;
     }
   }
+
 //=========================GET ALL GRUPOS CHAT =====================================//
   Future getUsuarioById({
     BuildContext? context,
     String? token,
     String? idUser,
-    
   }) async {
     try {
-      final url = Uri.parse(
-          '$_dirURL/proveedores/usuarioById/$idUser');
+      final url = Uri.parse('$_dirURL/proveedores/usuarioById/$idUser');
 
       final dataResp = await _http.get(
         url,
@@ -606,35 +553,35 @@ return jsonMap['nombre'];
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
-           snaks.NotificatiosnService.showSnackBarDanger("Debe inciar sesión nuevamente");
+        snaks.NotificatiosnService.showSnackBarDanger(
+            "Debe inciar sesión nuevamente");
         return null;
       }
     } catch (e) {
       return null;
     }
   }
+
 //=========================GET ALL GRUPOS CHAT =====================================//
   Future putUsuarioById({
     BuildContext? context,
     String? token,
     String? idUser,
-    Map<String,dynamic>? data,
-    
+    Map<String, dynamic>? data,
   }) async {
     try {
-      final url = Uri.parse(
-          '$_dirURL/proveedores/usuario/$idUser');
+      final url = Uri.parse('$_dirURL/proveedores/usuario/$idUser');
 
-      final dataResp = await _http.put(
-        url,
-        headers: {'Content-Type':'application/json',"x-auth-token":'$token'},
-        body: jsonEncode(data)
-      );
-   print(' LA DETA DEL PUT: ${dataResp.body}');  
+      final dataResp = await _http.put(url,
+          headers: {
+            'Content-Type': 'application/json',
+            "x-auth-token": '$token'
+          },
+          body: jsonEncode(data));
+      print(' LA DETA DEL PUT: ${dataResp.body}');
       final respo = jsonDecode(dataResp.body);
 
-  //  print(' LA DETA DEL PUT: $respo');
-
+      //  print(' LA DETA DEL PUT: $respo');
 
       if (dataResp.statusCode == 200) {
         return respo;
@@ -645,131 +592,118 @@ return jsonMap['nombre'];
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
-           snaks.NotificatiosnService.showSnackBarDanger("Debe inciar sesión nuevamente");
+        snaks.NotificatiosnService.showSnackBarDanger(
+            "Debe inciar sesión nuevamente");
         return null;
       }
     } catch (e) {
       return null;
     }
   }
+
 //=========================CIERRA SESEION APP =====================================//
   Future putSessionUser({
     BuildContext? context,
     String? token,
-     
   }) async {
     try {
-      final url = Uri.parse(
-          '$_dirURL/auth/logout');
+      final url = Uri.parse('$_dirURL/auth/logout');
 
       final dataResp = await _http.put(
         url,
-        headers: {'Content-Type':'application/json',"x-auth-token":'$token'},
-    
+        headers: {'Content-Type': 'application/json', "x-auth-token": '$token'},
       );
-   print(' DELETTE SESION  PUT: ${dataResp.body}');  
+      print(' DELETTE SESION  PUT: ${dataResp.body}');
       final respo = jsonDecode(dataResp.body);
 
-  //  print(' LA DETA DEL PUT: $respo');
-
+      //  print(' LA DETA DEL PUT: $respo');
 
       if (dataResp.statusCode == 200) {
         return respo;
       }
 
-      if (dataResp.statusCode == 401||dataResp.statusCode == 404|| dataResp.statusCode == 500) {
+      if (dataResp.statusCode == 401 ||
+          dataResp.statusCode == 404 ||
+          dataResp.statusCode == 500) {
         return null;
       }
-     
     } catch (e) {
       return null;
     }
   }
+
 //========================= ACTUALIZAZ CLAVE =====================================//
   Future putActualizaClave({
     BuildContext? context,
     String? token,
     String? idUser,
-    Map<String,dynamic>? nuevaClave,
-     
+    Map<String, dynamic>? nuevaClave,
   }) async {
     try {
-      final url = Uri.parse(
-          '$_dirURL/proveedores/password/$idUser');
+      final url = Uri.parse('$_dirURL/proveedores/password/$idUser');
 
-      final dataResp = await _http.put(
-        url,
-        headers: {'Content-Type':'application/json',"x-auth-token":'$token'},
-        body: jsonEncode(nuevaClave)
-    
-      );
-   print(' actualiza  PUT: ${dataResp.body}');  
+      final dataResp = await _http.put(url,
+          headers: {
+            'Content-Type': 'application/json',
+            "x-auth-token": '$token'
+          },
+          body: jsonEncode(nuevaClave));
+      print(' actualiza  PUT: ${dataResp.body}');
       final respo = jsonDecode(dataResp.body);
 
-  //  print(' LA DETA DEL PUT: $respo');
-
+      //  print(' LA DETA DEL PUT: $respo');
 
       if (dataResp.statusCode == 200) {
         return respo;
       }
 
-      if (dataResp.statusCode == 401||dataResp.statusCode == 404|| dataResp.statusCode == 500) {
+      if (dataResp.statusCode == 401 ||
+          dataResp.statusCode == 404 ||
+          dataResp.statusCode == 500) {
         return null;
       }
-     
     } catch (e) {
       return null;
     }
   }
+
 //=========================GET ALL GRUPOS CHAT =====================================//
   Future getVerificaCedulaNuevoCliente({
-
     String? cedula,
-
-   
-    
   }) async {
     try {
-    final url = Uri.parse(
+      final url = Uri.parse(
           '$_dirURL/proveedores/exitscedula/$cedula?rucempresa=ULTRA2022');
 
       final dataResp = await _http.get(
         url,
-     
-      
-    
       );
-   print(' DATA DESDE SERVER VERIFICA CEDULA : ${dataResp.body}');  
+      print(' DATA DESDE SERVER VERIFICA CEDULA : ${dataResp.body}');
       final respo = jsonDecode(dataResp.body);
-
-
-
-
 
       print('objectLA RESPUESTA DE VALIDAR CEDULA $respo');
       if (dataResp.statusCode == 200) {
         return 200;
       }
 
-       if (dataResp.statusCode == 404) {
+      if (dataResp.statusCode == 404) {
         return 404;
       }
-       if (dataResp.statusCode == 401 || dataResp.statusCode == 500) {
+      if (dataResp.statusCode == 401 || dataResp.statusCode == 500) {
         return null;
       }
     } catch (e) {
       return null;
     }
   }
+
 //=========================GET ALL GRUPOS CHAT =====================================//
   Future getAllNoticias({
     BuildContext? context,
     String? token,
-    
   }) async {
     try {
-      final url = Uri.parse(
-          '$_dirURL/noticias/listado');
+      final url = Uri.parse('$_dirURL/noticias/listado');
 
       final dataResp = await _http.get(
         url,
@@ -785,7 +719,8 @@ return jsonMap['nombre'];
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
-          snaks.NotificatiosnService.showSnackBarDanger("Debe inciar sesión nuevamente");
+        snaks.NotificatiosnService.showSnackBarDanger(
+            "Debe inciar sesión nuevamente");
 
         return null;
       }
@@ -793,15 +728,14 @@ return jsonMap['nombre'];
       return null;
     }
   }
+
 //=========================GET ALL GRUPOS CHAT =====================================//
   Future getAllNotificaciones({
     BuildContext? context,
     String? token,
-    
   }) async {
     try {
-      final url = Uri.parse(
-          '$_dirURL/notificaciones/listado');
+      final url = Uri.parse('$_dirURL/notificaciones/listado');
 
       final dataResp = await _http.get(
         url,
@@ -817,7 +751,8 @@ return jsonMap['nombre'];
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
-         snaks.NotificatiosnService.showSnackBarDanger("Debe inciar sesión nuevamente");
+        snaks.NotificatiosnService.showSnackBarDanger(
+            "Debe inciar sesión nuevamente");
 
         return null;
       }
@@ -829,23 +764,18 @@ return jsonMap['nombre'];
 //=========================GET ALL GRUPOS CHAT =====================================//
   Future getAllUsuariosChat({
     BuildContext? context,
-    int? idChat, 
+    int? idChat,
     String? token,
-    
   }) async {
     try {
-      final url = Uri.parse(
-          '$_dirURL/messages/participantes?chat_id=$idChat');
+      final url = Uri.parse('$_dirURL/messages/participantes?chat_id=$idChat');
 
       final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
       );
 
-
 // print('INFO DE LA CONSULTA UUARIOS DEL CHAT ${dataResp.body}');
-
-
 
       final respo = jsonDecode(dataResp.body);
       if (dataResp.statusCode == 200) {
@@ -857,7 +787,8 @@ return jsonMap['nombre'];
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
-         snaks.NotificatiosnService.showSnackBarDanger("Debe inciar sesión nuevamente");
+        snaks.NotificatiosnService.showSnackBarDanger(
+            "Debe inciar sesión nuevamente");
 
         return null;
       }
@@ -865,6 +796,7 @@ return jsonMap['nombre'];
       return null;
     }
   }
+
 //=========================GET ALL GRUPOS CHAT =====================================//
   Future getAllTodoLosChatPaginacion({
     BuildContext? context,
@@ -876,25 +808,20 @@ return jsonMap['nombre'];
     int? chatId,
     String? rucempresa,
     String? token,
-    
   }) async {
-
 // print('page=$page&cantidad=$cantidad&searc=$search&input=$input&orden=$orden&chat_id=$chatId');
 
     try {
       final url = Uri.parse(
           '$_dirURL/messages/?page=$page&cantidad=$cantidad&search=$search&input=$input&orden=$orden&chat_id=$chatId');
-          // '$_dirURL/messages/?page=0&cantidad=3&search&input=message_id&orden=false&chat_id=4');
+      // '$_dirURL/messages/?page=0&cantidad=3&search&input=message_id&orden=false&chat_id=4');
 
       final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
       );
 
-
 // print('INFO DE LA CONSULTA UUARIOS DEL CHAT ${dataResp.body}');
-
-
 
       final respo = jsonDecode(dataResp.body);
       if (dataResp.statusCode == 200) {
@@ -906,7 +833,8 @@ return jsonMap['nombre'];
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
-         snaks.NotificatiosnService.showSnackBarDanger("Debe inciar sesión nuevamente");
+        snaks.NotificatiosnService.showSnackBarDanger(
+            "Debe inciar sesión nuevamente");
 
         return null;
       }
@@ -926,18 +854,17 @@ return jsonMap['nombre'];
         url,
         headers: {"x-auth-token": '$token'},
       );
- if (dataRespToken.body.isEmpty) {
+      if (dataRespToken.body.isEmpty) {
         return null;
       }
       if (dataRespToken.statusCode == 200) {
         final responseData = jsonDecode(dataRespToken.body);
-       return responseData;
+        return responseData;
       }
       if (dataRespToken.statusCode == 404) {
         return null;
       }
       if (dataRespToken.statusCode == 401) {
-
         return null;
       }
     } catch (e) {
@@ -945,24 +872,19 @@ return jsonMap['nombre'];
     }
   }
 
-
 //=========================GET ALL GRUPOS CHAT =====================================//
   Future getNotificacionId({
     BuildContext? context,
     String? token,
     String? idUsuario,
-    
   }) async {
     try {
-      final url = Uri.parse(
-          '$_dirURL/notificaciones/id/$idUsuario');
+      final url = Uri.parse('$_dirURL/notificaciones/id/$idUsuario');
 
       final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
       );
-
-
 
 // print('INFO DE LA NOTIFICACION POR ID ${dataResp.body}');
 
@@ -977,7 +899,8 @@ return jsonMap['nombre'];
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
-         snaks.NotificatiosnService.showSnackBarDanger("Debe inciar sesión nuevamente");
+        snaks.NotificatiosnService.showSnackBarDanger(
+            "Debe inciar sesión nuevamente");
 
         return null;
       }
@@ -985,6 +908,113 @@ return jsonMap['nombre'];
       return null;
     }
   }
+
+//-------------IMAGEN CHAT AL SERVIDOR----------------//
+  Future getUrlServerChat(File? _file, String _token) async {
+    var url = Uri.parse('$_dirURL/upload_delete_multiple_files/upload');
+
+    try {
+      var request = _http.MultipartRequest('POST', url);
+
+      File imageFile = File(_file!.path);
+
+      // Add parameters to the request
+      request.fields['tipo'] = 'chats';
+
+      request.headers.addAll({
+        "x-auth-token": _token,
+         "Content-Type": 'multipart/form-data',
+      });
+      // Add the image file to the request
+      request.files.add(await _http.MultipartFile.fromPath(
+        'archivo',
+        imageFile.path,
+      ));
+
+      // Send the request
+      var response = await request.send();
+
+      var responsed = await _http.Response.fromStream(response);
+       print('Image responsed.body successfully ALL. ${responsed.body}');
+
+      if (response.statusCode == 200) {
+        print('Image responsed.body successfully. ${responsed.body}');
+        Map<String, dynamic> jsonMap = json.decode(responsed.body);
+
+        // Extraer la URL
+        return jsonMap['nombre'];
+      }
+      if (response.statusCode == 404) {
+        return null;
+      }
+      if (response.statusCode == 401) {
+        // Auth.instance.deleteSesion(context!);
+
+        return null;
+      }
+    } catch (e) {
+      print('=== response.statusCode ===> ${e}');
+      return false;
+    }
+
+    // else {
+    //   print('Image upload failed.');
+    // }
+  }
+
+
+// Future<String?> uploadAudio(File? audioFile, String token) async {
+//   var url = Uri.parse('$_dirURL/upload_audio');
+
+//   try {
+//     var request = _http.MultipartRequest('POST', url);
+
+//     if (audioFile != null) {
+//       // Agregar parámetros a la solicitud
+//       request.fields['tipo'] = 'chats';
+
+//       // Agregar encabezados a la solicitud
+//       request.headers.addAll({
+//         "x-auth-token": token,
+//         "Content-Type": 'multipart/form-data',
+//       });
+
+//       // Agregar el archivo de audio a la solicitud
+//       request.files.add(await _http.MultipartFile.fromPath(
+//         'audio_file',
+//         audioFile.path,
+//       ));
+
+//       // Enviar la solicitud
+//       var response = await request.send();
+//       var responseBody = await _http.Response.fromStream(response);
+
+//       print('Audio response body: ${responseBody.body}');
+
+//       if (response.statusCode == 200) {
+//         Map<String, dynamic> jsonMap = json.decode(responseBody.body);
+
+//         // Extraer la URL o cualquier otro dato necesario
+//         return jsonMap['nombre'];
+//       } else if (response.statusCode == 404) {
+//         return null;
+//       } else if (response.statusCode == 401) {
+//         // Manejar la lógica para la respuesta 401 (no autorizado)
+//         return null;
+//       }
+//     }
+//   } catch (e) {
+//     print('Error uploading audio: $e');
+//     return null;
+//   }
+
+//   return null;
+// }
+
+
+
+
+
 
 
 

@@ -35,7 +35,7 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
   // 'home': (_) => const FotosPerfilPage(),
   'auxilo': (_) => const AuxilioPage(),
   'notificaciones': (_) => const ListaNotificaciones(),
-  'prueba': (_) =>  VideoListScreen(),
+  'prueba': (_) =>  VoiceRecorderScreen(),
 
   
   // 'home': (_) =>   ChatPage()

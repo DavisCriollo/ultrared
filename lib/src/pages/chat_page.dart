@@ -6,6 +6,7 @@ import 'package:better_player/better_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -22,15 +23,38 @@ import 'package:ultrared/src/widgets/message.dart';
 
 class ChatPage extends StatefulWidget {
     final Map<String,dynamic> infoChat;
-  const ChatPage({Key? key, required this.infoChat}) : super(key: key);
+
+
+
+   ChatPage({Key? key, required this.infoChat}) : super(key: key);
 
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
+
+
+
+//*************AUDIO PLAYER**************/
+
+ bool isRecording = false;
+  late String filePath;
+  bool isPlaying = false;
+  double playbackTime = 0.0;
+  double playbackDuration = 1.0; // Inicia con un valor predeterminado
+ 
+
   late Record _record;
   AudioPlayer _audioPlayer = AudioPlayer();
+
+//***********************************/
+
+
+
+
+  // late Record _record;
+  // AudioPlayer _audioPlayer = AudioPlayer();
     // late BetterPlayerController _betterPlayerController;
 
   ChatController recorderState = ChatController();
@@ -48,16 +72,31 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
 //*************************/
 
-  _record = Record();
+  // _record = Record();
+  //   _audioPlayer.onAudioPositionChanged.listen((Duration duration) {
+  //     recorderState.playbackTime = duration.inMilliseconds.toDouble();
+  //     recorderState.notify();
+  //   });
+
+  //   _audioPlayer.onDurationChanged.listen((Duration duration) {
+  //     recorderState.playbackDuration = duration.inMilliseconds.toDouble();
+  //     recorderState.notify();
+  //   });
+
+
+ _record = Record();
     _audioPlayer.onAudioPositionChanged.listen((Duration duration) {
-      recorderState.playbackTime = duration.inMilliseconds.toDouble();
-      recorderState.notify();
+      setState(() {
+        playbackTime = duration.inMilliseconds.toDouble();
+      });
     });
 
     _audioPlayer.onDurationChanged.listen((Duration duration) {
-      recorderState.playbackDuration = duration.inMilliseconds.toDouble();
-      recorderState.notify();
+      setState(() {
+        playbackDuration = duration.inMilliseconds.toDouble();
+      });
     });
+
 //*********************************** */
   _scrollController.addListener(() {
 
@@ -112,9 +151,191 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   @override
   void dispose() {
   _scrollController.dispose();
+   _record.dispose();
+    _audioPlayer.dispose();
     super.dispose();
   }
+//**************  AUDIO************************/
+ String _formatDuration(double milliseconds) {
+    Duration duration = Duration(milliseconds: milliseconds.round());
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return '$twoDigitMinutes:$twoDigitSeconds';
+  }
 
+  Future<void> _startRecording(Responsive size,Map<String,dynamic> infoChat) async {
+    bool hasPermission = await _record.hasPermission();
+    if (hasPermission) {
+      if (!isRecording) {
+        await _record.start();
+        setState(() {
+          isRecording = true;
+        });
+        _showRecordingModal(size,infoChat);
+      }
+    } else {
+      // Handle permission denied
+      print('Permission denied to access the microphone.');
+    }
+  }
+
+ 
+
+    void _showRecordingModal(Responsive size,Map<String,dynamic> infoChat) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              padding: EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Icon(Icons.mic, size: size.iScreen(5.0), color: Colors.red),
+                  SizedBox(height: 16),
+                  Text(
+                    'Grabando...',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  // SizedBox(height: 16),
+                  // IconButton(
+                  //   onPressed: () async {
+                  //     await _stopRecording();
+                  //   },
+                  //   icon: Icon(Icons.stop),
+                  // ),
+                  // SizedBox(height: 16),
+                   IconButton(
+                    onPressed: ()async {
+                      // Lógica para enviar el archivo grabado
+//  print('Enviando archivo: ${filePath}');
+ await _stopRecording();
+                      _playRecordedFile();
+                     
+                    },
+                    icon: Icon(Icons.play_arrow,size: size.iScreen(3.5),),
+                  ),
+                   IconButton(
+                    onPressed: () async{
+                      // Lógica para enviar el archivo grabado
+//  print('Enviando archivo: ${filePath}');
+ await _stopRecording();
+                          _stopPlaying();
+                     
+                    },
+                    icon: Icon(Icons.stop),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                          await _stopRecording();
+                          _stopPlaying();
+                      Navigator.of(context).pop(); // Cerrar el modal sin detener la grabación
+                    },
+                    icon: const Icon(Icons.cancel),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                          // await _stopRecording();
+                          // _stopPlaying();
+                          print('Enviando archivo: ${filePath}'); 
+
+final _ctrlChat = context.read<ChatController>();
+    final _ctrlHome = context.read<HomeController>();
+    final _ctrlSocket = context.read<SocketModel>();
+                  _ctrlChat.setImage( File(filePath));
+                  ProgressDialog.show(context);
+         await _ctrlChat.getUrlServerChats();
+                  ProgressDialog.dissmiss(context);
+
+                if (_ctrlChat.getUrlImagenVideo.isNotEmpty ) {
+                          Navigator.of(context).pop();
+
+                        //****************************************//
+                        final _data={
+  "opcion": "GROUP", // 'INDIVIDUAL' | 'GROUP'
+  "rucempresa": "ULTRA2022", // login
+  "rol": '${ _ctrlHome.getUser!['rol']}',
+  "chat_id": infoChat['chat_id'], // tomar del grupo del chat
+  "person_id": '${ _ctrlHome.getUser!['id']}', // login
+  "message_text": '', //texto
+  "message_audio": "", // vacio de momento
+  "message_fotos": [], // vacio de momento
+   "message_videos": [] // vacio de momento
+};
+
+
+
+// print('se imprima data para socket $_data');
+  _ctrlSocket.emitEvent('client:send-mensaje', _data);
+
+  _ctrlChat.addItemsChatPaginacion(_ctrlSocket.getMensajeChat);
+
+
+   //****************************************//
+
+
+
+                      } else {
+
+                          NotificatiosnService.showSnackBarDanger('No se pudo enviar... ');
+                      }
+
+
+ Navigator.of(context).pop();
+
+
+                    },
+                    icon: const Icon(Icons.send),
+                  ),
+                  // SizedBox(height: 16),
+                 
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> _stopRecording() async {
+    if (isRecording) {
+      String? result = await _record.stop();
+      // Navigator.of(context).pop(); // Cerrar el modal al detener la grabación
+      setState(() {
+        isRecording = false;
+        filePath = result!;
+      });
+      print('Recording saved at: $result');
+    }
+  }
+
+  Future<void> _playRecordedFile() async {
+    if (File(filePath).existsSync()) {
+      await _audioPlayer.play(filePath, isLocal: true);
+      setState(() {
+        isPlaying = true;
+      });
+       print('File ok: $filePath');
+    } else {
+      print('File not found: $filePath');
+    }
+  }
+
+  Future<void> _stopPlaying() async {
+    await _audioPlayer.stop();
+    setState(() {
+      isPlaying = false;
+    });
+  }
+
+
+
+
+
+//************************************** */
 
 
   bool _estaEscribiendo = false;
@@ -311,6 +532,8 @@ final _infoChat=widget.infoChat;
                             values.setTipoMensajeChat('image');
 
                             // //***************************/
+
+
                             bottomSheetImagen(_ctrlHome,context,size,_infoChat);
                             // final image = await _getImage(context, ImageSource.camera);
                             //   if (image != null) {
@@ -393,7 +616,23 @@ final _infoChat=widget.infoChat;
                                       //****************************/
 
 
+                                           //******************************/
 
+
+
+
+                // if (isRecording) {
+                //   await _stopRecording();
+                // } else {
+                //   await _startRecording();
+                // }
+
+
+               await _startRecording(size,_infoChat);
+
+
+
+//******************************/
 
 
 
@@ -926,7 +1165,7 @@ final _data={
               ),
               child: const Text('Enviar'),
               onPressed: () async{
-
+ 
                   ProgressDialog.show(context);
          await _ctrl.getUrlServerChats();
                   ProgressDialog.dissmiss(context);
@@ -1084,7 +1323,7 @@ final _data={
 
   Future<File?> _getImage(BuildContext context, ImageSource source) async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: source);
+    final pickedFile = await picker.pickImage(source: source,imageQuality: 50);
 
     if (pickedFile == null) {
       return null;
@@ -1094,7 +1333,7 @@ final _data={
   }
   Future<File?> _getVideo(BuildContext context, ImageSource source) async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickVideo(source: source);
+    final pickedFile = await picker.pickVideo(source: source,);
 
     if (pickedFile == null) {
       return null;
@@ -1254,4 +1493,20 @@ final _ctrlChat=context.read<ChatController>();
                 ),
               ],
             ));
+
+
+
+
+
+
+
+
+
+
+
   }
+
+
+
+
+
