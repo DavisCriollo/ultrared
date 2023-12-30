@@ -202,9 +202,9 @@ _myChat(BuildContext context,
                               ),
                               
                               margin: EdgeInsets.symmetric(vertical:size.iScreen(0.2)),child: _messajeTexto( messaje['message_text'],size)):Container(),
-                              messaje['message_fotos'].isNotEmpty?Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeImagen(context, messaje['message_fotos'],size)):Container(),
-                               messaje['message_videos'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeVideo(context,messaje['message_videos'],size)):Container(),
-                                  messaje['message_audio'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeAudio(context,messaje['message_audio'],size)):Container(),
+                              messaje['message_fotos'].isNotEmpty?Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeImagen(context, messaje['message_fotos'],size)):Container(),
+                               messaje['message_videos'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeVideo(context,messaje['message_videos'],size)):Container(),
+                                  messaje['message_audio'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeAudio(context,messaje['message_audio'],size)):Container(),
                               
                             ],
                           )
@@ -300,71 +300,155 @@ Container _messajeVideo(BuildContext context,List _listUrl,Responsive size) {
 
 
 Container _messajeAudio(BuildContext context,String _urlAudio, size) {
+String _formatDuration(int milliseconds) {
+    Duration duration = Duration(milliseconds: milliseconds);
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "$twoDigitMinutes:$twoDigitSeconds";
+  }
+
+
   return Container(
+   
+    height: size.iScreen(7.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
-        color: Colors.grey,
-      ),child:  Consumer<ChatController>(builder: (_, valuesAudio,__) { 
-return    Container(
-                    color: Colors.grey.shade200,
-                    // width: size.isScreen(10),
-                    //  height: size.iScreen(30.0),
-                    // margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
-                   
-                    child: 
-                    // Text('data')
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Row(
-                        //   children: [
-                        //     InkWell(
-                        //       onTap: () async {
-                        //         // if (valuesAudio.isPlaying) {
-                        //         //   await valuesAudio.stopPlaying(_audioPlayer);
-                        //         // } else {
-                        //         //   await valuesAudio.playRecordedFile(_audioPlayer);
-                        //         // }
-                        //       },
-                        //       child: Container(
-                        //         child: Icon(valuesAudio.isPlaying ? Icons.stop : Icons.play_arrow, size: size.iScreen(3.5)),
-                        //       ),
-                        //     ),
-                        //     Slider(
-                        //       activeColor: Colors.red,
-                        //       thumbColor: Colors.pink,
-                        //       min: 0,
-                        //       value: valuesAudio.playbackTime,
-                        //       max: valuesAudio.playbackDuration,
-                        //       onChanged: (double value) {
-                        //         // _audioPlayer.seek(Duration(milliseconds: value.toInt()));
-                        //       },
-                        //     ),
-                        //   ],
-                        // ),
-                        // Row(
-                        //   children: [
-                        //     Text(
-                        //       valuesAudio.formatDuration(valuesAudio.playbackTime) +
-                        //           ' / ' +
-                        //           valuesAudio.formatDuration(valuesAudio.playbackDuration),
-                        //       style: TextStyle(
-                        //         fontSize: 16,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                      ],
+        // color: Colors.grey,
+          // color: Colors.yellow,
+      ),child:  
+      Column(
+        mainAxisSize : MainAxisSize.min,
+      children: [
+             Consumer<ChatController>(
+            builder: (context, audioProvider, child) {
+              return Container(
+                  // color: Colors.green,
+                  height: size.iScreen(4.0),
+                       width: size.iScreen(30.0),
+                child:
+                 Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(audioProvider.isPlaying ? Icons.stop : Icons.play_arrow),
+                      onPressed: () {
+                        var audioProvider = Provider.of<ChatController>(context, listen: false);
+                        audioProvider.play(_urlAudio);
+                      },
                     ),
-                  );
-                               }
-      // width: size.wScreen(
-      //   60.0,
-      // ),
-      // height: size.iScreen(
-      //   30.0,
-      // ),
-      ));
+                    Slider(
+                      value: audioProvider.position,
+                      max: audioProvider.duration,
+                      onChanged: (value) {
+                        audioProvider.seek(value);
+                      },
+                     
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+
+        Container(
+          // color: Colors.red,
+          padding:  EdgeInsets.symmetric(horizontal:size.iScreen(0.2),vertical:size.iScreen(0.0)),
+          child: Consumer<ChatController>(
+            builder: (context, audioProvider, child) {
+              return Text(
+                '${_formatDuration(audioProvider.position.toInt())} / ${_formatDuration(audioProvider.duration.toInt())}',
+                 style: GoogleFonts.poppins(
+                          fontSize: size.iScreen(1.5),
+                          fontWeight: FontWeight.w500,
+                          color: sextinaryColor,
+                          // letterSpacing: -0.40,
+                        )
+              );
+            },
+          ),
+        ),
+      ],
+    ),
+    );
+      
+      
+      
+//       Consumer<ChatController>(builder: (_, valuesAudio,__) { 
+// return    Container(
+//                     color: Colors.grey.shade200,
+//                     // width: size.isScreen(10),
+//                     //  height: size.iScreen(30.0),
+//                     // margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
+                   
+//                     child: 
+
+
+//                           Consumer<ChatController>(builder: (_, valuesAudio,__) { 
+
+
+
+//                     // Text('data')
+//                     // Column(
+//                     //   mainAxisSize: MainAxisSize.min,
+//                     //   children: [
+
+
+                          
+
+
+
+
+//                     //     // Text('data')
+//                     //     // Row(
+//                     //     //   children: [
+//                     //     //     InkWell(
+//                     //     //       onTap: () async {
+//                     //     //         // if (valuesAudio.isPlaying) {
+//                     //     //         //   await valuesAudio.stopPlaying(_audioPlayer);
+//                     //     //         // } else {
+//                     //     //         //   await valuesAudio.playRecordedFile(_audioPlayer);
+//                     //     //         // }
+//                     //     //       },
+//                     //     //       child:
+//                     //     //        Container(
+//                     //     //         child: Icon(valuesAudio.isPlaying ? Icons.stop : Icons.play_arrow, size: size.iScreen(3.5)),
+//                     //     //       ),
+//                     //     //     ),
+//                     //     //     Slider(
+//                     //     //       activeColor: Colors.red,
+//                     //     //       thumbColor: Colors.pink,
+//                     //     //       min: 0,
+//                     //     //       value: valuesAudio.playbackTime,
+//                     //     //       max: valuesAudio.playbackDuration,
+//                     //     //       onChanged: (double value) {
+//                     //     //         // _audioPlayer.seek(Duration(milliseconds: value.toInt()));
+//                     //     //       },
+//                     //     //     ),
+//                     //     //   ],
+//                     //     // ),
+//                     //     // Row(
+//                     //     //   children: [
+//                     //     //     Text(
+//                     //     //       valuesAudio.formatDuration(valuesAudio.playbackTime) +
+//                     //     //           ' / ' +
+//                     //     //           valuesAudio.formatDuration(valuesAudio.playbackDuration),
+//                     //     //       style: TextStyle(
+//                     //     //         fontSize: 16,
+//                     //     //       ),
+//                     //     //     ),
+//                     //     //   ],
+//                     //     // ),
+//                     //   ],
+//                     // ),
+//                   );
+//                                }
+//       // width: size.wScreen(
+//       //   60.0,
+//       // ),
+//       // height: size.iScreen(
+//       //   30.0,
+//       // ),
+//       ));
 }
 
 Container _messajeImagen(BuildContext context,List _listUrl,Responsive size) {
@@ -554,16 +638,18 @@ _noChat(BuildContext context,
                               // maxWidth: size.wScreen(60.0) // Ancho máximo
                               ),
                                   // width:size.iScreen(25)
-                                margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeTexto( messaje['message_text'],size)):Container(),
-                              messaje['message_fotos'].isNotEmpty?Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeImagen(context, messaje['message_fotos'],size)):Container(),
-                           messaje['message_videos'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeVideo(context, messaje['message_videos'],size)):Container(),
-                              messaje['message_audio'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(1.0)),child: _messajeAudio(context,messaje['message_audio'],size)):Container(),   
+                                
+                              margin: EdgeInsets.symmetric(vertical:size.iScreen(0.2)),child: _messajeTexto( messaje['message_text'],size)):Container(),
+                              messaje['message_fotos'].isNotEmpty?Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeImagen(context, messaje['message_fotos'],size)):Container(),
+                               messaje['message_videos'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeVideo(context,messaje['message_videos'],size)):Container(),
+                                  messaje['message_audio'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeAudio(context,messaje['message_audio'],size)):Container(),
+                              
                             ],
                           )
                                       
                                       ),
                       SizedBox(
-                        height: size.wScreen(3.0),
+                        height: size.wScreen(2.0),
                       )
                     ],
                   ),

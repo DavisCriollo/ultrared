@@ -310,7 +310,7 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
     notifyListeners();
   }
 
-  int? _cantidad = 3;
+  int? _cantidad = 25;
   int? get getCantidad => _cantidad;
   void setCantidad(int? _cant) {
     _cantidad = _cant;
@@ -450,212 +450,46 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
 
 
 //*********************LOGICA PARA GRABAR AUDIO ***********************/
-  // late Record _record;
-  // AudioPlayer _audioPlayer = AudioPlayer();
+    AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isPlaying = false;
+  double _position = 0.0;
+  double _duration = 1.0; // Inicializado en 1.0 para evitar la división por cero
 
-  // bool isRecording = false;
-  // late String filePath;
-  // bool isPlaying = false;
-  // double playbackTime = 0.0;
-  // double playbackDuration = 1.0;
+  bool get isPlaying => _isPlaying;
+  double get position => _position;
+  double get duration => _duration;
 
-  // VoiceRecorderProvider() {
-  //   _record = Record();
-  //   _audioPlayer.onAudioPositionChanged.listen((Duration duration) {
-  //     playbackTime = duration.inMilliseconds.toDouble();
-  //     notifyListeners();
-  //   });
+  void play(String url) async {
+    if (_isPlaying) {
+      _audioPlayer.stop();
+    } else {
+      await _audioPlayer.play(url);
+      _audioPlayer.onAudioPositionChanged.listen((Duration duration) {
+        _position = duration.inMilliseconds.toDouble();
+        notifyListeners();
+      });
 
-  //   _audioPlayer.onDurationChanged.listen((Duration duration) {
-  //     playbackDuration = duration.inMilliseconds.toDouble();
-  //     notifyListeners();
-  //   });
-  // }
+      _audioPlayer.onDurationChanged.listen((Duration duration) {
+        _duration = duration.inMilliseconds.toDouble();
+        notifyListeners();
+      });
+    }
+    _isPlaying = !_isPlaying;
+    notifyListeners();
+  }
 
-  // String _formatDuration(double milliseconds) {
-  //   Duration duration = Duration(milliseconds: milliseconds.round());
-  //   String twoDigits(int n) => n.toString().padLeft(2, '0');
-  //   String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-  //   String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-  //   return '$twoDigitMinutes:$twoDigitSeconds';
-  // }
+  void seek(double value) {
+    if (_isPlaying) {
+      _audioPlayer.seek(Duration(milliseconds: value.toInt()));
+    }
+  }
 
-  // Future<void> startRecording() async {
-  //   bool hasPermission = await _record.hasPermission();
-  //   if (hasPermission) {
-  //     if (!isRecording) {
-  //       await _record.start();
-  //       isRecording = true;
-  //       notifyListeners();
-  //       // _showRecordingModal();
-  //     }
-  //   } else {
-  //     // Handle permission denied
-  //     print('Permission denied to access the microphone.');
-  //   }
-  // }
-
-  // Future<void> stopRecording() async {
-  //   if (isRecording) {
-  //     String? result = await _record.stop();
-  //     // Navigator.of(context).pop(); // Cerrar el modal al detener la grabación
-  //     isRecording = false;
-  //     filePath = result!;
-  //     notifyListeners();
-  //     print('Recording saved at: $result');
-  //   }
-  // }
-
-  // Future<void> playRecordedFile() async {
-  //   if (File(filePath).existsSync()) {
-  //     await _audioPlayer.play(filePath, isLocal: true);
-  //     isPlaying = true;
-  //     notifyListeners();
-  //   } else {
-  //     print('File not found: $filePath');
-  //   }
-  // }
-
-  // Future<void> stopPlaying() async {
-  //   await _audioPlayer.stop();
-  //   isPlaying = false;
-  //   notifyListeners();
-  // }
-
-
-//   bool isRecording = false;
-//   String filePath = '';
-//   double playbackTime = 0.0;
-//   double playbackDuration = 1.0; // Inicia con un valor predeterminado
-//   bool _isPlaying = false; // Nuevo campo
-
-//   // Getter para isPlaying
-//   bool get isPlaying => _isPlaying;
-
-//   // Setter para isPlaying
-//   set isPlaying(bool value) {
-//     _isPlaying = value;
-//     notifyListeners();
-//   }
-
-//   // Método para notificar a los oyentes cuando hay cambios en el estado
-//   void notify() {
-//     notifyListeners();
-//   }
-
-//   Future<void> startRecording(BuildContext context, record, AudioPlayer audioPlayer) async {
-//     bool hasPermission = await record.hasPermission();
-//     if (hasPermission) {
-//       if (!isRecording) {
-//         await record.start();
-//         isRecording = true;
-//         showRecordingModal(context);
-//       }
-//     } else {
-//       // Handle permission denied
-//       print('Permission denied to access the microphone.');
-//     }
-//     notify(); // Notificar cambios en el estado
-//   }
-
-//   Future<void> stopRecording(Record record, BuildContext context) async {
-//     if (isRecording) {
-//       String? result = await record.stop();
-//       // Navigator.of(context).pop(); // Cerrar el modal al detener la grabación
-//       isRecording = false;
-//       filePath = result!;
-//       print('Recording saved at: $result');
-//     }
-//     notify(); // Notificar cambios en el estado
-//   }
-
-//   Future<void> playRecordedFile(AudioPlayer audioPlayer) async {
-//     if (File(filePath).existsSync()) {
-//       await audioPlayer.play(filePath, isLocal: true);
-//       isPlaying = true;
-//     } else {
-//       print('File not found: $filePath');
-//     }
-//     notify(); // Notificar cambios en el estado
-//   }
-
-//   Future<void> stopPlaying(AudioPlayer audioPlayer) async {
-//     await audioPlayer.stop();
-//     isPlaying = false;
-//     notify(); // Notificar cambios en el estado
-//   }
-
-//   String formatDuration(double milliseconds) {
-//     Duration duration = Duration(milliseconds: milliseconds.round());
-//     String twoDigits(int n) => n.toString().padLeft(2, '0');
-//     String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-//     String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-//     return '$twoDigitMinutes:$twoDigitSeconds';
-//   }
-
-//   void showRecordingModal(BuildContext context) {
-//     showModalBottomSheet(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return StatefulBuilder(
-//           builder: (BuildContext context, StateSetter setState) {
-//             return Container(
-//               padding: EdgeInsets.all(16),
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: [
-//                   Icon(Icons.mic, size: 40, color: Colors.red),
-//                   SizedBox(height: 5),
-//                   Text(
-//                     'Grabando...',
-//                     style: TextStyle(fontSize: 20),
-//                   ),
-//                   SizedBox(height: 5),
-//                   IconButton(
-//                     onPressed: () async {
-//                       await stopRecording(Record(), context);
-//                     },
-//                     icon: Icon(Icons.stop),
-//                   ),
-//                   SizedBox(height: 5),
-//                   IconButton(
-//                     onPressed: () {
-//                       Navigator.of(context).pop(); // Cerrar el modal sin detener la grabación
-//                     },
-//                     icon: Icon(Icons.cancel),
-//                   ),
-//                   SizedBox(height: 5),
-//                   IconButton(
-//                     onPressed: () {
-//                       // Lógica para enviar el archivo grabado
-//                       Navigator.pop(context);
-//                       print('Enviando archivo: $filePath');
-//                     },
-//                     icon: Icon(Icons.send),
-//                   ),
-//                 ],
-//               ),
-//             );
-//           },
-//         );
-//       },
-//     );
-//   }
-//  AudioPlayer _internetAudioPlayer = AudioPlayer(); // Nuevo campo para reproducir audio desde Internet
-
-
-// Future<void> playInternetAudio(String url) async {
-//   try {
-//     await _internetAudioPlayer.setUrl(url);
-//     await _internetAudioPlayer.seek(Duration.zero);
-//     await _internetAudioPlayer.play(url);
-//     isPlaying = true;
-//   } catch (e) {
-//     print('Error al reproducir audio desde Internet: $e');
-//   }
-//   notify(); // Notificar cambios en el estado
-// }
-
+  void stop() {
+    _audioPlayer.stop();
+    _isPlaying = false;
+    _position = 0.0;
+    notifyListeners();
+  }
 //*************  TIPO DE MENSAJE  ******************/
 
 String? _tipoMensajeChat = '';

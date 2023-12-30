@@ -483,7 +483,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         // ),
 
                         Expanded(
-                          child: Container(
+                          child: 
+                          
+                           Consumer<HomeController>(builder: (_, valueHome, __) {  
+                            return  Container(
                             // height: size.hScreen(80.0),
                             // color: Colors.blue,
                             child: Column(
@@ -501,7 +504,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                       // mainAxisAlignment:
                                       //     MainAxisAlignment.spaceAround,
                                       children: [
-                                       _ctrl.getUser!['isClient']=='SI'
+                                       user!['isClient']=='SI'
                                         ?ElementosHome(
                                             enabled: true,
                                             size: size,
@@ -537,21 +540,21 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                final status = await Permission .location.request();
                                                     if (status == PermissionStatus .granted) {
                                                       //   // print('============== SI TIENE PERMISOS');
-                                                      await _ctrl
+                                                      await valueHome
                                                           .getLocation();
-                                                      if (_ctrl.getLocationGPS.isNotEmpty) {
+                                                      if (valueHome.getLocationGPS.isNotEmpty) {
                                                        
                                                   final _dataPanico = {
                                                 "coordenadas": {
-                                                  "latitud":_ctrl.getLocationGPS['latitud'],
-                                                  "longitud":_ctrl.getLocationGPS['longitud']
+                                                  "latitud":valueHome.getLocationGPS['latitud'],
+                                                  "longitud":valueHome.getLocationGPS['longitud']
                                                 },
                                                 "rucempresa": "ULTRA2022",
-                                                "perId": _ctrl.getUser!['id']
+                                                "perId": valueHome.getUser!['id']
                                               };
 
 
-                                              _ctrl.activateAlarm();
+                                              valueHome.activateAlarm();
 
                                               print('esta la info para el bon de panico ------> $_dataPanico');
                                               _ctrlSocket.emitEvent('client:boton-panico', _dataPanico);
@@ -585,7 +588,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                     ),
                                   ),
                                 ),
-                                  _ctrl.getUser!['isClient']=='SI'
+                                 user!['isClient']=='SI'
                                         ?
                                 Container(
                                   width: size.wScreen(100.0),
@@ -820,7 +823,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                 ),
                               ],
                             ),
-                          ),
+                          );
+                      
+                           },)
+                          
+                      
+                      
                         ),
                       ],
                     )

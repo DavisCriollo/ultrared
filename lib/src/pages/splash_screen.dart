@@ -143,6 +143,7 @@ class _SplashPageState extends State<SplashPage> {
 
     if (session != null) {
 
+controllerHome.setUserApp(session);
 
      var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
               _ctrlSocket.connectToSocket("${session['token']}", "${session['rucempresa']}");

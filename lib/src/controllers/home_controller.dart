@@ -37,7 +37,7 @@ class HomeController extends ChangeNotifier {
   Map<String, dynamic>? get getUser => _user;
   void setUserApp(Map<String, dynamic>? _data) {
     _user = _data;
-
+     print('LA SESION ------------- >>>   $_user');
     notifyListeners();
   }
 

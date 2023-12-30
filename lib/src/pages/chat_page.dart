@@ -246,11 +246,11 @@ final _ctrlChat = context.read<ChatController>();
     final _ctrlSocket = context.read<SocketModel>();
                   _ctrlChat.setImage( File(filePath));
                   ProgressDialog.show(context);
-         await _ctrlChat.getUrlServerChats();
+     final response=    await _ctrlChat.getUrlServerChats();
                   ProgressDialog.dissmiss(context);
 
-                if (_ctrlChat.getUrlImagenVideo.isNotEmpty ) {
-                          Navigator.of(context).pop();
+                if (response!=null) {
+                          
 
                         //****************************************//
                         final _data={
@@ -260,7 +260,7 @@ final _ctrlChat = context.read<ChatController>();
   "chat_id": infoChat['chat_id'], // tomar del grupo del chat
   "person_id": '${ _ctrlHome.getUser!['id']}', // login
   "message_text": '', //texto
-  "message_audio": "", // vacio de momento
+  "message_audio": _ctrlChat.getUrlImagenVideo, // vacio de momento
   "message_fotos": [], // vacio de momento
    "message_videos": [] // vacio de momento
 };
@@ -274,7 +274,7 @@ final _ctrlChat = context.read<ChatController>();
 
 
    //****************************************//
-
+Navigator.of(context).pop();
 
 
                       } else {
@@ -283,7 +283,7 @@ final _ctrlChat = context.read<ChatController>();
                       }
 
 
- Navigator.of(context).pop();
+//  Navigator.of(context).pop();
 
 
                     },
