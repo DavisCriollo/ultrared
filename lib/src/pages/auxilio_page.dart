@@ -54,7 +54,7 @@ AudioCache player = AudioCache();
 
     player = AudioCache();
 
-
+    
    player.clearAll();
     super.dispose();
   }
@@ -125,7 +125,7 @@ AudioCache player = AudioCache();
                     ],
                   ),
                 );
-              } else if (ctrHome.getListaTodasLasNotificaciones.isEmpty) {
+              } else if (ctrHome.getInfoNotificacion.isEmpty) {
                 return const NoData(
                   label: 'No existen datos para mostar',
                 );

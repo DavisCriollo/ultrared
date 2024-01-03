@@ -516,7 +516,8 @@ await Auth.instance.saveSession(response);
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute<void>(
-                      builder: (BuildContext context) => const HomePage(
+                      builder: (BuildContext context) =>  HomePage(
+                        user: infoUser,
                      
                       )));
 

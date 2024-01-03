@@ -15,6 +15,7 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/init_provider.dart';
 import 'package:ultrared/src/pages/auxilio_page.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
+import 'package:ultrared/src/pages/lista_estado_cuenta.dart';
 import 'package:ultrared/src/pages/lista_grupos_chat.dart';
 import 'package:ultrared/src/pages/lista_notificaciones.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
@@ -33,14 +34,15 @@ import 'package:ultrared/src/widgets/no_data.dart';
 // import 'socket_provider.dart'; // Asegúrate de importar tu SocketProvider
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final Map<String,dynamic>? user;
+  const HomePage({Key? key, this.user}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
-  Map<String, dynamic>? user = {};
+  // Map<String, dynamic>? user = {};
 
         final ctrlHome =HomeController();
   @override
@@ -100,9 +102,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       
 
     if (state == AppLifecycleState.resumed) {
+
       await ctrlHome.validaInicioDeSesion(context);
       print('EL ESTADO ES ------: $state');
-      ctrlHome.getLocation();
+      // ctrlHome.getLocation();
   //  final Map<String, dynamic>? session = await Auth.instance.getSession();
   //      var _ctrlSocket = context.read<SocketModel>();
   //             _ctrlSocket.connectToSocket("${session!['token']}", "${session['rucempresa']}");
@@ -152,7 +155,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     
     WidgetsBinding.instance!.removeObserver(this);
- Provider.of<SocketModel>(context, listen: false).disconnectSocket();
+//  Provider.of<SocketModel>(context, listen: false).disconnectSocket();
     // if (mounted) {
       // Asegúrate de limpiar la suscripción cuando el widget es desmontado
       // FirebaseMessaging.onMessage.drain();
@@ -164,11 +167,60 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
 
 
-    //------------------------------------//
 
      // Manejar la notificación cuando la aplicación está en primer plano
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("Notificación recibida primer plano ************* >: ${message.data}");
+    //------------------------------------//
+
+
+//  final _data= {
+//   "tabla": "notificacion-leido", // default
+//   "rucempresa": "ULTRA2022", // login
+//   "notId":message.data['notId'],
+//   "notTipo":message.data['notTipo'],
+//   "notIdPersona":message.data['notIdPersona'],
+//   "notVisto":message.data['notVisto'],
+//   "notTitulo":message.data['notTitulo'],
+//   "notContenido":message.data['notContenido'],
+//   "notUser":message.data['notUser'],
+//   "notEmpresa":message.data['notEmpresa'],
+//   "id_registro":message.data['id_registro'],
+//   "url_web":message.data['url_web'],
+//   "notFecReg": message.data['notFecReg'],
+//   "notFecUpd": message.data['notFecUpd'],
+//   "perDocNumero":message.data['perDocNumero'],
+//   "perNombre":message.data['perNombre'],
+//   "perFoto": message.data['perFoto'],
+//   "perPerfil":message.data['perPerfil'],
+//   "notInformacionAdicional": {
+//     "idPer":message.data['notIdPersona'],
+//     "perNombre":message.data['perNombre'],
+//     "perDocNumero":message.data['perDocNumero'],
+//     "perFoto": message.data['perFoto'],
+//     "perFotoCasa":message.data['perFotoCasa'],
+//     "perFotoVehiculo": message.data['perFotoVehiculo'],
+//     "tipoServicio":message.data ['notInformacionAdicional'] ['tipoServicio'],
+//     "coordenadas":message.data['notInformacionAdicional']['coordenadas'],
+//   }
+// };
+
+//                       final ctrlSocket =context.read<SocketModel>();
+
+// // print('LA DATA PARA SOCKET : $_data');
+
+
+//                 ctrlSocket.emitEvent('client:actualizarData', _data);
+
+//                       final ctrlHome =context.read<HomeController>();
+
+
+
+//                                    ctrlHome .buscarNotificaciones(context);
+
+
+
+    //------------------------------------//
 
       // Aquí puedes dirigir al usuario a la pantalla deseada
 
@@ -255,7 +307,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         //                                             builder: (context) =>
         //                                                 const AuxilioPage()));
 
+  //  final ctrlHome =context.read<HomeController>();
 
+
+
+                                   ctrlHome .buscarNotificaciones(context);
 
 
     });
@@ -321,8 +377,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     // FirebaseService.configureFirebaseMessaging();
 
-    user = await Auth.internal().getSession();
-    ctrlHome.setUserApp(user);
+    // widget.user = await Auth.internal().getSession();
+    ctrlHome.setUserApp(widget.user);
     // print('${user!['nombre']}');
 
     // final  socketManager = context.read<SocketService>();
@@ -337,7 +393,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-  
+  //  print('***hhhhh hhhhh hhhh hhhh hhh h***> ${widget.user}');
     @override
     final Responsive size = Responsive.of(context);
     // var socketProvider = context.read<SocketService>();
@@ -504,7 +560,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                       // mainAxisAlignment:
                                       //     MainAxisAlignment.spaceAround,
                                       children: [
-                                       user!['isClient']=='SI'
+                                       widget.user!['isClient']=='SI'
                                         ?ElementosHome(
                                             enabled: true,
                                             size: size,
@@ -514,10 +570,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                 'Verifica tu estado de cuenta',
                                             onTap: () {
 
-                                          NotificationHelper().showNotification(
-              title: 'Título de la notificación',
-              body: 'Cuerpo de la notificación',
-            );
+            //                               NotificationHelper().showNotification(
+            //   title: 'Título de la notificación',
+            //   body: 'Cuerpo de la notificación',
+            // );
+
+             Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) =>  DataTableEstadoCuenta())));
+                 
+
 
                                             }
                                             // () => Navigator.pushNamed(
@@ -588,7 +651,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                     ),
                                   ),
                                 ),
-                                 user!['isClient']=='SI'
+                                  widget.user!['isClient']=='SI'
                                         ?
                                 Container(
                                   width: size.wScreen(100.0),

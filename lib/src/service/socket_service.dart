@@ -55,7 +55,7 @@ notifyListeners();
 
     // Ejemplo de cómo manejar un evento personalizado
     _socket.on('server:lista-chats-grupos', (data) {
-      print('Los grupos del servidor  -------#####   : $data');
+      // print('Los grupos del servidor  -------#####   : $data');
 
       _listaGruposChat = [];
       _listaGruposChat = data;

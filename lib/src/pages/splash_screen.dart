@@ -211,7 +211,7 @@ controllerHome.setUserApp(session);
                   builder: (context) => HomePage(
                         // validaTurno: validaTurno,
                         // tipo: session.rol,
-                        // user: session,
+                        user: session,
                         // ubicacionGPS: controllerHome.getCoords,
                       )),
               (Route<dynamic> route) => false);

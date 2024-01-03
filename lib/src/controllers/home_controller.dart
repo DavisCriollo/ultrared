@@ -37,7 +37,7 @@ class HomeController extends ChangeNotifier {
   Map<String, dynamic>? get getUser => _user;
   void setUserApp(Map<String, dynamic>? _data) {
     _user = _data;
-     print('LA SESION ------------- >>>   $_user');
+    //  print('LA SESION ------------- >>>   $_user');
     notifyListeners();
   }
 
@@ -47,7 +47,7 @@ class HomeController extends ChangeNotifier {
   void setItemGPS(Map<String, dynamic> _item) {
     _locationGPS = _item;
 
-    print('es el gps-------------$_locationGPS');
+    // print('es el gps-------------$_locationGPS');
     notifyListeners();
   }
 
