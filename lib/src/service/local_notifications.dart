@@ -73,7 +73,9 @@
 
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:permission_handler/permission_handler.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 
@@ -256,13 +258,19 @@ final _ctrl = HomeController();
       iOS: iOSPlatformChannelSpecifics,
     );
 
-    await flutterLocalNotificationsPlugin.show(
+      try {
+         await flutterLocalNotificationsPlugin.show(
       0,
       title,
       body,
       platformChannelSpecifics,
       payload: 'Notificación payload',
     );
+      } catch (e) {
+         print('Notificacion Show error.');
+
+      }
+   
   }
 }
 

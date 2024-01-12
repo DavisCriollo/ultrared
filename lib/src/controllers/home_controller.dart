@@ -1111,7 +1111,7 @@ class HomeController extends ChangeNotifier {
   void setInfoNotificacion(Map<String, dynamic> _data) {
     _infoNotificaacion = _data;
 
-//  print('ESTA ES LA INFO DE NOTIFICACION  : $_infoNotificaacion');
+ print('ESTA ES LA INFO DE NOTIFICACION  : $_infoNotificaacion');
     notifyListeners();
   }
 

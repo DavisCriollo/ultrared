@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_brace_in_string_interps
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -19,7 +21,8 @@ import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
 import 'package:ultrared/src/widgets/no_data.dart';
 import 'package:latlong2/latlong.dart'
-    as latlng; // Nota: latlong2 es la versión más reciente del paquete
+    as latlng;
+import 'package:url_launcher/url_launcher.dart'; // Nota: latlong2 es la versión más reciente del paquete
 
 
 class AuxilioPage extends StatefulWidget {
@@ -154,9 +157,9 @@ AudioCache player = AudioCache();
                         children: [
                           AvatarGlow(
                             // endRadius: 80,
-                            glowRadiusFactor: 0.2,
-                glowColor: Colors.red,
-                duration: const Duration(milliseconds: 1000),
+                //             glowRadiusFactor: 0.2,
+                // glowColor: Colors.red,
+                // duration: const Duration(milliseconds: 1000),
                             child: Container(
                                 width: size.iScreen(9.0),
                                 height: size.iScreen(9.0),
@@ -248,11 +251,21 @@ AudioCache player = AudioCache();
                                       height: 40.0,
                                       point: latlng.LatLng(_latitud,
                                           _longitud),
-                                      builder: (ctx) => Container(
-                                        child: Icon(
-                                          Icons.location_on,
-                                          color: tercearyColor,
-                                          size: size.iScreen(5.0),
+                                      builder: (ctx) => InkWell(
+                                        onTap: () {
+                                           openMapsApp(_latitud, _longitud);
+                                        },
+                                        child: Container(
+                                          child: AvatarGlow(
+                                            glowRadiusFactor: 0.5,
+                glowColor: Colors.red,
+                duration: const Duration(milliseconds: 1000),
+                                            child: Icon(
+                                              Icons.location_on,
+                                              color: tercearyColor,
+                                              size: size.iScreen(5.0),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -271,113 +284,198 @@ AudioCache player = AudioCache();
                               width: size.wScreen(100),
                               alignment: Alignment.center,
                               child: 
-                              Wrap(
-                                spacing : 50.0,
-                                alignment :WrapAlignment.center,
+                              Column(
                                 children: [
-                                    ctrHome.getInfoNotificacion['perFotoCasa'].isNotEmpty
+                                  Wrap(
+                                    spacing : 50.0,
+                                    alignment :WrapAlignment.center,
+                                    children: [
+                                        ctrHome.getInfoNotificacion['perFotoCasa'].isNotEmpty
                             ?    Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: size.iScreen(0.9),
-                                        vertical: size.iScreen(1.2)),
-                                    decoration: ShapeDecoration(
-                                      color: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            final _infoImage={"id":1,"lugar":'CASA', "url":'${ctrHome.getInfoNotificacion['perFotoCasa']}'};
-                                               Navigator.push(context,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: size.iScreen(0.9),
+                                            vertical: size.iScreen(1.2)),
+                                        decoration: ShapeDecoration(
+                                          color: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                final _infoImage={"id":1,"lugar":'CASA', "url":'${ctrHome.getInfoNotificacion['perFotoCasa']}'};
+                                                   Navigator.push(context,
         MaterialPageRoute(builder: ((context) => PreviewPhoto(infoImage:_infoImage))));
-                                            
-                                          },
-                                          child: Hero(
-                                             tag:1,
-                                            child: Container(
-                                              width: size.iScreen(13),
-                                              height: size.iScreen(15),
-                                              decoration: ShapeDecoration(
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                    '${ctrHome.getInfoNotificacion['perFotoCasa']}',
+                                                
+                                              },
+                                              child: Hero(
+                                                 tag:1,
+                                                child: Container(
+                                                  width: size.iScreen(13),
+                                                  height: size.iScreen(15),
+                                                  decoration: ShapeDecoration(
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                        '${ctrHome.getInfoNotificacion['perFotoCasa']}',
+                                                      ),
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(10),
+                                                    ),
                                                   ),
-                                                  fit: BoxFit.fill,
-                                                ),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
                                                 ),
                                               ),
                                             ),
-                                          ),
+                                            Text('Foto de Vivienda',
+                                                textAlign: TextAlign.center,
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: size.iScreen(1.5),
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.black,
+                                                  letterSpacing: -0.40,
+                                                ))
+                                          ],
                                         ),
-                                        Text('Foto de Vivienda',
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.poppins(
-                                              fontSize: size.iScreen(1.5),
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black,
-                                              letterSpacing: -0.40,
-                                            ))
-                                      ],
-                                    ),
-                                  ):Container(),
-                                 ctrHome.getInfoNotificacion['perFotoVehiculo'].isNotEmpty
+                                      ):Container(),
+                                     ctrHome.getInfoNotificacion['perFotoVehiculo'].isNotEmpty
                             ?   Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: size.iScreen(0.9),
-                                        vertical: size.iScreen(1.2)),
-                                    decoration: ShapeDecoration(
-                                      color: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        GestureDetector(
-                                           onTap: () {
-                                            final _infoImage={"id":2,"lugar":'VEHÍCULO', "url":'${ctrHome.getInfoNotificacion['perFotoVehiculo']}'};
-                                               Navigator.push(context,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: size.iScreen(0.9),
+                                            vertical: size.iScreen(1.2)),
+                                        decoration: ShapeDecoration(
+                                          color: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            GestureDetector(
+                                               onTap: () {
+                                                final _infoImage={"id":2,"lugar":'VEHÍCULO', "url":'${ctrHome.getInfoNotificacion['perFotoVehiculo']}'};
+                                                   Navigator.push(context,
         MaterialPageRoute(builder: ((context) => PreviewPhoto(infoImage:_infoImage))));
-                                            
-                                          },
-                                          child: Hero(
-                                            tag:2,
-                                            child: Container(
-                                              width: size.iScreen(13),
-                                              height: size.iScreen(15),
-                                              decoration: ShapeDecoration(
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                    '${ctrHome.getInfoNotificacion['perFotoVehiculo']}',
+                                                
+                                              },
+                                              child: Hero(
+                                                tag:2,
+                                                child: Container(
+                                                  width: size.iScreen(13),
+                                                  height: size.iScreen(15),
+                                                  decoration: ShapeDecoration(
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                        '${ctrHome.getInfoNotificacion['perFotoVehiculo']}',
+                                                      ),
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(10),
+                                                    ),
                                                   ),
-                                                  fit: BoxFit.fill,
-                                                ),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
                                                 ),
                                               ),
                                             ),
-                                          ),
+                                            Text('Foto del Transporte',
+                                                textAlign: TextAlign.center,
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: size.iScreen(1.5),
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.black,
+                                                  letterSpacing: -0.40,
+                                                ))
+                                          ],
                                         ),
-                                        Text('Foto del Transporte',
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.poppins(
-                                              fontSize: size.iScreen(1.5),
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black,
-                                              letterSpacing: -0.40,
-                                            ))
+                                      ):Container(),
+                                      
+                                    ],
+                                  ),
+                                  
+                                  Container(
+                                    margin: EdgeInsets.symmetric(horizontal: size.iScreen(2.0), vertical: size.iScreen(2.0)),
+                                    padding:  EdgeInsets.symmetric(horizontal: size.iScreen(0.5), vertical: size.iScreen(2.0)),
+                                    width: size.wScreen(100),
+                                    decoration:  BoxDecoration(color:  Colors.white,borderRadius: BorderRadius.circular(8) ),
+                                    
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          width: size.wScreen(100),
+                                           margin: EdgeInsets.symmetric(horizontal: size.iScreen(0.5), vertical: size.iScreen(0.5)),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Icon(Icons.location_on,color:  tercearyColor,),
+                                              
+                                              Expanded(
+                                                child: Text("Localiza a : ${ctrHome.getInfoNotificacion['perNombre']}",style: GoogleFonts.poppins(
+                                                            fontSize: size.iScreen(1.7),
+                                                            fontWeight: FontWeight.w500,
+                                                            
+                                                            // color: Colors.white
+                                                            ), textAlign:TextAlign.center ,),
+                                              ),
+                                            ],
+                                          )),
+                                        InkWell(
+                                          onTap: () {
+
+                                                 openMapsApp(_latitud, _longitud);
+
+              //                               showModalBottomSheet(
+              //   context: context,
+              //   builder: (BuildContext context) {
+              //     return Column(
+              //       mainAxisSize: MainAxisSize.min,
+              //       children: <Widget>[
+              //         ListTile(
+              //           leading: Icon(Icons.map_outlined,color: tercearyColor,size: size.iScreen(4.0),),
+              //           title: Text('Abrir aplicación de mapas',style: GoogleFonts.poppins(
+              //                                               fontSize: size.iScreen(1.7),
+              //                                               fontWeight: FontWeight.w500,
+                                                            
+              //                                               // color: Colors.white
+              //                                               )),
+              //           onTap: () {
+              //             Navigator.pop(context);
+              //             openMapsApp(_latitud, _longitud);
+              //           },
+              //         ),
+              //       ],
+              //     );
+              //   },
+              // );
+                                          },
+                                          child: Container(
+                                              width: size.wScreen(50),
+                                              height: size.hScreen(4.0),
+                                              clipBehavior: Clip.antiAlias,
+                                              decoration: ShapeDecoration(
+                                                color: tercearyColor,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(8)),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  'IR A',
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: size.iScreen(1.7),
+                                                      fontWeight: FontWeight.w500,
+                                                      color: Colors.white),
+                                                 
+                                                ),
+                                              ),
+                                            ),
+                                        ),
                                       ],
                                     ),
-                                  ):Container(),
-                                  
+                                  )
                                 ],
                               ),
 
@@ -408,6 +506,21 @@ AudioCache player = AudioCache();
 _callNumber(String numero) async {
   await FlutterPhoneDirectCaller.callNumber(numero);
 }
+
+ // Función para abrir la aplicación de mapas
+   void openMapsApp(double? _latitud,double? _longitud) async {
+ 
+Uri url =
+      Uri.parse('geo:${_latitud},${_longitud}?q=${_latitud},${_longitud}');
+  launchUrl(url);
+
+
+
+  }
+
+
+
+
 
 
 

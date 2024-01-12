@@ -496,7 +496,7 @@ final _infoChat=widget.infoChat;
                                   
                                   else{
                                     
-                                  return CircularProgressIndicator();
+                                  return const CircularProgressIndicator();
                                   } 
                                   
                                 },
