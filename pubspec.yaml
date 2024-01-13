@@ -84,12 +84,13 @@ dependencies:
 
   avatar_glow: ^3.0.1
   location: ^4.3.0
-
+  share_plus: ^4.5.3
 
  
   flutter_map: 
-
-
+  flutter_pdfview: ^1.0.1
+  syncfusion_flutter_pdfviewer:
+  
 
 # dependency_overrides:
 #   firebase_core_platform_interface: 4.5.1

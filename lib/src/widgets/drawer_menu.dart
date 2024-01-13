@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/acercaDe.dart';
@@ -19,6 +20,7 @@ import 'package:ultrared/src/pages/registro_page.dart';
 import 'package:ultrared/src/pages/selecciona_sector.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
 import 'package:ultrared/src/pages/splash_screen.dart';
+
 import 'package:ultrared/src/service/notification_push.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
 import 'package:ultrared/src/service/socket_service.dart';
@@ -26,6 +28,7 @@ import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/no_data.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class DrawerMenu extends StatefulWidget {
@@ -287,6 +290,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           //   onTap: () {
           //     // Acción al hacer clic en "Configuración"
           //     Navigator.pop(context);
+          //     _modalShare(context,size);
           //   },
           // ),
           ListTile(
@@ -297,6 +301,33 @@ class _DrawerMenuState extends State<DrawerMenu> {
               Navigator.pop(context);
               Navigator.push(context,
                   MaterialPageRoute(builder: ((context) => AcercaDePage())));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.playlist_add_check_circle_outlined),
+            title: const Text('Política de Privacidad'),
+            onTap: () {
+              // Acción al hacer clic en "Acerca de"
+              Navigator.pop(context);
+_launchURL();
+
+//  Navigator.push(
+//                                                         context,
+//                                                         MaterialPageRoute(
+//                                                             builder: (context) => 
+//                                                             // ViewsPDFs(
+//                                                             //     infoPdf:'https://drive.google.com/file/d/10iMkH1XYmpn00k7u05m9zPnVVEhPX1nJ/view?usp=sharing',
+//                                                             //     labelPdf: 'archivo.pdf'
+                                                               
+//                                                             //     )
+                                                                
+//                                                                 PDFViewerScreen();
+                                                                
+//                                                                 );
+
+              // _launchURL("https://docs.google.com/document/d/160I5knwXP7yoQjsykMTsjECpo5wNqHnks5vZKp-bZMM/edit?usp=sharing");
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: ((context) => AcercaDePage())));
             },
           ),
           ListTile(
@@ -370,4 +401,110 @@ if (response != null ) {
    
     );
   }
+
+
+
+
+Future<void> _modalShare(
+  BuildContext context,
+  Responsive size,
+) {
+  // final themeValue = context.read<AppTheme>();
+  return showCupertinoModalPopup<void>(
+    context: context,
+    builder: (BuildContext context) => CupertinoAlertDialog(
+      title: Text(
+        'Compatir',
+        style: GoogleFonts.roboto(
+            fontSize: size.iScreen(2.0),
+            color: tercearyColor,
+            fontWeight: FontWeight.bold),
+      ),
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              // _onShare(context, 'https://acortar.link/kTJt3V');  //CAMBIAR CON EL URL DE LA TIENDA
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Android',
+                  style: GoogleFonts.roboto(
+                      fontSize: size.iScreen(2.2),
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  width: size.iScreen(1.0),
+                ),
+                Icon(
+                  Icons.android_outlined,
+                  color: Colors.green,
+                  size: size.iScreen(4.0),
+                )
+              ],
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              // _onShare(context, 'https://acortar.link/SWMt9k'); //CAMBIAR CON EL URL DE LA TIENDA
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'IOS',
+                  style: GoogleFonts.roboto(
+                      fontSize: size.iScreen(2.2),
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  width: size.iScreen(1.0),
+                ),
+                Icon(
+                  Icons.apple_outlined,
+                  color: Colors.black,
+                  size: size.iScreen(4.0),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+
 }
+void _onShare(BuildContext context, String _urlApp) async {
+  final box = context.findRenderObject() as RenderBox?;
+
+  await Share.share(_urlApp,
+      subject: 'Ultrared App',
+      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+}
+
+
+
+_launchURL() async {
+  const url = 'https://drive.google.com/file/d/10iMkH1XYmpn00k7u05m9zPnVVEhPX1nJ/view?usp=sharing';
+  Uri uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  } else {
+    throw 'No se puede abrir $url';
+  }
+}
+
+
+
+  
+
+}
+
