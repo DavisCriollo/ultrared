@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/foto_casa_page.dart';
@@ -13,6 +14,7 @@ import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
+import 'package:ultrared/src/widgets/modal_permisos.dart';
 
 class FotosPerfilPage extends StatefulWidget {
     final String? action;
@@ -375,12 +377,28 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
               actions: [
                 CupertinoActionSheetAction(
                   onPressed: () async {
-                    final image = await _getImage(context, ImageSource.camera);
+                  await _controller.checkAndRequestPermissions();
+           
+                    if (_controller.hasCameraPermission) {
+                      //  NotificatiosnService.showSnackBarDanger(' SI TIENE PERMISO DE CAMARA');
+                         final image = await _getImage(context, ImageSource.camera);
                     if (image != null) {
                       _controller.setImage(image,'fotoperfil');
                     }
                     Navigator.pop(context);
-                    // _getImageFromCamera(context,_controller);
+                    } else {
+                      showPermissionModal(context,size,'Para completar el registro en nuestra aplicación, es necesario otorgar permisos de la cámara.');
+                      
+                    }
+
+                    // final image = await _getImage(context, ImageSource.camera);
+                    // if (image != null) {
+                    //   _controller.setImage(image,'fotoperfil');
+                    // }
+                    // Navigator.pop(context);
+
+
+                 
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -402,12 +420,25 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
-                    final image = await _getImage(context, ImageSource.gallery);
+                   
+                    
+
+ await _controller.checkAndRequestPermissions();
+           
+                    if (_controller.hasCameraPermission) {
+                      //  NotificatiosnService.showSnackBarDanger(' SI TIENE PERMISO DE CAMARA');
+                         final image = await _getImage(context, ImageSource.gallery);
                     if (image != null) {
                       _controller.setImage(image,'fotoperfil');
                     }
                     Navigator.pop(context);
-                    // _getImageFromGallery(context,_controller);
+                    } else {
+                      showPermissionModal(context,size,'Para completar el registro en nuestra aplicación, es necesario otorgar permisos de la cámara.');
+                      
+                    }
+
+
+
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -32,6 +32,7 @@ import 'package:ultrared/src/widgets/drawer_menu.dart';
 
 import 'package:ultrared/src/widgets/elementoSOS.dart';
 import 'package:ultrared/src/widgets/elementosHome.dart';
+import 'package:ultrared/src/widgets/modal_permisos.dart';
 import 'package:ultrared/src/widgets/no_data.dart';
 // import 'socket_provider.dart'; // Asegúrate de importar tu SocketProvider
 
@@ -650,7 +651,7 @@ final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
                                               // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
  HomeController permissionProvider =
                 Provider.of<HomeController>(context, listen: false);
-        await permissionProvider.checkAndRequestLocationPermission();
+        await permissionProvider.checkAndRequestPermissions();
             bool isGpsEnabled = await permissionProvider.checkGpsStatus();
             // print('LA INFO ES  ${permissionProvider.hasLocationPermission} ${isGpsEnabled}');
                    
@@ -687,17 +688,20 @@ final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
 
 
                       } else {
-                        NotificatiosnService.showSnackBarDanger(' Por favor active su GPS');
+                        NotificatiosnService.showSnackBarDanger(' Por favor active el GPS');
                       }
 
                    } else {
                     //  NotificatiosnService.showSnackBarDanger('NOOOOO TIENE PERMISO');
 
-                     Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (context) => const AccesoGPSPage()),
-              (Route<dynamic> route) => false);
+              //        Navigator.of(context).pushAndRemoveUntil(
+              // MaterialPageRoute(
+              //     builder: (context) => const AccesoGPSPage()),
+              // (Route<dynamic> route) => false);
 
+
+
+  showPermissionModal(context,size,'Para usar el botón de pánico en nuestra aplicación, es esencial conceder permisos de ubicación.');
 
 
                    }
@@ -1087,7 +1091,7 @@ final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
                         ),
                       ],
                     )
-                  : NoData(label: 'No tiene conexión...'),
+                  : const NoData(label: 'No tiene conexión...'),
             ),
           ),
         );
@@ -1102,32 +1106,106 @@ final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
   }
 
 
-bool _buildPermissionStatus(PermissionStatus? status) {
-    if (status == null) {
-      return false;
-    } else if (status == PermissionStatus.granted) {
-      return true;
-    } else if (status == PermissionStatus.denied) {
-      return false;
-    } else {
-      return false;
-    }
-  }
+// bool _buildPermissionStatus(PermissionStatus? status) {
+//     if (status == null) {
+//       return false;
+//     } else if (status == PermissionStatus.granted) {
+//       return true;
+//     } else if (status == PermissionStatus.denied) {
+//       return false;
+//     } else {
+//       return false;
+//     }
+//   }
  
 
-Future<bool> _checkIfHasPermission(PermissionStatus? status) async {
-    if (status == PermissionStatus.granted) {
-      return true;
-    } else if (status == PermissionStatus.denied) {
-      return false;
-    } else {
-      // En este caso, podrías considerar manejar el estado desconocido de alguna manera específica.
-      return false;
-    }
-  }
+// Future<bool> _checkIfHasPermission(PermissionStatus? status) async {
+//     if (status == PermissionStatus.granted) {
+//       return true;
+//     } else if (status == PermissionStatus.denied) {
+//       return false;
+//     } else {
+//       // En este caso, podrías considerar manejar el estado desconocido de alguna manera específica.
+//       return false;
+//     }
+//   }
 
 
-
+// void _showPermissionModal(BuildContext context, Responsive size,String _title) {
+//     showCupertinoModalPopup(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return Container(
+//           color: Color.fromARGB(117, 0, 0, 0), // Color oscuro de fondo
+//           child: CupertinoAlertDialog(
+//             // title: Text('Permisos Necesarios', style: GoogleFonts.poppins(
+//             //             fontSize: size.iScreen(2.0),
+//             //             color: Colors.black,
+//             //             fontWeight: FontWeight.w600)),
+//             content: Column(
+//               children: [
+              
+//                 SizedBox(height: size.iScreen(1.0)),
+//                 Column(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     // CupertinoButton(
+//                     //   child: Text('Permitir GPS'),
+//                     //   onPressed: () async {
+//                     //     Navigator.pop(context); // Cierra el modal
+//                     //     // await _requestPermission(Permission.location);
+//                     //   },
+//                     // ),
+//                     // SizedBox(width: 20),
+//                     // CupertinoButton(
+//                     //   child: Text('Permitir Cámara'),
+//                     //   onPressed: () async {
+//                     //     Navigator.pop(context); // Cierra el modal
+//                     //     // await _requestPermission(Permission.camera);
+//                     //   },
+//                     // ),
+//                     Icon(Icons.info_outline,size: size.iScreen(5.0),color: Colors.green,),
+//               SizedBox(height: size.iScreen(1.0),),
+//               Container(
+//                 margin: EdgeInsets.symmetric(horizontal: size.iScreen(2.5)),
+//                 child: Text(_title,
+//                     style: GoogleFonts.poppins(
+//                         fontSize: size.iScreen(2.0),
+//                         color: Colors.black,
+//                         fontWeight: FontWeight.normal),textAlign: TextAlign.center,),
+//               ),
+//                       SizedBox(height: size.iScreen(3.0),),
+//                   ],
+//                 ),
+//               ],
+//             ),
+//             actions: [
+//               CupertinoDialogAction(
+//                 child: Text('Cancelar', style: GoogleFonts.poppins(
+//                         fontSize: size.iScreen(1.7),
+//                         color: Colors.red,
+//                         fontWeight: FontWeight.w500),textAlign: TextAlign.center,),
+//                 onPressed: () {
+//                   Navigator.pop(context); // Cierra el modal
+//                 },
+//               ),
+//                CupertinoDialogAction(
+//                child: Text('Aceptar',style: GoogleFonts.poppins(
+//                         fontSize: size.iScreen(1.7),
+//                         color: Colors.black,
+//                         fontWeight: FontWeight.w500),textAlign: TextAlign.center,),
+//                 onPressed: () {
+//                   openAppSettings(); 
+//                   Navigator.pop(context);
+//                   // Cierra el modal
+//                 },
+//               ),
+//             ],
+//           ),
+//         );
+//       },
+//     );
+//   }
 
 
 

@@ -1205,10 +1205,10 @@ class HomeController extends ChangeNotifier {
     _itemIsEdad = true;
     _ciudadItem = _infoUsuarioById['ciudad'];
     _sectorItem = _infoUsuarioById['sector'];
-    setItemReferencia(_infoUsuarioById['referencia']);
+    setItemReferencia(_infoUsuarioById['referencia']??"");
       _urlImagePerfil = _infoUsuarioById['fotoPerfil'];
-    _urlImageCasa = _infoUsuarioById['fotoCasa'];
-    _urlImageVehiculo = _infoUsuarioById['fotoVehiculo'];
+    _urlImageCasa = _infoUsuarioById['fotoCasa']??"";
+    _urlImageVehiculo = _infoUsuarioById['fotoVehiculo']??"";
 
     _locationGPS = {
       "latitud": _infoUsuarioById['gps']['latitud'],
@@ -1447,18 +1447,53 @@ class HomeController extends ChangeNotifier {
   // }
 
   
-bool _hasLocationPermission = false;
+// bool _hasLocationPermission = false;
+
+//   bool get hasLocationPermission => _hasLocationPermission;
+
+//   Future<void> checkAndRequestLocationPermission() async {
+//     PermissionStatus status = await Permission.location.status;
+
+//     if (status.isGranted) {
+//       _hasLocationPermission = true;
+//     } else {
+//       status = await Permission.location.request();
+//       _hasLocationPermission = status.isGranted;
+//     }
+
+//     // Notifica a los oyentes (widgets) sobre el cambio en el estado
+//     notifyListeners();
+//   }
+
+//   Future<bool> checkGpsStatus() async {
+//     bool isGpsEnabled = await Geolocator.isLocationServiceEnabled();
+//     return isGpsEnabled;
+//   }
+
+
+ bool _hasLocationPermission = false;
+  bool _hasCameraPermission = false;
 
   bool get hasLocationPermission => _hasLocationPermission;
+  bool get hasCameraPermission => _hasCameraPermission;
 
-  Future<void> checkAndRequestLocationPermission() async {
-    PermissionStatus status = await Permission.location.status;
-
-    if (status.isGranted) {
+  Future<void> checkAndRequestPermissions() async {
+    // Verificación y solicitud de permisos de ubicación
+    PermissionStatus locationStatus = await Permission.location.status;
+    if (locationStatus.isGranted) {
       _hasLocationPermission = true;
     } else {
-      status = await Permission.location.request();
-      _hasLocationPermission = status.isGranted;
+      locationStatus = await Permission.location.request();
+      _hasLocationPermission = locationStatus.isGranted;
+    }
+
+    // Verificación y solicitud de permisos de la cámara
+    PermissionStatus cameraStatus = await Permission.camera.status;
+    if (cameraStatus.isGranted) {
+      _hasCameraPermission = true;
+    } else {
+      cameraStatus = await Permission.camera.request();
+      _hasCameraPermission = cameraStatus.isGranted;
     }
 
     // Notifica a los oyentes (widgets) sobre el cambio en el estado
@@ -1466,8 +1501,17 @@ bool _hasLocationPermission = false;
   }
 
   Future<bool> checkGpsStatus() async {
-    bool isGpsEnabled = await Geolocator.isLocationServiceEnabled();
-    return isGpsEnabled;
+    if (_hasLocationPermission) {
+      bool isGpsEnabled = await Geolocator.isLocationServiceEnabled();
+      return isGpsEnabled;
+    } else {
+      return false;
+    }
   }
+
+
+
+
+
 
 }

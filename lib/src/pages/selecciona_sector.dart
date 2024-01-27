@@ -11,6 +11,7 @@ import 'package:ultrared/src/utils/letras_mayusculas_minusculas.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
+import 'package:ultrared/src/widgets/modal_permisos.dart';
 import 'package:ultrared/src/widgets/no_data.dart';
 
 class SeleccionaSector extends StatefulWidget {
@@ -737,30 +738,60 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                               return valueGPS.getItemLugarServicio == "HOGAR"
                                   ? GestureDetector(
                                       onTap: () async {
-                                        //    valueGPS.setItemGPS('');
+                                    
+                                        // final status =
+                                        //     await Permission.location.request();
+                                        // if (status ==  PermissionStatus.granted) {
+                                        //   //   // print('============== SI TIENE PERMISOS');
+                                        //   await _ctrl.getLocation();
+                                        //   // if (_ctrl.getGPSPositione) {
+                                        //   //   // Navigator.of(context).pushAndRemoveUntil(
+                                        //   //   //     MaterialPageRoute(
+                                        //   //   //         builder: (context) => HomePage(
+                                        //   //   //               // validaTurno: validaTurno,
+                                        //   //   //               // tipo: session.rol,
+                                        //   //   //               // user: session,
+                                        //   //   //               // ubicacionGPS: controllerHome.getCoords,
+                                        //   //   //             )),
+                                        //   //   //     (Route<dynamic> route) => false);
+                                        //   //   // ModalRoute.withName('/');
+                                        //   // }
+                                        // } else {
+                                        //   Navigator.pushNamed(context, 'gps');
+                                        // }
 
-                                        // valueGPS.getLocation( );
 
-                                        final status =
-                                            await Permission.location.request();
-                                        if (status ==  PermissionStatus.granted) {
-                                          //   // print('============== SI TIENE PERMISOS');
-                                          await _ctrl.getLocation();
-                                          // if (_ctrl.getGPSPositione) {
-                                          //   // Navigator.of(context).pushAndRemoveUntil(
-                                          //   //     MaterialPageRoute(
-                                          //   //         builder: (context) => HomePage(
-                                          //   //               // validaTurno: validaTurno,
-                                          //   //               // tipo: session.rol,
-                                          //   //               // user: session,
-                                          //   //               // ubicacionGPS: controllerHome.getCoords,
-                                          //   //             )),
-                                          //   //     (Route<dynamic> route) => false);
-                                          //   // ModalRoute.withName('/');
-                                          // }
-                                        } else {
-                                          Navigator.pushNamed(context, 'gps');
-                                        }
+                                                                                     // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
+ HomeController permissionProvider =
+                Provider.of<HomeController>(context, listen: false);
+        await permissionProvider.checkAndRequestPermissions();
+            bool isGpsEnabled = await permissionProvider.checkGpsStatus();
+            // print('LA INFO ES  ${permissionProvider.hasLocationPermission} ${isGpsEnabled}');
+                   
+                   if (permissionProvider.hasLocationPermission) {
+                      // NotificatiosnService.showSnackBarSuccsses('SIII TIENE PERMISO');
+                      if (isGpsEnabled) {
+                        //  NotificatiosnService.showSnackBarDanger(' GPS ACTIVADO ');
+                          await _ctrl.getLocation();
+
+                            
+
+
+                                                       
+                       }
+                         else {
+                        NotificatiosnService.showSnackBarDanger(' Por favor active el GPS');
+                      }
+
+                   } else {
+                   
+
+  showPermissionModal(context,size,'Para completar el registro en nuestra aplicación, es necesario otorgar permisos de ubicación.');
+
+
+                   }
+
+
                                       },
                                       child: Column(
                                         children: [

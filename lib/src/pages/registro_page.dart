@@ -763,7 +763,7 @@ class _RegistroPageState extends State<RegistroPage> {
      ProgressDialog.show(context);
       final response = await controller.verificaCedulaNuevoCliente(context);
       ProgressDialog.dissmiss(context);
-      if (response != null && response==200) {
+      if (response != null && response==200 && widget.action=='CREATE') {
         NotificatiosnService.showSnackBarDanger("El número ${controller.getItemCedua} ya se encuentra registrado");
       } else {
         

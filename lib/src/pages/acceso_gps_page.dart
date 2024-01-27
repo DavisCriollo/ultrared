@@ -78,7 +78,8 @@ class _AccesoGPSPageState extends State<AccesoGPSPage>
               ),
               onPressed: () async {
                 // Extraemos el estatus del Permiso del GPS
-openAppSettings().then((value) => Navigator.pushNamed(context, 'splash'));
+openAppSettings()
+.then((value) => Navigator.pushNamed(context, 'splash'));
 
                 // final status = await Permission.location.request();
                 // accesoGPS(status);

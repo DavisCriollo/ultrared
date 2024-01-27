@@ -257,9 +257,9 @@ controllerHome.setUserApp(session);
       //     (Route<dynamic> route) => false);
 
 
-//  Navigator.of(context).pushAndRemoveUntil(
-//           MaterialPageRoute(builder: (context) => const SerClientePage()),
-//           (Route<dynamic> route) => false);
+ Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const SerClientePage()),
+          (Route<dynamic> route) => false);
 
     }
     

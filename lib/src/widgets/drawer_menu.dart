@@ -3,9 +3,9 @@
 
 
 import 'package:animate_do/animate_do.dart';
-import 'package:awesome_icons/awesome_icons.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,11 +16,9 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/acercaDe.dart';
 import 'package:ultrared/src/pages/actualiza_clave.dart';
 import 'package:ultrared/src/pages/lista_notificaciones.dart';
-import 'package:ultrared/src/pages/login_page.dart';
-import 'package:ultrared/src/pages/registro_page.dart';
+
 import 'package:ultrared/src/pages/selecciona_sector.dart';
-import 'package:ultrared/src/pages/ser_cliente_page.dart';
-import 'package:ultrared/src/pages/splash_screen.dart';
+
 
 import 'package:ultrared/src/service/notification_push.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
@@ -28,7 +26,7 @@ import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
-import 'package:ultrared/src/widgets/no_data.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 

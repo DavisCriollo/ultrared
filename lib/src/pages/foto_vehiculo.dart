@@ -13,12 +13,14 @@ import 'package:ultrared/src/pages/home_page.dart';
 import 'package:ultrared/src/pages/login_page.dart';
 import 'package:ultrared/src/pages/selecciona_sector.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
+import 'package:ultrared/src/pages/splash_screen.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
+import 'package:ultrared/src/widgets/modal_permisos.dart';
 
 class FotosVehiculoPage extends StatefulWidget {
      final String? action;
@@ -370,12 +372,27 @@ class _FotosVehiculoPageState extends State<FotosVehiculoPage> {
               actions: [
                 CupertinoActionSheetAction(
                   onPressed: () async {
-                    final image = await _getImage(context, ImageSource.camera);
+                    // final image = await _getImage(context, ImageSource.camera);
+                    // if (image != null) {
+                    //   _controller.setImage(image, 'fotovehiculo');
+                    // }
+                    // Navigator.pop(context);
+                   
+                      await _controller.checkAndRequestPermissions();
+           
+                    if (_controller.hasCameraPermission) {
+                      //  NotificatiosnService.showSnackBarDanger(' SI TIENE PERMISO DE CAMARA');
+                         final image = await _getImage(context, ImageSource.camera);
                     if (image != null) {
-                      _controller.setImage(image, 'fotovehiculo');
+                      _controller.setImage(image,'fotovehiculo');
                     }
                     Navigator.pop(context);
-                    // _getImageFromCamera(context,_controller);
+                    } else {
+                      showPermissionModal(context,size,'Para completar el registro en nuestra aplicación, es necesario otorgar permisos de la cámara.');
+                      
+                    }
+
+
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -397,12 +414,28 @@ class _FotosVehiculoPageState extends State<FotosVehiculoPage> {
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
-                    final image = await _getImage(context, ImageSource.gallery);
+                    // final image = await _getImage(context, ImageSource.gallery);
+                    // if (image != null) {
+                    //   _controller.setImage(image, 'fotovehiculo');
+                    // }
+                    // Navigator.pop(context);
+                   
+
+                        await _controller.checkAndRequestPermissions();
+           
+                    if (_controller.hasCameraPermission) {
+                      //  NotificatiosnService.showSnackBarDanger(' SI TIENE PERMISO DE CAMARA');
+                         final image = await _getImage(context, ImageSource.gallery);
                     if (image != null) {
-                      _controller.setImage(image, 'fotovehiculo');
+                      _controller.setImage(image,'fotovehiculo');
                     }
                     Navigator.pop(context);
-                    // _getImageFromGallery(context,_controller);
+                    } else {
+                      showPermissionModal(context,size,'Para completar el registro en nuestra aplicación, es necesario otorgar permisos de la cámara.');
+                      
+                    }
+
+
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -468,11 +501,16 @@ void _onSubmit(BuildContext context, HomeController controller, size,String _act
  ProgressDialog.show(context);
  final response = await controller.editarUsuario(context);
    ProgressDialog.dissmiss(context);
-    if (response != null  && response.containsKey('res') ) {
-       NotificatiosnService.showSnackBarDanger( response['msg']);
-    } else if (response != null  && !response.containsKey('res')) {
-      _modalMessageResponse(context, response['msg'], size,_action);
-    }
+    // if (response != null  && response.containsKey('res') ) {
+    //    NotificatiosnService.showSnackBarDanger( response['msg']);
+    // } else if (response != null  && !response.containsKey('res')) {
+    //   _modalMessageResponse(context, response['msg'], size,_action);
+    // }
+    if (response != null && response.containsKey('res')) {
+        NotificatiosnService.showSnackBarDanger(response['msg']);
+      } else if (response != null && !response.containsKey('res')) {
+        _modalMessageResponse(context, response['msg'], size, _action);
+      }
        }
 
     // final response = await controller.crearUsuario(context);
@@ -549,7 +587,7 @@ Future<void> _modalMessageResponse(
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute<void>(
-                          builder: (BuildContext context) => const HomePage()));
+                          builder: (BuildContext context) => const SplashPage()));
                }
                 
 
