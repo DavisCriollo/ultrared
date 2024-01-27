@@ -2,6 +2,7 @@
 
 
 
+import 'package:animate_do/animate_do.dart';
 import 'package:awesome_icons/awesome_icons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -240,49 +241,62 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ],
             ),
           ),
-          ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Inicio'),
-            onTap: () {
-              // Acción al hacer clic en "Inicio"
-              Navigator.pop(context);
-            },
+          FadeInLeftBig(
+             duration: Duration(milliseconds: 400),
+            child: ListTile(
+              
+              leading: Icon(Icons.home),
+              title: Text('Inicio'),
+              onTap: () {
+                // Acción al hacer clic en "Inicio"
+                Navigator.pop(context);
+              },
+            ),
           ),
           _ctrl.getUser!['isClient']=='SI'
-                                          ?  ListTile(
-            leading: Icon(Icons.list_alt_outlined),
-            title: Text('Estado de Cuenta'),
-            onTap: () {
-              // Acción al hacer clic en "Inicio"
-              Navigator.pop(context);
-            },
-          ): Container(),
-          ListTile(
-             leading: const Icon(Icons.lock_outline_rounded),
-            title: const Text('Cambiar Contraseña'),
-            onTap: () {
-              // Acción al hacer clic en "Acerca de"
-              Navigator.pop(context);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: ((context) => ActualizaClave())));
-            },
+                                          ?  FadeInLeftBig(
+                                             duration: Duration(milliseconds: 400),
+                                            child: ListTile(
+                                                      leading: Icon(Icons.list_alt_outlined),
+                                                      title: Text('Estado de Cuenta'),
+                                                      onTap: () {
+                                                        // Acción al hacer clic en "Inicio"
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                          ): Container(),
+          FadeInLeftBig(
+             duration: Duration(milliseconds: 400),
+            child: ListTile(
+               leading: const Icon(Icons.lock_outline_rounded),
+              title: const Text('Cambiar Contraseña'),
+              onTap: () {
+                // Acción al hacer clic en "Acerca de"
+                Navigator.pop(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: ((context) => ActualizaClave())));
+              },
+            ),
           ),
-          ListTile(
-            leading: const Icon(Icons.notifications_active),
-            title: Text('Notificaciones'),
-            onTap: () {
-              // Acción al hacer clic en "Configuración"
-              Navigator.pop(context);
-              context
-                                    .read<HomeController>()
-                                    .buscarNotificaciones(context);
-
-//
-
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ListaNotificaciones()));
-            },
+          FadeInLeftBig(
+             duration: Duration(milliseconds: 400),
+            child: ListTile(
+              leading: const Icon(Icons.notifications_active),
+              title: Text('Notificaciones'),
+              onTap: () {
+                // Acción al hacer clic en "Configuración"
+                Navigator.pop(context);
+                context
+                                      .read<HomeController>()
+                                      .buscarNotificaciones(context);
+          
+          //
+          
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ListaNotificaciones()));
+              },
+            ),
           ),
           // ListTile(
           //   leading: const Icon(Icons.share),
@@ -293,80 +307,89 @@ class _DrawerMenuState extends State<DrawerMenu> {
           //     _modalShare(context,size);
           //   },
           // ),
-          ListTile(
-            leading: const Icon(Icons.info),
-            title: const Text('Acerca de'),
-            onTap: () {
-              // Acción al hacer clic en "Acerca de"
-              Navigator.pop(context);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: ((context) => AcercaDePage())));
-            },
+          FadeInLeftBig(
+             duration: Duration(milliseconds: 400),
+            child: ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('Acerca de'),
+              onTap: () {
+                // Acción al hacer clic en "Acerca de"
+                Navigator.pop(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: ((context) => AcercaDePage())));
+              },
+            ),
           ),
-          ListTile(
-            leading: const Icon(Icons.playlist_add_check_circle_outlined),
-            title: const Text('Política de Privacidad'),
-            onTap: () {
-              // Acción al hacer clic en "Acerca de"
-              Navigator.pop(context);
-_launchURL();
-
-//  Navigator.push(
-//                                                         context,
-//                                                         MaterialPageRoute(
-//                                                             builder: (context) => 
-//                                                             // ViewsPDFs(
-//                                                             //     infoPdf:'https://drive.google.com/file/d/10iMkH1XYmpn00k7u05m9zPnVVEhPX1nJ/view?usp=sharing',
-//                                                             //     labelPdf: 'archivo.pdf'
-                                                               
-//                                                             //     )
-                                                                
-//                                                                 PDFViewerScreen();
-                                                                
-//                                                                 );
-
-              // _launchURL("https://docs.google.com/document/d/160I5knwXP7yoQjsykMTsjECpo5wNqHnks5vZKp-bZMM/edit?usp=sharing");
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: ((context) => AcercaDePage())));
-            },
+          FadeInLeftBig(
+             duration: Duration(milliseconds: 400),
+            child: ListTile(
+              leading: const Icon(Icons.playlist_add_check_circle_outlined),
+              title: const Text('Política de Privacidad'),
+              onTap: () {
+                // Acción al hacer clic en "Acerca de"
+                Navigator.pop(context);
+          _launchURL();
+          
+          //  Navigator.push(
+          //                                                         context,
+          //                                                         MaterialPageRoute(
+          //                                                             builder: (context) => 
+          //                                                             // ViewsPDFs(
+          //                                                             //     infoPdf:'https://drive.google.com/file/d/10iMkH1XYmpn00k7u05m9zPnVVEhPX1nJ/view?usp=sharing',
+          //                                                             //     labelPdf: 'archivo.pdf'
+                                                                 
+          //                                                             //     )
+                                                                  
+          //                                                                 PDFViewerScreen();
+                                                                  
+          //                                                                 );
+          
+                // _launchURL("https://docs.google.com/document/d/160I5knwXP7yoQjsykMTsjECpo5wNqHnks5vZKp-bZMM/edit?usp=sharing");
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: ((context) => AcercaDePage())));
+              },
+            ),
           ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Cerrar Sesión'),
-            onTap: () async {
-        
-                 
-                var ctrlHome = context.read<HomeController>();  
-                  var ctrlSocket = context.read<SocketModel>();  
-        
-             ProgressDialog.show(context);
-            final response = await ctrlHome.cierreSesionUsuario(context);
-            ProgressDialog.dissmiss(context);
-
-if (response != null ) {
-     
-  //----------------------------------------------------//
-           final _tokenFCM = await Auth.instance.getTokenFireBase();
-           ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
-           await FirebaseService.deleteFirebaseInstance();
-           await Auth.instance.deleteTokenFireBase();
-           ctrlSocket.disconnectSocket();
-           Navigator.pop(context);
-           await Auth.instance.deleteSesion(context);
-     
-              //----------------------------------------------------//
-
-
-
-    }else  {
-
-       NotificatiosnService.showSnackBarDanger( response.toString());
-      
-    } 
-    
-         //----------------------------------------------------//
-
-            },
+          FadeInLeftBig(
+             duration: Duration(milliseconds: 400),
+            child: ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: Text('Cerrar Sesión'),
+              onTap: () async {
+                  
+                   
+                  var ctrlHome = context.read<HomeController>();  
+                    var ctrlSocket = context.read<SocketModel>();  
+                  
+               ProgressDialog.show(context);
+              final response = await ctrlHome.cierreSesionUsuario(context);
+              ProgressDialog.dissmiss(context);
+          
+          if (response != null ) {
+               
+            //----------------------------------------------------//
+             final _tokenFCM = await Auth.instance.getTokenFireBase();
+             ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
+             await FirebaseService.deleteFirebaseInstance();
+             await Auth.instance.deleteTokenFireBase();
+            //  ctrlSocket.disconnectSocket();
+             Navigator.pop(context);
+             await Auth.instance.deleteSesion(context);
+               
+                //----------------------------------------------------//
+          
+          
+          
+              }else  {
+          
+                 NotificatiosnService.showSnackBarDanger( response.toString());
+                
+              } 
+              
+                   //----------------------------------------------------//
+          
+              },
+            ),
           ),
           //***********************************************/
 

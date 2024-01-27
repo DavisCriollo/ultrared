@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 // import 'package:image_picker/image_picker.dart';
 // import 'package:path_provider/path_provider.dart';
@@ -206,14 +207,44 @@ class HomeController extends ChangeNotifier {
   //   _selectCoords = value;
   //   notifyListeners();
   // }
+//   bool _gpsState = false;
+//   bool  get getGPSState => _gpsState;
+//    void setGPSState(bool _state) {
+//     _gpsState = _state;
+//        print('ESTA ACTIVADO   $_gpsState');
+//     notifyListeners();
+//   }
+//   Future checkGPSStatus() async {
+//     final isEnable = await Geolocator.isLocationServiceEnabled();
+//     // Geolocator.getServiceStatusStream().listen((event) {
+//     //   final isEnable = (event.index == 1) ? true : false;
 
-  // Future<bool?> checkGPSStatus() async {
-  //   final isEnable = await Geolocator.Geolocator.isLocationServiceEnabled();
-  //   Geolocator.Geolocator.getServiceStatusStream().listen((event) {
-  //     final isEnable = (event.index == 1) ? true : false;
-  //   });
-  //   return isEnable;
-  // }
+//       //  print('ESTA ACTIVADO   $isEnable');
+//       setGPSState(isEnable);
+      
+// notifyListeners();
+//     // });
+//     // return isEnable;
+//   }
+
+
+
+// GeolocatorPlatform geolocator = GeolocatorPlatform.instance;
+//   bool _gpsStatus = false;
+
+//   bool get gpsStatus => _gpsStatus;
+
+//   Future<void> checkGpsStatus() async {
+//     bool isLocationServiceEnabled = await geolocator.isLocationServiceEnabled();
+//     _gpsStatus = isLocationServiceEnabled;
+//     notifyListeners();
+//     print('estado del GPS ====> {$_gpsStatus}');
+//   }
+
+
+
+
+
 
   // String _locationMessage = "";
 
@@ -241,13 +272,36 @@ class HomeController extends ChangeNotifier {
       _locationGPS = {};
       _locationMessage = '';
       setGPSPositione(false);
-      Geolocator.openAppSettings();
+      // Geolocator.openAppSettings();
     }
 
     // print('_locationGPS   $_locationGPS');
     notifyListeners();
   }
 
+
+  late Position _currentPosition;
+
+  Position get currentPosition => _currentPosition;
+
+  Future<void> getCurrentLocation() async {
+    try {
+      _currentPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+        _locationMessage = '';
+      _locationGPS = {
+        "latitud": _currentPosition.latitude,
+        "longitud": _currentPosition.longitude,
+      };
+      _locationMessage = "${_currentPosition.latitude},${_currentPosition.longitude}";
+      setGPSPositione(true);
+       print(' obtener la posición: $_currentPosition');
+      notifyListeners();
+    } catch (e) {
+      print('Error al obtener la posición: $e');
+    }
+  }
 //-----------------VERIFICA INTERNET-----------------------//
 
 //  bool _conectionInternet=false;
@@ -1225,7 +1279,22 @@ class HomeController extends ChangeNotifier {
 
 //====== VALIDA LA SESION DEL USUARIO ==========//
 
-  Future validaInicioDeSesion(BuildContext context) async {
+
+ bool? _validaSession=false; // sera nulo la primera vez
+  bool? get getValidaSession => _validaSession;
+  void setValidaSession(bool? value) {
+    _validaSession = value;
+     print('_validaSession: $_validaSession');
+    notifyListeners();
+  }
+
+
+
+
+
+
+
+  Future validaInicioDeSesion() async {
     final dataUser = await Auth.instance.getSession();
     final response = await _api.validaTokenUsuarios(
       token: dataUser!['token'],
@@ -1233,13 +1302,14 @@ class HomeController extends ChangeNotifier {
 
     if (response != null) {
       // print('EL TOQUEN NUEVO: $response');
+        setValidaSession(true);
       await Auth.instance.saveSession(response);
-
+    
       return response;
     }
     if (response == null) {
-      await Auth.instance.deleteSesion(context);
-
+      // await Auth.instance.deleteSesion(context);
+    setValidaSession(false);
       return null;
     }
   }
@@ -1342,6 +1412,62 @@ class HomeController extends ChangeNotifier {
       return null;
     }
   }
-//---------------------------------//
+//--------------- PERMISOS DE LA APLICACION ------------------//
+  // PermissionStatus? _locationPermissionStatus;
+
+  // PermissionStatus? get locationPermissionStatus => _locationPermissionStatus;
+
+  // Future<void> checkLocationPermission() async {
+  //   _locationPermissionStatus = await Permission.location.status;
+  //   notifyListeners();
+  // }
+
+  // Future<void> requestLocationPermission() async {
+  //   var result = await Permission.location.request();
+  //   _locationPermissionStatus = result;
+  //   notifyListeners();
+  // }
+
+  // bool _hasLocationPermission = false;
+
+  // bool get hasLocationPermission => _hasLocationPermission;
+
+  // Future<void> checkAndRequestLocationPermission() async {
+  //   PermissionStatus status = await Permission.location.status;
+
+  //   if (status.isGranted) {
+  //     _hasLocationPermission = true;
+  //   } else {
+  //     status = await Permission.location.request();
+  //     _hasLocationPermission = status.isGranted;
+  //   }
+
+  //   // Notifica a los oyentes (widgets) sobre el cambio en el estado
+  //   notifyListeners();
+  // }
+
+  
+bool _hasLocationPermission = false;
+
+  bool get hasLocationPermission => _hasLocationPermission;
+
+  Future<void> checkAndRequestLocationPermission() async {
+    PermissionStatus status = await Permission.location.status;
+
+    if (status.isGranted) {
+      _hasLocationPermission = true;
+    } else {
+      status = await Permission.location.request();
+      _hasLocationPermission = status.isGranted;
+    }
+
+    // Notifica a los oyentes (widgets) sobre el cambio en el estado
+    notifyListeners();
+  }
+
+  Future<bool> checkGpsStatus() async {
+    bool isGpsEnabled = await Geolocator.isLocationServiceEnabled();
+    return isGpsEnabled;
+  }
 
 }

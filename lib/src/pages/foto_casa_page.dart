@@ -473,6 +473,16 @@ void _onSubmit(BuildContext context, HomeController controller, size,
       } else if (response != null && !response.containsKey('res')) {
         _modalMessageResponse(context, response['msg'], size, _action);
       }
+
+//  ProgressDialog.show(context);
+//  final response = await controller.editarUsuario(context);
+//    ProgressDialog.dissmiss(context);
+//     if (response != null  && response.containsKey('res') ) {
+//        NotificatiosnService.showSnackBarDanger( response['msg']);
+//     } else if (response != null  && !response.containsKey('res')) {
+//       _modalMessageResponse(context, response['msg'], size,_action);
+//     }
+
     }
 
     // final response = await controller.crearUsuario(context);

@@ -1,5 +1,6 @@
 
 
+import 'package:animate_do/animate_do.dart';
 import 'package:better_player/better_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -77,168 +78,171 @@ class _MessageChatState extends State<MessageChat> {
 
 _myChat(BuildContext context,
     Responsive size, Map<String, dynamic> messaje, String type, String _hora) {
-  return Align(
-    alignment: Alignment.centerRight,
-    child: Container(
-      // width: size.wScreen(60),
-      // color:  Colors.red,
-      padding: EdgeInsets.all(size.iScreen(0.2)),
-      margin: EdgeInsets.only(right: 5, bottom: 2, left: 50),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          //  Container(
-          //               width: size.iScreen(4.0),
-          //               height: size.iScreen(4.0),
-          //               margin:EdgeInsets.symmetric(horizontal:size.iScreen(0.3)),
-          //               decoration: BoxDecoration(
-          //                 shape: BoxShape.circle,
-          //                 border: Border.all(color: Colors.grey, width: 2.0),
-          //               ),
-          //               child: ClipOval(
-          //                 child: CachedNetworkImage(
-          //                   imageUrl:
-          //                       '${messaje['foto']}', // Reemplaza con la URL de tu imagen
-          //                   placeholder: (context, url) =>
-          //                       const CircularProgressIndicator(),
-          //                   errorWidget: (context, url, error) =>
-          //                       Icon(Icons.error),
-          //                   fit: BoxFit.cover,
-          //                 ),
-          //               )),
-
-          messaje['foto'].isNotEmpty
-              ? Container(
-                  width: size.iScreen(4.0),
-                  height: size.iScreen(4.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.grey, width: 2.0),
-                  ),
-                  child: ClipOval(
-                    child: CachedNetworkImage(
-                      imageUrl:
-                          '${messaje['foto']}', // Reemplaza con la URL de tu imagen
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                      fit: BoxFit.cover,
+  return FadeInLeft(
+ duration: Duration(milliseconds: 400),
+    child: Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+        // width: size.wScreen(60),
+        // color:  Colors.red,
+        padding: EdgeInsets.all(size.iScreen(0.2)),
+        margin: EdgeInsets.only(right: 5, bottom: 2, left: 50),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            //  Container(
+            //               width: size.iScreen(4.0),
+            //               height: size.iScreen(4.0),
+            //               margin:EdgeInsets.symmetric(horizontal:size.iScreen(0.3)),
+            //               decoration: BoxDecoration(
+            //                 shape: BoxShape.circle,
+            //                 border: Border.all(color: Colors.grey, width: 2.0),
+            //               ),
+            //               child: ClipOval(
+            //                 child: CachedNetworkImage(
+            //                   imageUrl:
+            //                       '${messaje['foto']}', // Reemplaza con la URL de tu imagen
+            //                   placeholder: (context, url) =>
+            //                       const CircularProgressIndicator(),
+            //                   errorWidget: (context, url, error) =>
+            //                       Icon(Icons.error),
+            //                   fit: BoxFit.cover,
+            //                 ),
+            //               )),
+  
+            messaje['foto'].isNotEmpty
+                ? Container(
+                    width: size.iScreen(4.0),
+                    height: size.iScreen(4.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.grey, width: 2.0),
                     ),
-                  ))
-              : Container(
-                padding: EdgeInsets.all(size.iScreen(0.5)),
-                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.grey.shade500, width: 2.0),
-                  ),
-                child: ClipOval(
-                    child: Icon( Icons.person,color: Colors.grey.shade400,size: size.iScreen(2.8),)
-                    
-                    
-                    // Image.asset(
-                    //   'assets/imgs/no-image.png',
-                    //   // color: Colors.grey.shade200, // Reemplaza con la ruta de tu imagen en los activos
-                    //   width: size.iScreen(4.0),
-                    //   height: size.iScreen(4.0),
-                    //   fit: BoxFit.cover,
-                    // ),
-                  ),
-              ),
-
-          Container(
-              // color: Colors.red ,
-              // width: size.wScreen(60.0),
-              margin:EdgeInsets.only(left: size.iScreen(0.0)),
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.symmetric(
-                horizontal: size.iScreen(1.0),
-                vertical: size.iScreen(0.5),
-              ),
-              decoration: BoxDecoration(
-                  color: septinaryColor,
-                  // color: Color(0xff4D9EF6),
-                  borderRadius: BorderRadius.circular(8)),
-              child: Stack(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        // width: size.wScreen(60.0),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '${messaje['nombres']} ',
-                          textAlign: TextAlign.left,
-                          style: GoogleFonts.poppins(
-                            fontSize: size.iScreen(1.5),
-                            fontWeight: FontWeight.w600,
-                            color: quinquanaryColor,
-                            letterSpacing: -0.40,
+                    child: ClipOval(
+                      child: CachedNetworkImage(
+                        imageUrl:
+                            '${messaje['foto']}', // Reemplaza con la URL de tu imagen
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        fit: BoxFit.cover,
+                      ),
+                    ))
+                : Container(
+                  padding: EdgeInsets.all(size.iScreen(0.5)),
+                   decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.grey.shade500, width: 2.0),
+                    ),
+                  child: ClipOval(
+                      child: Icon( Icons.person,color: Colors.grey.shade400,size: size.iScreen(2.8),)
+                      
+                      
+                      // Image.asset(
+                      //   'assets/imgs/no-image.png',
+                      //   // color: Colors.grey.shade200, // Reemplaza con la ruta de tu imagen en los activos
+                      //   width: size.iScreen(4.0),
+                      //   height: size.iScreen(4.0),
+                      //   fit: BoxFit.cover,
+                      // ),
+                    ),
+                ),
+  
+            Container(
+                // color: Colors.red ,
+                // width: size.wScreen(60.0),
+                margin:EdgeInsets.only(left: size.iScreen(0.0)),
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.symmetric(
+                  horizontal: size.iScreen(1.0),
+                  vertical: size.iScreen(0.5),
+                ),
+                decoration: BoxDecoration(
+                    color: septinaryColor,
+                    // color: Color(0xff4D9EF6),
+                    borderRadius: BorderRadius.circular(8)),
+                child: Stack(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          // width: size.wScreen(60.0),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '${messaje['nombres']} ',
+                            textAlign: TextAlign.left,
+                            style: GoogleFonts.poppins(
+                              fontSize: size.iScreen(1.5),
+                              fontWeight: FontWeight.w600,
+                              color: quinquanaryColor,
+                              letterSpacing: -0.40,
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        // color:  Colors.red,
-                          // constraints: BoxConstraints(maxWidth: size.wScreen(60.0)),
-                          // alignment: Alignment.centerLeft,
-                          constraints: BoxConstraints(
-                              // minHeight: size.wScreen(5.0), // Altura mínima
-
-                              // minWidth: size.wScreen(5.0),
-                              // maxWidth: size.wScreen(60.0) // Ancho máximo
-                              ),
-                          child: 
-                            Column(
-                            children: [
-                          
-                              messaje['message_text'].isNotEmpty? Container(
-                                      constraints: BoxConstraints(
-                              // minHeight: size.wScreen(1.0), // Altura mínima
-
-                              minWidth: size.wScreen(5.0),
-                              maxWidth: size.wScreen(60.0) // Ancho máximo
-                              ),
-                              
-                              margin: EdgeInsets.symmetric(vertical:size.iScreen(0.2)),child: _messajeTexto( messaje['message_text'],size)):Container(),
-                              messaje['message_fotos'].isNotEmpty?Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeImagen(context, messaje['message_fotos'],size)):Container(),
-                               messaje['message_videos'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeVideo(context,messaje['message_videos'],size)):Container(),
-                                  messaje['message_audio'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeAudio(context,messaje['message_audio'],size)):Container(),
-                              
-                            ],
-                          )
-                             
+                        Container(
+                          // color:  Colors.red,
+                            // constraints: BoxConstraints(maxWidth: size.wScreen(60.0)),
+                            // alignment: Alignment.centerLeft,
+                            constraints: BoxConstraints(
+                                // minHeight: size.wScreen(5.0), // Altura mínima
+  
+                                // minWidth: size.wScreen(5.0),
+                                // maxWidth: size.wScreen(60.0) // Ancho máximo
                                 ),
-                      SizedBox(
-                        height: size.wScreen(4.0),
-                      )
-                    ],
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Text(
-                      '$_hora',
-                      style: GoogleFonts.poppins(
-                        fontSize: size.iScreen(1.2),
-                        fontWeight: FontWeight.w500,
-                        color: sextinaryColor,
-                        // letterSpacing: -0.40,
-                      ),
-                      // textAlign: TextAlign.right,
-
-                      // overflow: TextOverflow.ellipsis,
+                            child: 
+                              Column(
+                              children: [
+                            
+                                messaje['message_text'].isNotEmpty? Container(
+                                        constraints: BoxConstraints(
+                                // minHeight: size.wScreen(1.0), // Altura mínima
+  
+                                minWidth: size.wScreen(5.0),
+                                maxWidth: size.wScreen(60.0) // Ancho máximo
+                                ),
+                                
+                                margin: EdgeInsets.symmetric(vertical:size.iScreen(0.2)),child: _messajeTexto( messaje['message_text'],size)):Container(),
+                                messaje['message_fotos'].isNotEmpty?Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeImagen(context, messaje['message_fotos'],size)):Container(),
+                                 messaje['message_videos'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeVideo(context,messaje['message_videos'],size)):Container(),
+                                    messaje['message_audio'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeAudio(context,messaje['message_audio'],size)):Container(),
+                                
+                              ],
+                            )
+                               
+                                  ),
+                        SizedBox(
+                          height: size.wScreen(4.0),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              )),
-        ],
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Text(
+                        '$_hora',
+                        style: GoogleFonts.poppins(
+                          fontSize: size.iScreen(1.2),
+                          fontWeight: FontWeight.w500,
+                          color: sextinaryColor,
+                          // letterSpacing: -0.40,
+                        ),
+                        // textAlign: TextAlign.right,
+  
+                        // overflow: TextOverflow.ellipsis,
+                      ),
+                    )
+                  ],
+                )),
+          ],
+        ),
+        decoration: BoxDecoration(
+            // color: Color(0xff4D9EF6),
+            // color: Colors.red,
+            borderRadius: BorderRadius.circular(8)),
       ),
-      decoration: BoxDecoration(
-          // color: Color(0xff4D9EF6),
-          // color: Colors.red,
-          borderRadius: BorderRadius.circular(8)),
     ),
   );
 }
@@ -510,173 +514,176 @@ Text _messajeTexto(String messaje, Responsive size) {
 
 _noChat(BuildContext context,
     Responsive size, Map<String, dynamic> messaje, String type, String _hora) {
-  return Align(
-    alignment: Alignment.centerLeft,
-    child: Container(
-      // color:  Colors.red,
-      padding: EdgeInsets.all(size.iScreen(0.2)),
-      margin: EdgeInsets.only(right: 50, bottom: 5, left: 5),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          // Container(
-          //     width: size.iScreen(4.0),
-          //     height: size.iScreen(4.0),
-          //     margin: EdgeInsets.symmetric(horizontal: size.iScreen(0.3)),
-          //     decoration: BoxDecoration(
-          //       shape: BoxShape.circle,
-          //       border: Border.all(color: Colors.grey, width: 2.0),
-          //     ),
-          //     child: ClipOval(
-          //       child: CachedNetworkImage(
-          //         imageUrl:
-          //             '${messaje['foto']}', // Reemplaza con la URL de tu imagen
-          //         placeholder: (context, url) =>
-          //             const CircularProgressIndicator(),
-          //         errorWidget: (context, url, error) => Icon(Icons.error),
-          //         fit: BoxFit.cover,
-          //       ),
-          //     )),
-          messaje['foto'].isNotEmpty
-              ? Container(
-                  width: size.iScreen(4.0),
-                  height: size.iScreen(4.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.grey, width: 2.0),
-                  ),
-                  child: ClipOval(
-                    child: CachedNetworkImage(
-                      imageUrl:
-                          '${messaje['foto']}', // Reemplaza con la URL de tu imagen
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                      fit: BoxFit.cover,
-                    ),
-                  ))
-              : ClipOval(
-                  child: Image.asset(
-                    'assets/imgs/no-image.png', // Reemplaza con la ruta de tu imagen en los activos
+  return FadeInRight(
+    duration: Duration(milliseconds: 400),
+    child: Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        // color:  Colors.red,
+        padding: EdgeInsets.all(size.iScreen(0.2)),
+        margin: EdgeInsets.only(right: 50, bottom: 5, left: 5),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            // Container(
+            //     width: size.iScreen(4.0),
+            //     height: size.iScreen(4.0),
+            //     margin: EdgeInsets.symmetric(horizontal: size.iScreen(0.3)),
+            //     decoration: BoxDecoration(
+            //       shape: BoxShape.circle,
+            //       border: Border.all(color: Colors.grey, width: 2.0),
+            //     ),
+            //     child: ClipOval(
+            //       child: CachedNetworkImage(
+            //         imageUrl:
+            //             '${messaje['foto']}', // Reemplaza con la URL de tu imagen
+            //         placeholder: (context, url) =>
+            //             const CircularProgressIndicator(),
+            //         errorWidget: (context, url, error) => Icon(Icons.error),
+            //         fit: BoxFit.cover,
+            //       ),
+            //     )),
+            messaje['foto'].isNotEmpty
+                ? Container(
                     width: size.iScreen(4.0),
                     height: size.iScreen(4.0),
-                    fit: BoxFit.cover,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.grey, width: 2.0),
+                    ),
+                    child: ClipOval(
+                      child: CachedNetworkImage(
+                        imageUrl:
+                            '${messaje['foto']}', // Reemplaza con la URL de tu imagen
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        fit: BoxFit.cover,
+                      ),
+                    ))
+                : ClipOval(
+                    child: Image.asset(
+                      'assets/imgs/no-image.png', // Reemplaza con la ruta de tu imagen en los activos
+                      width: size.iScreen(4.0),
+                      height: size.iScreen(4.0),
+                      fit: BoxFit.cover,
+                    ),
                   ),
+            Container(
+                // color: Colors.red ,
+                // width: size.wScreen(60.0),
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.symmetric(
+                  horizontal: size.iScreen(1.0),
+                  vertical: size.iScreen(0.5),
                 ),
-          Container(
-              // color: Colors.red ,
-              // width: size.wScreen(60.0),
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.symmetric(
-                horizontal: size.iScreen(1.0),
-                vertical: size.iScreen(0.5),
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  // color: Color(0xff4D9EF6),
-                  borderRadius: BorderRadius.circular(8)),
-              child: Stack(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        // width: size.wScreen(60.0),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '${messaje['nombres']} ',
-                          textAlign: TextAlign.left,
-                          style: GoogleFonts.poppins(
-                            fontSize: size.iScreen(1.5),
-                            fontWeight: FontWeight.w600,
-                            color: quinquanaryColor,
-                            letterSpacing: -0.40,
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    // color: Color(0xff4D9EF6),
+                    borderRadius: BorderRadius.circular(8)),
+                child: Stack(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          // width: size.wScreen(60.0),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '${messaje['nombres']} ',
+                            textAlign: TextAlign.left,
+                            style: GoogleFonts.poppins(
+                              fontSize: size.iScreen(1.5),
+                              fontWeight: FontWeight.w600,
+                              color: quinquanaryColor,
+                              letterSpacing: -0.40,
+                            ),
                           ),
                         ),
-                      ),
-                      // Container(
-                      //   // constraints: BoxConstraints(maxWidth: size.wScreen(60.0)),
-                      //   // alignment: Alignment.centerLeft,
-                      //   constraints: BoxConstraints(
-                      //       // minHeight: size.wScreen(5.0), // Altura mínima
-
-                      //       minWidth: size.wScreen(5.0),
-                      //       maxWidth: size.wScreen(60.0) // Ancho máximo
-                      //       ),
-                      //   child:messaje['message_text']._messajeTexto(messaje['message_text'], size)
-                      //   //  Text('data'),
-                      // ),
-                      // type == 'text'
-                      //     ? messaje['message_text']._messajeTexto(messaje['message_text'], size)
-                      //     : type == 'img'
-                      //         ? _messajeImagen(size)
-                      //         : type == 'video'
-                      //             ? _messajeVideo(size)
-                      //             : _messajeAudio(size)),
-                       Container(
-                          // constraints: BoxConstraints(maxWidth: size.wScreen(60.0)),
-                          // alignment: Alignment.centerLeft,
-                          constraints: BoxConstraints(
-                              // minHeight: size.wScreen(5.0), // Altura mínima
-
-                              // minWidth: size.wScreen(5.0),
-                              // maxWidth: size.wScreen(60.0) // Ancho máximo
-                              ),
-                          child: 
-                            Column(
-                            children: [
-                           
-                              // messaje['message_text'].isNotEmpty? _messajeTexto( messaje['message_text'],size):Container(),
-                              // messaje['message_fotos'].isNotEmpty? _messajeImagen(context,messaje['message_fotos'],size):Container(),
-                                 messaje['message_text'].isNotEmpty? Container(
-                                  constraints: BoxConstraints(
-                              // minHeight: size.wScreen(1.0), // Altura mínima
-
-                              // minWidth: size.wScreen(5.0),
-                              // maxWidth: size.wScreen(60.0) // Ancho máximo
-                              ),
-                                  // width:size.iScreen(25)
+                        // Container(
+                        //   // constraints: BoxConstraints(maxWidth: size.wScreen(60.0)),
+                        //   // alignment: Alignment.centerLeft,
+                        //   constraints: BoxConstraints(
+                        //       // minHeight: size.wScreen(5.0), // Altura mínima
+  
+                        //       minWidth: size.wScreen(5.0),
+                        //       maxWidth: size.wScreen(60.0) // Ancho máximo
+                        //       ),
+                        //   child:messaje['message_text']._messajeTexto(messaje['message_text'], size)
+                        //   //  Text('data'),
+                        // ),
+                        // type == 'text'
+                        //     ? messaje['message_text']._messajeTexto(messaje['message_text'], size)
+                        //     : type == 'img'
+                        //         ? _messajeImagen(size)
+                        //         : type == 'video'
+                        //             ? _messajeVideo(size)
+                        //             : _messajeAudio(size)),
+                         Container(
+                            // constraints: BoxConstraints(maxWidth: size.wScreen(60.0)),
+                            // alignment: Alignment.centerLeft,
+                            constraints: BoxConstraints(
+                                // minHeight: size.wScreen(5.0), // Altura mínima
+  
+                                // minWidth: size.wScreen(5.0),
+                                // maxWidth: size.wScreen(60.0) // Ancho máximo
+                                ),
+                            child: 
+                              Column(
+                              children: [
+                             
+                                // messaje['message_text'].isNotEmpty? _messajeTexto( messaje['message_text'],size):Container(),
+                                // messaje['message_fotos'].isNotEmpty? _messajeImagen(context,messaje['message_fotos'],size):Container(),
+                                   messaje['message_text'].isNotEmpty? Container(
+                                    constraints: BoxConstraints(
+                                // minHeight: size.wScreen(1.0), // Altura mínima
+  
+                                // minWidth: size.wScreen(5.0),
+                                // maxWidth: size.wScreen(60.0) // Ancho máximo
+                                ),
+                                    // width:size.iScreen(25)
+                                  
+                                margin: EdgeInsets.symmetric(vertical:size.iScreen(0.2)),child: _messajeTexto( messaje['message_text'],size)):Container(),
+                                messaje['message_fotos'].isNotEmpty?Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeImagen(context, messaje['message_fotos'],size)):Container(),
+                                 messaje['message_videos'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeVideo(context,messaje['message_videos'],size)):Container(),
+                                    messaje['message_audio'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeAudio(context,messaje['message_audio'],size)):Container(),
                                 
-                              margin: EdgeInsets.symmetric(vertical:size.iScreen(0.2)),child: _messajeTexto( messaje['message_text'],size)):Container(),
-                              messaje['message_fotos'].isNotEmpty?Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeImagen(context, messaje['message_fotos'],size)):Container(),
-                               messaje['message_videos'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeVideo(context,messaje['message_videos'],size)):Container(),
-                                  messaje['message_audio'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeAudio(context,messaje['message_audio'],size)):Container(),
-                              
-                            ],
-                          )
-                                      
-                                      ),
-                      SizedBox(
-                        height: size.wScreen(2.0),
-                      )
-                    ],
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Text(
-                      '$_hora',
-                      style: GoogleFonts.poppins(
-                        fontSize: size.iScreen(1.2),
-                        fontWeight: FontWeight.w500,
-                        color: sextinaryColor,
-                        // letterSpacing: -0.40,
-                      ),
-                      // textAlign: TextAlign.right,
-
-                      // overflow: TextOverflow.ellipsis,
+                              ],
+                            )
+                                        
+                                        ),
+                        SizedBox(
+                          height: size.wScreen(2.0),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              )),
-        ],
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Text(
+                        '$_hora',
+                        style: GoogleFonts.poppins(
+                          fontSize: size.iScreen(1.2),
+                          fontWeight: FontWeight.w500,
+                          color: sextinaryColor,
+                          // letterSpacing: -0.40,
+                        ),
+                        // textAlign: TextAlign.right,
+  
+                        // overflow: TextOverflow.ellipsis,
+                      ),
+                    )
+                  ],
+                )),
+          ],
+        ),
+        decoration: BoxDecoration(
+            // color: Color(0xff4D9EF6),
+            // color: Colors.red,
+            borderRadius: BorderRadius.circular(8)),
       ),
-      decoration: BoxDecoration(
-          // color: Color(0xff4D9EF6),
-          // color: Colors.red,
-          borderRadius: BorderRadius.circular(8)),
     ),
   );
 }

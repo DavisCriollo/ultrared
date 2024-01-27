@@ -467,11 +467,30 @@ final _infoChat=widget.infoChat;
                   
                                 itemCount: values.getListaDeMensajeChat.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                    if (values.getListaDeMensajeChat.isEmpty) {
-                                      CircularProgressIndicator();
-          
-          
-                                    }
+                                   if (values.getListaDeMensajeChat.isEmpty) {
+                    return Center(
+                      // child: CircularProgressIndicator(),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Esperando Datos...',
+                            style: GoogleFonts.lexendDeca(
+                                fontSize: size.iScreen(1.5),
+                                color: Colors.black87,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          //***********************************************/
+                          SizedBox(
+                            height: size.iScreen(1.0),
+                          ),
+                          //*****************************************/
+                          const CircularProgressIndicator(),
+                        ],
+                      ),
+                    );
+                  }
+                                    
           
                                   if (values.getListaDeMensajeChat.isNotEmpty) {
           

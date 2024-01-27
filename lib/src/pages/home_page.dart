@@ -13,6 +13,7 @@ import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/init_provider.dart';
+import 'package:ultrared/src/pages/acceso_gps_page.dart';
 import 'package:ultrared/src/pages/auxilio_page.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
 import 'package:ultrared/src/pages/lista_estado_cuenta.dart';
@@ -22,6 +23,7 @@ import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
 import 'package:ultrared/src/pages/splash_screen.dart';
 import 'package:ultrared/src/service/local_notifications.dart';
 import 'package:ultrared/src/service/notification_push.dart';
+import 'package:ultrared/src/service/notifications_service.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
@@ -103,14 +105,25 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     if (state == AppLifecycleState.resumed) {
 
-      await ctrlHome.validaInicioDeSesion(context);
+      // await ctrlHome.validaInicioDeSesion();
       print('EL ESTADO ES ------: $state');
       // ctrlHome.getLocation();
   //  final Map<String, dynamic>? session = await Auth.instance.getSession();
   //      var _ctrlSocket = context.read<SocketModel>();
   //             _ctrlSocket.connectToSocket("${session!['token']}", "${session['rucempresa']}");
-  // Navigator.pushNamed(context, 'splash');
 
+
+if (mounted) {
+    print('EL ESTADO ES ------: $state');
+    // Realiza operaciones con el contexto solo si el widget está montado
+    // ...
+    // Navigator.pushNamed(context, 'splash');
+  }
+
+  //VERIFICA  //
+   
+  
+  
       // Navigator.pushReplacement(
       //     context,
       //     MaterialPageRoute<void>(
@@ -322,36 +335,36 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       // Aquí puedes dirigir al usuario a la pantalla deseada
 
 
-            final _infoNotificacion={
-			"notId": 5,
-			"notTipo": "ALERTA AYUDA",
-			"notIdPersona": 14049,
-			"notIdPerPertenece": 2,
-			"notVisto": "NO",
-			"notTitulo": "Alerta Ayuda",
-			"notContenido": "Solicitó Ayuda",
-			"notUser": "2122232425",
-			"notEmpresa": "ULTRA2022",
-			"id_registro": 0,
-			"url_web": "",
-			"notFecReg": "2023-12-11T15:16:09.000Z",
-			"notFecUpd": "2023-12-11T15:16:16.000Z",
-			"perDocNumero": "0102030405",
-			"perNombre": "Gomez Pedro",
-			"perFoto": "https://documentos.neitor.com/contable/fotoperfil/ULTRA2022/96eee234-93e9-4a4c-9fb7-7d12ba3b3c5a.png",
-			"perFotoCasa": "https://documentos.neitor.com/contable/fotocasa/ULTRA2022/b2ed4c5b-e7db-4e34-8ba3-c32a9480f6c0.png",
-			"perFotoVehiculo": "",
-			"perPerfil": [
-				"CLIENTE"
-			],
-			"notInformacionAdicional": {
-				"tipoServicio": "HOGAR",
-				"coordenadas": {
-					"latitud": -0.239079,
-					"longitud": -79.171853
-				}
-			}
-		}; 
+    //         final _infoNotificacion={
+		// 	"notId": 5,
+		// 	"notTipo": "ALERTA AYUDA",
+		// 	"notIdPersona": 14049,
+		// 	"notIdPerPertenece": 2,
+		// 	"notVisto": "NO",
+		// 	"notTitulo": "Alerta Ayuda",
+		// 	"notContenido": "Solicitó Ayuda",
+		// 	"notUser": "2122232425",
+		// 	"notEmpresa": "ULTRA2022",
+		// 	"id_registro": 0,
+		// 	"url_web": "",
+		// 	"notFecReg": "2023-12-11T15:16:09.000Z",
+		// 	"notFecUpd": "2023-12-11T15:16:16.000Z",
+		// 	"perDocNumero": "0102030405",
+		// 	"perNombre": "Gomez Pedro",
+		// 	"perFoto": "https://documentos.neitor.com/contable/fotoperfil/ULTRA2022/96eee234-93e9-4a4c-9fb7-7d12ba3b3c5a.png",
+		// 	"perFotoCasa": "https://documentos.neitor.com/contable/fotocasa/ULTRA2022/b2ed4c5b-e7db-4e34-8ba3-c32a9480f6c0.png",
+		// 	"perFotoVehiculo": "",
+		// 	"perPerfil": [
+		// 		"CLIENTE"
+		// 	],
+		// 	"notInformacionAdicional": {
+		// 		"tipoServicio": "HOGAR",
+		// 		"coordenadas": {
+		// 			"latitud": -0.239079,
+		// 			"longitud": -79.171853
+		// 		}
+		// 	}
+		// }; 
      ctrlHome.buscaNotificacionPorId(context,message.data['notId']);
 
         Navigator.of(context).pushNamed('notificaciones');
@@ -404,7 +417,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     //  _ctrl.getconectionInternet== false?
     return Consumer<HomeController>(
       builder: (_, values, __) {
-        return SafeArea(
+        return 
+        
+        // values.getValidaSession == true ?
+
+        SafeArea(
           child: Scaffold(
             backgroundColor: Colors.grey.shade200, // appBar: AppBar(
             //   title: Text('Estado del Socket'),
@@ -597,13 +614,53 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                             image: 'assets/imgs/document.png',
                                             title: 'Botón de Ayuda',
                                             label: 'Presiona por 3 segundos',
-                                            onTap: ()  async{
+                                            onTap: ()  async
+                                            {
+
+                                              //**************//
+//  HomeController permissionProvider = Provider.of<HomeController>(context, listen: false);
+//             await permissionProvider.checkAndRequestLocationPermission();
+//             print(permissionProvider.hasLocationPermission);
+                                     
+//             await permissionProvider.checkAndRequestLocationPermission();
+//             print('**** Permiso ****>  ${permissionProvider.hasLocationPermission}');
+//   permissionProvider.checkGpsStatus();
+//                    if (permissionProvider.hasLocationPermission==true) {
+//                       // permissionProvider.checkGpsStatus();
+
+//                                               if (permissionProvider.gpsStatus==true ) {
+//                                                  NotificatiosnService.showSnackBarSuccsses('El  GPS esta activado');
+                     
+//                    } else {
+//                      NotificatiosnService.showSnackBarDanger('Por favor active su GPS');
+//                    } 
+//                    }
+//                    else{
+//                      Navigator.of(context).pushAndRemoveUntil(
+//               MaterialPageRoute(
+//                   builder: (context) => AccesoGPSPage(
+//                         // validaTurno: validaTurno,
+//                         // tipo: session.rol,
+//                         // user: session,
+//                         // ubicacionGPS: controllerHome.getCoords,
+//                       )),
+//               (Route<dynamic> route) => false);
+
+final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
                                               // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
-                                              final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
-                                               final status = await Permission .location.request();
-                                                    if (status == PermissionStatus .granted) {
-                                                      //   // print('============== SI TIENE PERMISOS');
-                                                      await valueHome
+ HomeController permissionProvider =
+                Provider.of<HomeController>(context, listen: false);
+        await permissionProvider.checkAndRequestLocationPermission();
+            bool isGpsEnabled = await permissionProvider.checkGpsStatus();
+            // print('LA INFO ES  ${permissionProvider.hasLocationPermission} ${isGpsEnabled}');
+                   
+                   if (permissionProvider.hasLocationPermission) {
+                      // NotificatiosnService.showSnackBarSuccsses('SIII TIENE PERMISO');
+                      if (isGpsEnabled) {
+                        //  NotificatiosnService.showSnackBarDanger(' GPS ACTIVADO ');
+
+
+                             await valueHome
                                                           .getLocation();
                                                       if (valueHome.getLocationGPS.isNotEmpty) {
                                                        
@@ -625,19 +682,125 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
                                                        
                                                       }
-                                                    } else {
-                                                      Navigator.pushNamed(
-                                                          context, 'gps');
-                                                    }
-
-
-                                           
 
 
 
-                                         
 
-//  showNotification();
+                      } else {
+                        NotificatiosnService.showSnackBarDanger(' Por favor active su GPS');
+                      }
+
+                   } else {
+                    //  NotificatiosnService.showSnackBarDanger('NOOOOO TIENE PERMISO');
+
+                     Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => const AccesoGPSPage()),
+              (Route<dynamic> route) => false);
+
+
+
+                   }
+                                              //**************/
+
+
+
+
+                                              // // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
+                                              // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
+                                              //  final status = await Permission .location.request();
+                                              //       if (status == PermissionStatus .granted) {
+                                              //         //   // print('============== SI TIENE PERMISOS');
+                                              //         await valueHome
+                                              //             .getLocation();
+                                              //         if (valueHome.getLocationGPS.isNotEmpty) {
+                                                       
+                                              //     final _dataPanico = {
+                                              //   "coordenadas": {
+                                              //     "latitud":valueHome.getLocationGPS['latitud'],
+                                              //     "longitud":valueHome.getLocationGPS['longitud']
+                                              //   },
+                                              //   "rucempresa": "ULTRA2022",
+                                              //   "perId": valueHome.getUser!['id']
+                                              // };
+
+
+                                              // valueHome.activateAlarm();
+
+                                              // print('esta la info para el bon de panico ------> $_dataPanico');
+                                              // _ctrlSocket.emitEvent('client:boton-panico', _dataPanico);
+
+
+                                                       
+                                              //         }
+                                              //       } else {
+                                              //         Navigator.pushNamed(
+                                              //             context, 'gps');
+                                              //       }
+
+
+                                              //*******************//
+                                            //   valueHome.checkGpsStatus();
+
+                                            //   if (valueHome.gpsStatus==true ) {
+                                            //   //   final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
+                                            //   //            await valueHome
+                                            //   //             .getLocation();
+                                            //   //         if (valueHome.getLocationGPS.isNotEmpty) {
+                                                       
+                                            //   //     final _dataPanico = {
+                                            //   //   "coordenadas": {
+                                            //   //     "latitud":valueHome.getLocationGPS['latitud'],
+                                            //   //     "longitud":valueHome.getLocationGPS['longitud']
+                                            //   //   },
+                                            //   //   "rucempresa": "ULTRA2022",
+                                            //   //   "perId": valueHome.getUser!['id']
+                                            //   // };
+
+
+                                            //   // valueHome.activateAlarm();
+
+                                            //   // print('esta la info para el bon de panico ------> ${valueHome.gpsStatus}');
+                                            //   // _ctrlSocket.emitEvent('client:boton-panico', _dataPanico);
+
+
+                                                       
+                                            //   //         }
+
+
+                                            //  valueHome.getCurrentLocation() ;
+                                            //        if (valueHome.getLocationGPS.isNotEmpty) {
+                                            //          final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
+                                                       
+                                            //       final _dataPanico = {
+                                            //     "coordenadas": {
+                                            //       "latitud":valueHome.getLocationGPS['latitud'],
+                                            //       "longitud":valueHome.getLocationGPS['longitud']
+                                            //     },
+                                            //     "rucempresa": "ULTRA2022",
+                                            //     "perId": valueHome.getUser!['id']
+                                            //   };
+
+
+                                            //   valueHome.activateAlarm();
+
+                                            //   print('esta la info para el bon de panico ------> ${valueHome.gpsStatus}');
+                                            //   _ctrlSocket.emitEvent('client:boton-panico', _dataPanico);
+
+
+                                                       
+                                            //           }
+                                                
+                                            //   } else {
+                                            //       NotificatiosnService.showSnackBarDanger('Por favor active su GPS');
+
+                                            //   }
+
+
+
+                                              //*******************/
+
+
                                             }
                                             // () => Navigator.pushNamed(
                                             //     context, 'SubmenuMascotas'),
@@ -693,7 +856,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                               //  color: Colors.blue,
                                               width: size.wScreen(70.0),
                                               child: Text(
-                                                'Interactua con tus vecinos e informa a tu comunidad temas relevantes.',
+                                                'Interactúa con tus vecinos e informa a tu comunidad temas relevantes.',
                                                 // textAlign: TextAlign.center,
                                                 style: GoogleFonts.poppins(
                                                   fontSize: size.iScreen(1.7),
@@ -754,6 +917,35 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
+// Center(
+//         child: Consumer<HomeController>(
+//           builder: (context, permissionsProvider, child) {
+//             return Column(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: <Widget>[
+//                 Text('Estado del permiso de ubicación:'),
+//                 // _buildPermissionStatus(permissionsProvider.locationPermissionStatus.),
+//                 ElevatedButton(
+//                   onPressed: () async {
+//                     await permissionsProvider.checkLocationPermission();
+//                   },
+//                   child: Text('Verificar Permiso'),
+//                 ),
+//                 ElevatedButton(
+//                   onPressed: () async {
+//                     await permissionsProvider.requestLocationPermission();
+//                   },
+//                   child: Text('Solicitar Permiso'),
+//                 ),
+//               ],
+//             );
+//           },
+//         ),
+//       ),
+    
+
+
+
                                         Container(
                                           width: size.wScreen(100.0),
                                           child: Text(
@@ -899,12 +1091,40 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             ),
           ),
         );
+        // :Scaffold(body: Container(
+          
+        //   height: size.hScreen(100),
+        //   width: size.wScreen(100),
+        //   child: NoSession(label: 'Su sessión ha expirado ')),);
+        
       },
     );
   }
 
+
+bool _buildPermissionStatus(PermissionStatus? status) {
+    if (status == null) {
+      return false;
+    } else if (status == PermissionStatus.granted) {
+      return true;
+    } else if (status == PermissionStatus.denied) {
+      return false;
+    } else {
+      return false;
+    }
+  }
  
 
+Future<bool> _checkIfHasPermission(PermissionStatus? status) async {
+    if (status == PermissionStatus.granted) {
+      return true;
+    } else if (status == PermissionStatus.denied) {
+      return false;
+    } else {
+      // En este caso, podrías considerar manejar el estado desconocido de alguna manera específica.
+      return false;
+    }
+  }
 
 
 
@@ -918,4 +1138,81 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
 
 
+}
+
+
+
+class NoSession extends StatelessWidget {
+  final String label;
+
+  const NoSession({Key? key, required this.label}) : super(key: key);
+ 
+
+  
+
+  @override
+  Widget build(BuildContext context) {
+    final Responsive size = Responsive.of(context);
+    return Container(
+      padding: EdgeInsets.all(size.iScreen(5.0)),
+      // color: Colors.red,
+      width: size.iScreen(100.0),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(label,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.lexendDeca(
+                    fontSize: size.iScreen(2.0),
+                    color: Colors.black54,
+                    fontWeight: FontWeight.bold)),
+
+                    SizedBox(height: size.iScreen(2.0),),
+                      MaterialButton(
+              color: tercearyColor,
+              shape: const StadiumBorder(),
+              elevation: 0,
+              splashColor: Colors.transparent,
+              child: Text(
+                'Ok',
+                style: GoogleFonts.poppins(
+                    fontSize: size.iScreen(1.7),
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal),
+              ),
+              onPressed: () async {
+        
+           var ctrlHome = context.read<HomeController>();  
+                  // var ctrlSocket = context.read<SocketModel>();  
+        
+             ProgressDialog.show(context);
+            final response = await ctrlHome.cierreSesionUsuario(context);
+            ProgressDialog.dissmiss(context);
+
+if (response != null ) {
+     
+  //----------------------------------------------------//
+        
+           Navigator.pop(context);
+           await Auth.instance.deleteSesion(context);
+     
+              //----------------------------------------------------//
+
+
+
+    }else  {
+
+       NotificatiosnService.showSnackBarDanger( response.toString());
+      
+    } 
+    
+         //----------------------------------------------------//
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

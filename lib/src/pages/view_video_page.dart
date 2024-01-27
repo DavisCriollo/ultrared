@@ -1,6 +1,9 @@
 import 'package:better_player/better_player.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:ultrared/src/utils/responsive.dart';
@@ -44,8 +47,84 @@ import 'package:video_player/video_player.dart';
 //   }
 // }
 
-import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
+// import 'package:flutter/material.dart';
+// import 'package:video_player/video_player.dart';
+
+// class VideoPlayerScreen extends StatefulWidget {
+//   final String videoUrl;
+
+//   const VideoPlayerScreen({required this.videoUrl});
+
+//   @override
+//   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
+// }
+
+// class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
+//   late VideoPlayerController _controller;
+//   late ChewieController _chewieController;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _initializeVideoPlayer();
+//   }
+
+//   Future<void> _initializeVideoPlayer() async {
+//     _controller = VideoPlayerController.network(widget.videoUrl);
+//     await _controller.initialize();
+
+//     _chewieController = ChewieController(
+//       videoPlayerController: _controller,
+//       aspectRatio: 16 / 9,
+//       autoInitialize: true,
+//       looping: false,
+//       allowFullScreen: true,
+//       allowMuting: true,
+//       customControls: MaterialControls(),
+     
+//     );
+
+//     setState(() {});
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//       final Responsive size = Responsive.of(context);
+//     return Scaffold(
+//       appBar: AppBar(
+//           iconTheme: const IconThemeData(color: Colors.black),
+//           centerTitle: true, // Centra el título en el AppBar
+//           elevation: 0,
+//           backgroundColor: cuaternaryColor, // Fondo blanco
+//           title: Text('VIDEO',
+//               style: GoogleFonts.poppins(
+//                 fontSize: size.iScreen(2.0),
+//                 fontWeight: FontWeight.w700,
+//                 color: Colors.black,
+//                 letterSpacing: -0.40,
+//               ) // Color del título en negro
+//               ),
+//         ),
+//       body: _controller.value.isInitialized
+//           ? Container(
+//             width: 300,
+//             height: 300,
+//             child: Chewie(controller: _chewieController))
+//           : Center(child: CircularProgressIndicator()),
+//     );
+//   }
+
+//   @override
+//   void dispose() {
+//     _controller.dispose();
+//     _chewieController.dispose();
+//     super.dispose();
+//   }
+// }
+
+// **************** CODIGO OK  **********//
+
+
 
 class VideoPlayerScreen extends StatefulWidget {
   final String videoUrl;
@@ -70,15 +149,16 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     _controller = VideoPlayerController.network(widget.videoUrl);
     await _controller.initialize();
 
+    final double aspectRatio = _controller.value.aspectRatio;
+
     _chewieController = ChewieController(
       videoPlayerController: _controller,
-      aspectRatio: 16 / 9,
+      aspectRatio: aspectRatio,
       autoInitialize: true,
       looping: false,
       allowFullScreen: true,
       allowMuting: true,
-      customControls: MaterialControls(),
-     
+      customControls: const MaterialControls(),
     );
 
     setState(() {});
@@ -86,25 +166,30 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
-      final Responsive size = Responsive.of(context);
+    final Responsive size = Responsive.of(context);
     return Scaffold(
       appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.black),
-          centerTitle: true, // Centra el título en el AppBar
-          elevation: 0,
-          backgroundColor: cuaternaryColor, // Fondo blanco
-          title: Text('VIDEO',
-              style: GoogleFonts.poppins(
-                fontSize: size.iScreen(2.0),
-                fontWeight: FontWeight.w700,
-                color: Colors.black,
-                letterSpacing: -0.40,
-              ) // Color del título en negro
-              ),
+        iconTheme: const IconThemeData(color: Colors.black),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: cuaternaryColor,
+        title: Text(
+          'VIDEO',
+          style: GoogleFonts.poppins(
+            fontSize: size.iScreen(2.0),
+            fontWeight: FontWeight.w700,
+            color: Colors.black,
+            letterSpacing: -0.40,
+          ),
         ),
+      ),
       body: _controller.value.isInitialized
           ? Chewie(controller: _chewieController)
-          : Center(child: CircularProgressIndicator()),
+          : Center(child: 
+          // CircularProgressIndicator()),
+          Container(
+       
+        child: new Center(child: const CupertinoActivityIndicator(color: tercearyColor,))))
     );
   }
 
@@ -115,3 +200,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     super.dispose();
   }
 }
+
+
+//*******  NUEVO CODIGO *******/

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/login_controller.dart';
 import 'package:ultrared/src/controllers/init_provider.dart';
+import 'package:ultrared/src/pages/acceso_gps_page.dart';
 
 import 'package:ultrared/src/pages/home_page.dart';
 import 'package:ultrared/src/pages/login_page.dart';
@@ -122,67 +123,76 @@ class _SplashPageState extends State<SplashPage> {
 //   }
   _chechLogin() async {
 
-
-
-//     // final controllerHome = context.read<HomeController>();
-//     final _ctrlInitProvider =context.read<InitProvider>();
-//                 final _ctrlSocket =context.read<SocketProvider>();
-//                 final _ctrlAuth =context.read<AuthProvider>();
-// //                   SocketService(_ctrlInitProvider);
-// //     controllerHome.checkConnectivity(); 
+    final controllerHome = context.read<HomeController>();
     final Map<String, dynamic>? session = await Auth.instance.getSession();
-
-
-//     _ctrlAuth.setCredentials("${session!['token']}", "${session['rucempresa']}");
-            
-//             // Inicializa y conecta el socket
-//             _ctrlSocket.initializeSocket();
-//             _ctrlSocket.socket.connect();
-
-//     final String? tokenFCM = await Auth.instance.getTokenFireBase();
-
+   
     if (session != null) {
 
 controllerHome.setUserApp(session);
 
-     var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
-              _ctrlSocket.connectToSocket("${session['token']}", "${session['rucempresa']}");
+  var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
+  _ctrlSocket.connectToSocket("${session['token']}", "${session['rucempresa']}");
+     await controllerHome.validaInicioDeSesion();
+   
+    if (controllerHome.getValidaSession==true) {
 
-    //           _ctrlSocket.connectToSocket("${infoUser!['token']}", "${infoUser!['rucempresa']}");
-    //              context.read<HomeController>().buscarNoticias(context);
-    //              context.read<HomeController>().buscarNotificaciones(context);
-
-    //  final _ctrlSocket =context.read<SocketModel>();
-                // final _ctrlAuth =context.read<AuthProvider>();
-//                   SocketService(_ctrlInitProvider);
-//     controllerHome.checkConnectivity(); 
-    // final Map<String, dynamic>? session = await Auth.instance.getSession();
-
-  //  var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
-    // _ctrlAuth.setCredentials("${session!['token']}", "${session['rucempresa']}");
-            
-    //         // Inicializa y conecta el socket
-    //         _ctrlSocket.initializeSocket();
-    //         _ctrlSocket.socket.connect();
-
-    // final String? tokenFCM = await Auth.instance.getTokenFireBase();
-
-    // _ctrlAuth.setCredentials("${session['token']}", "${session['rucempresa']}");
-            
-    //         // Inicializa y conecta el socket
-    //         _ctrlSocket.initializeSocket();
-    //         _ctrlSocket.socket.connect();
-
-    // final String? tokenFCM = await Auth.instance.getTokenFireBase();
-
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => HomePage(
+                     
+                        user: session,
+                       
+                      )),
+              (Route<dynamic> route) => false);
+         
+        }
+         else {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => SerClientePage(
+                      
+                      )),
+              (Route<dynamic> route) => false);
+        
+        }
       // final status = await Permission.location.request();
       // if (status == PermissionStatus.granted) {
-      //   //   // print('============== SI TIENE PERMISOS');
-      //   await controllerHome.getLocation();
-      //   if (controllerHome.getGPSPositione) {
+      //     print('============== SI TIENE PERMISOS');
+      //      await controllerHome.validaInicioDeSesion();
+      //   //  controllerHome.checkGPSStatus();
+        
+      //     // print('============== gps activado.  ${controllerHome.getGPSState()}');
+      //   // await controllerHome.getLocation();
+      //   // if (controllerHome.getGPSPositione) {
+      //   //   // Navigator.of(context).pushAndRemoveUntil(
+      //   //   //     MaterialPageRoute(
+      //   //   //         builder: (context) => HomePage(
+      //   //   //               // validaTurno: validaTurno,
+      //   //   //               // tipo: session.rol,
+      //   //   //               user: session,
+      //   //   //               // ubicacionGPS: controllerHome.getCoords,
+      //   //   //             )),
+      //   //   //     (Route<dynamic> route) => false);
+      //   //   // ModalRoute.withName('/');
+      //   // }
+
+      //   if (controllerHome.getValidaSession==true) {
+
       //     Navigator.of(context).pushAndRemoveUntil(
       //         MaterialPageRoute(
       //             builder: (context) => HomePage(
+      //                   // validaTurno: validaTurno,
+      //                   // tipo: session.rol,
+      //                   user: session,
+      //                   // ubicacionGPS: controllerHome.getCoords,
+      //                 )),
+      //         (Route<dynamic> route) => false);
+      //     ModalRoute.withName('/');
+      //   }
+      //   else {
+      //     Navigator.of(context).pushAndRemoveUntil(
+      //         MaterialPageRoute(
+      //             builder: (context) => SerClientePage(
       //                   // validaTurno: validaTurno,
       //                   // tipo: session.rol,
       //                   // user: session,
@@ -191,8 +201,19 @@ controllerHome.setUserApp(session);
       //         (Route<dynamic> route) => false);
       //     ModalRoute.withName('/');
       //   }
-      // } else {
-      //   Navigator.pushNamed(context, 'gps');
+      // } 
+      // else {
+      //   // Navigator.pushNamed(context, 'gps');
+      //   Navigator.of(context).pushAndRemoveUntil(
+      //         MaterialPageRoute(
+      //             builder: (context) => AccesoGPSPage(
+      //                   // validaTurno: validaTurno,
+      //                   // tipo: session.rol,
+      //                   // user: session,
+      //                   // ubicacionGPS: controllerHome.getCoords,
+      //                 )),
+      //         (Route<dynamic> route) => false);
+      //     ModalRoute.withName('/');
       // }
 
   // final infoUser  = await Auth.instance.getSession();
@@ -204,23 +225,42 @@ controllerHome.setUserApp(session);
   //                 _ctrlSocket.sendMessage('client:lista-usuarios', {
   //      "chat_id" : 4
   //   });
-    context.read<HomeController>().buscarNoticias(context);
-    context.read<HomeController>().buscarNotificaciones(context);
-       Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (context) => HomePage(
-                        // validaTurno: validaTurno,
-                        // tipo: session.rol,
-                        user: session,
-                        // ubicacionGPS: controllerHome.getCoords,
-                      )),
-              (Route<dynamic> route) => false);
-          ModalRoute.withName('/');
-     
-    } else {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const SerClientePage()),
-          (Route<dynamic> route) => false);
+
+
+
+//final status = await Permission .location.request(); if (status == PermissionStatus .granted) {
+
+
+                                                   //   }
+                                                      
+ //Geolocator.openAppSettings();
+//*****************************************/
+    //      var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
+    //       _ctrlSocket.connectToSocket("${session['token']}", "${session['rucempresa']}");
+    // context.read<HomeController>().buscarNoticias(context);
+    // context.read<HomeController>().buscarNotificaciones(context);
+    //    Navigator.of(context).pushAndRemoveUntil(
+    //           MaterialPageRoute(
+    //               builder: (context) => HomePage(
+    //                     // validaTurno: validaTurno,
+    //                     // tipo: session.rol,
+    //                     user: session,
+    //                     // ubicacionGPS: controllerHome.getCoords,
+    //                   )),
+    //           (Route<dynamic> route) => false);
+    //       ModalRoute.withName('/');
+     //*****************************************//
+    } 
+    else {
+      // Navigator.of(context).pushAndRemoveUntil(
+      //     MaterialPageRoute(builder: (context) => const SplashPage()),
+      //     (Route<dynamic> route) => false);
+
+
+//  Navigator.of(context).pushAndRemoveUntil(
+//           MaterialPageRoute(builder: (context) => const SerClientePage()),
+//           (Route<dynamic> route) => false);
+
     }
     
   }

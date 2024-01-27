@@ -53,15 +53,17 @@ class _AccesoGPSPageState extends State<AccesoGPSPage>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Icon(Icons.info_outline,size: size.iScreen(5.0),color: Colors.green,),
+            SizedBox(height: size.iScreen(2.0),),
             Container(
               margin: EdgeInsets.symmetric(horizontal: size.iScreen(2.5)),
-              child: Text('Es necesario activar el GPS para usar la aplicación',
+              child: Text('Es necesario activar el GPS para poder utilizar el boton de pánico de nuestra aplicación',
                   style: GoogleFonts.poppins(
-                      fontSize: size.iScreen(1.7),
+                      fontSize: size.iScreen(2.0),
                       color: Colors.black54,
-                      fontWeight: FontWeight.w600)),
+                      fontWeight: FontWeight.w600),textAlign: TextAlign.center,),
             ),
-                    SizedBox(height: size.iScreen(2.0),),
+                    SizedBox(height: size.iScreen(3.0),),
             MaterialButton(
               color: Colors.black,
               shape: const StadiumBorder(),
@@ -76,12 +78,12 @@ class _AccesoGPSPageState extends State<AccesoGPSPage>
               ),
               onPressed: () async {
                 // Extraemos el estatus del Permiso del GPS
-// openAppSettings();
+openAppSettings().then((value) => Navigator.pushNamed(context, 'splash'));
 
                 // final status = await Permission.location.request();
                 // accesoGPS(status);
-                  final _ctrlhome=context.read <HomeController>();
-                _ctrlhome.getLocation();
+                //   final _ctrlhome=context.read <HomeController>();
+                // _ctrlhome.getLocation();
               },
             ),
           ],

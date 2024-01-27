@@ -392,10 +392,8 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                                                           //     context, size, _ctrl);
                                                         },
                                                         child: Icon(
-                                                          Icons
-                                                              .keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
-                                                          color: Colors
-                                                              .grey, // Color del icono
+                                                          Icons.keyboard_arrow_down_outlined, // Cambia el icono según tus necesidades
+                                                          color: Colors.grey, // Color del icono
                                                         ),
                                                       ),
                                                     ],
