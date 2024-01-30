@@ -15,7 +15,7 @@ import 'package:ultrared/src/pages/home_page.dart';
 import 'package:ultrared/src/pages/password_page.dart';
 
 import 'package:ultrared/src/service/notifications_service.dart';
-import 'package:ultrared/src/service/provider_socket.dart';
+
 import 'package:ultrared/src/service/socket_service.dart';
 
 import 'package:ultrared/src/utils/dialogs.dart';

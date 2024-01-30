@@ -12,7 +12,7 @@ import 'package:ultrared/src/pages/acceso_gps_page.dart';
 import 'package:ultrared/src/pages/home_page.dart';
 import 'package:ultrared/src/pages/login_page.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
-import 'package:ultrared/src/service/provider_socket.dart';
+// import 'package:ultrared/src/service/provider_socket.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 
@@ -135,6 +135,9 @@ controllerHome.setUserApp(session);
      await controllerHome.validaInicioDeSesion();
    
     if (controllerHome.getValidaSession==true) {
+      controllerHome.buscarNoticias(context);
+      controllerHome.buscarNotificaciones(context);
+   
 
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(

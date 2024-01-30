@@ -7,6 +7,7 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/auxilio_page.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
 import 'package:ultrared/src/service/socket_service.dart';
+import 'package:ultrared/src/utils/fecha_local_convert.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
@@ -106,16 +107,17 @@ class _ListaNotificacionesState extends State<ListaNotificaciones> {
             itemBuilder: (context, index) {
 
               final _notificacion=valueNotificaciones.getListaTodasLasNotificaciones[index];
-             String fechaString = "${_notificacion['notFecReg']}";
+//              String fechaString = "${_notificacion['notFecReg']}";
 
-  // Convertir la cadena a DateTime
- DateTime fecha = DateTime.parse(fechaString);
+//   // Convertir la cadena a DateTime
+//  DateTime fecha = DateTime.parse(fechaString);
 
-//   Convertir a la zona horaria local
- DateTime fechaLocal = fecha.toLocal();
+// //   Convertir a la zona horaria local
+//  DateTime fechaLocal = fecha.toLocal();
 
-//   String horaFormateada = "${fechaLocal.hour}:${fechaLocal.minute}:${fechaLocal.second}";
-  String horaFormateada =   "${fechaLocal.hour < 10 ? '0' : ''}${fechaLocal.hour}:${fechaLocal.minute < 10 ? '0' : ''}${fechaLocal.minute}";
+// //   String horaFormateada = "${fechaLocal.hour}:${fechaLocal.minute}:${fechaLocal.second}";
+//   String horaFormateada =   "${fechaLocal.hour < 10 ? '0' : ''}${fechaLocal.hour}:${fechaLocal.minute < 10 ? '0' : ''}${fechaLocal.minute}";
+   String fechaLocal = DateUtility.fechaLocalConvert(_notificacion['notFecReg']!.toString());
               return 
               Column(
                 children: [
@@ -182,7 +184,7 @@ class _ListaNotificacionesState extends State<ListaNotificaciones> {
                       ),
                       ),
                     ),
-                    title: Text('${_notificacion['perNombre']}',
+                    title: Text('${_notificacion['perNombre']} ',
                     style: GoogleFonts.poppins(
                     fontSize: size.iScreen(1.8),
                     fontWeight: FontWeight.normal,
@@ -190,14 +192,25 @@ class _ListaNotificacionesState extends State<ListaNotificaciones> {
                     letterSpacing: -0.40,
                   ) ),
                     subtitle:
-                    Text('${_notificacion['notTipo']}',
-                    style: GoogleFonts.poppins(
-                    fontSize: size.iScreen(1.3),
-                    fontWeight: FontWeight.normal,
-                    // color: _notificacion['notTipo']=='NO'? Colors.green:  Colors.black,
-                    color: _notificacion['notTipo']=='NO'?Colors.black: Colors.green,
-                    letterSpacing: -0.40,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('${_notificacion['notTipo']}',
+                        style: GoogleFonts.poppins(
+                        fontSize: size.iScreen(1.3),
+                        fontWeight: FontWeight.normal,
+                        // color: _notificacion['notTipo']=='NO'? Colors.green:  Colors.black,
+                        color: _notificacion['notTipo']=='NO'?Colors.black: Colors.green,
+                        letterSpacing: -0.40,
                   ) ),
+                  Text(' $fechaLocal',style: GoogleFonts.poppins(
+                    // fontSize: size.iScreen(1.6),
+                    fontWeight: FontWeight.normal,
+                    color: Colors.black,
+                    // letterSpacing: -0.40,
+                  )),
+                      ],
+                    ),
                     //
                   
                     onTap: () {
@@ -259,12 +272,12 @@ class _ListaNotificacionesState extends State<ListaNotificaciones> {
                                                
                                                ))));
                     },
-                    trailing:  Text('$horaFormateada',style: GoogleFonts.poppins(
-                    fontSize: size.iScreen(1.6),
-                    fontWeight: FontWeight.normal,
-                    color: Colors.black,
-                    // letterSpacing: -0.40,
-                  )),
+                  //   trailing:  Text(' 17-12-2024  $horaFormateada',style: GoogleFonts.poppins(
+                  //   fontSize: size.iScreen(1.6),
+                  //   fontWeight: FontWeight.normal,
+                  //   color: Colors.black,
+                  //   // letterSpacing: -0.40,
+                  // )),
                   ),
                 Divider()
                 ],

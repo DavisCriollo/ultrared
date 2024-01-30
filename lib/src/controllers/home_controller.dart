@@ -663,7 +663,7 @@ class HomeController extends ChangeNotifier {
 
     _listaTodasLasNoticias = _data;
 
-    // print('_listaTodasLasNoticias: $_listaTodasLasNoticias');
+    print('_listaTodasLasNoticias: $_listaTodasLasNoticias');
 
     notifyListeners();
   }
