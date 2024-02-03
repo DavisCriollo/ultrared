@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
+import 'package:ultrared/src/pages/chats.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/responsive.dart';
@@ -112,11 +114,13 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                 } else  if (valueChat.getListaGruposChat.isEmpty) {
                   return const NoData(label: 'No tiene grupo asignado');
                 }
-                    return ListView.builder(
+                    return 
+                    Consumer<SocketModel>(builder: (_, valueGrupos, __) {  
+                        return  ListView.builder(
                   shrinkWrap: true,
-                  itemCount: valueChat.getListaGruposChat.length,
+                  itemCount: valueGrupos.getListaGruposChat.length,
                   itemBuilder: (context, index) {
-                    final _grupo = valueChat.getListaGruposChat[index];
+                    final _grupo = valueGrupos.getListaGruposChat[index];
                     return FadeInLeftBig(
                           duration: Duration(milliseconds: 400),
 
@@ -124,6 +128,7 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                         children: [
                           ListTile(
                             dense: true,
+                            
                             leading: ClipRRect(
                               borderRadius: BorderRadius.circular(100),
                               child: Container(
@@ -161,24 +166,42 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                                 )
                             ),
                             onTap: () {
-                              final _ctrl = context.read<ChatController>();
-                              // _ctrl.buscaUsuariosChat(context, _grupo['chat_id']);
+                      //         final _ctrl = context.read<ChatController>();
+                             
+                      //         valueChat.emitEvent('client:lista-usuarios',  {"chat_id": _grupo['chat_id']});
                     
                     
-                    
-                              // final _ctrlSocket = Provider.of<SocketModel>(
-                              //     context,
-                              //     listen: false);
-                    
-                              valueChat.emitEvent('client:lista-usuarios',  {"chat_id": _grupo['chat_id']});
-                    
-                    
-                                //---------------------------------------------------------------// 
+                      //           //---------------------------------------------------------------// 
                                  
-                                      final _crtlSocket = context.read<SocketModel>();
+                      //                 final _crtlSocket = context.read<SocketModel>();
+                      //                 final _crtlHome = context.read<HomeController>();
+                      //                 final _crtl = context.read<ChatController>();
+                    
+                      //                 final _info = {
+                      // "opcion": "GROUP", // 'INDIVIDUAL' | 'GROUP'
+                      // "grupo": _grupo,
+                      // "chat_id": _grupo['chat_id'],
+                      // "idUsuario": _crtlHome.getUser,
+                      // // tomar del grupo del chat
+                      //                 };
+                      //                 _crtl.buscaAllTodoLosChatPaginacion(context,
+                      //   '', false, _grupo['chat_id'],_crtlSocket);
+                      //                 for (var item in _crtl.getListaTodoLosChatPaginacion) {
+                      // _crtlSocket.setListaDeMensajesChat(item);
+                      //                 }
+                      // //  _crtlSocket.setListaDeMensajesChat(_info);
+                      //                 Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: ((context) => ChatPage(
+                      //             infoChat: _info,
+                      //           ))));
+                                  
+                                //-----------------------------NUEVA FORMA DEL CHAT----------------------------------// 
+                                // final _crtlSocket = context.read<SocketModel>();
                                       final _crtlHome = context.read<HomeController>();
                                       final _crtl = context.read<ChatController>();
-                    
+                   
                                       final _info = {
                       "opcion": "GROUP", // 'INDIVIDUAL' | 'GROUP'
                       "grupo": _grupo,
@@ -186,23 +209,46 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                       "idUsuario": _crtlHome.getUser,
                       // tomar del grupo del chat
                                       };
-                                      _crtl.buscaAllTodoLosChatPaginacion(
-                        '', false, _grupo['chat_id'],_crtlSocket);
-                                      for (var item in _crtl.getListaTodoLosChatPaginacion) {
-                      _crtlSocket.setListaDeMensajesChat(item);
-                                      }
-                      //  _crtlSocket.setListaDeMensajesChat(_info);
-                                      Navigator.push(
+
+ _crtl.setInfoChat(_info);
+   _crtl.buscaAllTodoLosChats(context,
+                        '', false, _grupo['chat_id'],valueGrupos);
+
+
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: ((context) => ChatPage(
-                                  infoChat: _info,
-                                ))));
+                            builder: ((context) => Chats(
+                                  // infoChat: _info,
+                                )))).then((value) {
                                   
-                                //---------------------------------------------------------------// 
+
+
+
+//  final _ctrlChat =Provider.of<ChatController>(context, listen: false);
+//       final _ctrlSocket =Provider.of<SocketModel>(context, listen: false);
+
+
+ final _ctrlChat =context.read<ChatController>();
+    //  final _ctrlSocket =context.read<SocketModel>();
+    _ctrlChat.setPage(0);
+    _ctrlChat.setCantidad(25);
+  // _ctrlChat.deleteListChat();
+  valueGrupos.deleteListChatSocket();
+  valueGrupos.emitEvent(
+                                                            'client:lista-chats-grupos',
+                                                            {});
+  //  valueGrupos.emitEvent(
+  //                                                           'client:lista-chats-grupos',
+  //                                                           {});
+    // _ctrlChat.buscaAllTodoLosChats(context,'', false, _ctrlChat.getInfoChat['chat_id'],_ctrlSocket);
+
+
+
+                                });
+                                  
                     
-                    
-                    
+                     //---------------------------------------------------------------// 
                     
                     
                     
@@ -220,7 +266,55 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                               // print('Clic en el ListTile $index');
                             },
                            
-                            trailing: Icon(Icons.chevron_right_outlined),
+                            trailing: Container(
+                              width: size.iScreen(7),
+                              // color:Colors.red,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+
+                          //             Badge(
+                          //                 position:
+                          //       const BadgePosition(top: -3.0, start: 45.0),
+                          //   badgeContent: 
+                          //  Text(
+                          
+                          //     '1254',
+                          //     style: GoogleFonts.poppins(
+                          //       fontSize: size.iScreen(1.4),
+                          //       fontWeight: FontWeight.normal,
+                          //       color: Colors.white,
+                          //     ),
+                          //   ),
+                           
+                          //   badgeColor: tercearyColor,
+                          //             ),
+
+                               _grupo['unread_messages']>0 ?   Container(
+                                    //  width: size.iScreen(7),
+                                    constraints:BoxConstraints(
+                                      maxWidth:size.iScreen(4.0),
+                                       minWidth:size.iScreen(2.0)
+                                    ),
+                                    // width: size.iScreen(2.0),
+                                    
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8),  color:Colors.red,),
+                                    padding:EdgeInsets.symmetric(vertical:size.iScreen(0.0),horizontal: size.iScreen(0.4)),
+                            child:
+                                  //  Text('${_grupo['unread_messages']}',
+                                  Text(_grupo['unread_messages']<99?'${_grupo['unread_messages']}':'+ 100',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.poppins(
+                                fontSize: size.iScreen(1.3),
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                                
+                              ),
+                            )
+                                   ,):Container(),
+                                  Icon(Icons.chevron_right_outlined),
+                                ],
+                              )),
                           ),
                           Divider()
                         ],
@@ -229,6 +323,9 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                   },
                 );
 
+                    },);
+                    
+                   
             
               },
             )),

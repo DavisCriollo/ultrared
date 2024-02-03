@@ -692,6 +692,29 @@ class HomeController extends ChangeNotifier {
   }
 
 //================================== LISTAR TODAS LA NOTIFICACIONES  ==============================//
+
+//***  MENSAJES NO LEIDOS **/
+
+
+
+int _mensajesNoLeidos =0;
+    int get getMensajesNoLeidos => _mensajesNoLeidos;
+
+  void setMensajesNoLeidos(int _numMens) {
+    _mensajesNoLeidos =0;
+
+    _mensajesNoLeidos=_numMens;
+
+    print('_mensajesNoLeidos: $_mensajesNoLeidos');       
+
+    notifyListeners();
+  }
+
+
+//******************//
+
+
+
   List _listaTodasLasNotificaciones = [];
     List get getListaTodasLasNotificaciones => _listaTodasLasNotificaciones;
 
@@ -709,13 +732,15 @@ class HomeController extends ChangeNotifier {
   bool? get getErrorNotificaciones => _errorNotificaciones;
 
   Future? buscarNotificaciones(BuildContext context) async {
+    final _socket=context.read<SocketModel>();
     final dataUser = await Auth.instance.getSession();
 
     final response = await _api.getAllNotificaciones(
         context: context, token: dataUser['token']);
     if (response != null) {
       _errorNotificaciones = true;
-      setListaTodasLasNotificaciones(response['data']);
+      setListaTodasLasNotificaciones(response['notificaciones']);
+     _socket.setMsgNoLeidos(response['mensajes_no_leidos']);
 
       notifyListeners();
       return response;

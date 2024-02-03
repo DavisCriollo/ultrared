@@ -2,11 +2,8 @@ import 'dart:io';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:better_player/better_player.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -21,20 +18,17 @@ import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/message.dart';
 
-class ChatPage extends StatefulWidget {
-    final Map<String,dynamic> infoChat;
-
-
-
-   ChatPage({Key? key, required this.infoChat}) : super(key: key);
+class Chats extends StatefulWidget {
+    // final Map<String,dynamic> infoChat;
+  const Chats({Key? key}) : super(key: key);
 
   @override
-  State<ChatPage> createState() => _ChatPageState();
+  State<Chats> createState() => _ChatsState();
 }
 
-class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
+class _ChatsState extends State<Chats> with TickerProviderStateMixin {
 
-
+ final ScrollController _scrollController = ScrollController();
 
 //*************AUDIO PLAYER**************/
 
@@ -49,41 +43,19 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   AudioPlayer _audioPlayer = AudioPlayer();
 
 //***********************************/
-
-
-
-
-  // late Record _record;
-  // AudioPlayer _audioPlayer = AudioPlayer();
-    // late BetterPlayerController _betterPlayerController;
-
   ChatController recorderState = ChatController();
     Map<String, dynamic>? user = {};
 
-    final _scrollController = ScrollController();
+    // final _scrollController = ScrollController();
      final TextEditingController _textController = TextEditingController();
-  // final ScrollController _scrollController = ScrollController();
-  
-  // bool showScrollToTopButton = false;
-   
-  @override
+@override
   void initState() {
+   
   final _crtlChat = context.read<ChatController>();
 
 //*************************/
 
-  // _record = Record();
-  //   _audioPlayer.onAudioPositionChanged.listen((Duration duration) {
-  //     recorderState.playbackTime = duration.inMilliseconds.toDouble();
-  //     recorderState.notify();
-  //   });
-
-  //   _audioPlayer.onDurationChanged.listen((Duration duration) {
-  //     recorderState.playbackDuration = duration.inMilliseconds.toDouble();
-  //     recorderState.notify();
-  //   });
-
-
+ 
  _record = Record();
     _audioPlayer.onAudioPositionChanged.listen((Duration duration) {
       setState(() {
@@ -97,58 +69,42 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
       });
     });
 
+//****************   SCROOL DEL LA PANTALLA ******************* */
+  _scrollController.addListener(() {
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.offset) {
+        //  print('ESTAMOS EN EL FINAL DE LA PANTALLA');
+        // _loadListScroll.getpage;
+        // _loadListScroll.setPage(_loadListScroll.getpage);
+        //  _loadListScroll.buscaAllPropietariosPaginacion('');
+
+        final _next = context.read<ChatController>();
+          final _crtlSocket = context.read<SocketModel>();
+        if (_next.getpage != null) {
+          _next.setPage(_next.getpage);
+          //       providerSearchPropietario.setCantidad(25);
+          _next.buscaAllTodoLosChats(context,'', false, _next.getInfoChat['chat_id'],_crtlSocket);
+        } else {
+          print("ES NULL POR ESO NO HACER PETICION ");
+        }
+      }
+    });
 //*********************************** */
-  // _scrollController.addListener(() {
-
-  //     if (_scrollController.position.minScrollExtent ==
-  //         _scrollController.offset) {
-  //        print('ESTAMOS EN EL FINAL DE LA PANTALLA');
-  //       // _crtlChat.getpage;
-  //       // _crtlChat.setPage(_crtlChat.getpage);
-  //       //  _crtlChat.buscaAllTodoLosChatPaginacion('');
-
-  //       final _next = context.read<ChatController>();
-  //       final _crtlSocket = context.read<SocketModel>();
-  //       if (_next.getpage != null) {
-  //         _next.setPage(_next.getpage);
-  //         //       providerSearchPropietario.setCantidad(25);
-  //         _next.buscaAllTodoLosChatPaginacion(context,'', false,widget.infoChat['chat_id'],_crtlSocket);
-      
-  //       } else {
-  //         print("ES NULL POR ESO NO HACER PETICION ");
-  //       }
-  //     }
-  //   });
-
-
-
-//************v VIDEO INICALIZA VIDEO  *************/
-// _betterPlayerController = BetterPlayerController(
-//       BetterPlayerConfiguration(
-//         autoPlay: true,
-//         fullScreenByDefault: false,
-//         controlsConfiguration: BetterPlayerControlsConfiguration(
-//           showControls: true,
-//           enableFullscreen: true,
-//           enableSubtitles: false,
-//           enableQualities: true,
-//           enableOverflowMenu: true,
-//         ),
-//       ),
-//       betterPlayerDataSource: BetterPlayerDataSource(
-//         BetterPlayerDataSourceType.network,
-//         'https://www.example.com/your_video.mp4',
-//       ),
-//     );
-
-//************************************************/
-
-
+   
     super.initState();
-    //  _scrollController.addListener(_scrollListener);
   }
- 
-  @override
+// void _scrollListener() {
+//   if (_scrollController.position.atEdge) {
+//     if (_scrollController.position.pixels == 0) {
+//       // Estás en la parte superior del contenido (scroll hacia arriba)
+//       print("Estás en la parte superior del contenido");
+//     } else {
+//       // Estás en la parte inferior del contenido (scroll hacia abajo)
+//       print("Estás en la parte inferior del contenido");
+//     }
+//   }
+// }
+ @override
   void dispose() {
   _scrollController.dispose();
    _record.dispose();
@@ -335,200 +291,197 @@ Navigator.of(context).pop();
 
 
 
-//************************************** */
 
 
-  bool _estaEscribiendo = false;
 
   @override
   Widget build(BuildContext context) {
-
-final _infoChat=widget.infoChat;
-
-     final _ctrlHome= context.read<HomeController>();
+      final Responsive size = Responsive.of(context);
+ final _ctrlHome= context.read<HomeController>();
       final _ctrlChat= context.read<ChatController>();
 
 
-
-
-
-
-
-    final Responsive size = Responsive.of(context);
-
     return GestureDetector(
-         onTap: () => FocusScope.of(context).unfocus(),
+       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-          // backgroundColor: Colors.grey.shade50,
-          appBar: AppBar(
-            iconTheme: const IconThemeData(color: Colors.black),
-            centerTitle: true, // Centra el título en el AppBar
-            elevation: 0,
-            backgroundColor: cuaternaryColor, // Fondo blanco
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                 
-               Container(
-                        width: size.iScreen(4.0),
-                        height: size.iScreen(4.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.grey, width: 2.0),
-                        ),
-                        child: ClipOval(
-                        child: Image.asset(
-                          'assets/imgs/groups.png', // Reemplaza con la ruta de tu imagen en los activos
-                          width: size.iScreen(7.5),
-                          height: size.iScreen(7.5),
-                          fit: BoxFit.cover,
-                        ),
-                      ),),
-                // Spacer(),
-                Container(
-                  // color: Colors.red,
-                  width: size.wScreen(45),
-                  child: Text(
-                     '${widget.infoChat['grupo']['chat_name']}', 
-                    style: GoogleFonts.poppins(
-                      fontSize: size.iScreen(2.0),
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                      letterSpacing: -0.40,
-                    ),
-                    overflow: TextOverflow.ellipsis, // Color del título en negro
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => ListaUsuariosChat(
-                                          infoGrupo: widget.infoChat['grupo'],
-                                        ))));
-                  },
-                  child: Container(
-                    width: size.wScreen(12.0),
-                    height: size.hScreen(5.0),
-                    padding: EdgeInsets.all(size.iScreen(0.2)),
-                    decoration: ShapeDecoration(
-                      color: Color(0xFFB32623),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+         appBar: AppBar(
+              iconTheme: const IconThemeData(color: Colors.black),
+              centerTitle: true, // Centra el título en el AppBar
+              elevation: 0,
+              backgroundColor: cuaternaryColor, // Fondo blanco
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                   
+                 Container(
+                          width: size.iScreen(4.0),
+                          height: size.iScreen(4.0),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.grey, width: 2.0),
+                          ),
+                          child: ClipOval(
+                          child: Image.asset(
+                            'assets/imgs/groups.png', // Reemplaza con la ruta de tu imagen en los activos
+                            width: size.iScreen(7.5),
+                            height: size.iScreen(7.5),
+                            fit: BoxFit.cover,
+                          ),
+                        ),),
+                  // Spacer(),
+                  Container(
+                    // color: Colors.red,
+                    width: size.wScreen(45),
+                    child: Text(
+                       '${_ctrlChat.getInfoChat['grupo']['chat_name']}', 
+                      style: GoogleFonts.poppins(
+                        fontSize: size.iScreen(2.0),
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black,
+                        letterSpacing: -0.40,
                       ),
-                      shadows: [
-                        BoxShadow(
-                          color: Color(0x33123B93),
-                          blurRadius: 20,
-                          offset: Offset(8, 8),
-                          spreadRadius: 0,
-                        )
-                      ],
-                    ),
-                    child: Center(
-                      child: Icon(Icons.segment_outlined,color:  Colors.white,)
+                      overflow: TextOverflow.ellipsis, // Color del título en negro
                     ),
                   ),
-                ),
-
-              ],
-            ),
-          ),
-          body: WillPopScope(
-            onWillPop: () async {
-          // Oculta el teclado antes de regresar a la página anterior
-          FocusScope.of(context).unfocus();
-          return true; // Permite que la página retroceda
-        },
-            child: Stack(
-              children: [
-                Container(
-              
-                  height: size.hScreen(100),
-                  width: size.wScreen(100),
-                  child: Column(
-                    children: [
-               
-                      Flexible(child: Consumer<SocketModel>(
-                        builder: (_, values, __) {
-                  
-                  
-                          return
-                                      
-                          Stack(
-                            children: [
-
-                            
-                              ListView.builder(
-                                physics:const BouncingScrollPhysics(),
-                                reverse :true,
-                               controller: _scrollController,
-                  
-                                itemCount: values.getListaDeMensajeChat.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                   if (values.getListaDeMensajeChat.isEmpty) {
-                    return Center(
-                      // child: CircularProgressIndicator(),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Esperando Datos...',
-                            style: GoogleFonts.lexendDeca(
-                                fontSize: size.iScreen(1.5),
-                                color: Colors.black87,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          //***********************************************/
-                          SizedBox(
-                            height: size.iScreen(1.0),
-                          ),
-                          //*****************************************/
-                          const CircularProgressIndicator(),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) => ListaUsuariosChat(
+                                            infoGrupo: _ctrlChat.getInfoChat['grupo'],
+                                          ))));
+                    },
+                    child: Container(
+                      width: size.wScreen(10.0),
+                      height: size.hScreen(3.5),
+                      padding: EdgeInsets.all(size.iScreen(0.3)),
+                      decoration: ShapeDecoration(
+                        color: Color(0xFFB32623),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        shadows: [
+                          BoxShadow(
+                            color: Color(0x33123B93),
+                            blurRadius: 20,
+                            offset: Offset(8, 8),
+                            spreadRadius: 0,
+                          )
                         ],
                       ),
-                    );
-                  }
-                                    
-          
-                                  if (values.getListaDeMensajeChat.isNotEmpty) {
-          
-                                    final Map<String,dynamic> menssaje = values.getListaDeMensajeChat[index];
-         
-                                  return 
-                               menssaje.isNotEmpty?
+                      child: Center(
+                        child: Icon(Icons.segment_outlined,color:  Colors.white,)
+                      ),
+                    ),
+                  ),
+    
+                ],
+              ),
+            ),
+            body: Container(
+              // color:Colors.yellow,
+              margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
+              width: size.wScreen(100),
+              height: size.hScreen(100),
+              child:
+              Consumer<SocketModel>(builder: (_, valueChat, __) {  
+                    return Stack(
+                      children: [
+                        Column(
+                      
+                          children: [
+                            Expanded(
+                              child: ListView.builder(
+                                reverse: true,
+                                padding: EdgeInsets.only(bottom: 16.0), // Agrega espacio en la parte inferior
+                                 controller: _scrollController,
+                              physics: const BouncingScrollPhysics(),
+                                        itemCount: valueChat.getListaDeMensajeChat.length+1,
+                                        itemBuilder: (BuildContext context, int index) {
+                              
+                                            if (index<valueChat.getListaDeMensajeChat.length) {
+                              final _chat = valueChat.getListaDeMensajeChat[index];
+                                          return 
+                                          
+                                          // //********************************//
+                                          //  Container(
+                                          //   width: size.wScreen(100),
+                                          //   height: size.iScreen(10.0),
+                                          //   color: Colors.grey.shade300,
+                                          //   child: Text('${_chat['message_text']} -- ${_chat['message_id']}'));
+                                          //   //********************************//
+
+
+                                              _chat.isNotEmpty?
                                   MessageChat(
                                     type: 'text',
                                     user:_ctrlHome.getUser!,
-                                    messaje:menssaje,
+                                    messaje:_chat,
                                    
                                      ):Container() ;
           
-                               
-          
-          
-          
-          
-          
-                                  }
-                                  
-                                  else{
-                                    
-                                  return const CircularProgressIndicator();
-                                  } 
-                                  
-                                },
-                              ),
-              
-           
 
 
-       Consumer<ChatController>(builder: (_, values, __) { 
+
+
+                                             // //********************************//
+
+
+                                        }
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        else{
+                               return Consumer<ChatController>(
+                                    builder: (_, valueNext, __) {
+                                      return valueNext.getpage == null
+                                          ? Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: size.iScreen(2.0)),
+                                              child: Center(
+                                                child: Text(
+                                                  'Estás al día',
+                                                  style: GoogleFonts.lexendDeca(
+                                                      fontSize:
+                                                          size.iScreen(1.8),
+                                                      // color: primaryColor,
+                                                      fontWeight:
+                                                          FontWeight.normal),
+                                                ),
+                                              ))
+                                          : valueChat.getListaDeMensajeChat.length >
+                                                  25
+                                              ? Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical:
+                                                          size.iScreen(2.0)),
+                                                  child: const Center(
+                                                      child:
+                                                          CircularProgressIndicator()))
+                                              : Container();
+                                    },
+                                  );
+                              
+                                        }
+                                          
+                                        },
+                                        
+                                      ),
+                            ),
+                             _buildInputField(context, size),
+                          ],
+                        ),
+                          Consumer<ChatController>(builder: (_, values, __) { 
 
 
         return Positioned(
-  bottom: 0.0,
+  bottom: 50.0,
    child: 
    
    values.getFileChat!?
@@ -553,7 +506,7 @@ final _infoChat=widget.infoChat;
                             // //***************************/
 
 
-                            bottomSheetImagen(_ctrlHome,context,size,_infoChat);
+                            bottomSheetImagen(_ctrlHome,context,size,values.getInfoChat);
                             // final image = await _getImage(context, ImageSource.camera);
                             //   if (image != null) {
                             //     values.setImage(image);
@@ -589,10 +542,12 @@ final _infoChat=widget.infoChat;
               child: GestureDetector(
                                   onTap:
                                       () {
-                                         
+
+
+                                        
                                       values.setFileChat(false);
                                       values.setTipoMensajeChat('video');
-                                      bottomSheetVideo(_ctrlHome,context,size,_infoChat);
+                                      bottomSheetVideo(_ctrlHome,context,size,values.getInfoChat);
 
                                       
                                         
@@ -647,7 +602,7 @@ final _infoChat=widget.infoChat;
                 // }
 
 
-               await _startRecording(size,_infoChat);
+               await _startRecording(size,values.getInfoChat);
 
 
 
@@ -694,200 +649,23 @@ final _infoChat=widget.infoChat;
 
 
         },)  
-               
-               
-                            ],
-                          );
-                 
-                  
-                        },
-                      )),
-                    
-                      
-                      _buildInputField(context, size),
-//                                                     Consumer<ChatController>(builder: (_, valuesAudio,__) { 
-// return    Container(
-//                     color: Colors.grey.shade200,
-//                     width: size.wScreen(100),
-//                     margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
-//                     child: Column(
-//                       children: [
-//                         Row(
-//                           children: [
-//                             InkWell(
-//                               onTap: () async {
-//                                 if (valuesAudio.isPlaying) {
-//                                   await valuesAudio.stopPlaying(_audioPlayer);
-//                                 } else {
-//                                   await valuesAudio.playRecordedFile(_audioPlayer);
-//                                 }
-//                               },
-//                               child: Container(
-//                                 child: Icon(valuesAudio.isPlaying ? Icons.stop : Icons.play_arrow, size: size.iScreen(3.5)),
-//                               ),
-//                             ),
-//                             Expanded(
-//                               child: Slider(
-//                                 activeColor: Colors.red,
-//                                 thumbColor: Colors.pink,
-//                                 min: 0,
-//                                 value: valuesAudio.playbackTime,
-//                                 max: valuesAudio.playbackDuration,
-//                                 onChanged: (double value) {
-//                                   _audioPlayer.seek(Duration(milliseconds: value.toInt()));
-//                                 },
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                         Row(
-//                           children: [
-//                             Text(
-//                               valuesAudio.formatDuration(valuesAudio.playbackTime) +
-//                                   ' / ' +
-//                                   valuesAudio.formatDuration(valuesAudio.playbackDuration),
-//                               style: TextStyle(
-//                                 fontSize: 16,
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       ],
-//                     ),
-//                   );
-//                                },),
-                            
-
-// AudioPlayerWidget(
-//   valuesAudio: recorderState, // Pasa la instancia de RecorderState
-//   audioPlayer: _audioPlayer, // Pasa la instancia de AudioPlayer
-// )
-
-
-   
-
-   
-    
-                         
-
-                    ],
-                  ),
-                ),
-                
-              ],
-            ),
-          ),
-          // Column(
-          //   children: <Widget>[
-          //     Expanded(
-          //       child: _buildMessageList(size),
-          //     ),
-          //     _buildInputField(context,size),
-          //   ],
-          // ),
-          // floatingActionButton: Column(
-          //   children: [
-          //     FloatingActionButton(
-          //       onPressed: () {
-          //         // Lógica del tercer botón
-          //       },
-          //       child: Icon(Icons.delete),
-          //     ),
-          //      FloatingActionButton(
-          //       onPressed: () {
-          //         // Lógica del tercer botón
-          //       },
-          //       child: Icon(Icons.delete),
-          //     ),
-          //      FloatingActionButton(
-          //       onPressed: () {
-          //         // Lógica del tercer botón
-          //       },
-          //       child: Icon(Icons.delete),
-          //     ),
-          //   ],
-          // ),
-          ),
+                      ],
+                    );
+              },))
+              
+              
+              
+      ),
     );
-
-//   }
-
-// Widget _buildMessageList(Responsive size) {
-//   return Consumer<ChatController>(
-//     builder: (context, chatModel, _) {
-//       return ListView.builder(
-//         reverse: true,
-//         itemCount: chatModel.messages.length, // <- Aquí está la referencia a 'length'
-//         itemBuilder: (context, index) {
-//           var message = chatModel.messages[index];
-//           return _buildMessageWidget(message,size);
-//         },
-//       );
-//     },
-//   );
-// }
-
-//     Widget _buildMessageWidget(Message message, Responsive size) {
-//     IconData icon;
-//     switch (message.type) {
-//       case MessageType.image:
-//         icon = Icons.image;
-//         break;
-//       case MessageType.audio:
-//         icon = Icons.audiotrack;
-//         break;
-//       case MessageType.video:
-//         icon = Icons.videocam;
-//         break;
-//       default:
-//         icon = Icons.message;
-//     }
-
-//   return Padding(
-//     padding: const EdgeInsets.all(8.0),
-//     child: Row(
-//       children: [
-//         CircleAvatar(
-//           radius: 20.0, // Ajusta el radio para que el tamaño total sea de 40
-//           child: Icon(icon),
-//         ),
-//         SizedBox(width: 16.0),
-//         Expanded(
-//           child: Text(
-//             message.text,
-//             style: TextStyle(fontSize: 16.0),
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
   }
 
-  InkWell _BotonFinalListView(Responsive size) {
-    return InkWell(          
-                  onTap: (){
-                     _scrollController.animateTo(
-              _scrollController.position.minScrollExtent,
-              duration: Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-                        );
-                  },
-                  child: Container(        
-               width: size.iScreen(5.0),
-               height: size.iScreen(5.0),
-               decoration: ShapeDecoration(
-                             shape: CircleBorder(), //here we set the circular figure
-                             color: Colors.green.shade100
-                           ),
-                         child: Center(
-                              child: Icon(
-                                     Icons.keyboard_arrow_down_outlined,
-                                     size: 30,
-                                      color: Colors.black87,
-                                      )
-                            ),
-                        )
-            );
+
+   Future<void> onRefresh() async {
+    final _ctrlChat =Provider.of<ChatController>(context, listen: false);
+      final _ctrlSocket =Provider.of<SocketModel>(context, listen: false);
+    _ctrlChat.setPage(0);
+    _ctrlChat.setCantidad(25);
+    _ctrlChat.buscaAllTodoLosChats(context,'', false, _ctrlChat.getInfoChat['chat_id'],_ctrlSocket);
   }
 
   Widget _buildInputField(BuildContext context, Responsive size) {
@@ -1029,9 +807,7 @@ final _infoChat=widget.infoChat;
       },
     );
   }
-
-//   void _sendMessage(MessageType type,BuildContext context) {
-  _hansdleSubmit(value) {
+    _hansdleSubmit(value) {
     final valueChat = context.read<ChatController>();
     final _ctrlHome = context.read<HomeController>();
     final _ctrlSocket = context.read<SocketModel>();
@@ -1065,7 +841,7 @@ final _data={
   "opcion": "GROUP", // 'INDIVIDUAL' | 'GROUP'
   "rucempresa": "ULTRA2022", // login
   "rol": '${ _ctrlHome.getUser!['rol']}',
-  "chat_id": widget.infoChat['chat_id'], // tomar del grupo del chat
+  "chat_id": valueChat.getInfoChat['chat_id'], // tomar del grupo del chat
   "person_id": '${ _ctrlHome.getUser!['id']}', // login
   "message_text": valueChat.getCajaTextoChat, //texto
   "message_audio": "", // vacio de momento
@@ -1076,11 +852,15 @@ final _data={
 
 // print('se imprima data para socket $_data');
   _ctrlSocket.emitEvent('client:send-mensaje', _data);
+    _ctrlSocket.emitEvent(
+                                                            'client:lista-chats-grupos',
+                                                            {});
 
   valueChat.addItemsChatPaginacion(_ctrlSocket.getMensajeChat);
 
 
-  // valueChat.setInfoBusquedaTodoLosChatPaginacion([_ctrlSocket.getMensajeChat]);
+  // valueChat.setInfoBusquedaTodoLosChats([],_ctrlSocket);
+
 
 
 
@@ -1117,29 +897,9 @@ final _data={
 
     // _focusNode.requestFocus();
   }
-}
 
 
 
-
-//------------MENSAJE TIPO TEXTO---------------//
-
-
-// Text _messajeTexto(String messaje, Responsive size) {
-//   return Text(
-//     messaje.toString(),
-//     style: GoogleFonts.poppins(
-//       fontSize: size.iScreen(1.5),
-//       fontWeight: FontWeight.w400,
-//       color: sextinaryColor,
-//       // letterSpacing: -0.40,
-//     ),
-//     textAlign: TextAlign.left,
-
-//     maxLines: 2, // Número máximo de líneas permitidas
-//     // overflow: TextOverflow.ellipsis,
-//   );
-// }
 
 
  Future<void> _modalImagen(BuildContext context,Responsive size ,Map<String,dynamic> infoChat) {
@@ -1513,19 +1273,14 @@ final _ctrlChat=context.read<ChatController>();
               ],
             ));
 
-
-
-
-
-
-
-
-
-
-
   }
-
-
-
-
-
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  }

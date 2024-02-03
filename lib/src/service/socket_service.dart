@@ -20,14 +20,33 @@ class SocketModel with ChangeNotifier {
   List<Map<String,dynamic>> _listaDeMensajeChat = [];
     List<Map<String,dynamic>>  get getListaDeMensajeChat => _listaDeMensajeChat;
  void setListaDeMensajesChat ( Map<String,dynamic> _msg){
-
+//  _listaDeMensajeChat.reversed;
 _listaDeMensajeChat.insert(0,_msg);
+// _listaDeMensajeChat.addAll({_msg});
 // _listaDeMensajeChat.reversed;
 
 // print('Los MENSAJES DEL SERVIDOR   ------->>>>   : $_listaDeMensajeChat');
+// for (var item in _listaDeMensajeChat) {
+//   print('Los MENSAJES DEL SERVIDOR   ------->>>>   : ${item['message_id']}');
+// }
+ _listaDeMensajeChat.sort((a, b) => b["message_id"].compareTo(a["message_id"]));
+print('Los MENSAJES DEL SERVIDOR   ------->>>>   : $_listaDeMensajeChat');
+
 
 notifyListeners();
  }
+
+
+    // MUESTRA LOS GRUPOS  CHAT 
+int _msgNoLeidos =0;
+int get getMsgNoLeidos => _msgNoLeidos;
+void setMsgNoLeidos(int _msgs){
+  _msgNoLeidos =0;
+  _msgNoLeidos=_msgs;
+   print(' *******************_msgNoLeidos : $_msgNoLeidos');
+  notifyListeners();
+}
+
   Map<String, dynamic> _mensajeChat = {};
   Map<String, dynamic> get getMensajeChat => _mensajeChat;
 
@@ -53,12 +72,20 @@ notifyListeners();
       notifyListeners();
     });
 
-    // Ejemplo de cómo manejar un evento personalizado
+    // MUESTRA LOS GRUPOL CHAT
     _socket.on('server:lista-chats-grupos', (data) {
       print('Los grupos del servidor  -------#####   : $data');
 
       _listaGruposChat = [];
       _listaGruposChat = data;
+
+int totalUnreadMessages = 0;
+ totalUnreadMessages = _listaGruposChat.fold(0, (sum, chat) => sum + (chat["unread_messages"] as int));
+    setMsgNoLeidos(totalUnreadMessages);
+
+  print("La cantidad total de unread_messages es: $totalUnreadMessages");
+
+
 
       notifyListeners();
     });
@@ -74,7 +101,7 @@ notifyListeners();
     }); 
     // Ejemplo de cómo manejar un evento personalizado
     _socket.on('server:lista-usuarios', (data) {
-      print('LISTA DE LOS USUARIOS DEL GRUPO   ------->> : $data');
+      // print('LISTA DE LOS USUARIOS DEL GRUPO   ------->> : $data');
 
       _listaUsuariosChat = [];
 
@@ -87,8 +114,12 @@ notifyListeners();
       print('MENSAJE CHAT: $data');
       // _mensajeChat = {};
       setListaDeMensajesChat(data);
+
+
+
+
       // _mensajeChat = data;
-      // _crtlChat.setInfoBusquedaTodoLosChatPaginacion([{data}]);
+      // _crtlChat.setChatSocket(data);
       notifyListeners();
       // setMensajeDesdeServidor(data); // Actualizar el mensaje en el modelo
     });
@@ -134,6 +165,13 @@ notifyListeners();
   //     notifyListeners();
   //   }
   // }
+
+  void deleteListChatSocket(){
+ _listaDeMensajeChat.clear();
+ notifyListeners();
+  print('ELIMINADO Chat####################>:${deleteListChatSocket}');
+
+  }
 
   void reset() {
     _mensajeDesdeServidor = [];

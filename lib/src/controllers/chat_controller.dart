@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:record/record.dart';
 import 'package:ultrared/src/api/api_provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
+import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/init_provider.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:http/http.dart' as _http;
@@ -255,6 +256,7 @@ class ChatController extends ChangeNotifier {
 
    _crtlSocket.setListaDeMensajesChat({});
 
+
   _listaTodoLosChatPaginacion.addAll(_tempList);
   
     // print('TodoLosChat####################>:${_listaTodoLosChatPaginacion}');
@@ -263,8 +265,8 @@ class ChatController extends ChangeNotifier {
                     _crtlSocket.setListaDeMensajesChat(item);
                   }
 
-    // _ctrlSocket.setListaDeMensajesChat(data);
-
+   
+             _crtlSocket.emitEvent('client:lista-chats-grupos',{});
     notifyListeners();
   }
 
@@ -314,6 +316,7 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
   int? get getCantidad => _cantidad;
   void setCantidad(int? _cant) {
     _cantidad = _cant;
+       print('_page: $_cantidad');
     notifyListeners();
   }
 
@@ -324,115 +327,190 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
     notifyListeners();
   }
 
-  Future buscaAllTodoLosChatPaginacion(String? _search, bool _isSearch, int _idChat ,SocketModel _crtlSocket) async {
-    final dataUser = await Auth.instance.getSession();
-// print('usuario : ${dataUser!.rucempresa}');
-    final response = await _api.getAllTodoLosChatPaginacion(
-      cantidad: _cantidad,//_cantidad,
-      page: _page,
-      search: '',
-      input: 'message_id',
-      orden: false,
-      chatId:_idChat,
-      rucempresa:'${dataUser!['rucempresa']}',
-      token: '${dataUser!['token']}',
-    );
+//   Future buscaAllTodoLosChatPaginacion(String? _search, bool _isSearch, int _idChat ,SocketModel _crtlSocket) async {
+//     final dataUser = await Auth.instance.getSession();
+// // print('usuario : ${dataUser!.rucempresa}');
+//     final response = await _api.getAllTodoLosChatPaginacion(
+//       cantidad: _cantidad,//_cantidad,
+//       page: _page,
+//       search: '',
+//       input: 'message_id',
+//       orden: false,
+//       chatId:_idChat,
+//       rucempresa:'${dataUser!['rucempresa']}',
+//       token: '${dataUser!['token']}',
+//     );
 
-    if (response != null) {
-      if (response == 401) {
-        setInfoBusquedaTodoLosChatPaginacion([],_crtlSocket);
-        _error401TodoLosChatPaginacion = true;
-        notifyListeners();
-        return response;
-      } else {
-        _errorTodoLosChatPaginacion = true;
-        if (_isSearch == true) {
-          // _listaTodoLosChatPaginacion = [];
-            notifyListeners();
-        }
-        // List<dynamic> dataSort = response['data']['results'];
-        // dataSort.sort((a, b) => b['perFecReg']!.compareTo(a['perFecReg']!));
+//     if (response != null) {
+//       if (response == 401) {
+//         setInfoBusquedaTodoLosChatPaginacion([],_crtlSocket);
+//         _error401TodoLosChatPaginacion = true;
+//         notifyListeners();
+//         return response;
+//       } else {
+//         _errorTodoLosChatPaginacion = true;
+//         if (_isSearch == true) {
+//           // _listaTodoLosChatPaginacion = [];
+//             notifyListeners();
+//         }
+//         // List<dynamic> dataSort = response['data']['results'];
+//         // dataSort.sort((a, b) => b['perFecReg']!.compareTo(a['perFecReg']!));
 
-        setPage(response['data']['pagination']['next']);
+//         setPage(response['data']['pagination']['next']);
 
-          List dataSort = [];
-      dataSort = response['data']['results'];
-       dataSort.sort((a, b) => a["msg_FecReg"].compareTo(b["msg_FecReg"]));
-      // dataSort.sort((a, b) => b['msg_FecReg']!.compareTo(a['msg_FecReg']!));
+//           List dataSort = [];
+//       dataSort = response['data']['results'];
+//        dataSort.sort((a, b) => a["msg_FecReg"].compareTo(b["msg_FecReg"]));
+//       // dataSort.sort((a, b) => b['msg_FecReg']!.compareTo(a['msg_FecReg']!));
 
-        setInfoBusquedaTodoLosChatPaginacion(dataSort,_crtlSocket);
-        notifyListeners();
-        return response;
-      }
+//         setInfoBusquedaTodoLosChatPaginacion(dataSort,_crtlSocket);
+//         notifyListeners();
+//         return response;
+//       }
   
-      //===========================================//
+//       //===========================================//
 
-    }
-    if (response == null) {
-      _errorTodoLosChatPaginacion = false;
-      notifyListeners();
-      return null;
-    }
-  }
+//     }
+//     if (response == null) {
+//       _errorTodoLosChatPaginacion = false;
+//       notifyListeners();
+//       return null;
+//     }
+//   }
 
     
+//   Future buscaAllTodoLosChatPaginacion(BuildContext context, _search, bool _isSearch, int _idChat ,SocketModel _crtlSocket) async {
+//     final dataUser = await Auth.instance.getSession();
+// // print('usuario : ${dataUser!.rucempresa}');
+//     final response = await _api.getAllTodoLosChatPaginacion(
+//       cantidad: _cantidad,//_cantidad,
+//       page: _page,
+//       search: '',
+//       input: 'message_id',
+//       orden: false,
+//       chatId:_idChat,
+//       rucempresa:'${dataUser!['rucempresa']}',
+//       token: '${dataUser!['token']}',
+//     );
+
+//     if (response != null) {
+//       if (response == 401) {
+//         setInfoBusquedaTodoLosChatPaginacion([],_crtlSocket);
+//         _error401TodoLosChatPaginacion = true;
+//         notifyListeners();
+//         return response;
+//       } else {
+//         _errorTodoLosChatPaginacion = true;
+//         if (_isSearch == true) {
+//           // _listaTodoLosChatPaginacion = [];
+//             notifyListeners();
+//         }
+//         // List<dynamic> dataSort = response['data']['results'];
+//         // dataSort.sort((a, b) => b['perFecReg']!.compareTo(a['perFecReg']!));
+      
+
+       
+
+       
+       
+
+
+
+//           List dataSort = [];
+//       dataSort = response['data']['results'];
+//        dataSort.sort((a, b) => a["msg_FecReg"].compareTo(b["msg_FecReg"]));
+//       //  setInfoBusquedaTodoLosChatPaginacion(dataSort,_crtlSocket);
+
+//        setInfoBusquedaTodoLosChatPaginacion(response['data']['results'],_crtlSocket);
+
+//    if ( _page==0 && _cantidad==5) {
+
+//         //******/
+//  _listaTodoLosChatPaginacion.clear();
+//           final _ctrlHome = context.read<HomeController>();
+//             final _crtlSocket = context.read<SocketModel>();
+//                                   _crtlSocket.emitEvent('client:read-mensaje',
+//                                   {
+                                                                  
+//                                       "rucempresa": "ULTRA2022", // login
+//                                       "rol": _ctrlHome.getUser!['rol'], // login
+//                                       "chat_id": response['data']['results'].first['chat_id'].toString(), // propiedad chat_id del mensaje
+//                                       "person_id": _ctrlHome.getUser!['id'], // login
+//                                       "last_read_message_id": response['data']['results'].last['message_id'].toString() // propiedad message_id del mensaje
+
+//                                   });
+
+
+// //  //******/
+
+
+//         //  setUltimoMensaje( response['data']['results'].first['message_id'].toString() );
+          
+         
+//         }
+
+//  setPage(response['data']['pagination']['next']);
+
+//         notifyListeners();
+//         return response;
+//       }
   
+//       //===========================================//
+
+//     }
+//     if (response == null) {
+//       _errorTodoLosChatPaginacion = false;
+//       notifyListeners();
+//       return null;
+//     }
+//   }
 
 
 
-// //------------------LISTA DE LOS MENSAJES ----------//
-//  List<MessageChat> _mensaje = [];
 
-//  void setMensaje(MessageChat _messaje){
-//    _mensaje.insert(0, _messaje);
-
-
-//    print('EL MENSAJE ${_mensaje}');
-//    notifyListeners();
-//  }
 
 
 //---- VERIFICA EL FINAL DEL LISTVIEWPARA MOSTAR EL BOTON
- ScrollController _scrollController = ScrollController();
-  bool _showButton = false;
+//  ScrollController _scrollControllChats = ScrollController();
+//   bool _showButton = false;
 
-  ScrollController get scrollController => _scrollController;
+//   ScrollController get scrollController => _scrollController;
 
-  bool get showButton => _showButton;
+//   bool get showButton => _showButton;
 
-  ScrollProvider() {
-    _scrollController.addListener(_scrollListener);
-  }
+//   ScrollProvider() {
+//     _scrollController.addListener(_scrollListener);
+//   }
 
-  void _scrollListener() {
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-      _updateShowButton(false);
-    } else {
-      _updateShowButton(true);
-    }
-  }
+//   void _scrollListener() {
+//     if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+//       _updateShowButton(false);
+//     } else {
+//       _updateShowButton(true);
+//     }
+//   }
 
-  void _updateShowButton(bool value) {
-    if (_showButton != value) {
-      _showButton = value;
-      notifyListeners();
-    }
-  }
+//   void _updateShowButton(bool value) {
+//     if (_showButton != value) {
+//       _showButton = value;
+//       notifyListeners();
+//     }
+//   }
 
-  void scrollToBottom() {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-    );
-  }
+//   void scrollToBottom() {
+//     _scrollController.animateTo(
+//       _scrollController.position.maxScrollExtent,
+//       duration: Duration(milliseconds: 500),
+//       curve: Curves.easeInOut,
+//     );
+//   }
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
+//   @override
+//   void dispose() {
+//     _scrollController.dispose();
      
-    super.dispose();
-  }
+//     super.dispose();
+//   }
 
 
   //----------BOTON MUESTRA BOTONES---------------//
@@ -629,6 +707,164 @@ print('EL TIPO ES ************ >>> $_tipoMensajeChat');
   //     return null;
   //   }
   // }
+//************************************************************NUEVA FORMA DEL CHAT**********************************************/
 
+Map<String, dynamic> _infoChat={};
+
+Map<String, dynamic> get getInfoChat=> _infoChat;
+
+void setInfoChat(Map<String, dynamic> _inf){
+_infoChat=_inf;
+  print('ES _infoChat: $_infoChat');
+notifyListeners();
+}
+
+
+
+// //------------------LISTA DE LOS MENSAJES ----------//
+ 
+  Future buscaAllTodoLosChats(BuildContext context, _search, bool _isSearch, int _idChat ,SocketModel _crtlSocket) async {
+    final dataUser = await Auth.instance.getSession();
+// print('usuario : ${dataUser!.rucempresa}');
+    final response = await _api.getAllTodoLosChatPaginacion(
+      cantidad: _cantidad,//_cantidad,
+      page: _page,
+      search: '',
+      input: 'message_id',
+      orden: false,
+      chatId:_idChat,
+      rucempresa:'${dataUser!['rucempresa']}',
+      token: '${dataUser!['token']}',
+    );
+
+    if (response != null && response['data']['results'].isNotEmpty) {
+     
+        List<dynamic> dataSort = response['data']['results'];
+        dataSort.sort((a, b) => b['message_id']!.compareTo(a['message_id']!));
+
+
+
+      if (_page==0) {
+            //******/
+ _listaTodoLosChatPaginacion.clear();
+          final _ctrlHome = context.read<HomeController>();
+            // final _crtlSocket = context.read<SocketModel>();
+                                  _crtlSocket.emitEvent('client:read-mensaje',
+                                  {
+                                                                  
+                                      "rucempresa": "ULTRA2022", // login
+                                      "rol": _ctrlHome.getUser!['rol'], // login
+                                      "chat_id": response['data']['results'].first['chat_id'].toString(), // propiedad chat_id del mensaje
+                                      "person_id": _ctrlHome.getUser!['id'], // login
+                                      "last_read_message_id": response['data']['results'].last['message_id'].toString() // propiedad message_id del mensaje
+
+                                  });
+
+
+// // //  //******/
+           setInfoBusquedaTodoLosChats(dataSort,_crtlSocket);
+
+     
+      } else {
+ setInfoBusquedaTodoLosChats(dataSort,_crtlSocket);
+     
+      }
+
+
+       
+       
+setPage(response['data']['pagination']['next']);
+
+        notifyListeners();
+        return response;
+      }
+  
+      //===========================================//
+
+    
+    if (response == null) {
+      _errorTodoLosChatPaginacion = false;
+      notifyListeners();
+      return null;
+    }
+  }
+    List _listaTodoLosChats = [];
+
+  //  List _tempList = [];
+  // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
+  void setChatSocket(Map<String,dynamic>  data ) {
+_listaTodoLosChats.insert(0,{data});
+
+ notifyListeners();
+  }
+  
+  
+  List get getListaTodoLosChats => _listaTodoLosChats;
+
+
+
+
+
+  void setInfoBusquedaTodoLosChats(List data ,SocketModel _crtlSocket) {
+ 
+   List _tempList = []; 
+    // if (_cantidad==5 && _page==0) {
+  //  _listaTodoLosChats.clear();
+//  } else {
+  _listaTodoLosChats.addAll(data);
+  // _listaTodoLosChats.reversed;
+     
+//       }
+
+  
+
+
+  
+    // print('NUEVO Chat####################>:${_listaTodoLosChats}');
+
+//  _crtlSocket.setListaDeMensajesChat({});
+ for (var item in data) {
+                    _crtlSocket.setListaDeMensajesChat(item);
+                  }
+
+    // _ctrlSocket.setListaDeMensajesChat(data);
+
+    notifyListeners();
+  }
+
+
+
+//   void deleteListChat(){
+//  _listaTodoLosChats.clear();
+//  notifyListeners();
+//   print('ELIMINADO Chat####################>:${_listaTodoLosChats}');
+
+//   }
+
+ //*********** ESCUCHA EL SCROOL****************** */
+
+// ScrollController _scrollChats = ScrollController();
+//   List<String> _tuLista = []; // Tu lista de datos
+
+//   ScrollController get getScrollChats => _scrollChats;
+//   List<String> get tuLista => _tuLista;
+
+//   // Lógica para cargar más datos
+//   void cargarMasDatos() {
+//     // Lógica para cargar más datos en tu lista
+  
+
+//     // Notifica a los oyentes (widgets que escuchan cambios) que la lista ha sido actualizada
+//     notifyListeners();
+//   }
+
+//   // Lógica para obtener nuevos datos (puedes personalizar según tus necesidades)
+//   List<String> fetchNuevosDatos() {
+//     // ...
+//   }
+
+
+
+  //***************************** */
 
 }

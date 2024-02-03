@@ -796,23 +796,26 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                       MainAxisAlignment
                                                           .spaceAround,
                                                   children: [
-                                                    Container(
-                                                      //  color: Colors.blue,
-                                                      width: size.wScreen(70.0),
-                                                      child: Text(
-                                                        'Interactúa con tus vecinos e informa a tu comunidad temas relevantes.',
-                                                        // textAlign: TextAlign.center,
-                                                        style:
-                                                            GoogleFonts.poppins(
-                                                          fontSize:
-                                                              size.iScreen(1.7),
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color: octinaryColor,
-                                                          letterSpacing: -0.28,
+                                                    
+                                                   Container(
+                                                        //  color: Colors.blue,
+                                                        width: size.wScreen(70.0),
+                                                        child: Text(
+                                                          'Interactúa con tus vecinos e informa a tu comunidad temas relevantes.',
+                                                          // textAlign: TextAlign.center,
+                                                          style:
+                                                              GoogleFonts.poppins(
+                                                            fontSize:
+                                                                size.iScreen(1.7),
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color: octinaryColor,
+                                                            letterSpacing: -0.28,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
+                                                    
+                                                   
                                                     GestureDetector(
                                                       onTap: () async {
                                                         final serviceSocket =
@@ -839,8 +842,46 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                                 builder:
                                                                     ((context) =>
                                                                         ListaGruposChat())));
+                                                            //             .then((value) {
+                                                            //               serviceSocket.emitEvent(
+                                                            // 'client:lista-chats-grupos',
+                                                            // {}
+                                                            
+                                                            // );
+                                                            //             });
                                                       },
-                                                      child: Container(
+                                                      child: 
+                                                      
+                                                      
+                                                      
+                                                      // Container(
+                                                      //   // color: Colors.yellow,
+                                                      //   width:
+                                                      //       size.wScreen(20.0),
+                                                      //   child: Image.asset(
+                                                      //     'assets/imgs/chat-bubble.png',
+                                                      //     // scale: 1.5,
+                                                      //     // fit: BoxFit.,
+                                                      //     // width: size.1Screen(5.0), // URL de la imagen
+                                                      //   ),
+                                                      // ),
+                                                       Consumer<SocketModel>(builder: (_, valueMsgNoRead, __) { 
+                                                               return  valueMsgNoRead.getMsgNoLeidos>0? Badge(
+                                                       position:
+                                const BadgePosition(top: -3.0, start: 45.0),
+                            badgeContent: 
+                           Text(
+                          
+                              '${valueMsgNoRead.getMsgNoLeidos}',
+                              style: GoogleFonts.poppins(
+                                fontSize: size.iScreen(1.3),
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white,
+                              ),
+                            ),
+                           
+                            badgeColor: tercearyColor,
+                                                      child:Container(
                                                         // color: Colors.yellow,
                                                         width:
                                                             size.wScreen(20.0),
@@ -851,6 +892,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                           // width: size.1Screen(5.0), // URL de la imagen
                                                         ),
                                                       ),
+                                                    ):SizedBox(
+              width: size.wScreen(20.0),
+              child: Image.asset(
+                'assets/imgs/chat-bubble.png',
+              ),
+            );
+                                                     },),
+
                                                     ),
                                                   ],
                                                 ),
@@ -873,32 +922,32 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                            // Center(
-                            //         child: Consumer<HomeController>(
-                            //           builder: (context, permissionsProvider, child) {
-                            //             return Column(
-                            //               mainAxisAlignment: MainAxisAlignment.center,
-                            //               children: <Widget>[
-                            //                 Text('Estado del permiso de ubicación:'),
-                            //                 // _buildPermissionStatus(permissionsProvider.locationPermissionStatus.),
-                            //                 ElevatedButton(
-                            //                   onPressed: () async {
-                            //                     await permissionsProvider.checkLocationPermission();
-                            //                   },
-                            //                   child: Text('Verificar Permiso'),
-                            //                 ),
-                            //                 ElevatedButton(
-                            //                   onPressed: () async {
-                            //                     await permissionsProvider.requestLocationPermission();
-                            //                   },
-                            //                   child: Text('Solicitar Permiso'),
-                            //                 ),
-                            //               ],
-                            //             );
-                            //           },
-                            //         ),
-                            //       ),
-                            
+                                                                // Center(
+                                                                //         child: Consumer<HomeController>(
+                                                                //           builder: (context, permissionsProvider, child) {
+                                                                //             return Column(
+                                                                //               mainAxisAlignment: MainAxisAlignment.center,
+                                                                //               children: <Widget>[
+                                                                //                 Text('Estado del permiso de ubicación:'),
+                                                                //                 // _buildPermissionStatus(permissionsProvider.locationPermissionStatus.),
+                                                                //                 ElevatedButton(
+                                                                //                   onPressed: () async {
+                                                                //                     await permissionsProvider.checkLocationPermission();
+                                                                //                   },
+                                                                //                   child: Text('Verificar Permiso'),
+                                                                //                 ),
+                                                                //                 ElevatedButton(
+                                                                //                   onPressed: () async {
+                                                                //                     await permissionsProvider.requestLocationPermission();
+                                                                //                   },
+                                                                //                   child: Text('Solicitar Permiso'),
+                                                                //                 ),
+                                                                //               ],
+                                                                //             );
+                                                                //           },
+                                                                //         ),
+                                                                //       ),
+                                                                
                                           Container(
                                             width: size.wScreen(100.0),
                                             child: Text(
@@ -913,153 +962,159 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                           ),
                                         
                                           //***********************************************/
-                            
+                                                                
                                           SizedBox(
                                             height: size.iScreen(1.5),
                                           ),
                                           //*****************************************/
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0)),
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: size.iScreen(1.0),
-                                                vertical: size.iScreen(1.0)),
-                                            width: size.wScreen(100.0),
+                                          Expanded(
                                             child: Container(
-                                              // color: Colors.red,
-                                              width: size.wScreen(95.0),
-                                              height: size.iScreen(25),
-                                              child: Consumer<HomeController>(
-                                                builder:
-                                                    (_, valueNoticias, __) {
-                                                  return valueNoticias
-                                                          .getListaTodasLasNoticias
-                                                          .isNotEmpty
-                                                      ? CarouselSlider(
-                                                          options:
-                                                              CarouselOptions(
-                                                            // height: 200.0,
-                                                            autoPlay: true,
-                                                            aspectRatio: 16 / 9,
-                                                            enlargeCenterPage:
-                                                                true,
-                                                          ),
-                                                          items: valueNoticias
-                                                              .getListaTodasLasNoticias
-                                                              .map((info) {
-                                                            return Builder(builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return Container(
-                                                                  width: size
-                                                                      .wScreen(
-                                                                          100),
-                                                                  margin: EdgeInsets
-                                                                      .symmetric(
-                                                                          horizontal:
-                                                                              1.0),
-                                                                  padding: EdgeInsets.symmetric(
-                                                                      horizontal:
-                                                                          size.iScreen(
-                                                                              0.0)),
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                          // color: Colors.yellow.shade50,
-                                                                          ),
-                                                                  child: info['noti_tipo_servicio'] ==
-                                                                          'HOGAR'
-                                                                      ? Container(
-                                                                          padding: EdgeInsets.symmetric(
-                                                                              horizontal: size.iScreen(0.0),
-                                                                              vertical: size.iScreen(0.0)),
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(8.0),
-                                                                            color:
-                                                                                Colors.grey.shade100,
-                                                                          ),
-                                                                          child:
-                                                                          //     Column(
-                                                                          //   children: [
-                                                                          //     // Text(
-                                                                          //     //   '${info['noti_titulo']}',
-                                                                          //     //   style: GoogleFonts.poppins(
-                                                                          //     //     fontSize: size.iScreen(2.0),
-                                                                          //     //     fontWeight: FontWeight.w700,
-                                                                          //     //     color: octinaryColor,
-                                                                          //     //   ),
-                                                                          //     // ),
-                            
-                                                                          //     Container(
-                                                                          //       width: size.iScreen(100),
-                                                                          //       height: size.hScreen(22),
-                                                                          //       child: CachedNetworkImage(
-                                                                          //         imageUrl: info['noti_foto'],
-                                                                          //         fit: BoxFit.fill,
-                                                                          //         placeholder: (context, url) => const CupertinoActivityIndicator(),
-                                                                          //         // Image.asset(
-                                                                          //         //     'assets/imgs/loader.gif'),
-                            
-                                                                          //         errorWidget: (context, url, error) => const Icon(Icons.error),
-                                                                          //       ),
-                                                                          //     ),
-                                                                          //     //  Text(
-                                                                          //     //   '${info['noti_descripcion']}',
-                                                                          //     //   textAlign: TextAlign.center,
-                                                                          //     //   style: GoogleFonts.poppins(
-                                                                          //     //     fontSize: size.iScreen(1.7),
-                                                                          //     //     fontWeight: FontWeight.normal,
-                                                                          //     //     color: octinaryColor,
-                                                                          //     //   ),
-                                                                          //     // ),
-                                                                          //   ],
-                                                                          // ),
-                                                                           InkWell(
-                                                                            onTap: (){
-                                                                               Navigator.push(context,
-                    MaterialPageRoute(builder: ((context) =>  InfoPublicidad(infoPublicidad:info))));
-                                                                            },
-                                                                             child: ClipRRect(
-                                                                              borderRadius: BorderRadius.circular(8.0),
-                                                                               child: Container(
-                                                                                    width: size.iScreen(100),
-                                                                                    height: size.hScreen(22),
-                                                                                    child: CachedNetworkImage(
-                                                                                      imageUrl: info['noti_foto'],
-                                                                                      fit: BoxFit.fill,
-                                                                                      placeholder: (context, url) => const CupertinoActivityIndicator(),
-                                                                                      // Image.asset(
-                                                                                      //     'assets/imgs/loader.gif'),
-                                                                                                                                                          
-                                                                                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(8.0)),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: size.iScreen(1.0),
+                                                  vertical: size.iScreen(1.0)),
+                                                  margin: EdgeInsets.only(
+                                                  bottom: size.iScreen(1.0),
+                                                 ),
+                                              width: size.wScreen(100.0),
+                                              child: Container(
+                                                // color: Colors.red,
+                                                // width: size.wScreen(95.0),
+                                                // height: size.iScreen(2),
+                                                child: Consumer<HomeController>(
+                                                  builder:
+                                                      (_, valueNoticias, __) {
+                                                    return valueNoticias
+                                                            .getListaTodasLasNoticias
+                                                            .isNotEmpty
+                                                        ? CarouselSlider(
+                                                            options:
+                                                                CarouselOptions(
+                                                              // height: 200.0,
+                                                              autoPlay: true,
+                                                              aspectRatio: 16 / 9,
+                                                              enlargeCenterPage:
+                                                                  true,
+                                                            ),
+                                                            items: valueNoticias
+                                                                .getListaTodasLasNoticias
+                                                                .map((info) {
+                                                              return Builder(builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return Container(
+                                                                    width: size
+                                                                        .wScreen(
+                                                                            100),
+                                                                    margin: EdgeInsets
+                                                                        .symmetric(
+                                                                            horizontal:
+                                                                                1.0),
+                                                                    padding: EdgeInsets.symmetric(
+                                                                        horizontal:
+                                                                            size.iScreen(
+                                                                                0.0)),
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                            // color: Colors.yellow.shade50,
+                                                                            ),
+                                                                    child: info['noti_tipo_servicio'] ==
+                                                                            'HOGAR'
+                                                                        ? 
+                                                                        Container(
+                                                                            padding: EdgeInsets.symmetric(
+                                                                                horizontal: size.iScreen(0.0),
+                                                                                vertical: size.iScreen(0.0)),
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              borderRadius:
+                                                                                  BorderRadius.circular(8.0),
+                                                                              color:
+                                                                                  Colors.grey.shade100,
+                                                                            ),
+                                                                            child:
+                                                                            //     Column(
+                                                                            //   children: [
+                                                                            //     // Text(
+                                                                            //     //   '${info['noti_titulo']}',
+                                                                            //     //   style: GoogleFonts.poppins(
+                                                                            //     //     fontSize: size.iScreen(2.0),
+                                                                            //     //     fontWeight: FontWeight.w700,
+                                                                            //     //     color: octinaryColor,
+                                                                            //     //   ),
+                                                                            //     // ),
+                                                                  
+                                                                            //     Container(
+                                                                            //       width: size.iScreen(100),
+                                                                            //       height: size.hScreen(22),
+                                                                            //       child: CachedNetworkImage(
+                                                                            //         imageUrl: info['noti_foto'],
+                                                                            //         fit: BoxFit.fill,
+                                                                            //         placeholder: (context, url) => const CupertinoActivityIndicator(),
+                                                                            //         // Image.asset(
+                                                                            //         //     'assets/imgs/loader.gif'),
+                                                                  
+                                                                            //         errorWidget: (context, url, error) => const Icon(Icons.error),
+                                                                            //       ),
+                                                                            //     ),
+                                                                            //     //  Text(
+                                                                            //     //   '${info['noti_descripcion']}',
+                                                                            //     //   textAlign: TextAlign.center,
+                                                                            //     //   style: GoogleFonts.poppins(
+                                                                            //     //     fontSize: size.iScreen(1.7),
+                                                                            //     //     fontWeight: FontWeight.normal,
+                                                                            //     //     color: octinaryColor,
+                                                                            //     //   ),
+                                                                            //     // ),
+                                                                            //   ],
+                                                                            // ),
+                                                                             InkWell(
+                                                                              onTap: (){
+                                                                                 Navigator.push(context,
+                                                          MaterialPageRoute(builder: ((context) =>  InfoPublicidad(infoPublicidad:info))));
+                                                                              },
+                                                                               child: ClipRRect(
+                                                                                borderRadius: BorderRadius.circular(8.0),
+                                                                                 child: Container(
+                                                                                      width: size.iScreen(100),
+                                                                                      height: size.hScreen(22),
+                                                                                      child: CachedNetworkImage(
+                                                                                        imageUrl: info['noti_foto'],
+                                                                                        fit: BoxFit.fill,
+                                                                                        placeholder: (context, url) => const CupertinoActivityIndicator(),
+                                                                                        // Image.asset(
+                                                                                        //     'assets/imgs/loader.gif'),
+                                                                                                                                                            
+                                                                                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                                                                                      ),
                                                                                     ),
-                                                                                  ),
+                                                                               ),
                                                                              ),
-                                                                           ),
-                                                                        )
-                                                                      : CachedNetworkImage(
-                                                                          imageUrl:
-                                                                              info['url'],
-                                                                          fit: BoxFit
-                                                                              .cover,
-                                                                          placeholder: (context, url) =>
-                                                                              const CupertinoActivityIndicator(),
-                                                                          // Image.asset(
-                                                                          //     'assets/imgs/loader.gif'),
-                            
-                                                                          errorWidget: (context, url, error) =>
-                                                                              const Icon(Icons.error),
-                                                                        ));
-                                                            });
-                                                          }).toList(),
-                                                        )
-                                                      : NoData(
-                                                          label:
-                                                              'No hay noticias nuevas');
-                                                },
+                                                                          )
+                                                                        : CachedNetworkImage(
+                                                                            imageUrl:
+                                                                                info['url'],
+                                                                            fit: BoxFit
+                                                                                .cover,
+                                                                            placeholder: (context, url) =>
+                                                                                const CupertinoActivityIndicator(),
+                                                                            // Image.asset(
+                                                                            //     'assets/imgs/loader.gif'),
+                                                                  
+                                                                            errorWidget: (context, url, error) =>
+                                                                                const Icon(Icons.error),
+                                                                          ));
+                                                              });
+                                                            }).toList(),
+                                                          )
+                                                        : NoData(
+                                                            label:
+                                                                'No hay noticias nuevas');
+                                                  },
+                                                ),
                                               ),
                                             ),
                                           ),
