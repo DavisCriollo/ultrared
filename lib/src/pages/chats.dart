@@ -1219,7 +1219,7 @@ final _ctrlChat=context.read<ChatController>();
                               if (image != null) {
                                 _ctrlChat.setImage(image);
                               }
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                             _modalVideo(context,size,infoChat);
                  
                     // _getImageFromCamera(context,_controller);
@@ -1248,7 +1248,7 @@ final _ctrlChat=context.read<ChatController>();
                               if (image != null) {
                                 _ctrlChat.setImage(image);
                               }
-                                 Navigator.pop(context);
+                                //  Navigator.pop(context);
                             _modalVideo(context,size,infoChat);
                     // Navigator.pop(context);
                   },

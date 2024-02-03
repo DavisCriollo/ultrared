@@ -384,7 +384,7 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
                     if (image != null) {
                       _controller.setImage(image,'fotocasa');
                     }
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                     } else {
                       showPermissionModal(context,size,'Para completar el registro en nuestra aplicación, es necesario otorgar permisos de la cámara.');
                       
@@ -426,7 +426,7 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
                     if (image != null) {
                       _controller.setImage(image,'fotocasa');
                     }
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                     } else {
                       showPermissionModal(context,size,'Para completar el registro en nuestra aplicación, es necesario otorgar permisos de la cámara.');
                       

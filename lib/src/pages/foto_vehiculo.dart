@@ -386,7 +386,7 @@ class _FotosVehiculoPageState extends State<FotosVehiculoPage> {
                     if (image != null) {
                       _controller.setImage(image,'fotovehiculo');
                     }
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                     } else {
                       showPermissionModal(context,size,'Para completar el registro en nuestra aplicación, es necesario otorgar permisos de la cámara.');
                       
@@ -429,7 +429,7 @@ class _FotosVehiculoPageState extends State<FotosVehiculoPage> {
                     if (image != null) {
                       _controller.setImage(image,'fotovehiculo');
                     }
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                     } else {
                       showPermissionModal(context,size,'Para completar el registro en nuestra aplicación, es necesario otorgar permisos de la cámara.');
                       

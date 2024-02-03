@@ -869,17 +869,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                                return  valueMsgNoRead.getMsgNoLeidos>0? Badge(
                                                        position:
                                 const BadgePosition(top: -3.0, start: 45.0),
-                            badgeContent: 
-                           Text(
-                          
-                              '${valueMsgNoRead.getMsgNoLeidos}',
+                         
+                            badgeContent: Text(
+                              //  value.getListaNotificaciones.isNotEmpty?  '${value.getListaNotificaciones.length}':'',
+                              '1',
                               style: GoogleFonts.poppins(
-                                fontSize: size.iScreen(1.3),
+                                fontSize: size.iScreen(1.4),
                                 fontWeight: FontWeight.normal,
                                 color: Colors.white,
                               ),
                             ),
-                           
                             badgeColor: tercearyColor,
                                                       child:Container(
                                                         // color: Colors.yellow,

@@ -385,7 +385,7 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
                     if (image != null) {
                       _controller.setImage(image,'fotoperfil');
                     }
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                     } else {
                       showPermissionModal(context,size,'Para completar el registro en nuestra aplicación, es necesario otorgar permisos de la cámara.');
                       
@@ -431,7 +431,7 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
                     if (image != null) {
                       _controller.setImage(image,'fotoperfil');
                     }
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                     } else {
                       showPermissionModal(context,size,'Para completar el registro en nuestra aplicación, es necesario otorgar permisos de la cámara.');
                       
