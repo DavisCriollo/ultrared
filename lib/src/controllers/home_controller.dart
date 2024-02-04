@@ -1534,9 +1534,18 @@ int _mensajesNoLeidos =0;
     }
   }
 
+//****** VERIFICA CAMARA   *************//
+// bool _isCamara = false;
+// bool get getIsCamara=>_isCamara;
 
+// void setIsCamara(bool _isCam){
 
+// _isCamara =_isCam;
 
+// print('IS CAMARA : $_isCamara');
+//   notifyListeners();
+// }
 
+//*************************************/
 
 }

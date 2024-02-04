@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:record/record.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
@@ -17,6 +18,7 @@ import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/message.dart';
+import 'package:ultrared/src/widgets/modal_permisos.dart';
 
 class Chats extends StatefulWidget {
     // final Map<String,dynamic> infoChat;
@@ -29,6 +31,7 @@ class Chats extends StatefulWidget {
 class _ChatsState extends State<Chats> with TickerProviderStateMixin {
 
  final ScrollController _scrollController = ScrollController();
+  bool _showButton = false;
 
 //*************AUDIO PLAYER**************/
 
@@ -392,87 +395,105 @@ Navigator.of(context).pop();
                       
                           children: [
                             Expanded(
-                              child: ListView.builder(
-                                reverse: true,
-                                padding: EdgeInsets.only(bottom: 16.0), // Agrega espacio en la parte inferior
-                                 controller: _scrollController,
-                              physics: const BouncingScrollPhysics(),
-                                        itemCount: valueChat.getListaDeMensajeChat.length+1,
-                                        itemBuilder: (BuildContext context, int index) {
+                              child: NotificationListener<ScrollNotification>(
+                                 onNotification: (scrollNotification) {
+          setState(() {
+            _showButton = scrollNotification.metrics.pixels > 0;
+          });
+          return true;
+        },
+                                child: ListView.builder(
+                                  reverse: true,
+                                  padding: EdgeInsets.only(bottom: 16.0), // Agrega espacio en la parte inferior
+                                   controller: _scrollController,
+                                physics: const BouncingScrollPhysics(),
+                                          itemCount: valueChat.getListaDeMensajeChat.length+1,
+                                          itemBuilder: (BuildContext context, int index) {
+                                
+                                              if (index<valueChat.getListaDeMensajeChat.length) {
+                                final _chat = valueChat.getListaDeMensajeChat[index];
+                                            return 
+                                            
+                                            // //********************************//
+                                            //  Container(
+                                            //   width: size.wScreen(100),
+                                            //   height: size.iScreen(10.0),
+                                            //   color: Colors.grey.shade300,
+                                            //   child: Text('${_chat['message_text']} -- ${_chat['message_id']}'));
+                                            //   //********************************//
                               
-                                            if (index<valueChat.getListaDeMensajeChat.length) {
-                              final _chat = valueChat.getListaDeMensajeChat[index];
-                                          return 
-                                          
-                                          // //********************************//
-                                          //  Container(
-                                          //   width: size.wScreen(100),
-                                          //   height: size.iScreen(10.0),
-                                          //   color: Colors.grey.shade300,
-                                          //   child: Text('${_chat['message_text']} -- ${_chat['message_id']}'));
-                                          //   //********************************//
-
-
-                                              _chat.isNotEmpty?
-                                  MessageChat(
-                                    type: 'text',
-                                    user:_ctrlHome.getUser!,
-                                    messaje:_chat,
-                                   
-                                     ):Container() ;
-          
-
-
-
-
-                                             // //********************************//
-
-
-                                        }
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        else{
-                               return Consumer<ChatController>(
-                                    builder: (_, valueNext, __) {
-                                      return valueNext.getpage == null
-                                          ? Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  vertical: size.iScreen(2.0)),
-                                              child: Center(
-                                                child: Text(
-                                                  'Estás al día',
-                                                  style: GoogleFonts.lexendDeca(
-                                                      fontSize:
-                                                          size.iScreen(1.8),
-                                                      // color: primaryColor,
-                                                      fontWeight:
-                                                          FontWeight.normal),
-                                                ),
-                                              ))
-                                          : valueChat.getListaDeMensajeChat.length >
-                                                  25
-                                              ? Container(
-                                                  margin: EdgeInsets.symmetric(
-                                                      vertical:
-                                                          size.iScreen(2.0)),
-                                                  child: const Center(
-                                                      child:
-                                                          CircularProgressIndicator()))
-                                              : Container();
-                                    },
-                                  );
                               
-                                        }
-                                          
-                                        },
+                                                _chat.isNotEmpty?
+                                    MessageChat(
+                                      type: 'text',
+                                      user:_ctrlHome.getUser!,
+                                      messaje:_chat,
+                                     
+                                       ):Container() ;
                                         
-                                      ),
+                              
+                              
+                              
+                              
+                                               // //********************************//
+                              
+                              
+                                          }
+                                          
+                                          
+                                          
+                                          
+                                          
+                                          
+                                          
+                                          
+                                          else{
+                                 return Consumer<ChatController>(
+                                      builder: (_, valueNext, __) {
+                                        return valueNext.getpage == null
+                                            ? Container(
+                                              
+                                                margin: EdgeInsets.symmetric(
+                                                    vertical: size.iScreen(2.0)),
+                                                child: Center(
+                                                  child: Container(
+                                                     padding: EdgeInsets.symmetric(
+                                                    vertical: size.iScreen(0.2),
+                                                    horizontal:  size.iScreen(0.5),
+                                                    ),
+                                                    decoration:BoxDecoration(borderRadius: BorderRadius.circular(8),
+                                                    color: Colors.lightGreen,),
+                                                    
+                                                    child: Text(
+                                                      'Estás al día',
+                                                      style: GoogleFonts.lexendDeca(
+                                                          fontSize:
+                                                              size.iScreen(1.3),
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.normal),
+                                                    ),
+                                                  ),
+                                                ))
+                                            : valueChat.getListaDeMensajeChat.length >
+                                                    25
+                                                ? Container(
+                                                    margin: EdgeInsets.symmetric(
+                                                        vertical:
+                                                            size.iScreen(2.0)),
+                                                    child: const Center(
+                                                        child:
+                                                            CircularProgressIndicator()))
+                                                : Container();
+                                      },
+                                    );
+                                
+                                          }
+                                            
+                                          },
+                                          
+                                        ),
+                              ),
                             ),
                              _buildInputField(context, size),
                           ],
@@ -494,26 +515,19 @@ Navigator.of(context).pop();
             child: GestureDetector(
                                   onTap:
                                       () async{
-                                       values.setFileChat(false);
-
-
-//  values.playInternetAudio("https://documentos.neitor.com/contable/chats/ULTRA2022/cade09f3-e2a1-4225-8b92-5f4585653ffb.ogg");
-
-
-
-                            values.setTipoMensajeChat('image');
-
-                            // //***************************/
-
-
-                            bottomSheetImagen(_ctrlHome,context,size,values.getInfoChat);
-                            // final image = await _getImage(context, ImageSource.camera);
-                            //   if (image != null) {
-                            //     values.setImage(image);
-                            //   }
-                            // _modalImageVideo(context,size,_infoChat);
+                                   
+                            
                             // //**************************/
-
+ await _ctrlHome.checkAndRequestPermissions();
+           
+                    if (_ctrlHome.hasCameraPermission) {
+                          values.setFileChat(false);
+                            values.setTipoMensajeChat('image');
+                             bottomSheetImagen(_ctrlHome,context,size,values.getInfoChat);
+                    } else {
+                      showPermissionModal(context,size,'Es necesario otorgar permisos de cámara para utilizar el chat de nuestra aplicación.');
+                      
+                    }   
 
 
                                         
@@ -541,13 +555,26 @@ Navigator.of(context).pop();
             FadeInUp(
               child: GestureDetector(
                                   onTap:
-                                      () {
+                                      () async{
 
 
                                         
-                                      values.setFileChat(false);
+                                    
+
+
+                                      await _ctrlHome.checkAndRequestPermissions();
+           
+                    if (_ctrlHome.hasCameraPermission) {
+                           values.setFileChat(false);
                                       values.setTipoMensajeChat('video');
                                       bottomSheetVideo(_ctrlHome,context,size,values.getInfoChat);
+                    } else {
+                      showPermissionModal(context,size,'Es necesario otorgar permisos de cámara para utilizar el chat de nuestra aplicación.');
+                      
+                    } 
+
+
+
 
                                       
                                         
@@ -585,10 +612,17 @@ Navigator.of(context).pop();
                       // }
       
                                          
-                                      values.setFileChat(false);
-                                      values.setTipoMensajeChat('audio');
+                                     
                                       //****************************/
-
+                                              await _ctrlHome.checkAndRequestPermissions();
+           
+                    if (_ctrlHome.hasCameraPermission) {
+                           values.setFileChat(false);
+                                      values.setTipoMensajeChat('audio');
+                    } else {
+                      showPermissionModal(context,size,'Es necesario otorgar permisos de micrófono para utilizar el chat de nuestra aplicación.');
+                      
+                    } 
 
                                            //******************************/
 
@@ -651,14 +685,35 @@ Navigator.of(context).pop();
         },)  
                       ],
                     );
-              },))
+              },)),
               
-              
-              
+            floatingActionButton: Visibility(
+        visible: _showButton,
+        child: FloatingActionButton(
+          mini: true,
+          onPressed: () {
+            // Scroll to the top when the button is pressed
+            // Scrollable.ensureVisible(context,
+            //     alignment: 5.0, duration: Duration(milliseconds: 500));
+            scrollToEnd();
+          },
+          child: Icon(Icons.arrow_downward),
+          backgroundColor: Colors.grey, // Cambia el color a rojo
+        ),
+      ),
+    
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,   
       ),
     );
   }
-
+void scrollToEnd() {
+    // Scroll to the end of the list
+    _scrollController.animateTo(
+      _scrollController.position.minScrollExtent,
+      duration: Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
+    );
+  }
 
    Future<void> onRefresh() async {
     final _ctrlChat =Provider.of<ChatController>(context, listen: false);
@@ -792,7 +847,7 @@ Navigator.of(context).pop();
                               ),
                               child: Center(
                                 child: Icon(
-                                  Icons.arrow_upward_outlined,
+                                  Icons.insert_comment_outlined,
                                   color: valueChat.getCajaTextoChat != ""
                                       ? Colors.white
                                       : Colors.black,
@@ -874,28 +929,7 @@ final _data={
               curve: Curves.easeInOut,
             );
 
-      // valueChat.setMensaje(_newMessaje);
-
-
-    //     MessageChat(
-    //   uid: '123',
-    //   messaje: valueChat.getCajaTextoChat,
-    // );
-    //  _newMessaje.add(
-    //     {'uid': '123',
-    //     "messaje": valueChat.getCajaTextoChat,
-    //     "animationController": AnimationController(vsync: this ,duration: Duration( milliseconds: 200 )),
-    //  } );
-    // valueChat.addMessage( _newMessaje);
-    // valueChat.addMessage( _newMessaje);
-
-    // valueChat.getCajaTextoChat['animationController'].forward();
-
-    // valueChat.setCajaText('');
-
-    // _messaje.insert(0, _newMessaje);
-
-    // _focusNode.requestFocus();
+    valueChat.setCajaText('');
   }
 
 
@@ -1123,7 +1157,6 @@ final _data={
 
 
 
-
    void bottomSheetImagen(
     HomeController _controller,
     BuildContext context,
@@ -1133,6 +1166,7 @@ final _data={
 
 final _ctrlChat=context.read<ChatController>();
 
+// final _ctrlHome=context.read<HomeController>();
 
     showCupertinoModalPopup(
         context: context,
@@ -1140,14 +1174,22 @@ final _ctrlChat=context.read<ChatController>();
               actions: [
                 CupertinoActionSheetAction(
                   onPressed: () async {
+                      // _ctrlHome.setIsCamara(true);
                    final image = await _getImage(context, ImageSource.camera);
                               if (image != null) {
                                 _ctrlChat.setImage(image);
                               }
                     Navigator.pop(context);
-                            _modalImagen(context,size,infoChat);
+                     if (image != null) {
+                                 _modalImagen(context,size,infoChat);
+                              }
+                           
                  
-                    // _getImageFromCamera(context,_controller);
+                      
+
+
+
+
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1169,6 +1211,7 @@ final _ctrlChat=context.read<ChatController>();
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
+                    //  _ctrlHome.setIsCamara(true);
                     final image = await _getImage(context, ImageSource.gallery);
                               if (image != null) {
                                 _ctrlChat.setImage(image);
@@ -1207,7 +1250,7 @@ final _ctrlChat=context.read<ChatController>();
   ) {
 
 final _ctrlChat=context.read<ChatController>();
-
+// final _ctrlHome=context.read<HomeController>();
 
     showCupertinoModalPopup(
         context: context,
@@ -1215,6 +1258,7 @@ final _ctrlChat=context.read<ChatController>();
               actions: [
                 CupertinoActionSheetAction(
                   onPressed: () async {
+                      // _ctrlHome.setIsCamara(true);
                    final image = await _getVideo(context, ImageSource.camera);
                               if (image != null) {
                                 _ctrlChat.setImage(image);
@@ -1244,6 +1288,7 @@ final _ctrlChat=context.read<ChatController>();
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
+                      // _ctrlHome.setIsCamara(true);
                     final image = await _getVideo(context, ImageSource.gallery);
                               if (image != null) {
                                 _ctrlChat.setImage(image);

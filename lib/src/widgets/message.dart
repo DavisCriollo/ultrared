@@ -78,15 +78,15 @@ class _MessageChatState extends State<MessageChat> {
 
 _myChat(BuildContext context,
     Responsive size, Map<String, dynamic> messaje, String type, String _hora) {
-  return FadeInLeft(
+  return FadeOut(
  duration: Duration(milliseconds: 400),
     child: Align(
       alignment: Alignment.centerRight,
       child: Container(
         // width: size.wScreen(60),
-        // color:  Colors.red,
+       
         padding: EdgeInsets.all(size.iScreen(0.2)),
-        margin: EdgeInsets.only(right: 5, bottom: 2, left: 50),
+        margin: EdgeInsets.only(right: size.iScreen(0.2), bottom:size.iScreen(0.2), left: size.iScreen(0.2)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -168,20 +168,21 @@ _myChat(BuildContext context,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Container(
-                          // width: size.wScreen(60.0),
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            '${messaje['nombres']} ',
-                            textAlign: TextAlign.left,
-                            style: GoogleFonts.poppins(
-                              fontSize: size.iScreen(1.5),
-                              fontWeight: FontWeight.w600,
-                              color: quinquanaryColor,
-                              letterSpacing: -0.40,
-                            ),
-                          ),
-                        ),
+                        // Container(
+                        //   // width: size.wScreen(60.0),
+                        //   alignment: Alignment.centerLeft,
+                        //   child: Text(
+                        //     // '${messaje['nombres']} ',
+                        //     'Tú',
+                        //    textAlign: TextAlign.left,
+                        //     style: GoogleFonts.poppins(
+                        //       fontSize: size.iScreen(1.5),
+                        //       fontWeight: FontWeight.w600,
+                        //       color: quinquanaryColor,
+                        //       letterSpacing: -0.40,
+                        //     ),
+                        //   ),
+                        // ),
                         Container(
                           // color:  Colors.red,
                             // constraints: BoxConstraints(maxWidth: size.wScreen(60.0)),
@@ -249,7 +250,7 @@ _myChat(BuildContext context,
 
 Container _messajeVideo(BuildContext context,List _listUrl,Responsive size) {
 
-
+final _chatCtrl=context.read<ChatController>();
 
 
 
@@ -271,18 +272,32 @@ Container _messajeVideo(BuildContext context,List _listUrl,Responsive size) {
         // color: Colors.red,
          margin: EdgeInsets.symmetric(vertical: size.iScreen(0.5),horizontal: size.iScreen(0.0)),
          padding: EdgeInsets.symmetric(vertical: size.iScreen(0.5),horizontal:size.iScreen(0.5)),
-        child:InkWell( onTap:(){
-           Navigator.push(
-                context,
-                MaterialPageRoute(
-                  // builder: (context) => VideoPlayerScreen(videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" ),
-                    builder: (context) => VideoPlayerScreen(videoUrl: e),
-                ),
-              );
+        child:InkWell( 
+          
+          
+          onTap:   _chatCtrl.getPressed==false? ()async{
 
-        } ,child: Container(
+
+          //  Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         // builder: (context) => VideoPlayerScreen(videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" ),
+          //           builder: (context) => VideoPlayerScreen(videoUrl: e),
+          //       ),
+          //     );
+      
+            _chatCtrl.setPressed(true);
+         await _chatCtrl.descargarYGuardarVideo(e,context);
+
+
+        } :null,child: Container(
           width: size.wScreen(50),
-          child: Row(
+          child: 
+          Consumer<ChatController>(builder: (_, valueDown, __) {  
+              return   Row(
+            mainAxisAlignment: 
+            
+            MainAxisAlignment.spaceEvenly,
             children: [
               Icon(Icons.video_camera_back_outlined,size: size.iScreen(3.5),),
               SizedBox(width: size.iScreen(1.0),),
@@ -292,8 +307,13 @@ Container _messajeVideo(BuildContext context,List _listUrl,Responsive size) {
                           color: sextinaryColor,
                           // letterSpacing: -0.40,
                         )),
+                   valueDown.getPressed==false? Icon(Icons.download_outlined,size: size.iScreen(3.5),):CircularProgressIndicator.adaptive(strokeWidth : 2.0,),
+                        
             ],
-          ),
+          );
+          },)
+          
+        
         )),
       )).toList())
     ,
@@ -314,7 +334,7 @@ String _formatDuration(int milliseconds) {
 
 
   return Container(
-   
+    width: size.iScreen(30.0),
     height: size.iScreen(7.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
@@ -514,14 +534,14 @@ Text _messajeTexto(String messaje, Responsive size) {
 
 _noChat(BuildContext context,
     Responsive size, Map<String, dynamic> messaje, String type, String _hora) {
-  return FadeInRight(
+  return FadeIn(
     duration: Duration(milliseconds: 400),
     child: Align(
       alignment: Alignment.centerLeft,
       child: Container(
         // color:  Colors.red,
         padding: EdgeInsets.all(size.iScreen(0.2)),
-        margin: EdgeInsets.only(right: 50, bottom: 5, left: 5),
+        margin: EdgeInsets.only(right: size.iScreen(0.2), bottom:size.iScreen(0.2), left: size.iScreen(0.2)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,

@@ -90,8 +90,8 @@ dependencies:
   flutter_map: 
   flutter_pdfview: ^1.0.1
   syncfusion_flutter_pdfviewer:
-  
-  
+  fluttertoast: ^8.0.8 
+  dio: ^5.4.0
 
 # dependency_overrides:
 #   firebase_core_platform_interface: 4.5.1

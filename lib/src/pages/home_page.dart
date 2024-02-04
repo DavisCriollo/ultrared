@@ -21,6 +21,7 @@ import 'package:ultrared/src/pages/lista_estado_cuenta.dart';
 import 'package:ultrared/src/pages/lista_grupos_chat.dart';
 import 'package:ultrared/src/pages/lista_notificaciones.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
+import 'package:ultrared/src/pages/ser_cliente_page.dart';
 import 'package:ultrared/src/pages/splash_screen.dart';
 import 'package:ultrared/src/pages/vista_imagen.dart';
 import 'package:ultrared/src/service/local_notifications.dart';
@@ -107,12 +108,23 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       //      var _ctrlSocket = context.read<SocketModel>();
       //             _ctrlSocket.connectToSocket("${session!['token']}", "${session['rucempresa']}");
 
-      if (mounted) {
+      // if (mounted) {
         print('EL ESTADO ES ------: $state');
-        // Realiza operaciones con el contexto solo si el widget está montado
-        // ...
-        Navigator.pushNamed(context, 'splash');
-      }
+      //   // Realiza operaciones con el contexto solo si el widget está montado
+      //   // ...
+
+        
+      //   // if (ctrlHome.getIsCamara==false) {
+      //   //   Navigator.pushNamed(context, 'splash');
+      //   // } 
+
+       
+     _chechLogin();
+
+
+
+
+      // }
 
       //VERIFICA  //
 
@@ -137,7 +149,152 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       //  Provider.of<SocketModel>(context, listen: false).disconnectSocket();
     }
   }
+ _chechLogin() async {
 
+    final controllerHome = context.read<HomeController>();
+    final Map<String, dynamic>? session = await Auth.instance.getSession();
+   
+    if (session != null) {
+
+controllerHome.setUserApp(session);
+
+  // var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
+  // _ctrlSocket.connectToSocket("${session['token']}", "${session['rucempresa']}");
+     await controllerHome.validaInicioDeSesion();
+   
+    if (controllerHome.getValidaSession==true) {
+      controllerHome.buscarNoticias(context);
+      controllerHome.buscarNotificaciones(context);
+   
+
+          // Navigator.of(context).pushAndRemoveUntil(
+          //     MaterialPageRoute(
+          //         builder: (context) => HomePage(
+                     
+          //               user: session,
+                       
+          //             )),
+          //     (Route<dynamic> route) => false);
+         
+        }
+         else {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => SerClientePage(
+                      
+                      )),
+              (Route<dynamic> route) => false);
+        
+        }
+      // final status = await Permission.location.request();
+      // if (status == PermissionStatus.granted) {
+      //     print('============== SI TIENE PERMISOS');
+      //      await controllerHome.validaInicioDeSesion();
+      //   //  controllerHome.checkGPSStatus();
+        
+      //     // print('============== gps activado.  ${controllerHome.getGPSState()}');
+      //   // await controllerHome.getLocation();
+      //   // if (controllerHome.getGPSPositione) {
+      //   //   // Navigator.of(context).pushAndRemoveUntil(
+      //   //   //     MaterialPageRoute(
+      //   //   //         builder: (context) => HomePage(
+      //   //   //               // validaTurno: validaTurno,
+      //   //   //               // tipo: session.rol,
+      //   //   //               user: session,
+      //   //   //               // ubicacionGPS: controllerHome.getCoords,
+      //   //   //             )),
+      //   //   //     (Route<dynamic> route) => false);
+      //   //   // ModalRoute.withName('/');
+      //   // }
+
+      //   if (controllerHome.getValidaSession==true) {
+
+      //     Navigator.of(context).pushAndRemoveUntil(
+      //         MaterialPageRoute(
+      //             builder: (context) => HomePage(
+      //                   // validaTurno: validaTurno,
+      //                   // tipo: session.rol,
+      //                   user: session,
+      //                   // ubicacionGPS: controllerHome.getCoords,
+      //                 )),
+      //         (Route<dynamic> route) => false);
+      //     ModalRoute.withName('/');
+      //   }
+      //   else {
+      //     Navigator.of(context).pushAndRemoveUntil(
+      //         MaterialPageRoute(
+      //             builder: (context) => SerClientePage(
+      //                   // validaTurno: validaTurno,
+      //                   // tipo: session.rol,
+      //                   // user: session,
+      //                   // ubicacionGPS: controllerHome.getCoords,
+      //                 )),
+      //         (Route<dynamic> route) => false);
+      //     ModalRoute.withName('/');
+      //   }
+      // } 
+      // else {
+      //   // Navigator.pushNamed(context, 'gps');
+      //   Navigator.of(context).pushAndRemoveUntil(
+      //         MaterialPageRoute(
+      //             builder: (context) => AccesoGPSPage(
+      //                   // validaTurno: validaTurno,
+      //                   // tipo: session.rol,
+      //                   // user: session,
+      //                   // ubicacionGPS: controllerHome.getCoords,
+      //                 )),
+      //         (Route<dynamic> route) => false);
+      //     ModalRoute.withName('/');
+      // }
+
+  // final infoUser  = await Auth.instance.getSession();
+              
+  //               _ctrlInitProvider.login("${session['token']}", "${session['rucempresa']}");
+  //             SocketService(_ctrlInitProvider);
+               
+  //    final _ctrlSocket =context.read<SocketService>();
+  //                 _ctrlSocket.sendMessage('client:lista-usuarios', {
+  //      "chat_id" : 4
+  //   });
+
+
+
+//final status = await Permission .location.request(); if (status == PermissionStatus .granted) {
+
+
+                                                   //   }
+                                                      
+ //Geolocator.openAppSettings();
+//*****************************************/
+    //      var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
+    //       _ctrlSocket.connectToSocket("${session['token']}", "${session['rucempresa']}");
+    // context.read<HomeController>().buscarNoticias(context);
+    // context.read<HomeController>().buscarNotificaciones(context);
+    //    Navigator.of(context).pushAndRemoveUntil(
+    //           MaterialPageRoute(
+    //               builder: (context) => HomePage(
+    //                     // validaTurno: validaTurno,
+    //                     // tipo: session.rol,
+    //                     user: session,
+    //                     // ubicacionGPS: controllerHome.getCoords,
+    //                   )),
+    //           (Route<dynamic> route) => false);
+    //       ModalRoute.withName('/');
+     //*****************************************//
+    } 
+    else {
+      // Navigator.of(context).pushAndRemoveUntil(
+      //     MaterialPageRoute(builder: (context) => const SplashPage()),
+      //     (Route<dynamic> route) => false);
+
+
+//  Navigator.of(context).pushAndRemoveUntil(
+//           MaterialPageRoute(builder: (context) => const SplashPage()),
+//           (Route<dynamic> route) => false);
+
+    }
+    
+  }
   initData() async {
     WidgetsBinding.instance!.addObserver(this);
     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
@@ -871,9 +1028,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                 const BadgePosition(top: -3.0, start: 45.0),
                          
                             badgeContent: Text(
-                              //  value.getListaNotificaciones.isNotEmpty?  '${value.getListaNotificaciones.length}':'',
-                              '1',
-                              style: GoogleFonts.poppins(
+                              '${valueMsgNoRead.getMsgNoLeidos}',
+                                style: GoogleFonts.poppins(
                                 fontSize: size.iScreen(1.4),
                                 fontWeight: FontWeight.normal,
                                 color: Colors.white,

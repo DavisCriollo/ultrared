@@ -3,14 +3,18 @@ import 'dart:io';
 
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:record/record.dart';
 import 'package:ultrared/src/api/api_provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/init_provider.dart';
+import 'package:ultrared/src/pages/view_video_page.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:http/http.dart' as _http;
 import 'package:ultrared/src/widgets/message.dart';
@@ -44,7 +48,7 @@ class ChatController extends ChangeNotifier {
 
   void setCajaText(String _value) {
     _cajaTextoChat = _value;
-    print(_cajaTextoChat);
+    print('LA CAJA DE TEXTO:*****> $_cajaTextoChat');
     notifyListeners();
   }
 
@@ -834,37 +838,87 @@ _listaTodoLosChats.insert(0,{data});
 
 
 
-//   void deleteListChat(){
-//  _listaTodoLosChats.clear();
-//  notifyListeners();
-//   print('ELIMINADO Chat####################>:${_listaTodoLosChats}');
-
-//   }
-
- //*********** ESCUCHA EL SCROOL****************** */
-
-// ScrollController _scrollChats = ScrollController();
-//   List<String> _tuLista = []; // Tu lista de datos
-
-//   ScrollController get getScrollChats => _scrollChats;
-//   List<String> get tuLista => _tuLista;
-
-//   // Lógica para cargar más datos
-//   void cargarMasDatos() {
-//     // Lógica para cargar más datos en tu lista
-  
-
-//     // Notifica a los oyentes (widgets que escuchan cambios) que la lista ha sido actualizada
-//     notifyListeners();
-//   }
-
-//   // Lógica para obtener nuevos datos (puedes personalizar según tus necesidades)
-//   List<String> fetchNuevosDatos() {
-//     // ...
-//   }
+//***********************DESCARGAR VIDEO ************************/
 
 
+bool _descargaOK=false;
+bool get getDescargaOK=>_descargaOK;
+void setDescargaOk(bool _inf){
+_descargaOK=_inf;
+  print('Boton presionado');
+  notifyListeners();
+}
+bool _pressed=false;
+bool get getPressed=>_pressed;
+void setPressed(bool _pr){
+_pressed=_pr;
+  notifyListeners();
+}
+Future<void> descargarYGuardarVideo(String url,BuildContext context) async {
+  // Comprueba y solicita permiso de escritura en el almacenamiento externo
+  var status = await Permission.storage.status;
+  if (!status.isGranted) {
+    await Permission.storage.request();
+  }
 
+  if (status.isGranted) {
+    // Configura el cliente Dio
+    Dio dio = Dio();
+    // Obtén el nombre del archivo desde la URL
+    String fileName = url.split("/").last;
+    // Define la ruta de destino en la carpeta de fotos
+    String savePath = '/storage/emulated/0/DCIM/Camera/$fileName';
+
+    try {
+      // Descarga el video
+      await dio.download(url, savePath);
+      print('Video descargado en $savePath');
+      // setDescargaOk(true);
+      setPressed(false);
+
+
+         Navigator.push(
+                context,
+                MaterialPageRoute(
+                  // builder: (context) => VideoPlayerScreen(videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" ),
+                    builder: (context) => VideoPlayerScreen(videoUrl: savePath),
+                ),
+              );
+
+
+
+
+      // Muestra un toast indicando que la descarga se ha completado
+      Fluttertoast.showToast(
+        msg: 'Descarga completada ',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } catch (e) {
+      print('Error al descargar el video: $e');
+      // setDescargaOk(false);
+      setPressed(false);
+      // Muestra un toast indicando que hubo un error en la descarga
+      Fluttertoast.showToast(
+        msg: 'Error en la descarga',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  } else {
+    print('Permiso de almacenamiento denegado');
+  }
+}
+
+//****************************************************/
   //***************************** */
 
 }
