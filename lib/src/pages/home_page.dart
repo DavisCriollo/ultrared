@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -37,6 +39,7 @@ import 'package:ultrared/src/widgets/elementoSOS.dart';
 import 'package:ultrared/src/widgets/elementosHome.dart';
 import 'package:ultrared/src/widgets/modal_permisos.dart';
 import 'package:ultrared/src/widgets/no_data.dart';
+import 'package:upgrader/upgrader.dart';
 // import 'socket_provider.dart'; // Asegúrate de importar tu SocketProvider
 
 class HomePage extends StatefulWidget {
@@ -150,13 +153,27 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
   }
  _chechLogin() async {
-
+ final controllerSocket = context.read<SocketModel>();
     final controllerHome = context.read<HomeController>();
     final Map<String, dynamic>? session = await Auth.instance.getSession();
    
     if (session != null) {
 
 controllerHome.setUserApp(session);
+
+
+
+ controllerSocket.emitEvent(
+                                                            'client:lista-chats-grupos',
+                                                            {});
+                            
+                                                        // _chatCtrl.buscaGruposChat(context);
+                                                        //      final infoUser  = await Auth.instance.getSession();
+                                                        // _ctrlChat
+                                                        //     .buscaGruposChat(
+                                                        //         context);
+
+
 
   // var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
   // _ctrlSocket.connectToSocket("${session['token']}", "${session['rucempresa']}");
@@ -513,6 +530,13 @@ controllerHome.setUserApp(session);
     // }
   }
 
+
+  void isUpdate() async {
+    await Auth.instance.deleteCache(context);
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     //  print('***hhhhh hhhhh hhhh hhhh hhh h***> ${widget.user}');
@@ -531,760 +555,800 @@ controllerHome.setUserApp(session);
             // values.getValidaSession == true ?
 
             SafeArea(
-          child: Scaffold(
-            backgroundColor: Colors.grey.shade200, // appBar: AppBar(
-            //   title: Text('Estado del Socket'),
-            // ),
-            appBar: AppBar(
-              toolbarHeight: size.hScreen(10.0),
-              iconTheme: const IconThemeData(color: Colors.black),
-              elevation: 0.0,
-              backgroundColor: cuaternaryColor, //
-              title: Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: size.iScreen(1.0), vertical: size.iScreen(0.5)),
-                alignment: Alignment.centerLeft,
-                // color:Colors.blue,
-                width: size.wScreen(80.0),
-                height: size.wScreen(17.0),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      'assets/imgs/letras_UR.png',
-                      scale: 1.0,
-                      // fit: BoxFit.,
-                      // width: size.1Screen(5.0), // URL de la imagen
-                    ),
-                    Text(
-                      ' Seguridad Móvil',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                          fontSize: size.iScreen(2.2),
-                          fontWeight: FontWeight.w500,
-                          color: secondaryColor),
-                    ),
-                  ],
-                ),
-              ),
-              actions: [
-                values.connectionStatus != ConnectionStatus.none
-                    ? Consumer<HomeController>(
-                        builder: (_, value, __) {
-                          return Badge(
-                            position:
-                                const BadgePosition(top: 10.0, start: 25.0),
-                            badgeContent: Text(
-                              //  value.getListaNotificaciones.isNotEmpty?  '${value.getListaNotificaciones.length}':'',
-                              '${value.getListaTodasLasNotificaciones.length}',
-                              style: GoogleFonts.poppins(
-                                fontSize: size.iScreen(1.4),
-                                fontWeight: FontWeight.normal,
-                                color: Colors.white,
-                              ),
-                            ),
-                            badgeColor: tercearyColor,
-                            child: Container(
-                              margin: EdgeInsets.only(right: size.iScreen(2.0)),
-                              child: IconButton(
-                                  onPressed: () {
-                                    context
-                                        .read<HomeController>()
-                                        .buscarNotificaciones(context);
-
-//
-
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ListaNotificaciones()));
-                                  },
-                                  icon: Icon(
-                                    Icons.notifications,
-                                    size: size.iScreen(3.5),
-                                    color: Colors.black,
-                                  )),
-                            ),
-                          );
-                        },
-                      )
-                    : Container()
-              ],
+          child: 
+          
+          UpgradeAlert(
+            upgrader: Upgrader(
+              onUpdate: () {
+                // print('SE REALIZA LA ACCION DE ACTUALIZAR');
+                isUpdate();
+                return true;
+              },
+              canDismissDialog: false,
+              durationUntilAlertAgain: Duration(minutes: 1),
+              showIgnore: false,
+              showLater: false,
+              languageCode: 'es',
+              dialogStyle: Platform.isIOS
+                  ? UpgradeDialogStyle.cupertino
+                  : UpgradeDialogStyle.material,
             ),
-            drawer: values.connectionStatus != ConnectionStatus.none
-                ?
-                // DrawerMenu(user: user)
-                DrawerMenu()
-                : null,
-            body: Container(
-              // height: size.hScreen(100),
-              width: size.wScreen(100),
-              // color:Colors.green,
-              child: values.connectionStatus != ConnectionStatus.none
-                  ? Column(
-                      children: [
-                        // Container(
-                        //   padding: EdgeInsets.symmetric(
-                        //       horizontal: size.iScreen(1.0), vertical: size.iScreen(1.0)),
-                        //   // color:  Colors.red,
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       GestureDetector(
-                        //         onTap: () {
-                            
-                        //         }
-                        //         ,
-                            
-                        //         child: Container(
-                        //           // color:Colors.green,
-                        //           width: size.wScreen(10.0),
-                        //           height: size.wScreen(10.0),
-                        //           child: Icon(
-                        //             Icons.menu,
-                        //             color: Colors.black,
-                        //             size: size.wScreen(7.0),
-                        //           ),
-                        //         ),
-                        //       ),
-                        //       Container(
-                        //         alignment: Alignment.centerLeft,
-                        //         // color:Colors.blue,
-                        //         width: size.wScreen(80.0),
-                        //         height: size.wScreen(15.0),
-                        //         child: Image.asset(
-                        //           'assets/imgs/LetrasNegro.png',
-                        //           scale: 1.3,
-                        //           // fit: BoxFit.,
-                        //           // width: size.1Screen(5.0), // URL de la imagen
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                            
-                        Expanded(child: Consumer<HomeController>(
-                          builder: (_, valueHome, __) {
-                            return Container(
-                              // height: size.hScreen(80.0),
-                              // color: Colors.blue,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    width: size.wScreen(100.0),
-                                    height: size.wScreen(60.0),
-                            
-                                    // color: Colors.red,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      child: Wrap(
-                                        alignment: WrapAlignment.center,
-                                        crossAxisAlignment:
-                                            WrapCrossAlignment.center,
-                                        // mainAxisAlignment:
-                                        //     MainAxisAlignment.spaceAround,
-                                        children: [
-                                          widget.user!['isClient'] == 'SI'
-                                              ? ElementosHome(
-                                                  enabled: true,
-                                                  size: size,
-                                                  image:
-                                                      'assets/imgs/document.png',
-                                                  title: 'Estado de Cuenta',
-                                                  label:
-                                                      'Verifica tu estado de cuenta',
-                                                  onTap: () {
-                                                    //                               NotificationHelper().showNotification(
-                                                    //   title: 'Título de la notificación',
-                                                    //   body: 'Cuerpo de la notificación',
-                                                    // );
-                            
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: ((context) =>
-                                                                DataTableEstadoCuenta())));
-                                                  }
-                                                  // () => Navigator.pushNamed(
-                                                  //     context, 'SubmenuMascotas'),
-                                                  // onTap: () {
-                                                  //   Navigator.of(context).push(MaterialPageRoute(
-                                                  //       builder: (context) =>
-                                                  //           const SubmenuMascotas()));
-                                                  // },
-                                                  )
-                                              : Container(),
-                                          ElementosSOS(
-                                              enabled: true,
-                                              size: size,
-                                              image: 'assets/imgs/document.png',
-                                              title: 'Botón de Ayuda',
-                                              label: 'Presiona por 3 segundos',
-                                              onTap: () async {
-                                                //**************//
-                            //  HomeController permissionProvider = Provider.of<HomeController>(context, listen: false);
-                            //             await permissionProvider.checkAndRequestLocationPermission();
-                            //             print(permissionProvider.hasLocationPermission);
-                            
-                            //             await permissionProvider.checkAndRequestLocationPermission();
-                            //             print('**** Permiso ****>  ${permissionProvider.hasLocationPermission}');
-                            //   permissionProvider.checkGpsStatus();
-                            //                    if (permissionProvider.hasLocationPermission==true) {
-                            //                       // permissionProvider.checkGpsStatus();
-                            
-                            //                                               if (permissionProvider.gpsStatus==true ) {
-                            //                                                  NotificatiosnService.showSnackBarSuccsses('El  GPS esta activado');
-                            
-                            //                    } else {
-                            //                      NotificatiosnService.showSnackBarDanger('Por favor active su GPS');
-                            //                    }
-                            //                    }
-                            //                    else{
-                            //                      Navigator.of(context).pushAndRemoveUntil(
-                            //               MaterialPageRoute(
-                            //                   builder: (context) => AccesoGPSPage(
-                            //                         // validaTurno: validaTurno,
-                            //                         // tipo: session.rol,
-                            //                         // user: session,
-                            //                         // ubicacionGPS: controllerHome.getCoords,
-                            //                       )),
-                            //               (Route<dynamic> route) => false);
-                            
-                                                final _ctrlSocket =
-                                                    Provider.of<SocketModel>(
-                                                        context,
-                                                        listen: false);
-                                                // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
-                                                HomeController
-                                                    permissionProvider =
-                                                    Provider.of<HomeController>(
-                                                        context,
-                                                        listen: false);
-                                                await permissionProvider
-                                                    .checkAndRequestPermissions();
-                                                bool isGpsEnabled =
-                                                    await permissionProvider
-                                                        .checkGpsStatus();
-                                                // print('LA INFO ES  ${permissionProvider.hasLocationPermission} ${isGpsEnabled}');
-                            
-                                                if (permissionProvider
-                                                    .hasLocationPermission) {
-                                                  // NotificatiosnService.showSnackBarSuccsses('SIII TIENE PERMISO');
-                                                  if (isGpsEnabled) {
-                                                    //  NotificatiosnService.showSnackBarDanger(' GPS ACTIVADO ');
-                            
-                                                    await valueHome
-                                                        .getLocation();
-                                                    if (valueHome.getLocationGPS
-                                                        .isNotEmpty) {
-                                                      final _dataPanico = {
-                                                        "coordenadas": {
-                                                          "latitud": valueHome
-                                                                  .getLocationGPS[
-                                                              'latitud'],
-                                                          "longitud": valueHome
-                                                                  .getLocationGPS[
-                                                              'longitud']
-                                                        },
-                                                        "rucempresa":
-                                                            "ULTRA2022",
-                                                        "perId": valueHome
-                                                            .getUser!['id']
-                                                      };
-                            
-                                                      valueHome.activateAlarm();
-                            
-                                                      print(
-                                                          'esta la info para el bon de panico ------> $_dataPanico');
-                                                      _ctrlSocket.emitEvent(
-                                                          'client:boton-panico',
-                                                          _dataPanico);
+            child: Scaffold(
+              backgroundColor: Colors.grey.shade200, // appBar: AppBar(
+              //   title: Text('Estado del Socket'),
+              // ),
+              appBar: AppBar(
+                toolbarHeight: size.hScreen(10.0),
+                iconTheme: const IconThemeData(color: Colors.black),
+                elevation: 0.0,
+                backgroundColor: cuaternaryColor, //
+                title: Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: size.iScreen(1.0), vertical: size.iScreen(0.5)),
+                  alignment: Alignment.centerLeft,
+                  // color:Colors.blue,
+                  width: size.wScreen(80.0),
+                  height: size.wScreen(17.0),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/imgs/letras_UR.png',
+                        scale: 1.0,
+                        // fit: BoxFit.,
+                        // width: size.1Screen(5.0), // URL de la imagen
+                      ),
+                      Text(
+                        ' Seguridad Móvil',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                            fontSize: size.iScreen(2.2),
+                            fontWeight: FontWeight.w500,
+                            color: secondaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+                actions: [
+                  values.connectionStatus != ConnectionStatus.none
+                      ? Consumer<HomeController>(
+                          builder: (_, value, __) {
+                            return value.getListaTodasLasNotificaciones.length>1 ?Badge(
+                              position:
+                                  const BadgePosition(top: 10.0, start: 25.0),
+                              badgeContent: Text(
+                                //  value.getListaNotificaciones.isNotEmpty?  '${value.getListaNotificaciones.length}':'',
+                                '${value.getListaTodasLasNotificaciones.length}',
+                                style: GoogleFonts.poppins(
+                                  fontSize: size.iScreen(1.4),
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              badgeColor: tercearyColor,
+                              child: Container(
+                                margin: EdgeInsets.only(right: size.iScreen(2.0)),
+                                child: IconButton(
+                                    onPressed: () {
+                                      context
+                                          .read<HomeController>()
+                                          .buscarNotificaciones(context);
+          
+          //
+          
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const ListaNotificaciones()));
+                                    },
+                                    icon: Icon(
+                                      Icons.notifications,
+                                      size: size.iScreen(3.5),
+                                      color: Colors.black,
+                                    )),
+                              ),
+                            ):Container(
+                                margin: EdgeInsets.only(right: size.iScreen(2.0)),
+                                child: IconButton(
+                                    onPressed: () {
+                                      context
+                                          .read<HomeController>()
+                                          .buscarNotificaciones(context);
+          
+          //
+          
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const ListaNotificaciones()));
+                                    },
+                                    icon: Icon(
+                                      Icons.notifications,
+                                      size: size.iScreen(3.5),
+                                      color: Colors.black,
+                                    )),
+                              
+                            );
+                          },
+                        )
+                      : Container()
+                ],
+              ),
+              drawer: values.connectionStatus != ConnectionStatus.none
+                  ?
+                  // DrawerMenu(user: user)
+                  DrawerMenu()
+                  : null,
+              body: Container(
+                // height: size.hScreen(100),
+                width: size.wScreen(100),
+                // color:Colors.green,
+                child: values.connectionStatus != ConnectionStatus.none
+                    ? Column(
+                        children: [
+                          // Container(
+                          //   padding: EdgeInsets.symmetric(
+                          //       horizontal: size.iScreen(1.0), vertical: size.iScreen(1.0)),
+                          //   // color:  Colors.red,
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       GestureDetector(
+                          //         onTap: () {
+                              
+                          //         }
+                          //         ,
+                              
+                          //         child: Container(
+                          //           // color:Colors.green,
+                          //           width: size.wScreen(10.0),
+                          //           height: size.wScreen(10.0),
+                          //           child: Icon(
+                          //             Icons.menu,
+                          //             color: Colors.black,
+                          //             size: size.wScreen(7.0),
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       Container(
+                          //         alignment: Alignment.centerLeft,
+                          //         // color:Colors.blue,
+                          //         width: size.wScreen(80.0),
+                          //         height: size.wScreen(15.0),
+                          //         child: Image.asset(
+                          //           'assets/imgs/LetrasNegro.png',
+                          //           scale: 1.3,
+                          //           // fit: BoxFit.,
+                          //           // width: size.1Screen(5.0), // URL de la imagen
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                              
+                          Expanded(child: Consumer<HomeController>(
+                            builder: (_, valueHome, __) {
+                              return Container(
+                                // height: size.hScreen(80.0),
+                                // color: Colors.blue,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width: size.wScreen(100.0),
+                                      height: size.wScreen(60.0),
+                              
+                                      // color: Colors.red,
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        child: Wrap(
+                                          alignment: WrapAlignment.center,
+                                          crossAxisAlignment:
+                                              WrapCrossAlignment.center,
+                                          // mainAxisAlignment:
+                                          //     MainAxisAlignment.spaceAround,
+                                          children: [
+                                            widget.user!['isClient'] == 'SI'
+                                                ? ElementosHome(
+                                                    enabled: true,
+                                                    size: size,
+                                                    image:
+                                                        'assets/imgs/document.png',
+                                                    title: 'Estado de Cuenta',
+                                                    label:
+                                                        'Verifica tu estado de cuenta',
+                                                    onTap: () {
+                                                      //                               NotificationHelper().showNotification(
+                                                      //   title: 'Título de la notificación',
+                                                      //   body: 'Cuerpo de la notificación',
+                                                      // );
+                              
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: ((context) =>
+                                                                  DataTableEstadoCuenta())));
+                                                    }
+                                                    // () => Navigator.pushNamed(
+                                                    //     context, 'SubmenuMascotas'),
+                                                    // onTap: () {
+                                                    //   Navigator.of(context).push(MaterialPageRoute(
+                                                    //       builder: (context) =>
+                                                    //           const SubmenuMascotas()));
+                                                    // },
+                                                    )
+                                                : Container(),
+                                            ElementosSOS(
+                                                enabled: true,
+                                                size: size,
+                                                image: 'assets/imgs/document.png',
+                                                title: 'Botón de Ayuda',
+                                                label: 'Presiona por 3 segundos',
+                                                onTap: () async {
+                                                  //**************//
+                              //  HomeController permissionProvider = Provider.of<HomeController>(context, listen: false);
+                              //             await permissionProvider.checkAndRequestLocationPermission();
+                              //             print(permissionProvider.hasLocationPermission);
+                              
+                              //             await permissionProvider.checkAndRequestLocationPermission();
+                              //             print('**** Permiso ****>  ${permissionProvider.hasLocationPermission}');
+                              //   permissionProvider.checkGpsStatus();
+                              //                    if (permissionProvider.hasLocationPermission==true) {
+                              //                       // permissionProvider.checkGpsStatus();
+                              
+                              //                                               if (permissionProvider.gpsStatus==true ) {
+                              //                                                  NotificatiosnService.showSnackBarSuccsses('El  GPS esta activado');
+                              
+                              //                    } else {
+                              //                      NotificatiosnService.showSnackBarDanger('Por favor active su GPS');
+                              //                    }
+                              //                    }
+                              //                    else{
+                              //                      Navigator.of(context).pushAndRemoveUntil(
+                              //               MaterialPageRoute(
+                              //                   builder: (context) => AccesoGPSPage(
+                              //                         // validaTurno: validaTurno,
+                              //                         // tipo: session.rol,
+                              //                         // user: session,
+                              //                         // ubicacionGPS: controllerHome.getCoords,
+                              //                       )),
+                              //               (Route<dynamic> route) => false);
+                              
+                                                  final _ctrlSocket =
+                                                      Provider.of<SocketModel>(
+                                                          context,
+                                                          listen: false);
+                                                  // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
+                                                  HomeController
+                                                      permissionProvider =
+                                                      Provider.of<HomeController>(
+                                                          context,
+                                                          listen: false);
+                                                  await permissionProvider
+                                                      .checkAndRequestPermissions();
+                                                  bool isGpsEnabled =
+                                                      await permissionProvider
+                                                          .checkGpsStatus();
+                                                  // print('LA INFO ES  ${permissionProvider.hasLocationPermission} ${isGpsEnabled}');
+                              
+                                                  if (permissionProvider
+                                                      .hasLocationPermission) {
+                                                    // NotificatiosnService.showSnackBarSuccsses('SIII TIENE PERMISO');
+                                                    if (isGpsEnabled) {
+                                                      //  NotificatiosnService.showSnackBarDanger(' GPS ACTIVADO ');
+                              
+                                                      await valueHome
+                                                          .getLocation();
+                                                      if (valueHome.getLocationGPS
+                                                          .isNotEmpty) {
+                                                        final _dataPanico = {
+                                                          "coordenadas": {
+                                                            "latitud": valueHome
+                                                                    .getLocationGPS[
+                                                                'latitud'],
+                                                            "longitud": valueHome
+                                                                    .getLocationGPS[
+                                                                'longitud']
+                                                          },
+                                                          "rucempresa":
+                                                              "ULTRA2022",
+                                                          "perId": valueHome
+                                                              .getUser!['id']
+                                                        };
+                              
+                                                        valueHome.activateAlarm();
+                              
+                                                        print(
+                                                            'esta la info para el bon de panico ------> $_dataPanico');
+                                                        _ctrlSocket.emitEvent(
+                                                            'client:boton-panico',
+                                                            _dataPanico);
+                                                      }
+                                                    } else {
+                                                      NotificatiosnService
+                                                          .showSnackBarDanger(
+                                                              ' Por favor active el GPS');
                                                     }
                                                   } else {
-                                                    NotificatiosnService
-                                                        .showSnackBarDanger(
-                                                            ' Por favor active el GPS');
+                                                    //  NotificatiosnService.showSnackBarDanger('NOOOOO TIENE PERMISO');
+                              
+                                                    //        Navigator.of(context).pushAndRemoveUntil(
+                                                    // MaterialPageRoute(
+                                                    //     builder: (context) => const AccesoGPSPage()),
+                                                    // (Route<dynamic> route) => false);
+                              
+                                                    showPermissionModal(
+                                                        context,
+                                                        size,
+                                                        'Para usar el botón de pánico en nuestra aplicación, es esencial conceder permisos de ubicación.');
                                                   }
-                                                } else {
-                                                  //  NotificatiosnService.showSnackBarDanger('NOOOOO TIENE PERMISO');
-                            
-                                                  //        Navigator.of(context).pushAndRemoveUntil(
-                                                  // MaterialPageRoute(
-                                                  //     builder: (context) => const AccesoGPSPage()),
-                                                  // (Route<dynamic> route) => false);
-                            
-                                                  showPermissionModal(
-                                                      context,
-                                                      size,
-                                                      'Para usar el botón de pánico en nuestra aplicación, es esencial conceder permisos de ubicación.');
+                                                  //**************/
+                              
+                                                  // // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
+                                                  // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
+                                                  //  final status = await Permission .location.request();
+                                                  //       if (status == PermissionStatus .granted) {
+                                                  //         //   // print('============== SI TIENE PERMISOS');
+                                                  //         await valueHome
+                                                  //             .getLocation();
+                                                  //         if (valueHome.getLocationGPS.isNotEmpty) {
+                              
+                                                  //     final _dataPanico = {
+                                                  //   "coordenadas": {
+                                                  //     "latitud":valueHome.getLocationGPS['latitud'],
+                                                  //     "longitud":valueHome.getLocationGPS['longitud']
+                                                  //   },
+                                                  //   "rucempresa": "ULTRA2022",
+                                                  //   "perId": valueHome.getUser!['id']
+                                                  // };
+                              
+                                                  // valueHome.activateAlarm();
+                              
+                                                  // print('esta la info para el bon de panico ------> $_dataPanico');
+                                                  // _ctrlSocket.emitEvent('client:boton-panico', _dataPanico);
+                              
+                                                  //         }
+                                                  //       } else {
+                                                  //         Navigator.pushNamed(
+                                                  //             context, 'gps');
+                                                  //       }
+                              
+                                                  //*******************//
+                                                  //   valueHome.checkGpsStatus();
+                              
+                                                  //   if (valueHome.gpsStatus==true ) {
+                                                  //   //   final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
+                                                  //   //            await valueHome
+                                                  //   //             .getLocation();
+                                                  //   //         if (valueHome.getLocationGPS.isNotEmpty) {
+                              
+                                                  //   //     final _dataPanico = {
+                                                  //   //   "coordenadas": {
+                                                  //   //     "latitud":valueHome.getLocationGPS['latitud'],
+                                                  //   //     "longitud":valueHome.getLocationGPS['longitud']
+                                                  //   //   },
+                                                  //   //   "rucempresa": "ULTRA2022",
+                                                  //   //   "perId": valueHome.getUser!['id']
+                                                  //   // };
+                              
+                                                  //   // valueHome.activateAlarm();
+                              
+                                                  //   // print('esta la info para el bon de panico ------> ${valueHome.gpsStatus}');
+                                                  //   // _ctrlSocket.emitEvent('client:boton-panico', _dataPanico);
+                              
+                                                  //   //         }
+                              
+                                                  //  valueHome.getCurrentLocation() ;
+                                                  //        if (valueHome.getLocationGPS.isNotEmpty) {
+                                                  //          final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
+                              
+                                                  //       final _dataPanico = {
+                                                  //     "coordenadas": {
+                                                  //       "latitud":valueHome.getLocationGPS['latitud'],
+                                                  //       "longitud":valueHome.getLocationGPS['longitud']
+                                                  //     },
+                                                  //     "rucempresa": "ULTRA2022",
+                                                  //     "perId": valueHome.getUser!['id']
+                                                  //   };
+                              
+                                                  //   valueHome.activateAlarm();
+                              
+                                                  //   print('esta la info para el bon de panico ------> ${valueHome.gpsStatus}');
+                                                  //   _ctrlSocket.emitEvent('client:boton-panico', _dataPanico);
+                              
+                                                  //           }
+                              
+                                                  //   } else {
+                                                  //       NotificatiosnService.showSnackBarDanger('Por favor active su GPS');
+                              
+                                                  //   }
+                              
+                                                  //*******************/
                                                 }
-                                                //**************/
-                            
-                                                // // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
-                                                // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
-                                                //  final status = await Permission .location.request();
-                                                //       if (status == PermissionStatus .granted) {
-                                                //         //   // print('============== SI TIENE PERMISOS');
-                                                //         await valueHome
-                                                //             .getLocation();
-                                                //         if (valueHome.getLocationGPS.isNotEmpty) {
-                            
-                                                //     final _dataPanico = {
-                                                //   "coordenadas": {
-                                                //     "latitud":valueHome.getLocationGPS['latitud'],
-                                                //     "longitud":valueHome.getLocationGPS['longitud']
-                                                //   },
-                                                //   "rucempresa": "ULTRA2022",
-                                                //   "perId": valueHome.getUser!['id']
-                                                // };
-                            
-                                                // valueHome.activateAlarm();
-                            
-                                                // print('esta la info para el bon de panico ------> $_dataPanico');
-                                                // _ctrlSocket.emitEvent('client:boton-panico', _dataPanico);
-                            
-                                                //         }
-                                                //       } else {
-                                                //         Navigator.pushNamed(
-                                                //             context, 'gps');
-                                                //       }
-                            
-                                                //*******************//
-                                                //   valueHome.checkGpsStatus();
-                            
-                                                //   if (valueHome.gpsStatus==true ) {
-                                                //   //   final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
-                                                //   //            await valueHome
-                                                //   //             .getLocation();
-                                                //   //         if (valueHome.getLocationGPS.isNotEmpty) {
-                            
-                                                //   //     final _dataPanico = {
-                                                //   //   "coordenadas": {
-                                                //   //     "latitud":valueHome.getLocationGPS['latitud'],
-                                                //   //     "longitud":valueHome.getLocationGPS['longitud']
-                                                //   //   },
-                                                //   //   "rucempresa": "ULTRA2022",
-                                                //   //   "perId": valueHome.getUser!['id']
-                                                //   // };
-                            
-                                                //   // valueHome.activateAlarm();
-                            
-                                                //   // print('esta la info para el bon de panico ------> ${valueHome.gpsStatus}');
-                                                //   // _ctrlSocket.emitEvent('client:boton-panico', _dataPanico);
-                            
-                                                //   //         }
-                            
-                                                //  valueHome.getCurrentLocation() ;
-                                                //        if (valueHome.getLocationGPS.isNotEmpty) {
-                                                //          final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
-                            
-                                                //       final _dataPanico = {
-                                                //     "coordenadas": {
-                                                //       "latitud":valueHome.getLocationGPS['latitud'],
-                                                //       "longitud":valueHome.getLocationGPS['longitud']
-                                                //     },
-                                                //     "rucempresa": "ULTRA2022",
-                                                //     "perId": valueHome.getUser!['id']
-                                                //   };
-                            
-                                                //   valueHome.activateAlarm();
-                            
-                                                //   print('esta la info para el bon de panico ------> ${valueHome.gpsStatus}');
-                                                //   _ctrlSocket.emitEvent('client:boton-panico', _dataPanico);
-                            
-                                                //           }
-                            
-                                                //   } else {
-                                                //       NotificatiosnService.showSnackBarDanger('Por favor active su GPS');
-                            
-                                                //   }
-                            
-                                                //*******************/
-                                              }
-                                              // () => Navigator.pushNamed(
-                                              //     context, 'SubmenuMascotas'),
-                                              // onTap: () {
-                                              //   Navigator.of(context).push(MaterialPageRoute(
-                                              //       builder: (context) =>
-                                              //           const SubmenuMascotas()));
-                                              // },
-                                              ),
-                                        ],
+                                                // () => Navigator.pushNamed(
+                                                //     context, 'SubmenuMascotas'),
+                                                // onTap: () {
+                                                //   Navigator.of(context).push(MaterialPageRoute(
+                                                //       builder: (context) =>
+                                                //           const SubmenuMascotas()));
+                                                // },
+                                                ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  widget.user!['isClient'] == 'SI'
-                                      ? Container(
-                                          width: size.wScreen(100.0),
-                                          height: size.wScreen(40.0),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: size.iScreen(1.0)),
-                            
-                                          // color: Colors.red,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width: size.wScreen(100.0),
-                                                child: Text(
-                                                  'Chat Comunitario',
-                                                  // textAlign: TextAlign.center,
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: size.iScreen(2.2),
-                                                    fontWeight: FontWeight.w700,
-                                                    color: octinaryColor,
+                                    widget.user!['isClient'] == 'SI'
+                                        ? Container(
+                                            width: size.wScreen(100.0),
+                                            height: size.wScreen(40.0),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: size.iScreen(1.0)),
+                              
+                                            // color: Colors.red,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  width: size.wScreen(100.0),
+                                                  child: Text(
+                                                    'Chat Comunitario',
+                                                    // textAlign: TextAlign.center,
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: size.iScreen(2.2),
+                                                      fontWeight: FontWeight.w700,
+                                                      color: octinaryColor,
+                                                    ),
                                                   ),
                                                 ),
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0)),
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal:
+                                                          size.iScreen(1.0),
+                                                      vertical:
+                                                          size.iScreen(1.0)),
+                                                  width: size.wScreen(100.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    children: [
+                                                      
+                                                     Container(
+                                                          //  color: Colors.blue,
+                                                          width: size.wScreen(70.0),
+                                                          child: Text(
+                                                            'Interactúa con tus vecinos e informa a tu comunidad temas relevantes.',
+                                                            // textAlign: TextAlign.center,
+                                                            style:
+                                                                GoogleFonts.poppins(
+                                                              fontSize:
+                                                                  size.iScreen(1.7),
+                                                              fontWeight:
+                                                                  FontWeight.w700,
+                                                              color: octinaryColor,
+                                                              letterSpacing: -0.28,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      
+                                                     
+                                                      GestureDetector(
+                                                        onTap: () async {
+                                                          final serviceSocket =
+                                                              context.read<
+                                                                  SocketModel>();
+                                                          final _ctrlChat =
+                                                              context.read<
+                                                                  ChatController>();
+                              
+                                                          // serviceSocket.emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
+                                                          serviceSocket.emitEvent(
+                                                              'client:lista-chats-grupos',
+                                                              {});
+                              
+                                                          // _chatCtrl.buscaGruposChat(context);
+                                                          //      final infoUser  = await Auth.instance.getSession();
+                                                          _ctrlChat
+                                                              .buscaGruposChat(
+                                                                  context);
+                              
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      ((context) =>
+                                                                          ListaGruposChat())));
+                                                              //             .then((value) {
+                                                              //               serviceSocket.emitEvent(
+                                                              // 'client:lista-chats-grupos',
+                                                              // {}
+                                                              
+                                                              // );
+                                                              //             });
+                                                        },
+                                                        child: 
+                                                        
+                                                        
+                                                        
+                                                        // Container(
+                                                        //   // color: Colors.yellow,
+                                                        //   width:
+                                                        //       size.wScreen(20.0),
+                                                        //   child: Image.asset(
+                                                        //     'assets/imgs/chat-bubble.png',
+                                                        //     // scale: 1.5,
+                                                        //     // fit: BoxFit.,
+                                                        //     // width: size.1Screen(5.0), // URL de la imagen
+                                                        //   ),
+                                                        // ),
+                                                         Consumer<SocketModel>(builder: (_, valueMsgNoRead, __) { 
+                                                                 return  valueMsgNoRead.getMsgNoLeidos>0? Badge(
+                                                         position:
+                                  const BadgePosition(top: -3.0, start: 45.0),
+                           
+                              badgeContent: Text(
+                                '${valueMsgNoRead.getMsgNoLeidos}',
+                                  style: GoogleFonts.poppins(
+                                  fontSize: size.iScreen(1.4),
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              badgeColor: tercearyColor,
+                                                        child:Container(
+                                                          // color: Colors.yellow,
+                                                          width:
+                                                              size.wScreen(20.0),
+                                                          child: Image.asset(
+                                                            'assets/imgs/chat-bubble.png',
+                                                            // scale: 1.5,
+                                                            // fit: BoxFit.,
+                                                            // width: size.1Screen(5.0), // URL de la imagen
+                                                          ),
+                                                        ),
+                                                      ):SizedBox(
+                width: size.wScreen(20.0),
+                child: Image.asset(
+                  'assets/imgs/chat-bubble.png',
+                ),
+              );
+                                                       },),
+          
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        : Container(),
+                                    Expanded(
+                                      child: Container(
+                                        width: size.wScreen(100.0),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: size.iScreen(1.0)),
+                              
+                                        // height: size.wScreen(40.0),
+                              
+                                        // color: Colors.red,
+                                        // color: Colors.red,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                                                  // Center(
+                                                                  //         child: Consumer<HomeController>(
+                                                                  //           builder: (context, permissionsProvider, child) {
+                                                                  //             return Column(
+                                                                  //               mainAxisAlignment: MainAxisAlignment.center,
+                                                                  //               children: <Widget>[
+                                                                  //                 Text('Estado del permiso de ubicación:'),
+                                                                  //                 // _buildPermissionStatus(permissionsProvider.locationPermissionStatus.),
+                                                                  //                 ElevatedButton(
+                                                                  //                   onPressed: () async {
+                                                                  //                     await permissionsProvider.checkLocationPermission();
+                                                                  //                   },
+                                                                  //                   child: Text('Verificar Permiso'),
+                                                                  //                 ),
+                                                                  //                 ElevatedButton(
+                                                                  //                   onPressed: () async {
+                                                                  //                     await permissionsProvider.requestLocationPermission();
+                                                                  //                   },
+                                                                  //                   child: Text('Solicitar Permiso'),
+                                                                  //                 ),
+                                                                  //               ],
+                                                                  //             );
+                                                                  //           },
+                                                                  //         ),
+                                                                  //       ),
+                                                                  
+                                            Container(
+                                              width: size.wScreen(100.0),
+                                              child: Text(
+                                                'Noticias para ti',
+                                                // textAlign: TextAlign.center,
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: size.iScreen(2.2),
+                                                  fontWeight: FontWeight.w700,
+                                                  color: octinaryColor,
+                                                ),
                                               ),
-                                              Container(
+                                            ),
+                                          
+                                            //***********************************************/
+                                                                  
+                                            SizedBox(
+                                              height: size.iScreen(1.5),
+                                            ),
+                                            //*****************************************/
+                                            Expanded(
+                                              child: Container(
                                                 decoration: BoxDecoration(
                                                     color: Colors.white,
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.0)),
+                                                        BorderRadius.circular(8.0)),
                                                 padding: EdgeInsets.symmetric(
-                                                    horizontal:
-                                                        size.iScreen(1.0),
-                                                    vertical:
-                                                        size.iScreen(1.0)),
+                                                    horizontal: size.iScreen(1.0),
+                                                    vertical: size.iScreen(1.0)),
+                                                    margin: EdgeInsets.only(
+                                                    bottom: size.iScreen(1.0),
+                                                   ),
                                                 width: size.wScreen(100.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    
-                                                   Container(
-                                                        //  color: Colors.blue,
-                                                        width: size.wScreen(70.0),
-                                                        child: Text(
-                                                          'Interactúa con tus vecinos e informa a tu comunidad temas relevantes.',
-                                                          // textAlign: TextAlign.center,
-                                                          style:
-                                                              GoogleFonts.poppins(
-                                                            fontSize:
-                                                                size.iScreen(1.7),
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            color: octinaryColor,
-                                                            letterSpacing: -0.28,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    
-                                                   
-                                                    GestureDetector(
-                                                      onTap: () async {
-                                                        final serviceSocket =
-                                                            context.read<
-                                                                SocketModel>();
-                                                        final _ctrlChat =
-                                                            context.read<
-                                                                ChatController>();
-                            
-                                                        // serviceSocket.emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
-                                                        serviceSocket.emitEvent(
-                                                            'client:lista-chats-grupos',
-                                                            {});
-                            
-                                                        // _chatCtrl.buscaGruposChat(context);
-                                                        //      final infoUser  = await Auth.instance.getSession();
-                                                        _ctrlChat
-                                                            .buscaGruposChat(
-                                                                context);
-                            
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    ((context) =>
-                                                                        ListaGruposChat())));
-                                                            //             .then((value) {
-                                                            //               serviceSocket.emitEvent(
-                                                            // 'client:lista-chats-grupos',
-                                                            // {}
-                                                            
-                                                            // );
-                                                            //             });
-                                                      },
-                                                      child: 
-                                                      
-                                                      
-                                                      
-                                                      // Container(
-                                                      //   // color: Colors.yellow,
-                                                      //   width:
-                                                      //       size.wScreen(20.0),
-                                                      //   child: Image.asset(
-                                                      //     'assets/imgs/chat-bubble.png',
-                                                      //     // scale: 1.5,
-                                                      //     // fit: BoxFit.,
-                                                      //     // width: size.1Screen(5.0), // URL de la imagen
-                                                      //   ),
-                                                      // ),
-                                                       Consumer<SocketModel>(builder: (_, valueMsgNoRead, __) { 
-                                                               return  valueMsgNoRead.getMsgNoLeidos>0? Badge(
-                                                       position:
-                                const BadgePosition(top: -3.0, start: 45.0),
-                         
-                            badgeContent: Text(
-                              '${valueMsgNoRead.getMsgNoLeidos}',
-                                style: GoogleFonts.poppins(
-                                fontSize: size.iScreen(1.4),
-                                fontWeight: FontWeight.normal,
-                                color: Colors.white,
-                              ),
-                            ),
-                            badgeColor: tercearyColor,
-                                                      child:Container(
-                                                        // color: Colors.yellow,
-                                                        width:
-                                                            size.wScreen(20.0),
-                                                        child: Image.asset(
-                                                          'assets/imgs/chat-bubble.png',
-                                                          // scale: 1.5,
-                                                          // fit: BoxFit.,
-                                                          // width: size.1Screen(5.0), // URL de la imagen
-                                                        ),
-                                                      ),
-                                                    ):SizedBox(
-              width: size.wScreen(20.0),
-              child: Image.asset(
-                'assets/imgs/chat-bubble.png',
-              ),
-            );
-                                                     },),
-
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      : Container(),
-                                  Expanded(
-                                    child: Container(
-                                      width: size.wScreen(100.0),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: size.iScreen(1.0)),
-                            
-                                      // height: size.wScreen(40.0),
-                            
-                                      // color: Colors.red,
-                                      // color: Colors.red,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                                                // Center(
-                                                                //         child: Consumer<HomeController>(
-                                                                //           builder: (context, permissionsProvider, child) {
-                                                                //             return Column(
-                                                                //               mainAxisAlignment: MainAxisAlignment.center,
-                                                                //               children: <Widget>[
-                                                                //                 Text('Estado del permiso de ubicación:'),
-                                                                //                 // _buildPermissionStatus(permissionsProvider.locationPermissionStatus.),
-                                                                //                 ElevatedButton(
-                                                                //                   onPressed: () async {
-                                                                //                     await permissionsProvider.checkLocationPermission();
-                                                                //                   },
-                                                                //                   child: Text('Verificar Permiso'),
-                                                                //                 ),
-                                                                //                 ElevatedButton(
-                                                                //                   onPressed: () async {
-                                                                //                     await permissionsProvider.requestLocationPermission();
-                                                                //                   },
-                                                                //                   child: Text('Solicitar Permiso'),
-                                                                //                 ),
-                                                                //               ],
-                                                                //             );
-                                                                //           },
-                                                                //         ),
-                                                                //       ),
-                                                                
-                                          Container(
-                                            width: size.wScreen(100.0),
-                                            child: Text(
-                                              'Noticias para ti',
-                                              // textAlign: TextAlign.center,
-                                              style: GoogleFonts.poppins(
-                                                fontSize: size.iScreen(2.2),
-                                                fontWeight: FontWeight.w700,
-                                                color: octinaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                        
-                                          //***********************************************/
-                                                                
-                                          SizedBox(
-                                            height: size.iScreen(1.5),
-                                          ),
-                                          //*****************************************/
-                                          Expanded(
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(8.0)),
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: size.iScreen(1.0),
-                                                  vertical: size.iScreen(1.0)),
-                                                  margin: EdgeInsets.only(
-                                                  bottom: size.iScreen(1.0),
-                                                 ),
-                                              width: size.wScreen(100.0),
-                                              child: Container(
-                                                // color: Colors.red,
-                                                // width: size.wScreen(95.0),
-                                                // height: size.iScreen(2),
-                                                child: Consumer<HomeController>(
-                                                  builder:
-                                                      (_, valueNoticias, __) {
-                                                    return valueNoticias
-                                                            .getListaTodasLasNoticias
-                                                            .isNotEmpty
-                                                        ? CarouselSlider(
-                                                            options:
-                                                                CarouselOptions(
-                                                              // height: 200.0,
-                                                              autoPlay: true,
-                                                              aspectRatio: 16 / 9,
-                                                              enlargeCenterPage:
-                                                                  true,
-                                                            ),
-                                                            items: valueNoticias
-                                                                .getListaTodasLasNoticias
-                                                                .map((info) {
-                                                              return Builder(builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                return Container(
-                                                                    width: size
-                                                                        .wScreen(
-                                                                            100),
-                                                                    margin: EdgeInsets
-                                                                        .symmetric(
-                                                                            horizontal:
-                                                                                1.0),
-                                                                    padding: EdgeInsets.symmetric(
-                                                                        horizontal:
-                                                                            size.iScreen(
-                                                                                0.0)),
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                            // color: Colors.yellow.shade50,
-                                                                            ),
-                                                                    child: info['noti_tipo_servicio'] ==
-                                                                            'HOGAR'
-                                                                        ? 
-                                                                        Container(
-                                                                            padding: EdgeInsets.symmetric(
-                                                                                horizontal: size.iScreen(0.0),
-                                                                                vertical: size.iScreen(0.0)),
-                                                                            decoration:
-                                                                                BoxDecoration(
-                                                                              borderRadius:
-                                                                                  BorderRadius.circular(8.0),
-                                                                              color:
-                                                                                  Colors.grey.shade100,
-                                                                            ),
-                                                                            child:
-                                                                            //     Column(
-                                                                            //   children: [
-                                                                            //     // Text(
-                                                                            //     //   '${info['noti_titulo']}',
-                                                                            //     //   style: GoogleFonts.poppins(
-                                                                            //     //     fontSize: size.iScreen(2.0),
-                                                                            //     //     fontWeight: FontWeight.w700,
-                                                                            //     //     color: octinaryColor,
-                                                                            //     //   ),
-                                                                            //     // ),
-                                                                  
-                                                                            //     Container(
-                                                                            //       width: size.iScreen(100),
-                                                                            //       height: size.hScreen(22),
-                                                                            //       child: CachedNetworkImage(
-                                                                            //         imageUrl: info['noti_foto'],
-                                                                            //         fit: BoxFit.fill,
-                                                                            //         placeholder: (context, url) => const CupertinoActivityIndicator(),
-                                                                            //         // Image.asset(
-                                                                            //         //     'assets/imgs/loader.gif'),
-                                                                  
-                                                                            //         errorWidget: (context, url, error) => const Icon(Icons.error),
-                                                                            //       ),
-                                                                            //     ),
-                                                                            //     //  Text(
-                                                                            //     //   '${info['noti_descripcion']}',
-                                                                            //     //   textAlign: TextAlign.center,
-                                                                            //     //   style: GoogleFonts.poppins(
-                                                                            //     //     fontSize: size.iScreen(1.7),
-                                                                            //     //     fontWeight: FontWeight.normal,
-                                                                            //     //     color: octinaryColor,
-                                                                            //     //   ),
-                                                                            //     // ),
-                                                                            //   ],
-                                                                            // ),
-                                                                             InkWell(
-                                                                              onTap: (){
-                                                                                 Navigator.push(context,
-                                                          MaterialPageRoute(builder: ((context) =>  InfoPublicidad(infoPublicidad:info))));
-                                                                              },
-                                                                               child: ClipRRect(
-                                                                                borderRadius: BorderRadius.circular(8.0),
-                                                                                 child: Container(
-                                                                                      width: size.iScreen(100),
-                                                                                      height: size.hScreen(22),
-                                                                                      child: CachedNetworkImage(
-                                                                                        imageUrl: info['noti_foto'],
-                                                                                        fit: BoxFit.fill,
-                                                                                        placeholder: (context, url) => const CupertinoActivityIndicator(),
-                                                                                        // Image.asset(
-                                                                                        //     'assets/imgs/loader.gif'),
-                                                                                                                                                            
-                                                                                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                                                child: Container(
+                                                  // color: Colors.red,
+                                                  // width: size.wScreen(95.0),
+                                                  // height: size.iScreen(2),
+                                                  child: Consumer<HomeController>(
+                                                    builder:
+                                                        (_, valueNoticias, __) {
+                                                      return valueNoticias
+                                                              .getListaTodasLasNoticias
+                                                              .isNotEmpty
+                                                          ? CarouselSlider(
+                                                              options:
+                                                                  CarouselOptions(
+                                                                // height: 200.0,
+                                                                autoPlay: true,
+                                                                aspectRatio: 16 / 9,
+                                                                enlargeCenterPage:
+                                                                    true,
+                                                              ),
+                                                              items: valueNoticias
+                                                                  .getListaTodasLasNoticias
+                                                                  .map((info) {
+                                                                return Builder(builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return Container(
+                                                                      width: size
+                                                                          .wScreen(
+                                                                              100),
+                                                                      margin: EdgeInsets
+                                                                          .symmetric(
+                                                                              horizontal:
+                                                                                  1.0),
+                                                                      padding: EdgeInsets.symmetric(
+                                                                          horizontal:
+                                                                              size.iScreen(
+                                                                                  0.0)),
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                              // color: Colors.yellow.shade50,
+                                                                              ),
+                                                                      child: info['noti_tipo_servicio'] ==
+                                                                              'HOGAR'
+                                                                          ? 
+                                                                          Container(
+                                                                              padding: EdgeInsets.symmetric(
+                                                                                  horizontal: size.iScreen(0.0),
+                                                                                  vertical: size.iScreen(0.0)),
+                                                                              decoration:
+                                                                                  BoxDecoration(
+                                                                                borderRadius:
+                                                                                    BorderRadius.circular(8.0),
+                                                                                color:
+                                                                                    Colors.grey.shade100,
+                                                                              ),
+                                                                              child:
+                                                                              //     Column(
+                                                                              //   children: [
+                                                                              //     // Text(
+                                                                              //     //   '${info['noti_titulo']}',
+                                                                              //     //   style: GoogleFonts.poppins(
+                                                                              //     //     fontSize: size.iScreen(2.0),
+                                                                              //     //     fontWeight: FontWeight.w700,
+                                                                              //     //     color: octinaryColor,
+                                                                              //     //   ),
+                                                                              //     // ),
+                                                                    
+                                                                              //     Container(
+                                                                              //       width: size.iScreen(100),
+                                                                              //       height: size.hScreen(22),
+                                                                              //       child: CachedNetworkImage(
+                                                                              //         imageUrl: info['noti_foto'],
+                                                                              //         fit: BoxFit.fill,
+                                                                              //         placeholder: (context, url) => const CupertinoActivityIndicator(),
+                                                                              //         // Image.asset(
+                                                                              //         //     'assets/imgs/loader.gif'),
+                                                                    
+                                                                              //         errorWidget: (context, url, error) => const Icon(Icons.error),
+                                                                              //       ),
+                                                                              //     ),
+                                                                              //     //  Text(
+                                                                              //     //   '${info['noti_descripcion']}',
+                                                                              //     //   textAlign: TextAlign.center,
+                                                                              //     //   style: GoogleFonts.poppins(
+                                                                              //     //     fontSize: size.iScreen(1.7),
+                                                                              //     //     fontWeight: FontWeight.normal,
+                                                                              //     //     color: octinaryColor,
+                                                                              //     //   ),
+                                                                              //     // ),
+                                                                              //   ],
+                                                                              // ),
+                                                                               InkWell(
+                                                                                onTap: (){
+                                                                                   Navigator.push(context,
+                                                            MaterialPageRoute(builder: ((context) =>  InfoPublicidad(infoPublicidad:info))));
+                                                                                },
+                                                                                 child: ClipRRect(
+                                                                                  borderRadius: BorderRadius.circular(8.0),
+                                                                                   child: Container(
+                                                                                        width: size.iScreen(100),
+                                                                                        height: size.hScreen(22),
+                                                                                        child: CachedNetworkImage(
+                                                                                          imageUrl: info['noti_foto'],
+                                                                                          fit: BoxFit.fill,
+                                                                                          placeholder: (context, url) => const CupertinoActivityIndicator(),
+                                                                                          // Image.asset(
+                                                                                          //     'assets/imgs/loader.gif'),
+                                                                                                                                                              
+                                                                                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                                                                                        ),
                                                                                       ),
-                                                                                    ),
+                                                                                 ),
                                                                                ),
-                                                                             ),
-                                                                          )
-                                                                        : CachedNetworkImage(
-                                                                            imageUrl:
-                                                                                info['url'],
-                                                                            fit: BoxFit
-                                                                                .cover,
-                                                                            placeholder: (context, url) =>
-                                                                                const CupertinoActivityIndicator(),
-                                                                            // Image.asset(
-                                                                            //     'assets/imgs/loader.gif'),
-                                                                  
-                                                                            errorWidget: (context, url, error) =>
-                                                                                const Icon(Icons.error),
-                                                                          ));
-                                                              });
-                                                            }).toList(),
-                                                          )
-                                                        : NoData(
-                                                            label:
-                                                                'No hay noticias nuevas');
-                                                  },
+                                                                            )
+                                                                          : CachedNetworkImage(
+                                                                              imageUrl:
+                                                                                  info['url'],
+                                                                              fit: BoxFit
+                                                                                  .cover,
+                                                                              placeholder: (context, url) =>
+                                                                                  const CupertinoActivityIndicator(),
+                                                                              // Image.asset(
+                                                                              //     'assets/imgs/loader.gif'),
+                                                                    
+                                                                              errorWidget: (context, url, error) =>
+                                                                                  const Icon(Icons.error),
+                                                                            ));
+                                                                });
+                                                              }).toList(),
+                                                            )
+                                                          : NoData(
+                                                              label:
+                                                                  'No hay noticias nuevas');
+                                                    },
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        )),
-                      ],
-                    )
-                  : const NoData(label: 'No tiene conexión...'),
+                                  ],
+                                ),
+                              );
+                            },
+                          )),
+                        ],
+                      )
+                    : const NoData(label: 'No tiene conexión...'),
+              ),
             ),
           ),
         );

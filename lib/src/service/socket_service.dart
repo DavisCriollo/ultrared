@@ -30,7 +30,7 @@ _listaDeMensajeChat.insert(0,_msg);
 //   print('Los MENSAJES DEL SERVIDOR   ------->>>>   : ${item['message_id']}');
 // }
  _listaDeMensajeChat.sort((a, b) => b["message_id"].compareTo(a["message_id"]));
-print('Los MENSAJES DEL SERVIDOR   ------->>>>   : $_listaDeMensajeChat');
+// print('Los MENSAJES DEL SERVIDOR   ------->>>>   : $_listaDeMensajeChat');
 
 
 notifyListeners();
@@ -169,7 +169,7 @@ int totalUnreadMessages = 0;
   void deleteListChatSocket(){
  _listaDeMensajeChat.clear();
  notifyListeners();
-  print('ELIMINADO Chat####################>:${deleteListChatSocket}');
+  // print('ELIMINADO Chat####################>:${deleteListChatSocket}');
 
   }
 

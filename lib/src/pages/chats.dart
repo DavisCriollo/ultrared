@@ -348,6 +348,13 @@ Navigator.of(context).pop();
                   ),
                   InkWell(
                     onTap: () {
+
+
+                                 final _ctrlSocket =context.read<SocketModel>();
+                  _ctrlSocket.emitEvent('client:lista-usuarios', { "chat_id" : _ctrlChat.getInfoChat['grupo']['chat_id'] });
+
+
+
                       Navigator.push(
                                   context,
                                   MaterialPageRoute(
