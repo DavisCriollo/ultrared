@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
@@ -19,6 +21,28 @@ class SocketModel with ChangeNotifier {
     Map<String,dynamic>  get getListaNotificaciones => _listaNotificaciones;
   List<Map<String,dynamic>> _listaDeMensajeChat = [];
     List<Map<String,dynamic>>  get getListaDeMensajeChat => _listaDeMensajeChat;
+
+
+
+  Map<String, dynamic>? _user = {};
+  Map<String, dynamic>? get getUser => _user;
+  void setUserApp(Map<String, dynamic>? _data) {
+    _user = {};
+    _user = _data;
+     print('EL USER SOCKET ------------- >>>   $_user');
+    notifyListeners();
+  }
+
+bool _isEnChat=false;
+bool get getIsEnChat => _isEnChat;
+ void setIsEnChat(bool _data) {
+  _isEnChat=false;
+  _isEnChat=_data;
+    
+     print('ESTA EN EL CHAT ------------- >>>   $_isEnChat');
+    notifyListeners();
+  }
+
  void setListaDeMensajesChat ( Map<String,dynamic> _msg){
 //  _listaDeMensajeChat.reversed;
 _listaDeMensajeChat.insert(0,_msg);
@@ -50,9 +74,18 @@ void setMsgNoLeidos(int _msgs){
   Map<String, dynamic> _mensajeChat = {};
   Map<String, dynamic> get getMensajeChat => _mensajeChat;
 
+
+
+// Crear el mapa del query
+// Map<String, dynamic> queryParameters = {
+//   'rucempresa': ruc,
+//   'x-auth-token': token,
+// };
+
+
   // Método para conectar Socket.io
   void connectToSocket(String token, String ruc) {
-    _socket = IO.io('https://testconta.neitor.com', <String, dynamic>{
+    _socket = IO.io('https://contabackend.neitor.com', <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': true,
       'query': {
@@ -111,8 +144,46 @@ int totalUnreadMessages = 0;
 
     //ESCUCHA LOS MENSAJES CHAT
     _socket.on('server:send-mensaje', (data) {
-      print('MENSAJE CHAT: $data');
+      
+      print('MENSAJE CHAT DDDD: $data');
+
+
+//********VALIDAR ***********/
+
+
+// si estoy dentro del chat ejecutar 
+
+  // _crtlSocket.emitEvent('client:read-mensaje',
+  //                                 {
+                                                                  
+  //                                     "rucempresa": "ULTRA2022", // login
+  //                                     "rol": _ctrlHome.getUser!['rol'], // login
+  //                                     "chat_id":  // propiedad chat_id del mensaje
+  //                                     "person_id": _ctrlHome.getUser!['id'], // login
+  //                                     "last_read_message_id":  // propiedad message_id del mensaje
+
+  //                                 });
+
+
+
+
+
       // _mensajeChat = {};
+    // print('MENSAJE CHAT crtlHome.getUser: ${_crtlHome.getUser}');
+  // print('el usuario qdel dispositivo ------------------> : ${getUserApp['id']}');
+  
+ Map<dynamic, dynamic> _info ={};
+ print('ESTOO ES ESTA : $_info');
+
+     _info ={
+"rucempresa": "ULTRA2022", // login
+   "id_user":getUser!['id'],
+      };
+print('ESTOO ES : $_info');
+
+ _socket.emit('client:totales-actualizados',_info);
+
+
       setListaDeMensajesChat(data);
 
 
@@ -122,15 +193,41 @@ int totalUnreadMessages = 0;
       // _crtlChat.setChatSocket(data);
       notifyListeners();
       // setMensajeDesdeServidor(data); // Actualizar el mensaje en el modelo
-    });
-    //ESCUCHA LOS MENSAJES CHAT
-    // ESCUCHAS EXTERNOS
-    // List<VoidCallback> _listeners = [];
+    } 
+    );
 
-    // // Método para agregar oyentes externos
-    // void addListener(VoidCallback listener) {
-    //   _listeners.add(listener);
-    // }
+
+_socket.on('server:totales-actualizados', (data) {
+     
+        
+      //      print('el usuario del MOVIL ------------------> : ${getUserApp['id']}');
+      // print('SE escucha este mens =========> : ${data['refresh_groups']}');
+//  _listaGruposChat = [];
+  _listaGruposChat = data['refresh_groups'];
+
+ setMsgNoLeidos(data['unread_messages']);
+
+
+      notifyListeners();
+    });
+
+   
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
   }
 
   // Método para desconectar Socket.io
@@ -153,18 +250,7 @@ int totalUnreadMessages = 0;
   List _listaUsuariosChat = [];
   List get getListaUsuariosChat => _listaUsuariosChat;
 
-  // void setMensajeDesdeSerUvidor(List _data) {
-  //   if (_data.contains('chat_type')) {
-  //     _listaGruposChat = [];
-  //     _listaGruposChat = _data;
-  //     notifyListeners();
-  //   } else {
-  //     _listaUsuariosChat = [];
-
-  //     _listaUsuariosChat = _data;
-  //     notifyListeners();
-  //   }
-  // }
+ 
 
   void deleteListChatSocket(){
  _listaDeMensajeChat.clear();

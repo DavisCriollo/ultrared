@@ -1061,7 +1061,9 @@ controllerHome.setUserApp(session);
                                                               MaterialPageRoute(
                                                                   builder:
                                                                       ((context) =>
-                                                                          ListaGruposChat())));
+                                                                          ListaGruposChat(
+                                                                            users: widget.user!,
+                                                                          ))));
                                                               //             .then((value) {
                                                               //               serviceSocket.emitEvent(
                                                               // 'client:lista-chats-grupos',

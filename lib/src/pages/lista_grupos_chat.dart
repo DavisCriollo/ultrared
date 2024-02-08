@@ -17,7 +17,10 @@ import 'package:ultrared/src/widgets/botonBase.dart';
 import 'package:ultrared/src/widgets/no_data.dart';
 
 class ListaGruposChat extends StatefulWidget {
-  const ListaGruposChat({Key? key}) : super(key: key);
+final Map<String,dynamic> users ;
+
+  
+   const ListaGruposChat({Key? key, required this.users}) : super(key: key);
 
   @override
   State<ListaGruposChat> createState() => _ListaGruposChatState();
@@ -198,7 +201,7 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                       //           ))));
                                   
                                 //-----------------------------NUEVA FORMA DEL CHAT----------------------------------// 
-                                // final _crtlSocket = context.read<SocketModel>();
+                                final _crtlSocket = context.read<SocketModel>();
                                       final _crtlHome = context.read<HomeController>();
                                       final _crtl = context.read<ChatController>();
                    
@@ -214,12 +217,13 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
    _crtl.buscaAllTodoLosChats(context,
                         '', false, _grupo['chat_id'],valueGrupos);
 
-
+_crtlSocket.setIsEnChat(true);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: ((context) => Chats(
-                                  // infoChat: _info,
+                              user: widget.users,
+                                  // infoChat: _info,US
                                 )))).then((value) {
                                   
 
@@ -230,7 +234,12 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
 
 
  final _ctrlChat =context.read<ChatController>();
-    //  final _ctrlSocket =context.read<SocketModel>();
+     final _ctrlSocket =context.read<SocketModel>();
+
+_ctrlSocket.setIsEnChat(false);
+_ctrlChat.setPressed(false);
+_ctrlChat.setDescargaOk(false);
+
     _ctrlChat.setPage(0);
     _ctrlChat.setCantidad(25);
   // _ctrlChat.deleteListChat();

@@ -21,8 +21,8 @@ import 'package:ultrared/src/widgets/message.dart';
 import 'package:ultrared/src/widgets/modal_permisos.dart';
 
 class Chats extends StatefulWidget {
-    // final Map<String,dynamic> infoChat;
-  const Chats({Key? key}) : super(key: key);
+    final Map<String,dynamic>? user;
+  const Chats({Key? key, this.user}) : super(key: key);
 
   @override
   State<Chats> createState() => _ChatsState();
@@ -913,12 +913,15 @@ final _data={
 
 
 // print('se imprima data para socket $_data');
-  _ctrlSocket.emitEvent('client:send-mensaje', _data);
-    _ctrlSocket.emitEvent(
-                                                            'client:lista-chats-grupos',
-                                                            {});
 
-  valueChat.addItemsChatPaginacion(_ctrlSocket.getMensajeChat);
+_ctrlSocket.setUserApp(widget.user);
+
+  _ctrlSocket.emitEvent('client:send-mensaje', _data);
+  //   _ctrlSocket.emitEvent(
+  //                                                           'client:lista-chats-grupos',
+  //                                                           {});
+
+  // valueChat.addItemsChatPaginacion(_ctrlSocket.getMensajeChat);
 
 
   // valueChat.setInfoBusquedaTodoLosChats([],_ctrlSocket);
@@ -1009,9 +1012,10 @@ final _data={
 
 
 // print('se imprima data para socket $_data');
+_ctrlSocket.setUserApp(widget.user);
   _ctrlSocket.emitEvent('client:send-mensaje', _data);
 
-  _ctrl.addItemsChatPaginacion(_ctrlSocket.getMensajeChat);
+  // _ctrl.addItemsChatPaginacion(_ctrlSocket.getMensajeChat);
 
 
    //****************************************//
@@ -1112,11 +1116,11 @@ final _data={
 };
 
 
-
+_ctrlSocket.setUserApp(widget.user);
 // print('se imprima data para socket $_data');
   _ctrlSocket.emitEvent('client:send-mensaje', _data);
 
-  _ctrl.addItemsChatPaginacion(_ctrlSocket.getMensajeChat);
+  // _ctrl.addItemsChatPaginacion(_ctrlSocket.getMensajeChat);
 
 
    //****************************************//

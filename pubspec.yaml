@@ -90,7 +90,7 @@ dependencies:
   flutter_map: 
   flutter_pdfview: ^1.0.1
   syncfusion_flutter_pdfviewer:
-  fluttertoast: ^8.0.8 
+  fluttertoast: ^8.2.4
   dio: ^5.4.0
   upgrader: ^4.11.1
 # dependency_overrides:
