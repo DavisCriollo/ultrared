@@ -223,7 +223,7 @@ _myChat(BuildContext context,
                       bottom: 0,
                       right: 0,
                       child: Text(
-                        '$_hora',
+                        '$_hora - ${messaje['message_id']}',
                         style: GoogleFonts.poppins(
                           fontSize: size.iScreen(1.2),
                           fontWeight: FontWeight.w500,
@@ -684,7 +684,7 @@ _noChat(BuildContext context,
                       bottom: 0,
                       right: 0,
                       child: Text(
-                        '$_hora',
+                      '$_hora - ${messaje['message_id']}',
                         style: GoogleFonts.poppins(
                           fontSize: size.iScreen(1.2),
                           fontWeight: FontWeight.w500,

@@ -150,12 +150,13 @@ controllerHome.setUserApp(session);
          
         }
          else {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (context) => SerClientePage(
+          await Auth.instance.deleteSesion(context);
+          // Navigator.of(context).pushAndRemoveUntil(
+          //     MaterialPageRoute(
+          //         builder: (context) => SerClientePage(
                       
-                      )),
-              (Route<dynamic> route) => false);
+          //             )),
+          //     (Route<dynamic> route) => false);
         
         }
       // final status = await Permission.location.request();
@@ -254,15 +255,15 @@ controllerHome.setUserApp(session);
     //       ModalRoute.withName('/');
      //*****************************************//
     } 
-    else {
-      // Navigator.of(context).pushAndRemoveUntil(
+    else {     // Navigator.of(context).pushAndRemoveUntil(
       //     MaterialPageRoute(builder: (context) => const SplashPage()),
       //     (Route<dynamic> route) => false);
 
+ await Auth.instance.deleteSesion(context);
 
- Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const SerClientePage()),
-          (Route<dynamic> route) => false);
+//  Navigator.of(context).pushAndRemoveUntil(
+//           MaterialPageRoute(builder: (context) => const SerClientePage()),
+//           (Route<dynamic> route) => false);
 
     }
     

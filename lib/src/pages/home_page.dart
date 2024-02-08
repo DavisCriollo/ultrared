@@ -156,6 +156,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
  final controllerSocket = context.read<SocketModel>();
     final controllerHome = context.read<HomeController>();
     final Map<String, dynamic>? session = await Auth.instance.getSession();
+    // controllerSocket.emitEvent('client:lista-chats-grupos',{});
    
     if (session != null) {
 
@@ -163,9 +164,7 @@ controllerHome.setUserApp(session);
 
 
 
- controllerSocket.emitEvent(
-                                                            'client:lista-chats-grupos',
-                                                            {});
+//  controllerSocket.emitEvent('client:lista-chats-grupos',{});
                             
                                                         // _chatCtrl.buscaGruposChat(context);
                                                         //      final infoUser  = await Auth.instance.getSession();
@@ -195,12 +194,7 @@ controllerHome.setUserApp(session);
          
         }
          else {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (context) => SerClientePage(
-                      
-                      )),
-              (Route<dynamic> route) => false);
+           await Auth.instance.deleteSesion(context);
         
         }
       // final status = await Permission.location.request();
@@ -317,7 +311,8 @@ controllerHome.setUserApp(session);
     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
 
     var ctrlHome = context.read<HomeController>();
-
+     var ctrlSocket = context.read<SocketModel>();
+ ctrlSocket.emitEvent('client:lista-chats-grupos',{});
     // Obtén el token de registro de Firebase
     String? firebaseToken = await FirebaseMessaging.instance.getToken();
     // print("Firebase ok Token: $firebaseToken");
@@ -524,7 +519,7 @@ controllerHome.setUserApp(session);
     ctrlHome.setUserApp(widget.user);
     // print('${user!['nombre']}');
 
-    // final  socketManager = context.read<SocketService>();
+ 
     // if (socketManager.status == SocketStatus.desconectado) {
     //   socketManager.conectar();
     // }
@@ -1052,9 +1047,9 @@ controllerHome.setUserApp(session);
                               
                                                           // _chatCtrl.buscaGruposChat(context);
                                                           //      final infoUser  = await Auth.instance.getSession();
-                                                          _ctrlChat
-                                                              .buscaGruposChat(
-                                                                  context);
+                                                          // _ctrlChat
+                                                          //     .buscaGruposChat(
+                                                          //         context);
                               
                                                           Navigator.push(
                                                               context,

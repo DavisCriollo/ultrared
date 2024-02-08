@@ -501,12 +501,41 @@ class _LoginPageState extends State<LoginPage> {
 //  NotificatiosnService.showSnackBarDanger( response['msg']);
 
 
-if (response != null  && !response.containsKey('msg' ) ) {
+// if (response != null  && !response.containsKey('msg' ) ) {
+
+// await Auth.instance.saveSession(response);  
+//    final infoUser  = await Auth.instance.getSession();
+         
+//             var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
+//               _ctrlSocket.connectToSocket("${infoUser!['token']}", "${infoUser!['rucempresa']}");
+//                  context.read<HomeController>().buscarNoticias(context);
+//                  context.read<HomeController>().buscarNotificaciones(context);
+        
+//                //------------------/
+
+//               Navigator.pushReplacement(
+//                   context,
+//                   MaterialPageRoute<void>(
+//                       builder: (BuildContext context) =>  HomePage(
+//                         user: infoUser,
+                     
+//                       )));
+
+
+//     } 
+    
+//      if (response != null  && response.containsKey('msg')) {
+//        NotificatiosnService.showSnackBarDanger( response['msg']);
+    
+//     }
+
+if (response != null  ) {
 
 await Auth.instance.saveSession(response);  
    final infoUser  = await Auth.instance.getSession();
          
             var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
+            //  _ctrlSocket.disconnectSocket();
               _ctrlSocket.connectToSocket("${infoUser!['token']}", "${infoUser!['rucempresa']}");
                  context.read<HomeController>().buscarNoticias(context);
                  context.read<HomeController>().buscarNotificaciones(context);
@@ -528,43 +557,7 @@ await Auth.instance.saveSession(response);
        NotificatiosnService.showSnackBarDanger( response['msg']);
     
     }
-    //  else {
-    //       // print('============== NOOOO TIENE PERMISOS');
-    //       Navigator.pushNamed(context, 'gps');
-    //     }
-
-        //     if (response != null) {
-        //     //     final infoUser  = await Auth.instance.getSession();
-        //     // //     final _ctrlInitProvider =context.read<InitProvider>();
-        //     // // var _ctrlAuth = Provider.of<AuthProvider>(context, listen: false);
-        //     // var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
-        //     //   _ctrlSocket.connectToSocket("${infoUser!['token']}", "${infoUser!['rucempresa']}");
-        //     //      context.read<HomeController>().buscarNoticias(context);
-        //     //      context.read<HomeController>().buscarNotificaciones(context);
-        
-        //     //    //------------------/
-
-        //     //   Navigator.pushReplacement(
-        //     //       context,
-        //     //       MaterialPageRoute<void>(
-        //     //           builder: (BuildContext context) => const HomePage(
-                     
-        //     //           )));
-
-        //     // }
-        //     // else{
-        //     //   NotificatiosnService.showSnackBarError('Error de conexión con el servidor');
-        //     // }
-
-        // // if (status == PermissionStatus.granted) {
-        // //   await controllerHome.getCurrentPosition();
-        // //   if (controllerHome.getCoords != '') {
-           
-        // //   }
-        // } else {
-        //   // print('============== NOOOO TIENE PERMISOS');
-        //   Navigator.pushNamed(context, 'gps');
-        // }
+   
       }
     }
   

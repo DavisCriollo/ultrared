@@ -161,10 +161,10 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                                   letterSpacing: -0.40,
                                 )),
                             subtitle: Text(
-                             _grupo['active_persons']==1? 'Disponible':'No Disponible',style: GoogleFonts.poppins(
+                             _grupo['active_persons']>0? 'Disponible':'No Disponible',style: GoogleFonts.poppins(
                                   fontSize: size.iScreen(1.4),
                                   fontWeight: FontWeight.normal,
-                                  color: _grupo['active_persons']==1? Colors.green:Colors.grey,
+                                  color: _grupo['active_persons']>0? Colors.green:Colors.grey,
                                   letterSpacing: -0.40,
                                 )
                             ),
@@ -212,10 +212,9 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                       "idUsuario": _crtlHome.getUser,
                       // tomar del grupo del chat
                                       };
-
+// _crtlSocket.setMsgNoLeidos(0);
  _crtl.setInfoChat(_info);
-   _crtl.buscaAllTodoLosChats(context,
-                        '', false, _grupo['chat_id'],valueGrupos);
+   _crtl.buscaAllTodoLosChats(context,'', false, _grupo['chat_id'],valueGrupos);
 
 _crtlSocket.setIsEnChat(true);
                       Navigator.push(
@@ -236,6 +235,7 @@ _crtlSocket.setIsEnChat(true);
  final _ctrlChat =context.read<ChatController>();
      final _ctrlSocket =context.read<SocketModel>();
 
+_ctrlSocket.setIsEnChat(false);
 _ctrlSocket.setIsEnChat(false);
 _ctrlChat.setPressed(false);
 _ctrlChat.setDescargaOk(false);

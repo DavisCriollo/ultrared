@@ -12,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
+import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/acercaDe.dart';
 import 'package:ultrared/src/pages/actualiza_clave.dart';
@@ -358,7 +359,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
                    
                   var ctrlHome = context.read<HomeController>();  
                     var ctrlSocket = context.read<SocketModel>();  
-                  
+                    var ctrlChat = context.read<ChatController>();  
+
                ProgressDialog.show(context);
               final response = await ctrlHome.cierreSesionUsuario(context);
               ProgressDialog.dissmiss(context);
@@ -370,7 +372,10 @@ class _DrawerMenuState extends State<DrawerMenu> {
              ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
              await FirebaseService.deleteFirebaseInstance();
              await Auth.instance.deleteTokenFireBase();
-            //  ctrlSocket.disconnectSocket();
+             ctrlSocket.disconnectSocket();
+            // ctrlSocket.resetInfoSocket();
+            // ctrlChat.resetInfoChat();
+            // ctrlHome.resetInfoHome();
              Navigator.pop(context);
              await Auth.instance.deleteSesion(context);
                

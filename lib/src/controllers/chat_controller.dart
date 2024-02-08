@@ -31,17 +31,31 @@ class ChatController extends ChangeNotifier {
 //  final _ctrlSocket= SocketModel();
 
   
-  List _messages = [];
-  List get getMessages => _messages;
+  // List _messages = [];
+  // List get getMessages => _messages;
 
-  void addMessage(message) {
-    // _messages.insert(0, {
-    //   message
+  // void addMessage(message) {
+  //   // _messages.insert(0, {
+  //   //   message
     
-    // });
-    // print('----> ${message}');
-    notifyListeners();
-  }
+  //   // });
+  //   // print('----> ${message}');
+  //   notifyListeners();
+  // }
+
+void resetInfoChat(){
+_listaTodosLosGruposChat = [];
+_cajaTextoChat = '';
+
+ _listaTodosLosUsuariosChat = [];
+  
+   _listaTodoLosChatPaginacion.clear();
+_descargaOK=false;
+ _pressed=false;
+ 
+  notifyListeners();
+}
+
 
   String _cajaTextoChat = '';
   String get getCajaTextoChat => _cajaTextoChat;
@@ -112,9 +126,16 @@ class ChatController extends ChangeNotifier {
   List get getListaTodosLosGruposChat => _listaTodosLosGruposChat;
 
   void setListaTodosLosGruposChat(List _data) {
+
+final ctrlSocket= 
+
     _listaTodosLosGruposChat = [];
 
     _listaTodosLosGruposChat = _data;
+
+      
+    
+
 
     // print('_listaTodosLosGruposChat: $_listaTodosLosGruposChat');
 
@@ -132,7 +153,7 @@ class ChatController extends ChangeNotifier {
      context,token: dataUser['token'] );
     if (response != null) {
       _errorGruposChat = true;
-      setListaTodosLosGruposChat(response['data']);
+      // setListaTodosLosGruposChat(response['data']);
 
       // setListaTodasLasRazas(response['data'][0]['espRazas']);
 
@@ -718,6 +739,7 @@ Map<String, dynamic> _infoChat={};
 Map<String, dynamic> get getInfoChat=> _infoChat;
 
 void setInfoChat(Map<String, dynamic> _inf){
+
 _infoChat=_inf;
   print('ES _infoChat: $_infoChat');
 notifyListeners();
@@ -753,16 +775,21 @@ notifyListeners();
  _listaTodoLosChatPaginacion.clear();
           final _ctrlHome = context.read<HomeController>();
             // final _crtlSocket = context.read<SocketModel>();
-                                  _crtlSocket.emitEvent('client:read-mensaje',
-                                  {
+            final _data=
+              {
                                                                   
                                       "rucempresa": "ULTRA2022", // login
                                       "rol": _ctrlHome.getUser!['rol'], // login
-                                      "chat_id": response['data']['results'].first['chat_id'].toString(), // propiedad chat_id del mensaje
+                                      "chat_id": response['data']['results'].first['chat_id'], // propiedad chat_id del mensaje
                                       "person_id": _ctrlHome.getUser!['id'], // login
-                                      "last_read_message_id": response['data']['results'].last['message_id'].toString() // propiedad message_id del mensaje
+                                      "last_read_message_id": response['data']['results'].first['message_id'].toString() // propiedad message_id del mensaje
 
-                                  });
+                                  };
+
+
+                                  // print(' EMITE SI ES PRIMERA VEZ --------> $_data');
+            
+                                  _crtlSocket.emitEvent('client:read-mensaje',_data);
 
 
 // // //  //******/
@@ -845,7 +872,7 @@ bool _descargaOK=false;
 bool get getDescargaOK=>_descargaOK;
 void setDescargaOk(bool _inf){
 _descargaOK=_inf;
-  print('Boton presionado');
+  print('Boton presionado $_descargaOK');
   notifyListeners();
 }
 bool _pressed=false;

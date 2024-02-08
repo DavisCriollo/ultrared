@@ -17,12 +17,31 @@ class SocketModel with ChangeNotifier {
 
   List _listaGruposChat = [];
   List get getListaGruposChat => _listaGruposChat;
+
+void setGruposChat( List _groups){
+  _listaGruposChat = [];
+   _listaGruposChat = _groups;
+  notifyListeners();
+}
+
+
    Map<String,dynamic>  _listaNotificaciones = {};
     Map<String,dynamic>  get getListaNotificaciones => _listaNotificaciones;
   List<Map<String,dynamic>> _listaDeMensajeChat = [];
     List<Map<String,dynamic>>  get getListaDeMensajeChat => _listaDeMensajeChat;
 
+void resetInfoSocket(){
+_user = {};
+ _isEnChat=false;
+// _listaGruposChat = [];
+_listaNotificaciones = {};
+_listaDeMensajeChat = [];
+_msgNoLeidos =0;
+  _listaUsuariosChat = [];
+_mensajeChat = {};
 
+  notifyListeners();
+}
 
   Map<String, dynamic>? _user = {};
   Map<String, dynamic>? get getUser => _user;
@@ -112,11 +131,11 @@ void setMsgNoLeidos(int _msgs){
       _listaGruposChat = [];
       _listaGruposChat = data;
 
-int totalUnreadMessages = 0;
- totalUnreadMessages = _listaGruposChat.fold(0, (sum, chat) => sum + (chat["unread_messages"] as int));
-    setMsgNoLeidos(totalUnreadMessages);
+// int totalUnreadMessages = 0;
+//  totalUnreadMessages = _listaGruposChat.fold(0, (sum, chat) => sum + (chat["unread_messages"] as int));
+//     setMsgNoLeidos(totalUnreadMessages);
 
-  print("La cantidad total de unread_messages es: $totalUnreadMessages");
+  // print("La cantidad total de unread_messages es: $totalUnreadMessages");
 
 
 
@@ -149,7 +168,18 @@ int totalUnreadMessages = 0;
 
 
 //********VALIDAR ***********/
+if ( _isEnChat==true) {
+  _socket.emit('client:read-mensaje',
+                                  {
+                                                                  
+                                      "rucempresa": "ULTRA2022", // login
+                                      "rol": getUser!['rol'], // login
+                                      "chat_id":data['chat_id'], // propiedad chat_id del mensaje
+                                      "person_id": getUser!['id'], // login
+                                      "last_read_message_id":data['message_id']  // propiedad message_id del mensaje
 
+                                  });
+}
 
 // si estoy dentro del chat ejecutar 
 
@@ -199,12 +229,12 @@ print('ESTOO ES : $_info');
 
 _socket.on('server:totales-actualizados', (data) {
      
-        
+                print('el usuario del MOVIL ------------------> : ${data}');
       //      print('el usuario del MOVIL ------------------> : ${getUserApp['id']}');
       // print('SE escucha este mens =========> : ${data['refresh_groups']}');
 //  _listaGruposChat = [];
-  _listaGruposChat = data['refresh_groups'];
-
+  // _listaGruposChat = data['refresh_groups'];
+  setGruposChat(data['refresh_groups']);
  setMsgNoLeidos(data['unread_messages']);
 
 
@@ -232,8 +262,16 @@ _socket.on('server:totales-actualizados', (data) {
 
   // Método para desconectar Socket.io
   void disconnectSocket() {
-    
-    _socket.disconnect();
+//     _socket.emit('client:totales-actualizados',_info);
+// _socket.on('server:totales-actualizados',
+
+// _socket.on('server:send-mensaje',
+//   _socket.on('server:nuevanotificacion', (data) {
+
+//     _socket.off('mensaje', escuchaDeMensajes);
+// _socket.on('server:lista-chats-grupos', (data) {
+//  _socket.clearListeners();
+    _socket.close();
     notifyListeners();
   }
 

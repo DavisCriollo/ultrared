@@ -64,10 +64,10 @@ class ElementosHome extends StatelessWidget {
                      Text(title,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
-                          fontSize: size.iScreen(1.5),
+                          fontSize: size.iScreen(1.4),
                           color: Colors.black,
                           fontWeight: FontWeight.w700,
-                          letterSpacing:  -0.28,
+                          letterSpacing:  -0.20,
                           )),
                   ],
                 ),

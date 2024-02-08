@@ -42,6 +42,23 @@ class HomeController extends ChangeNotifier {
     notifyListeners();
   }
 
+
+
+void resetInfoHome(){
+_user = {};
+ _locationMessage = '';
+ _locationGPS = {};
+resetValues();
+resetAllValues();
+
+ 
+  notifyListeners();
+}
+
+
+
+
+
   String _locationMessage = '';
   Map<String, dynamic> _locationGPS = {};
   Map<String, dynamic> get getLocationGPS => _locationGPS;
