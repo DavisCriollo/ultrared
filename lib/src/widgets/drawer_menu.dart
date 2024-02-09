@@ -372,7 +372,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
              ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
              await FirebaseService.deleteFirebaseInstance();
              await Auth.instance.deleteTokenFireBase();
-             ctrlSocket.disconnectSocket();
+            //  ctrlSocket.disconnectSocket();
             // ctrlSocket.resetInfoSocket();
             // ctrlChat.resetInfoChat();
             // ctrlHome.resetInfoHome();

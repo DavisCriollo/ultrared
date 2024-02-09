@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
   }
  _chechLogin() async {
- final controllerSocket = context.read<SocketModel>();
+//  final controllerSocket = context.read<SocketModel>();
     final controllerHome = context.read<HomeController>();
     final Map<String, dynamic>? session = await Auth.instance.getSession();
     // controllerSocket.emitEvent('client:lista-chats-grupos',{});

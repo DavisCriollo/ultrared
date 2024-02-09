@@ -150,7 +150,7 @@ controllerHome.setUserApp(session);
          
         }
          else {
-          await Auth.instance.deleteSesion(context);
+          // await Auth.instance.deleteSesion(context);
           // Navigator.of(context).pushAndRemoveUntil(
           //     MaterialPageRoute(
           //         builder: (context) => SerClientePage(

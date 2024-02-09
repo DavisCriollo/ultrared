@@ -4,6 +4,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:better_player/better_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,7 @@ import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/pages/view_video_page.dart';
 import 'package:ultrared/src/pages/vista_imagen.dart';
 import 'package:ultrared/src/utils/responsive.dart';
+import 'package:ultrared/src/utils/snack_info.dart';
 import 'package:ultrared/src/utils/theme.dart';
 
 
@@ -205,7 +207,7 @@ _myChat(BuildContext context,
                                 maxWidth: size.wScreen(60.0) // Ancho máximo
                                 ),
                                 
-                                margin: EdgeInsets.symmetric(vertical:size.iScreen(0.2)),child: _messajeTexto( messaje['message_text'],size)):Container(),
+                                margin: EdgeInsets.symmetric(vertical:size.iScreen(0.2)),child: _messajeTexto( messaje['message_text'],size,context)):Container(),
                                 messaje['message_fotos'].isNotEmpty?Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeImagen(context, messaje['message_fotos'],size)):Container(),
                                  messaje['message_videos'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeVideo(context,messaje['message_videos'],size)):Container(),
                                     messaje['message_audio'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeAudio(context,messaje['message_audio'],size)):Container(),
@@ -223,7 +225,7 @@ _myChat(BuildContext context,
                       bottom: 0,
                       right: 0,
                       child: Text(
-                        '$_hora - ${messaje['message_id']}',
+                        '$_hora ',
                         style: GoogleFonts.poppins(
                           fontSize: size.iScreen(1.2),
                           fontWeight: FontWeight.w500,
@@ -517,19 +519,45 @@ Container _messajeImagen(BuildContext context,List _listUrl,Responsive size) {
       )).toList()):Container());
 }
 
-Text _messajeTexto(String messaje, Responsive size) {
-  return Text(
-    messaje.toString(),
-    style: GoogleFonts.poppins(
-      fontSize: size.iScreen(1.5),
-      fontWeight: FontWeight.w400,
-      color: sextinaryColor,
-      // letterSpacing: -0.40,
-    ),
-    textAlign: TextAlign.left,
+Widget _messajeTexto(String messaje, Responsive size,BuildContext context) {
+  return GestureDetector(
+    onLongPress: ()async{
+       await Clipboard.setData(ClipboardData(
+                                              text:messaje.toString()));
 
-    maxLines: 2, // Número máximo de líneas permitidas
-    // overflow: TextOverflow.ellipsis,
+                                          final snackBar = sNackCopy(
+                                              'Texto Copiado',
+                                              size,
+                                              Colors.green.shade400
+                                              );
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snackBar);
+                                       
+      
+    },
+    child: Container(
+        constraints: BoxConstraints(
+                                // minHeight: size.wScreen(5.0), // Altura mínima
+  
+                                minWidth: size.wScreen(10.0),
+                                maxWidth: size.wScreen(50.0),
+                                // Ancho máximo
+                                ),
+      // width: size.iScreen(30.0),
+      child: Text(
+        messaje.toString(),
+        style: GoogleFonts.poppins(
+          fontSize: size.iScreen(1.5),
+          fontWeight: FontWeight.w400,
+          color: sextinaryColor,
+          // letterSpacing: -0.40,
+        ),
+        textAlign: TextAlign.left,
+  
+        // maxLines: 20, // Número máximo de líneas permitidas
+        // overflow: TextOverflow.ellipsis,
+      ),
+    ),
   );
 }
 
@@ -666,7 +694,7 @@ _noChat(BuildContext context,
                                 ),
                                     // width:size.iScreen(25)
                                   
-                                margin: EdgeInsets.symmetric(vertical:size.iScreen(0.2)),child: _messajeTexto( messaje['message_text'],size)):Container(),
+                                margin: EdgeInsets.symmetric(vertical:size.iScreen(0.2)),child: _messajeTexto( messaje['message_text'],size,context)):Container(),
                                 messaje['message_fotos'].isNotEmpty?Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeImagen(context, messaje['message_fotos'],size)):Container(),
                                  messaje['message_videos'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeVideo(context,messaje['message_videos'],size)):Container(),
                                     messaje['message_audio'].isNotEmpty? Container(margin: EdgeInsets.symmetric(vertical:size.iScreen(0.5)),child: _messajeAudio(context,messaje['message_audio'],size)):Container(),

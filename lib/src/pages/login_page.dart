@@ -13,6 +13,7 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/login_controller.dart';
 import 'package:ultrared/src/pages/home_page.dart';
 import 'package:ultrared/src/pages/password_page.dart';
+import 'package:ultrared/src/pages/splash_screen.dart';
 
 import 'package:ultrared/src/service/notifications_service.dart';
 
@@ -481,6 +482,7 @@ class _LoginPageState extends State<LoginPage> {
 //*******************************************************//
 
   void _onSubmit(BuildContext context, LoginController controller) async {
+     final _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
     final isValid = controller.validateForm();
     controller.loginFormKey.currentState?.save();
     if (!isValid) return;
@@ -532,24 +534,36 @@ class _LoginPageState extends State<LoginPage> {
 if (response != null  ) {
 
 await Auth.instance.saveSession(response);  
-   final infoUser  = await Auth.instance.getSession();
+  //  final infoUser  = await Auth.instance.getSession();
          
-            var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
-            //  _ctrlSocket.disconnectSocket();
-              _ctrlSocket.connectToSocket("${infoUser!['token']}", "${infoUser!['rucempresa']}");
-                 context.read<HomeController>().buscarNoticias(context);
-                 context.read<HomeController>().buscarNotificaciones(context);
+//             var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
+//             //  _ctrlSocket.disconnectSocket();
+//               _ctrlSocket.connectToSocket("${infoUser!['token']}", "${infoUser!['rucempresa']}");
+//                  context.read<HomeController>().buscarNoticias(context);
+//                  context.read<HomeController>().buscarNotificaciones(context);
         
-               //------------------/
+//                //------------------/
 
+//               Navigator.pushReplacement(
+//                   context,
+//                   MaterialPageRoute<void>(
+//                       builder: (BuildContext context) =>  HomePage(
+//                         user: infoUser,
+                     
+//                       )));
+
+
+
+          // _ctrlSocket.connectToSocket("${infoUser['token']}", "${infoUser['rucempresa']}");
+ if (response != null) {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>  HomePage(
-                        user: infoUser,
-                     
-                      )));
-
+                      builder: (BuildContext context) => const SplashPage()));
+            }
+            else{
+              NotificatiosnService.showSnackBarError('Error de conexión con el servidor');
+            }
 
     } 
     
