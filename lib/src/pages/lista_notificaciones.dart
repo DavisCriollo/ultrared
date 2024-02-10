@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/auxilio_page.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
+import 'package:ultrared/src/service/socket.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/fecha_local_convert.dart';
 import 'package:ultrared/src/utils/responsive.dart';
@@ -249,7 +250,7 @@ class _ListaNotificacionesState extends State<ListaNotificaciones> {
   }
 };
 
-                      final ctrlSocket =context.read<SocketModel>();
+                      final ctrlSocket =context.read<SocketService>();
 
 // print('LA DATA PARA SOCKET : $_data');
 

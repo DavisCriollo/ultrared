@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
+import 'package:ultrared/src/service/socket.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
@@ -64,7 +65,7 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
     final user = Auth.internal().getSession();
-    final _crtl = context.read<SocketModel>();
+    final _crtl = context.read<SocketService>();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -91,7 +92,7 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
 
               width: size.wScreen(100.0),
               height: size.hScreen(100.0),
-              child: Consumer<SocketModel>(
+              child: Consumer<SocketService>(
                 builder: (context, socketUsuarios, child) {
                   if (socketUsuarios.getListaUsuariosChat.isEmpty) {
                     return Center(

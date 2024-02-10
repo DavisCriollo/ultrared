@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 // // import 'package:image_picker/image_picker.dart';
 import 'package:ultrared/src/api/api_provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
+import 'package:ultrared/src/service/socket.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 // import 'package:ultrared/src/api/authentication_client.dart';
 // import 'package:http/http.dart' as _http;
@@ -38,7 +39,7 @@ class HomeController extends ChangeNotifier {
   Map<String, dynamic>? get getUser => _user;
   void setUserApp(Map<String, dynamic>? _data) {
     _user = _data;
-    //  print('LA SESION ------------- >>>   $_user');
+     print('LA SESION ------------- >>>   $_user');
     notifyListeners();
   }
 
@@ -749,7 +750,7 @@ int _mensajesNoLeidos =0;
   bool? get getErrorNotificaciones => _errorNotificaciones;
 
   Future? buscarNotificaciones(BuildContext context) async {
-    final _socket=context.read<SocketModel>();
+    final _socket=context.read<SocketService>();
     final dataUser = await Auth.instance.getSession();
 
     final response = await _api.getAllNotificaciones(
@@ -1339,7 +1340,7 @@ int _mensajesNoLeidos =0;
   Future validaInicioDeSesion() async {
     final dataUser = await Auth.instance.getSession();
     final response = await _api.validaTokenUsuarios(
-      token: dataUser!['token'],
+    dataUser!['token'],
     );
 
     if (response != null) {
@@ -1366,6 +1367,10 @@ int _mensajesNoLeidos =0;
     );
 
     if (response != null) {
+
+      print('LA SESSION SE CERRO CORRECTAMENTE $response');
+
+
       return response;
     }
     if (response == null) {

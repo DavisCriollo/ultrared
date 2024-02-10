@@ -15,6 +15,7 @@ import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/init_provider.dart';
 import 'package:ultrared/src/pages/view_video_page.dart';
+import 'package:ultrared/src/service/socket.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:http/http.dart' as _http;
 import 'package:ultrared/src/widgets/message.dart';
@@ -28,7 +29,7 @@ class ChatController extends ChangeNotifier {
 
 
   final _api = ApiProvider();
-//  final _ctrlSocket= SocketModel();
+//  final _ctrlSocket= SocketService();
 
   
   // List _messages = [];
@@ -271,7 +272,7 @@ final ctrlSocket=
   // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
   List get getListaTodoLosChatPaginacion => _listaTodoLosChatPaginacion;
 
-  void setInfoBusquedaTodoLosChatPaginacion(List data ,SocketModel _crtlSocket) {
+  void setInfoBusquedaTodoLosChatPaginacion(List data ,SocketService _crtlSocket) {
  
    List _tempList = []; 
    
@@ -352,7 +353,7 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
     notifyListeners();
   }
 
-//   Future buscaAllTodoLosChatPaginacion(String? _search, bool _isSearch, int _idChat ,SocketModel _crtlSocket) async {
+//   Future buscaAllTodoLosChatPaginacion(String? _search, bool _isSearch, int _idChat ,SocketService _crtlSocket) async {
 //     final dataUser = await Auth.instance.getSession();
 // // print('usuario : ${dataUser!.rucempresa}');
 //     final response = await _api.getAllTodoLosChatPaginacion(
@@ -404,7 +405,7 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
 //   }
 
     
-//   Future buscaAllTodoLosChatPaginacion(BuildContext context, _search, bool _isSearch, int _idChat ,SocketModel _crtlSocket) async {
+//   Future buscaAllTodoLosChatPaginacion(BuildContext context, _search, bool _isSearch, int _idChat ,SocketService _crtlSocket) async {
 //     final dataUser = await Auth.instance.getSession();
 // // print('usuario : ${dataUser!.rucempresa}');
 //     final response = await _api.getAllTodoLosChatPaginacion(
@@ -453,7 +454,7 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
 //         //******/
 //  _listaTodoLosChatPaginacion.clear();
 //           final _ctrlHome = context.read<HomeController>();
-//             final _crtlSocket = context.read<SocketModel>();
+//             final _crtlSocket = context.read<SocketService>();
 //                                   _crtlSocket.emitEvent('client:read-mensaje',
 //                                   {
                                                                   
@@ -749,7 +750,7 @@ notifyListeners();
 
 // //------------------LISTA DE LOS MENSAJES ----------//
  
-  Future buscaAllTodoLosChats(BuildContext context, _search, bool _isSearch, int _idChat ,SocketModel _crtlSocket) async {
+  Future buscaAllTodoLosChats(BuildContext context, _search, bool _isSearch, int _idChat ,SocketService _crtlSocket) async {
     final dataUser = await Auth.instance.getSession();
 // print('usuario : ${dataUser!.rucempresa}');
     final response = await _api.getAllTodoLosChatPaginacion(
@@ -774,7 +775,7 @@ notifyListeners();
             //******/
  _listaTodoLosChatPaginacion.clear();
           final _ctrlHome = context.read<HomeController>();
-            // final _crtlSocket = context.read<SocketModel>();
+            // final _crtlSocket = context.read<SocketService>();
             final _data=
               {
                                                                   
@@ -836,7 +837,7 @@ _listaTodoLosChats.insert(0,{data});
 
 
 
-  void setInfoBusquedaTodoLosChats(List data ,SocketModel _crtlSocket) {
+  void setInfoBusquedaTodoLosChats(List data ,SocketService _crtlSocket) {
  
    List _tempList = []; 
     // if (_cantidad==5 && _page==0) {

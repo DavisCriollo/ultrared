@@ -29,6 +29,7 @@ import 'package:ultrared/src/pages/vista_imagen.dart';
 import 'package:ultrared/src/service/local_notifications.dart';
 import 'package:ultrared/src/service/notification_push.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
+import 'package:ultrared/src/service/socket.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
@@ -311,8 +312,8 @@ controllerHome.setUserApp(session);
     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
 
     var ctrlHome = context.read<HomeController>();
-     var ctrlSocket = context.read<SocketModel>();
- ctrlSocket.emitEvent('client:lista-chats-grupos',{});
+     var ctrlSocket = context.read<SocketService>();
+//  SocketService().emitEvent('client:lista-chats-grupos',{});
     // Obtén el token de registro de Firebase
     String? firebaseToken = await FirebaseMessaging.instance.getToken();
     // print("Firebase ok Token: $firebaseToken");
@@ -808,7 +809,7 @@ controllerHome.setUserApp(session);
                               //               (Route<dynamic> route) => false);
                               
                                                   final _ctrlSocket =
-                                                      Provider.of<SocketModel>(
+                                                      Provider.of<SocketService>(
                                                           context,
                                                           listen: false);
                                                   // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
@@ -1035,13 +1036,13 @@ controllerHome.setUserApp(session);
                                                         onTap: () async {
                                                           final serviceSocket =
                                                               context.read<
-                                                                  SocketModel>();
+                                                                  SocketService>();
                                                           final _ctrlChat =
                                                               context.read<
                                                                   ChatController>();
                               
                                                           // serviceSocket.emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
-                                                          serviceSocket.emitEvent(
+                                                          SocketService().emitEvent(
                                                               'client:lista-chats-grupos',
                                                               {});
                               
@@ -1082,7 +1083,7 @@ controllerHome.setUserApp(session);
                                                         //     // width: size.1Screen(5.0), // URL de la imagen
                                                         //   ),
                                                         // ),
-                                                         Consumer<SocketModel>(builder: (_, valueMsgNoRead, __) { 
+                                                         Consumer<SocketService>(builder: (_, valueMsgNoRead, __) { 
                                                                  return  valueMsgNoRead.getMsgNoLeidos>0? Badge(
                                                          position:
                                   const BadgePosition(top: -3.0, start: 45.0),

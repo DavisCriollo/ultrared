@@ -89,6 +89,8 @@ class LoginController extends ChangeNotifier {
         await Auth.instance.saveDataRecordarme(_creddenciales);
       }
       // _dataLogin = response;
+
+      print('LA DATA del login : $response');
       
       return response;
     }

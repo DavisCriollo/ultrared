@@ -10,6 +10,7 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
 import 'package:ultrared/src/pages/chats.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
+import 'package:ultrared/src/service/socket.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
@@ -90,7 +91,7 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
 
             width: size.wScreen(100.0),
             height: size.hScreen(100.0),
-            child: Consumer<SocketModel>(
+            child: Consumer<SocketService>(
               builder: (_, valueChat, __) {
                if (valueChat.getListaGruposChat==null) {
                   return Center(
@@ -118,7 +119,7 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                   return const NoData(label: 'No tiene grupo asignado');
                 }
                     return 
-                    Consumer<SocketModel>(builder: (_, valueGrupos, __) {  
+                    Consumer<SocketService>(builder: (_, valueGrupos, __) {  
                         return  ListView.builder(
                   shrinkWrap: true,
                   itemCount: valueGrupos.getListaGruposChat.length,
@@ -201,7 +202,7 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
                       //           ))));
                                   
                                 //-----------------------------NUEVA FORMA DEL CHAT----------------------------------// 
-                                final _crtlSocket = context.read<SocketModel>();
+                                final _crtlSocket = context.read<SocketService>();
                                       final _crtlHome = context.read<HomeController>();
                                       final _crtl = context.read<ChatController>();
                    
@@ -233,7 +234,7 @@ _crtlSocket.setIsEnChat(true);
 
 
  final _ctrlChat =context.read<ChatController>();
-     final _ctrlSocket =context.read<SocketModel>();
+     final _ctrlSocket =context.read<SocketService>();
 
 _ctrlSocket.setIsEnChat(false);
 _ctrlSocket.setIsEnChat(false);

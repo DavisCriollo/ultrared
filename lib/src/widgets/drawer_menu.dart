@@ -23,6 +23,7 @@ import 'package:ultrared/src/pages/selecciona_sector.dart';
 
 import 'package:ultrared/src/service/notification_push.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
+import 'package:ultrared/src/service/socket.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
@@ -129,7 +130,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                               border: Border.all(color: Colors.white, width: 2.0),
                             ),
                             child: 
-                           value.getUser!['foto'].isNotEmpty?ClipOval(
+                          value.getUser!['foto']!=null?ClipOval(
                               child: CachedNetworkImage(
                                 imageUrl:
                                     '${value.getUser!['foto']}', // Reemplaza con la URL de tu imagen
@@ -356,31 +357,40 @@ class _DrawerMenuState extends State<DrawerMenu> {
               title: Text('Cerrar Sesión'),
               onTap: () async {
                   
-                   
+                
                   var ctrlHome = context.read<HomeController>();  
-                    var ctrlSocket = context.read<SocketModel>();  
+                    var ctrlSocket = context.read<SocketService>();  
                     var ctrlChat = context.read<ChatController>();  
-
+               
                ProgressDialog.show(context);
               final response = await ctrlHome.cierreSesionUsuario(context);
               ProgressDialog.dissmiss(context);
+                  Navigator.pop(context);
           
           if (response != null ) {
                
-            //----------------------------------------------------//
-             final _tokenFCM = await Auth.instance.getTokenFireBase();
-             ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
-             await FirebaseService.deleteFirebaseInstance();
-             await Auth.instance.deleteTokenFireBase();
-            //  ctrlSocket.disconnectSocket();
-            // ctrlSocket.resetInfoSocket();
-            // ctrlChat.resetInfoChat();
-            // ctrlHome.resetInfoHome();
-             Navigator.pop(context);
-             await Auth.instance.deleteSesion(context);
-               
-                //----------------------------------------------------//
+            // //----------------------------------------------------//
+            //  final _tokenFCM = await Auth.instance.getTokenFireBase();
+            //  ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
+            //  await FirebaseService.deleteFirebaseInstance();
+            //  await Auth.instance.deleteTokenFireBase();
+            // //  ctrlSocket.disconnectSocket();
           
+
+            //   SocketService().socket.disconnect();
+            //  Navigator.pop(context);
+            //  await Auth.instance.deleteSesion(context);
+               
+            //     //----------------------------------------------------//
+          
+
+
+           ctrlSocket.closeSocket();
+          await Auth.instance.deleteSesion(context);
+            ctrlSocket.resetInfoSocket();
+            ctrlChat.resetInfoChat();
+            ctrlHome.resetInfoHome();
+           
           
           
               }else  {

@@ -15,6 +15,7 @@ import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
+import 'package:ultrared/src/service/socket.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
@@ -108,7 +109,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   //       //  _crtlChat.buscaAllTodoLosChatPaginacion('');
 
   //       final _next = context.read<ChatController>();
-  //       final _crtlSocket = context.read<SocketModel>();
+  //       final _crtlSocket = context.read<SocketService>();
   //       if (_next.getpage != null) {
   //         _next.setPage(_next.getpage);
   //         //       providerSearchPropietario.setCantidad(25);
@@ -243,7 +244,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
 final _ctrlChat = context.read<ChatController>();
     final _ctrlHome = context.read<HomeController>();
-    final _ctrlSocket = context.read<SocketModel>();
+    final _ctrlSocket = context.read<SocketService>();
                   _ctrlChat.setImage( File(filePath));
                   ProgressDialog.show(context);
      final response=    await _ctrlChat.getUrlServerChats();
@@ -450,7 +451,7 @@ final _infoChat=widget.infoChat;
                   child: Column(
                     children: [
                
-                      Flexible(child: Consumer<SocketModel>(
+                      Flexible(child: Consumer<SocketService>(
                         builder: (_, values, __) {
                   
                   
@@ -1034,7 +1035,7 @@ final _infoChat=widget.infoChat;
   _hansdleSubmit(value) {
     final valueChat = context.read<ChatController>();
     final _ctrlHome = context.read<HomeController>();
-    final _ctrlSocket = context.read<SocketModel>();
+    final _ctrlSocket = context.read<SocketService>();
     // print(value);
     valueChat.setCajaText(value);
     _textController.clear();
@@ -1143,7 +1144,7 @@ final _data={
 
 
  Future<void> _modalImagen(BuildContext context,Responsive size ,Map<String,dynamic> infoChat) {
-  final _ctrlSocket=context.read<SocketModel>();
+  final _ctrlSocket=context.read<SocketService>();
     final _ctrlHome=context.read<HomeController>();
  
     return showDialog<void>(
@@ -1235,7 +1236,7 @@ final _data={
 
   }
    Future<void> _modalVideo(BuildContext context,Responsive size ,Map<String,dynamic> infoChat) {
-  final _ctrlSocket=context.read<SocketModel>();
+  final _ctrlSocket=context.read<SocketService>();
     final _ctrlHome=context.read<HomeController>();
  
     return showDialog<void>(

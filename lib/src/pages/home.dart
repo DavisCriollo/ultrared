@@ -5,6 +5,7 @@ import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/service/notification_push.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
+import 'package:ultrared/src/service/socket.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
@@ -23,7 +24,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
      final Responsive size = Responsive.of(context);
-    // var socketProvider = context.read<SocketService>();
+    var socketProvider = context.read<SocketService>();
     final _ctrl = context.read<HomeController>();
     return Scaffold(
       body: Container(
@@ -37,29 +38,32 @@ class _HomeState extends State<Home> {
      ),
       TextButton(onPressed: () async{
 
-  var ctrlHome = context.read<HomeController>();  
-                    var ctrlSocket = context.read<SocketModel>();  
-                    var ctrlChat = context.read<ChatController>();  
+
+                 
+                    // var ctrlChat = context.read<ChatController>();  
 
                ProgressDialog.show(context);
-              final response = await ctrlHome.cierreSesionUsuario(context);
+              final response = await _ctrl.cierreSesionUsuario(context);
               ProgressDialog.dissmiss(context);
           
           if (response != null ) {
                
             //----------------------------------------------------//
-             final _tokenFCM = await Auth.instance.getTokenFireBase();
-             ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
-             await FirebaseService.deleteFirebaseInstance();
-             await Auth.instance.deleteTokenFireBase();
-             await Auth.instance.deleteCache(context);
+            //  final _tokenFCM = await Auth.instance.getTokenFireBase();
+            //  ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
+            //  await FirebaseService.deleteFirebaseInstance();
+            //  await Auth.instance.deleteTokenFireBase();
+            //  await Auth.instance.deleteCache(context);
             //  ctrlSocket.disconnectSocket();
              
-            // ctrlSocket.resetInfoSocket();
-            // ctrlChat.resetInfoChat();
-            // ctrlHome.resetInfoHome();
-             Navigator.pop(context);
+            // // ctrlSocket.resetInfoSocket();
+            // // ctrlChat.resetInfoChat();
+            // // ctrlHome.resetInfoHome();
+            //  Navigator.pop(context);
+            //  context.read<HomeController>().cierreSesionUsuario(context);
+              socketProvider.closeSocket();
              await Auth.instance.deleteSesion(context);
+           
                
                 //----------------------------------------------------//
           
@@ -75,13 +79,20 @@ class _HomeState extends State<Home> {
 
 
 
-          }, child: Text('Mensaje'),),
+          }, child: Text('Salir'),),
 
 
 
           TextButton(onPressed: (){
 
-          }, child: Text('Salir'),)
+  //  var ctrlSocket = context.read<SocketService>();  
+                 
+                 SocketService().emitEvent( 'client:lista-chats-grupos',{});
+           
+
+
+
+          }, child: Text('Conetcar'),)
 
 
 

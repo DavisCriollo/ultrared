@@ -12,6 +12,7 @@ import 'package:ultrared/src/routes/routes.dart';
 import 'package:ultrared/src/service/local_notifications.dart';
 import 'package:ultrared/src/service/notification_push.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
+import 'package:ultrared/src/service/socket.dart';
 
 import 'package:ultrared/src/service/socket_service.dart';
 
@@ -66,8 +67,9 @@ class _MyAppState extends State<MyApp> {
     return   MultiProvider(
       providers: [
   
-
-         ChangeNotifierProvider(create: (_) => SocketModel()),
+           ChangeNotifierProvider(create: (_) => SocketService()),
+        //  ChangeNotifierProvider(create: (_) => SocketModel()),
+         
          ChangeNotifierProvider(create: (_) => HomeController()),
      ChangeNotifierProvider(create: (_) => ChatController()),
 
