@@ -1337,7 +1337,7 @@ int _mensajesNoLeidos =0;
 
 
 
-  Future validaInicioDeSesion() async {
+  Future validaInicioDeSesion( BuildContext context) async {
     final dataUser = await Auth.instance.getSession();
     final response = await _api.validaTokenUsuarios(
     dataUser!['token'],
@@ -1353,7 +1353,7 @@ int _mensajesNoLeidos =0;
       return response;
     }
     if (response == null) {
-      // await Auth.instance.deleteSesion(context);
+      await Auth.instance.deleteSesion(context);
     setValidaSession(false);
       return null;
     }

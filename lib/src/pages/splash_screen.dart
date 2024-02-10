@@ -297,6 +297,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:ultrared/src/api/api_provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
@@ -318,8 +319,10 @@ class _SplashPageState extends State<SplashPage> {
   final controllerLogin = LoginController();
   final controllerHome = HomeController();
 
+ 
+
     final _api = ApiProvider();
-   Map<String,dynamic>? session ;
+   
 
   @override
   void initState() {
@@ -332,50 +335,27 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   _chechLogin() async {
-   session = await Auth.instance.getSession();
+    Map<String,dynamic>? session = await Auth.instance.getSession();
  
-
-// Future.delayed(Duration(seconds: 1),(){
-  // final BuildContext _size;
-
-
-
-
-// final _size=Responsive.of(context);
-//      int? _primColor=int.parse(session!.colorPrimario!.replaceAll("#",'0xff'));
-//   int? _secColor=int.parse(session.colorSecundario!.replaceAll("#",'0xff'));
-// Color? _colorPrimario=Color(_primColor);
-// Color? _colorSecundario=Color(_secColor);
-
-// Provider.of<AppTheme>(context,listen: false).setAppTheme(true,'',_colorPrimario,Colors.white,_colorSecundario,_size);
-// print('veces q repite:');
-//   });
-
-
     if (session != null  ) {
   
-
-        
-
-
-
-
-      final   response = await _api.validaTokenUsuarios(session!['token']);
+    final   response = await _api.validaTokenUsuarios(session['token']);
       // print('revisa token============> :$response');
        
        if(response==404||response==401){
            Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const SerClientePage()),
           (Route<dynamic> route) => false);
-       }else{
-
-    //      if ( !SocketService().socket.connected) {
-    //   print('Intentando reconectar...');
-    //   SocketService().connectToSocket(session!['token'], session!['rucempresa']);
-    // }
+       }else if(response!=null) {
+          final _ctrlSocket= context.read<SocketService>();
     
+          _ctrlSocket.connectSocket("${response['token']}", "${response['rucempresa']}");
           Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => HomePage(user: session)),
+          (Route<dynamic> route) => false);
+       }else{
+         Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const SerClientePage()),
           (Route<dynamic> route) => false);
        }
       

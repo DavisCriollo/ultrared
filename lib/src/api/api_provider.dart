@@ -854,6 +854,12 @@ class ApiProvider {
         url,
         headers: {"x-auth-token": '$token'},
       );
+
+
+   print('INFO DE LA CONSULTA VALIDA TOKEN ${dataRespToken.body}');
+
+
+
       if (dataRespToken.body.isEmpty) {
         return null;
       }

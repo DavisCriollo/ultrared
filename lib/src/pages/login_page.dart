@@ -502,63 +502,9 @@ class _LoginPageState extends State<LoginPage> {
             final response = await controller.loginApp(context);
             ProgressDialog.dissmiss(context);
 
-//  NotificatiosnService.showSnackBarDanger( response['msg']);
-
-
-// if (response != null  && !response.containsKey('msg' ) ) {
-
-// await Auth.instance.saveSession(response);  
-//    final infoUser  = await Auth.instance.getSession();
-         
-//             var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
-//               _ctrlSocket.connectToSocket("${infoUser!['token']}", "${infoUser!['rucempresa']}");
-//                  context.read<HomeController>().buscarNoticias(context);
-//                  context.read<HomeController>().buscarNotificaciones(context);
-        
-//                //------------------/
-
-//               Navigator.pushReplacement(
-//                   context,
-//                   MaterialPageRoute<void>(
-//                       builder: (BuildContext context) =>  HomePage(
-//                         user: infoUser,
-                     
-//                       )));
-
-
-//     } 
-    
-//      if (response != null  && response.containsKey('msg')) {
-//        NotificatiosnService.showSnackBarDanger( response['msg']);
-    
-//     }
 
 if (response != null  ) {
 
-// await Auth.instance.saveSession(response);  
-  //  final infoUser  = await Auth.instance.getSession();
-         
-//             var _ctrlSocket = Provider.of<SocketModel>(context, listen: false);
-//             //  _ctrlSocket.disconnectSocket();
-//               _ctrlSocket.connectToSocket("${infoUser!['token']}", "${infoUser!['rucempresa']}");
-//                  context.read<HomeController>().buscarNoticias(context);
-//                  context.read<HomeController>().buscarNotificaciones(context);
-        
-//                //------------------/
-
-//               Navigator.pushReplacement(
-//                   context,
-//                   MaterialPageRoute<void>(
-//                       builder: (BuildContext context) =>  HomePage(
-//                         user: infoUser,
-                     
-//                       )));
-
-
-
-          // _ctrlSocket.connectToSocket("${infoUser['token']}", "${infoUser['rucempresa']}");
-//  if (response != null) {
-// _ctrlSocket.socket.destroy();
 
   _ctrlSocket.connectSocket("${response['token']}", "${response['rucempresa']}");
               Navigator.pushReplacement(
@@ -568,13 +514,7 @@ if (response != null  ) {
                          user: response,
                       )));
 
-
-// await Auth.instance.saveSession(response);  
-
-
-
-            // }
-           
+      
 
     } 
     
