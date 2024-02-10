@@ -558,7 +558,7 @@ if (response != null  ) {
 
           // _ctrlSocket.connectToSocket("${infoUser['token']}", "${infoUser['rucempresa']}");
 //  if (response != null) {
-
+// _ctrlSocket.socket.destroy();
 
   _ctrlSocket.connectSocket("${response['token']}", "${response['rucempresa']}");
               Navigator.pushReplacement(

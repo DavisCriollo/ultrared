@@ -35,7 +35,7 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
   }
 
   void initData() async {
-    final loadInfo = context.read<ChatController>();
+    // final loadInfo = context.read<ChatController>();
 
     // final serviceSocket = context.read<SocketService>();
     // loadInfo.buscaGestionDocumental('', 'ENVIADO');

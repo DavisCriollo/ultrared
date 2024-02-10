@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:awesome_notifications/awesome_notifications.dart';
+
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -73,32 +73,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     // FirebaseService.configureFirebaseMessaging();
   }
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
+  }
 
-//  void initializeNotifications() {
-//     AwesomeNotifications().initialize(
-//       'resource://drawable/app_icon',
-//       [
-//         NotificationChannel(
-//           channelKey: 'basic_channel',
-//           channelName: 'Basic notifications',
-//           channelDescription: 'Notification channel for basic notifications',
-//           defaultColor: Colors.teal,
-//           ledColor: Colors.teal,
-//         ),
-//       ],
-//     );
-//   }
 
-//   void showLocalNotification() {
-//     AwesomeNotifications().createNotification(
-//       content: NotificationContent(
-//         id: 0,
-//         channelKey: 'basic_channel',
-//         title: 'Notificación local',
-//         body: '¡Esta es una notificación local!',
-//       ),
-//     );
-//   }
 
 // ======================= OBSERVABLE  ==========================//
 
@@ -123,7 +104,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       //   // } 
 
        
-     _chechLogin();
+    //  _chechLogin();
 
 
 
@@ -161,7 +142,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
    
     if (session != null) {
 
-controllerHome.setUserApp(session);
+// controllerHome.setUserApp(session);
 
 
 
@@ -312,7 +293,7 @@ controllerHome.setUserApp(session);
     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
 
     var ctrlHome = context.read<HomeController>();
-     var ctrlSocket = context.read<SocketService>();
+    //  var ctrlSocket = context.read<SocketService>();
 //  SocketService().emitEvent('client:lista-chats-grupos',{});
     // Obtén el token de registro de Firebase
     String? firebaseToken = await FirebaseMessaging.instance.getToken();
@@ -322,19 +303,6 @@ controllerHome.setUserApp(session);
     ctrlHome.setTokennotificacion(firebaseToken, 'guardar');
 
     //------------------------------------//
-
-    @override
-    void dispose() {
-      WidgetsBinding.instance!.removeObserver(this);
-//  Provider.of<SocketModel>(context, listen: false).disconnectSocket();
-      // if (mounted) {
-      // Asegúrate de limpiar la suscripción cuando el widget es desmontado
-      // FirebaseMessaging.onMessage.drain();
-      // FirebaseMessaging.onMessageOpenedApp.drain();
-      // }
-
-      super.dispose();
-    }
 
     // Manejar la notificación cuando la aplicación está en primer plano
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -1037,12 +1005,12 @@ controllerHome.setUserApp(session);
                                                           final serviceSocket =
                                                               context.read<
                                                                   SocketService>();
-                                                          final _ctrlChat =
-                                                              context.read<
-                                                                  ChatController>();
+                                                          // final _ctrlChat =
+                                                          //     context.read<
+                                                          //         ChatController>();
                               
                                                           // serviceSocket.emitEvent( 'client:lista-usuarios', {"chat_id": 4} );
-                                                          SocketService().emitEvent(
+                                                         serviceSocket.emitEvent(
                                                               'client:lista-chats-grupos',
                                                               {});
                               

@@ -483,8 +483,16 @@ _socket!.on('disconnect', (_) {
     _socket!.on('server:totales-actualizados', (data) {
       print('el usuario del MOVIL ------------------> : ${data}');
 
-      setGruposChat(data['refresh_groups']);
-      setMsgNoLeidos(data['unread_messages']);
+      // setGruposChat();
+
+       _listaGruposChat = [];
+    _listaGruposChat =data['refresh_groups'];
+
+
+
+       _msgNoLeidos = 0;
+    _msgNoLeidos = data['unread_messages'];
+    
 
       notifyListeners();
     });
@@ -513,7 +521,7 @@ _socket!.on('disconnect', (_) {
 
 //    // Función para cerrar la conexión del socket
  void closeSocket() {
-   _socket!.disconnected;
+   _socket!.close();
     print('Socket cerrado');
   } 
 

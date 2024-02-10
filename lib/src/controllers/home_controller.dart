@@ -1347,6 +1347,8 @@ int _mensajesNoLeidos =0;
       // print('EL TOQUEN NUEVO: $response');
         setValidaSession(true);
       await Auth.instance.saveSession(response);
+
+      setUserApp(response);
     
       return response;
     }

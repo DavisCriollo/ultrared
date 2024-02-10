@@ -274,25 +274,25 @@ final ctrlSocket=
 
   void setInfoBusquedaTodoLosChatPaginacion(List data ,SocketService _crtlSocket) {
  
-   List _tempList = []; 
+//    List _tempList = []; 
    
-   _listaTodoLosChatPaginacion.clear();
-   _tempList.addAll(data);
-   _tempList.reversed.toList();
+//    _listaTodoLosChatPaginacion.clear();
+//    _tempList.addAll(data);
+//    _tempList.reversed.toList();
 
-   _crtlSocket.setListaDeMensajesChat({});
+//    _crtlSocket.setListaDeMensajesChat({});
 
 
-  _listaTodoLosChatPaginacion.addAll(_tempList);
+//   _listaTodoLosChatPaginacion.addAll(_tempList);
   
-    // print('TodoLosChat####################>:${_listaTodoLosChatPaginacion}');
+//     // print('TodoLosChat####################>:${_listaTodoLosChatPaginacion}');
 
- for (var item in _listaTodoLosChatPaginacion) {
-                    _crtlSocket.setListaDeMensajesChat(item);
-                  }
+//  for (var item in _listaTodoLosChatPaginacion) {
+//                     _crtlSocket.setListaDeMensajesChat(item);
+//                   }
 
    
-             _crtlSocket.emitEvent('client:lista-chats-grupos',{});
+//              _crtlSocket.emitEvent('client:lista-chats-grupos',{});
     notifyListeners();
   }
 
@@ -839,7 +839,7 @@ _listaTodoLosChats.insert(0,{data});
 
   void setInfoBusquedaTodoLosChats(List data ,SocketService _crtlSocket) {
  
-   List _tempList = []; 
+  //  List _tempList = []; 
     // if (_cantidad==5 && _page==0) {
   //  _listaTodoLosChats.clear();
 //  } else {
