@@ -66,7 +66,7 @@ class Auth {
     final String value = jsonEncode(data);
 // GUARDAMOS LA INFORMACION DEL DISPOSITIVO
     await _storage.write(key: keySESION, value: value);
-// print('LA SESION SE GUARDO $value');
+print('LA SESION SE GUARDO $value');
 
   }
 
@@ -99,7 +99,9 @@ class Auth {
   Future<void> deleteCache(BuildContext context) async {
     // await _storage.deleteAll();
     await _storage.delete(key: keySESION);
- 
+    Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const SerClientePage()),
+          (Route<dynamic> route) => false);
   }
 
  

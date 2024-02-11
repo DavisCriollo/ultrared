@@ -865,7 +865,12 @@ class ApiProvider {
       }
       if (dataRespToken.statusCode == 200) {
         final responseData = jsonDecode(dataRespToken.body);
-        return responseData;
+        if (responseData['msg'] == 'Token no válido') {
+   return null;
+  } else {
+     return responseData;
+  }
+      
       }
       if (dataRespToken.statusCode == 404) {
         return null;
@@ -967,55 +972,38 @@ class ApiProvider {
     //   print('Image upload failed.');
     // }
   }
+//=========================GET ALL ESTADO DE CUENTA =====================================//
+  Future getAllEstadoDeCuenta({
+    BuildContext? context,
+    
+    String? token,
+  }) async {
+    try {
+      final url = Uri.parse('$_dirURL/cuentasporcobrar/idPersona/0');
 
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
 
-// Future<String?> uploadAudio(File? audioFile, String token) async {
-//   var url = Uri.parse('$_dirURL/upload_audio');
+// print('INFO DE LA CONSULTA EST CUENTA ${dataResp.body}');
 
-//   try {
-//     var request = _http.MultipartRequest('POST', url);
+      final respo = jsonDecode(dataResp.body);
+      if (dataResp.statusCode == 200) {
+        return respo;
+      }
 
-//     if (audioFile != null) {
-//       // Agregar parámetros a la solicitud
-//       request.fields['tipo'] = 'chats';
-
-//       // Agregar encabezados a la solicitud
-//       request.headers.addAll({
-//         "x-auth-token": token,
-//         "Content-Type": 'multipart/form-data',
-//       });
-
-//       // Agregar el archivo de audio a la solicitud
-//       request.files.add(await _http.MultipartFile.fromPath(
-//         'audio_file',
-//         audioFile.path,
-//       ));
-
-//       // Enviar la solicitud
-//       var response = await request.send();
-//       var responseBody = await _http.Response.fromStream(response);
-
-//       print('Audio response body: ${responseBody.body}');
-
-//       if (response.statusCode == 200) {
-//         Map<String, dynamic> jsonMap = json.decode(responseBody.body);
-
-//         // Extraer la URL o cualquier otro dato necesario
-//         return jsonMap['nombre'];
-//       } else if (response.statusCode == 404) {
-//         return null;
-//       } else if (response.statusCode == 401) {
-//         // Manejar la lógica para la respuesta 401 (no autorizado)
-//         return null;
-//       }
-//     }
-//   } catch (e) {
-//     print('Error uploading audio: $e');
-//     return null;
-//   }
-
-//   return null;
-// }
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+       
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 
 
 

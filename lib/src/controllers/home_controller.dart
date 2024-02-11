@@ -17,6 +17,8 @@ import 'package:provider/provider.dart';
 // // import 'package:image_picker/image_picker.dart';
 import 'package:ultrared/src/api/api_provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
+import 'package:ultrared/src/controllers/chat_controller.dart';
+import 'package:ultrared/src/service/notifications_service.dart';
 import 'package:ultrared/src/service/socket.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 // import 'package:ultrared/src/api/authentication_client.dart';
@@ -532,7 +534,7 @@ resetAllValues();
     notifyListeners();
   }
 
-//================================== LISTAR ALIMENTOS  ==============================//
+//================================== LISTAR CIUDADES  ==============================//
 
   List _listaTodasLasCiudades = [];
   List get getListaTodasLasCiudades => _listaTodasLasCiudades;
@@ -1344,7 +1346,7 @@ int _mensajesNoLeidos =0;
     );
 
     if (response != null) {
-      // print('EL TOQUEN NUEVO: $response');
+      print('EL TOQUEN NUEVO: $response');
         setValidaSession(true);
       await Auth.instance.saveSession(response);
 
@@ -1353,6 +1355,50 @@ int _mensajesNoLeidos =0;
       return response;
     }
     if (response == null) {
+
+
+      //*********************// */
+ var ctrlHome = context.read<HomeController>();  
+                    var ctrlSocket = context.read<SocketService>();  
+                    var ctrlChat = context.read<ChatController>();  
+               
+              
+              final response = await ctrlHome.cierreSesionUsuario(context);
+          
+                
+          
+          if (response != null ) {
+               
+            // //----------------------------------------------------//
+            //  final _tokenFCM = await Auth.instance.getTokenFireBase();
+            //  ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
+            //  await FirebaseService.deleteFirebaseInstance();
+            //  await Auth.instance.deleteTokenFireBase();
+            // //  ctrlSocket.disconnectSocket();
+          
+
+            //   SocketService().socket.disconnect();
+            //  Navigator.pop(context);
+            //  await Auth.instance.deleteSesion(context);
+               
+            //     //----------------------------------------------------//
+          
+
+
+           ctrlSocket.closeSocket();
+          await Auth.instance.deleteSesion(context);
+            ctrlSocket.resetInfoSocket();
+            ctrlChat.resetInfoChat();
+            ctrlHome.resetInfoHome();
+           
+          
+          
+              }else  {
+          
+                 NotificatiosnService.showSnackBarDanger( 'Ocurrió un error');
+                
+              } 
+//********************************// */
       await Auth.instance.deleteSesion(context);
     setValidaSession(false);
       return null;
@@ -1558,17 +1604,46 @@ int _mensajesNoLeidos =0;
     }
   }
 
-//****** VERIFICA CAMARA   *************//
-// bool _isCamara = false;
-// bool get getIsCamara=>_isCamara;
+//================================== LISTAR ALIMENTOS  ==============================//
 
-// void setIsCamara(bool _isCam){
+  List _listaEstadoDeCuenta = [];
+  List get getListaEstadoDeCuenta => _listaEstadoDeCuenta;
 
-// _isCamara =_isCam;
+  void setListaEstadoDeCuenta(List _data) {
+    _listaEstadoDeCuenta = [];
 
-// print('IS CAMARA : $_isCamara');
-//   notifyListeners();
-// }
+    _listaEstadoDeCuenta = _data;
+    print('INFO DE LA CONSULTA _listaEstadoDeCuenta $_listaEstadoDeCuenta');
+
+    notifyListeners();
+  }
+
+  bool? _errorEstadoDeCuenta; // sera nulo la primera vez
+  bool? get getErrorEstadoDeCuenta => _errorEstadoDeCuenta;
+
+  Future? buscaEstadoDeCuenta(BuildContext context) async {
+
+  final dataUser = await Auth.instance.getSession();
+   
+
+    final response = await _api.getAllEstadoDeCuenta( context: context,
+        token: dataUser!['token'],);
+    if (response != null) {
+      _errorEstadoDeCuenta = true;
+      setListaEstadoDeCuenta(response['data']);
+
+      // setListaTodasLasRazas(response['data'][0]['espRazas']);
+
+      notifyListeners();
+      return response;
+    }
+    if (response == null) {
+      _errorEstadoDeCuenta = false;
+      notifyListeners();
+      return null;
+    }
+    return null;
+  }
 
 //*************************************/
 

@@ -404,12 +404,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                       //   title: 'Título de la notificación',
                                                       //   body: 'Cuerpo de la notificación',
                                                       // );
-
+                                                      valueHome.buscaEstadoDeCuenta(context);
                                                       Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
                                                               builder: ((context) =>
-                                                                  DataTableEstadoCuenta())));
+                                                                  const DataTableEstadoCuenta())));
                                                     }
                                                     // () => Navigator.pushNamed(
                                                     //     context, 'SubmenuMascotas'),

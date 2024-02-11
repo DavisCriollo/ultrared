@@ -302,7 +302,7 @@ import 'package:ultrared/src/api/api_provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/login_controller.dart';
-import 'package:ultrared/src/pages/home.dart';
+
 import 'package:ultrared/src/pages/home_page.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
 import 'package:ultrared/src/service/socket.dart';
@@ -342,11 +342,7 @@ class _SplashPageState extends State<SplashPage> {
     final   response = await _api.validaTokenUsuarios(session['token']);
       // print('revisa token============> :$response');
        
-       if(response==404||response==401){
-           Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const SerClientePage()),
-          (Route<dynamic> route) => false);
-       }else if(response!=null) {
+     if(response!=null) {
           final _ctrlSocket= context.read<SocketService>();
     
           _ctrlSocket.connectSocket("${response['token']}", "${response['rucempresa']}");
