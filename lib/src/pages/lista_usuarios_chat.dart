@@ -75,14 +75,41 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
           centerTitle: true, // Centra el título en el AppBar
           elevation: 0,
           backgroundColor: cuaternaryColor, // Fondo blanco
-          title: Text("${widget.infoGrupo['chat_name']}",
-              style: GoogleFonts.poppins(
-                fontSize: size.iScreen(2.0),
-                fontWeight: FontWeight.w700,
-                color: Colors.black,
-                letterSpacing: -0.40,
-              ) // Color del título en negro
+          title: Row(
+            children: [
+              Container(
+                                alignment: Alignment.center,
+                                width: size.iScreen(5.0),
+                                height: size.iScreen(5.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  // color:  Colors.red,
+                                  // border: Border.all(color: Colors.blueAccent)
+                                ),
+                                child: Image.asset(
+                                  'assets/imgs/groups.png',
+                                  // scale: 1.5,
+                                  fit: BoxFit.contain,
+                                  width: size.iScreen(4.0),
+                                  scale: 1.0, // URL de la imagen
+                                ),
+                              
+                              ),
+
+              Container(
+                // color: Colors.red,
+                width: size.iScreen(30),
+                child: Text("${widget.infoGrupo['chat_name']}",
+                    style: GoogleFonts.poppins(
+                      fontSize: size.iScreen(2.0),
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                      letterSpacing: -0.40,
+                    ) // Color del título en negro
+                    ),
               ),
+            ],
+          ),
         ),
         body: Stack(
           children: [

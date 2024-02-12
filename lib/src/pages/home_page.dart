@@ -165,9 +165,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     // }
   }
 
-  // // void isUpdate() async {
-  //   await Auth.instance.deleteCache(context);
-  // }
+  void isUpdate() async {
+    await Auth.instance.deleteCache(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +194,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             upgrader: Upgrader(
               onUpdate: () {
                 // print('SE REALIZA LA ACCION DE ACTUALIZAR');
-                // isUpdate();
+                isUpdate();
                 return true;
               },
               canDismissDialog: false,

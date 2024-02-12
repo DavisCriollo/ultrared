@@ -298,14 +298,17 @@ class _DrawerMenuState extends State<DrawerMenu> {
               },
             ),
           ),
-          ListTile(
-            leading: const Icon(Icons.share),
-            title:  const Text('Compartir'),
-            onTap: () {
-              // Acción al hacer clic en "Configuración"
-              Navigator.pop(context);
-              _modalShare(context,size);
-            },
+          FadeInLeftBig(
+             duration: Duration(milliseconds: 400),
+            child: ListTile(
+              leading: const Icon(Icons.share),
+              title:  const Text('Compartir'),
+              onTap: () {
+                // Acción al hacer clic en "Configuración"
+                Navigator.pop(context);
+                _modalShare(context,size);
+              },
+            ),
           ),
           FadeInLeftBig(
              duration: Duration(milliseconds: 400),

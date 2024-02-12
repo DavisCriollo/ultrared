@@ -52,7 +52,7 @@ android {
         // versionName flutterVersionName
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 16
+        versionCode 17
         versionName '1.0.0'
 
 
