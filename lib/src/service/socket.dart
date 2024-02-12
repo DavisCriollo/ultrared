@@ -390,7 +390,7 @@ void connectSocket(String token, String ruc){
         'rucempresa': ruc,
         'x-auth-token': token,
       },
-      'reconnect': false, // disable reconnection
+      // 'reconnect': false, // disable reconnection
     });
 
 
@@ -521,7 +521,7 @@ _socket!.on('disconnect', (_) {
 
 //    // Función para cerrar la conexión del socket
  void closeSocket() {
-   _socket!.close();
+   _socket!.disconnect();
     print('Socket cerrado');
   } 
 

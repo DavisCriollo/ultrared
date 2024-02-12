@@ -298,15 +298,15 @@ class _DrawerMenuState extends State<DrawerMenu> {
               },
             ),
           ),
-          // ListTile(
-          //   leading: const Icon(Icons.share),
-          //   title:  const Text('Compartir'),
-          //   onTap: () {
-          //     // Acción al hacer clic en "Configuración"
-          //     Navigator.pop(context);
-          //     _modalShare(context,size);
-          //   },
-          // ),
+          ListTile(
+            leading: const Icon(Icons.share),
+            title:  const Text('Compartir'),
+            onTap: () {
+              // Acción al hacer clic en "Configuración"
+              Navigator.pop(context);
+              _modalShare(context,size);
+            },
+          ),
           FadeInLeftBig(
              duration: Duration(milliseconds: 400),
             child: ListTile(
@@ -463,7 +463,7 @@ Future<void> _modalShare(
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              // _onShare(context, 'https://acortar.link/kTJt3V');  //CAMBIAR CON EL URL DE LA TIENDA
+              _onShare(context, 'https://n9.cl/_ultra_');  //CAMBIAR CON EL URL DE LA TIENDA
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -844,9 +844,13 @@ class ApiProvider {
   }
 
 //================================= DELETE TOKEN FIREBASE ==============================//
-  Future validaTokenUsuarios(session, {
+  Future validaTokenUsuarios({
     String? token,
   }) async {
+
+
+//  print('****************> token API:  $token  ');
+
     try {
       final url = Uri.parse('$_dirURL/auth');
 
@@ -855,8 +859,8 @@ class ApiProvider {
         headers: {"x-auth-token": '$token'},
       );
 
-
-   print('INFO DE LA CONSULTA VALIDA TOKEN ${dataRespToken.body}');
+    
+  //  print('INFO DE LA CONSULTA VALIDA TOKEN ${dataRespToken.body}');
 
 
 

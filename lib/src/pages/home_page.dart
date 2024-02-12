@@ -57,9 +57,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      //  setUpNotificationPlugins();
-      // initializeNotifications();
-
+  
       initData();
     });
     super.initState();
@@ -85,6 +83,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
       await ctrlHome.validaInicioDeSesion(context);
+      // Navigator.pushNamed(context, 'splash');
     }
     if (state == AppLifecycleState.inactive) {
       print('EL ESTADO ES: $state');
@@ -125,11 +124,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
       Navigator.of(context).pushNamed('auxilo');
 
-      //  Navigator.of(context).push(MaterialPageRoute(
-      //                                             builder: (context) =>
-      //                                                 const AuxilioPage()));
-
-      //  final ctrlHome =context.read<HomeController>();
 
       ctrlHome.buscarNotificaciones(context);
     });
@@ -171,19 +165,19 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     // }
   }
 
-  void isUpdate() async {
-    await Auth.instance.deleteCache(context);
-  }
+  // // void isUpdate() async {
+  //   await Auth.instance.deleteCache(context);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    //  print('***hhhhh hhhhh hhhh hhhh hhh h***> ${widget.user}');
+    //  print('****************> REDIBUJA');
     @override
     final Responsive size = Responsive.of(context);
     // var socketProvider = context.read<SocketService>();
     final _ctrl = context.read<HomeController>();
-    _ctrl.buscarNoticias(context);
-    _ctrl.buscarNotificaciones(context);
+    // _ctrl.buscarNoticias(context);
+    // _ctrl.buscarNotificaciones(context);
 
     // final _chatCtrl = context.read<ChatController>();
     _ctrl.checkConnectivity();
@@ -200,7 +194,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             upgrader: Upgrader(
               onUpdate: () {
                 // print('SE REALIZA LA ACCION DE ACTUALIZAR');
-                isUpdate();
+                // isUpdate();
                 return true;
               },
               canDismissDialog: false,

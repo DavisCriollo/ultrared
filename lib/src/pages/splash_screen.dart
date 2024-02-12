@@ -339,7 +339,7 @@ class _SplashPageState extends State<SplashPage> {
  
     if (session != null  ) {
   
-    final   response = await _api.validaTokenUsuarios(session['token']);
+    final   response = await _api.validaTokenUsuarios(token:session['token']);
       // print('revisa token============> :$response');
        
      if(response!=null) {
@@ -356,6 +356,7 @@ class _SplashPageState extends State<SplashPage> {
        }
       
     } else {
+    
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const SerClientePage()),
           (Route<dynamic> route) => false);

@@ -40,6 +40,7 @@ class HomeController extends ChangeNotifier {
   Map<String, dynamic>? _user = {};
   Map<String, dynamic>? get getUser => _user;
   void setUserApp(Map<String, dynamic>? _data) {
+    _user = {};
     _user = _data;
      print('LA SESION ------------- >>>   $_user');
     notifyListeners();
@@ -1341,69 +1342,88 @@ int _mensajesNoLeidos =0;
 
   Future validaInicioDeSesion( BuildContext context) async {
     final dataUser = await Auth.instance.getSession();
+
+//  print('dataUser: $dataUser');
+
+
+
     final response = await _api.validaTokenUsuarios(
-    dataUser!['token'],
+    token:dataUser!['token'],
     );
 
     if (response != null) {
       print('EL TOQUEN NUEVO: $response');
+
+      
         setValidaSession(true);
       await Auth.instance.saveSession(response);
-
-      setUserApp(response);
-    
+        buscarNoticias(context);
+        buscarNotificaciones(context);
+        setUserApp(response);
+  
       return response;
     }
-    if (response == null) {
-
-
-      //*********************// */
- var ctrlHome = context.read<HomeController>();  
+   else{
+var ctrlHome = context.read<HomeController>();  
                     var ctrlSocket = context.read<SocketService>();  
-                    var ctrlChat = context.read<ChatController>();  
-               
-              
-              final response = await ctrlHome.cierreSesionUsuario(context);
-          
-                
-          
-          if (response != null ) {
-               
-            // //----------------------------------------------------//
-            //  final _tokenFCM = await Auth.instance.getTokenFireBase();
-            //  ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
-            //  await FirebaseService.deleteFirebaseInstance();
-            //  await Auth.instance.deleteTokenFireBase();
-            // //  ctrlSocket.disconnectSocket();
-          
-
-            //   SocketService().socket.disconnect();
-            //  Navigator.pop(context);
-            //  await Auth.instance.deleteSesion(context);
-               
-            //     //----------------------------------------------------//
-          
-
-
+                    var ctrlChat = context.read<ChatController>(); 
            ctrlSocket.closeSocket();
           await Auth.instance.deleteSesion(context);
             ctrlSocket.resetInfoSocket();
             ctrlChat.resetInfoChat();
             ctrlHome.resetInfoHome();
+            setValidaSession(false);
+      return null;
+   }
+
+
+      //*********************// */
+//  var ctrlHome = context.read<HomeController>();  
+//                     var ctrlSocket = context.read<SocketService>();  
+//                     var ctrlChat = context.read<ChatController>();  
+               
+              
+//               final response = await ctrlHome.cierreSesionUsuario(context);
+          
+                
+          
+//           if (response != null ) {
+               
+//             // //----------------------------------------------------//
+//             //  final _tokenFCM = await Auth.instance.getTokenFireBase();
+//             //  ctrlHome.setTokennotificacion(_tokenFCM, 'eliminar');
+//             //  await FirebaseService.deleteFirebaseInstance();
+//             //  await Auth.instance.deleteTokenFireBase();
+//             // //  ctrlSocket.disconnectSocket();
+          
+
+//             //   SocketService().socket.disconnect();
+//             //  Navigator.pop(context);
+//             //  await Auth.instance.deleteSesion(context);
+               
+//             //     //----------------------------------------------------//
+          
+
+
+//            ctrlSocket.closeSocket();
+//           await Auth.instance.deleteSesion(context);
+//             ctrlSocket.resetInfoSocket();
+//             ctrlChat.resetInfoChat();
+//             ctrlHome.resetInfoHome();
            
           
           
-              }else  {
+//               }else  {
           
-                 NotificatiosnService.showSnackBarDanger( 'Ocurrió un error');
+//                  NotificatiosnService.showSnackBarDanger( 'Ocurrió un error');
                 
-              } 
+//               } 
 //********************************// */
-      await Auth.instance.deleteSesion(context);
-    setValidaSession(false);
-      return null;
+    //   await Auth.instance.deleteSesion(context);
+    // setValidaSession(false);
+    //   return null;
     }
-  }
+  
 //---------------------------------//
 //====== CIERRA LA SESION DEL USUARIO ==========//
 
