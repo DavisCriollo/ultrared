@@ -418,7 +418,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
             width: size.wScreen(100),
             // height: 19,
             child: Text(
-              'Versión 1.0.0',
+              'Versión 1.0.1',
               textAlign: TextAlign.left,
               style: GoogleFonts.poppins(
                   fontSize: size.iScreen(1.5),

@@ -52,8 +52,8 @@ android {
         // versionName flutterVersionName
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 17
-        versionName '1.0.0'
+        versionCode 18
+        versionName '1.0.1'
 
 
          multiDexEnabled true // <-- ADD THIS in the defaultConfig section

@@ -24,6 +24,20 @@ class NotificatiosnService {
     );
     messengerKey.currentState!.showSnackBar(snackBar);
   }
+   static showSnackBarErrorAlerta(String message) {
+    final snackBar =  SnackBar(
+      duration : Duration(seconds: 6),
+ backgroundColor: tercearyColor,
+      content: Text(
+        message,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 20
+        ),
+      ),
+    );
+    messengerKey.currentState!.showSnackBar(snackBar);
+  }
   static showSnackBarSuccsses(String message) {
     final snackBar =  SnackBar(
       // backgroundColor: Colors.green.withOpacity(0.9),

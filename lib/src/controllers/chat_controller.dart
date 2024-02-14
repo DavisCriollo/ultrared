@@ -947,6 +947,62 @@ Future<void> descargarYGuardarVideo(String url,BuildContext context) async {
 }
 
 //****************************************************/
+Future<void> descargarImagen(String url,BuildContext context) async {
+  // Comprueba y solicita permiso de escritura en el almacenamiento externo
+  var status = await Permission.storage.status;
+  if (!status.isGranted) {
+    await Permission.storage.request();
+  }
+
+  if (status.isGranted) {
+    // Configura el cliente Dio
+    Dio dio = Dio();
+    // Obtén el nombre del archivo desde la URL
+    String fileName = url.split("/").last;
+    // Define la ruta de destino en la carpeta de fotos
+    String savePath = '/storage/emulated/0/DCIM/Camera/$fileName';
+
+    try {
+      // Descarga el video
+      await dio.download(url, savePath);
+      // print('Imagen descargada en $savePath');
+      // setDescargaOk(true);
+     
+
+
+
+
+      // Muestra un toast indicando que la descarga se ha completado
+      Fluttertoast.showToast(
+        msg: 'Imagen Guardada ',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } catch (e) {
+      print('Error al descargar la Imagen: $e');
+      // setDescargaOk(false);
+      // setPressed(false);
+      // Muestra un toast indicando que hubo un error en la descarga
+      Fluttertoast.showToast(
+        msg: 'Error en la descarga',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  } else {
+    print('Permiso de almacenamiento denegado');
+  }
+}
+
+//****************************************************/
   //***************************** */
 
 }

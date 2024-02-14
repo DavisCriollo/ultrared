@@ -37,6 +37,7 @@ import 'package:ultrared/src/widgets/drawer_menu.dart';
 
 import 'package:ultrared/src/widgets/elementoSOS.dart';
 import 'package:ultrared/src/widgets/elementosHome.dart';
+
 import 'package:ultrared/src/widgets/modal_permisos.dart';
 import 'package:ultrared/src/widgets/no_data.dart';
 import 'package:upgrader/upgrader.dart';
@@ -499,11 +500,24 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                         valueHome
                                                             .activateAlarm();
 
-                                                        print(
-                                                            'esta la info para el bon de panico ------> $_dataPanico');
+                                                        // print(
+                                                        //     'esta la info para el bon de panico ------> $_dataPanico');
+
+
                                                         _ctrlSocket.emitEvent(
                                                             'client:boton-panico',
                                                             _dataPanico);
+                                                          
+
+
+                                                      if ( _ctrlSocket.getMsgError!='') {
+                                                        NotificatiosnService.showSnackBarErrorAlerta(_ctrlSocket.getMsgError);
+                                                        _ctrlSocket.setMsgErrorServer('');
+                                                        _ctrl.desActivateAlarm();
+                                                        // showErroAlerta(context, size, '${_ctrlSocket.getMsgError}');
+                                                      } 
+
+
                                                       }
                                                     } else {
                                                       NotificatiosnService
@@ -525,84 +539,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                   }
                                                   //**************/
 
-                                                  // // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
-                                                  // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
-                                                  //  final status = await Permission .location.request();
-                                                  //       if (status == PermissionStatus .granted) {
-                                                  //         //   // print('============== SI TIENE PERMISOS');
-                                                  //         await valueHome
-                                                  //             .getLocation();
-                                                  //         if (valueHome.getLocationGPS.isNotEmpty) {
-
-                                                  //     final _dataPanico = {
-                                                  //   "coordenadas": {
-                                                  //     "latitud":valueHome.getLocationGPS['latitud'],
-                                                  //     "longitud":valueHome.getLocationGPS['longitud']
-                                                  //   },
-                                                  //   "rucempresa": "ULTRA2022",
-                                                  //   "perId": valueHome.getUser!['id']
-                                                  // };
-
-                                                  // valueHome.activateAlarm();
-
-                                                  // print('esta la info para el bon de panico ------> $_dataPanico');
-                                                  // _ctrlSocket.emitEvent('client:boton-panico', _dataPanico);
-
-                                                  //         }
-                                                  //       } else {
-                                                  //         Navigator.pushNamed(
-                                                  //             context, 'gps');
-                                                  //       }
-
-                                                  //*******************//
-                                                  //   valueHome.checkGpsStatus();
-
-                                                  //   if (valueHome.gpsStatus==true ) {
-                                                  //   //   final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
-                                                  //   //            await valueHome
-                                                  //   //             .getLocation();
-                                                  //   //         if (valueHome.getLocationGPS.isNotEmpty) {
-
-                                                  //   //     final _dataPanico = {
-                                                  //   //   "coordenadas": {
-                                                  //   //     "latitud":valueHome.getLocationGPS['latitud'],
-                                                  //   //     "longitud":valueHome.getLocationGPS['longitud']
-                                                  //   //   },
-                                                  //   //   "rucempresa": "ULTRA2022",
-                                                  //   //   "perId": valueHome.getUser!['id']
-                                                  //   // };
-
-                                                  //   // valueHome.activateAlarm();
-
-                                                  //   // print('esta la info para el bon de panico ------> ${valueHome.gpsStatus}');
-                                                  //   // _ctrlSocket.emitEvent('client:boton-panico', _dataPanico);
-
-                                                  //   //         }
-
-                                                  //  valueHome.getCurrentLocation() ;
-                                                  //        if (valueHome.getLocationGPS.isNotEmpty) {
-                                                  //          final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
-
-                                                  //       final _dataPanico = {
-                                                  //     "coordenadas": {
-                                                  //       "latitud":valueHome.getLocationGPS['latitud'],
-                                                  //       "longitud":valueHome.getLocationGPS['longitud']
-                                                  //     },
-                                                  //     "rucempresa": "ULTRA2022",
-                                                  //     "perId": valueHome.getUser!['id']
-                                                  //   };
-
-                                                  //   valueHome.activateAlarm();
-
-                                                  //   print('esta la info para el bon de panico ------> ${valueHome.gpsStatus}');
-                                                  //   _ctrlSocket.emitEvent('client:boton-panico', _dataPanico);
-
-                                                  //           }
-
-                                                  //   } else {
-                                                  //       NotificatiosnService.showSnackBarDanger('Por favor active su GPS');
-
-                                                  //   }
 
                                                   //*******************/
                                                 }
@@ -1016,6 +952,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         //   height: size.hScreen(100),
         //   width: size.wScreen(100),
         //   child: NoSession(label: 'Su sessión ha expirado ')),);
+
+
+//*******  ERROR DEL SOCKET ALERT  ************//
+
+
+
+
+
+
+
       },
     );
   }
@@ -1118,6 +1064,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 //       },
 //     );
 //   }
+
+
+
 
 }
 

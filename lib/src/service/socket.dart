@@ -282,100 +282,19 @@ Function get emit =>this._socket!.emit;
   List get getListaUsuariosChat => _listaUsuariosChat;
 
 
-// //*******************************************************//
+// //**********  MUESTRA ALERTA DE ERROR *********************************************//
 
+   String _msgErrorServer='';
 
-//     // MUESTRA LOS GRUPOL CHAT
-//     _socket.on('server:lista-chats-grupos', (data) {
-//       print('Los grupos del servidor  -------#####   : $data');
+   String get getMsgError=>_msgErrorServer;
 
-//       _listaGruposChat = [];
-//       _listaGruposChat = data;
+   void setMsgErrorServer ( String _valor){
+    _msgErrorServer=_valor;
+    print('ESTADO DEL MSG ALERT : $_valor');
+    notifyListeners();
+   }
 
-
-
-//       notifyListeners();
-//     });
-//     _socket.on('server:nuevanotificacion', (data) {
-//       // print('las NOTIFICACIONES  ------->   : $data');
-
-//       _listaNotificaciones = {};
-//       _listaNotificaciones = data;
-//       _crtlHome.setListaTodasLasNotificaciones([data]);
-
-//       notifyListeners();
-//     });
-//     // Ejemplo de cómo manejar un evento personalizado
-//     _socket.on('server:lista-usuarios', (data) {
-//       // print('LISTA DE LOS USUARIOS DEL GRUPO   ------->> : $data');
-
-//       _listaUsuariosChat = [];
-
-//       _listaUsuariosChat = data;
-//       notifyListeners();
-//     });
-
-//     //ESCUCHA LOS MENSAJES CHAT
-//     _socket.on('server:send-mensaje', (data) {
-//       print('MENSAJE CHAT DDDD: $data');
-
-// //********VALIDAR ***********/
-//       if (_isEnChat == true) {
-//         _socket.emit('client:read-mensaje', {
-//           "rucempresa": "ULTRA2022", // login
-//           "rol": getUser!['rol'], // login
-//           "chat_id": data['chat_id'], // propiedad chat_id del mensaje
-//           "person_id": getUser!['id'], // login
-//           "last_read_message_id":
-//               data['message_id'] // propiedad message_id del mensaje
-//         });
-//       }
-
-//       Map<dynamic, dynamic> _info = {};
-//       print('ESTOO ES ESTA : $_info');
-
-//       _info = {
-//         "rucempresa": "ULTRA2022", // login
-//         "id_user": getUser!['id'],
-//       };
-//       print('ESTOO ES : $_info');
-
-//       _socket.emit('client:totales-actualizados', _info);
-
-//       setListaDeMensajesChat(data);
-
-//       notifyListeners();
-//       // setMensajeDesdeServidor(data); // Actualizar el mensaje en el modelo
-//     });
-
-//     _socket.on('server:totales-actualizados', (data) {
-//       print('el usuario del MOVIL ------------------> : ${data}');
-
-//       setGruposChat(data['refresh_groups']);
-//       setMsgNoLeidos(data['unread_messages']);
-
-//       notifyListeners();
-//     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ //*******************************************************//
 
 
 
@@ -400,7 +319,17 @@ _socket!.on('connect_error', (error) {
  notifyListeners();
 });
     
-   
+   _socket!.on('server:error', (error) {
+// _msgErrorServer='';
+setMsgErrorServer(error['msg']);
+
+  print('Error del Socket : $error');
+ notifyListeners();
+});
+
+
+
+
  // Manejar eventos Socket.io según tus necesidades
 _socket!.on('connect', (_) {
   _socketStatus=ServerStatus.OnLine;
@@ -536,12 +465,7 @@ void emitEvent(String eventName, dynamic data) {
   }
 }
 
-//   // Función para escuchar eventos del socket
-//   void listenToEvent(String eventName, void Function(dynamic) callback) {
-//     _socket.on(eventName, (data) {
-//       callback(data);
-//     });
-//   }
+
 
 
   void deleteListChatSocket() {

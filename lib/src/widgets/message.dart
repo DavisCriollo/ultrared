@@ -479,6 +479,7 @@ String _formatDuration(int milliseconds) {
 }
 
 Container _messajeImagen(BuildContext context,List _listUrl,Responsive size) {
+  final ctrlChar= context.read<ChatController>();
   return Container(
     // margin: EdgeInsets.all(size.iScreen(0.5)),
     //  padding: EdgeInsets.all(size.iScreen(0.2)),
@@ -498,6 +499,10 @@ Container _messajeImagen(BuildContext context,List _listUrl,Responsive size) {
                                                Navigator.push(context,
         MaterialPageRoute(builder: ((context) => PreviewPhoto(infoImage:_infoImage))));
                                             
+                                          },
+                                          onLongPress: (){
+
+                                            ctrlChar.descargarImagen(e,context);
                                           },
         child: Container(
            constraints: BoxConstraints(

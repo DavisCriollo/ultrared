@@ -1230,6 +1230,13 @@ int _mensajesNoLeidos =0;
       notifyListeners();
     });
   }
+
+    void desActivateAlarm() {
+    _alarmActivated = false;
+    notifyListeners();
+
+   
+  }
 //----------------GET INFO PERFIL------------------//
 
   Map<String, dynamic> _infoUsuarioById = {};
