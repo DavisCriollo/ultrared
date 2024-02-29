@@ -18,6 +18,7 @@ import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
+import 'package:ultrared/src/widgets/cabeceraApp.dart';
 import 'package:ultrared/src/widgets/message.dart';
 import 'package:ultrared/src/widgets/modal_permisos.dart';
 
@@ -305,412 +306,430 @@ Navigator.of(context).pop();
       final _ctrlChat= context.read<ChatController>();
 
 
-    return GestureDetector(
-       onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-         appBar: AppBar(
-              iconTheme: const IconThemeData(color: Colors.black),
-              centerTitle: true, // Centra el título en el AppBar
-              elevation: 0,
-              backgroundColor: cuaternaryColor, // Fondo blanco
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                   
-                 Container(
-                          width: size.iScreen(4.0),
-                          height: size.iScreen(4.0),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.grey, width: 2.0),
-                          ),
-                          child: ClipOval(
-                          child: Image.asset(
-                            'assets/imgs/groups.png', // Reemplaza con la ruta de tu imagen en los activos
-                            width: size.iScreen(7.5),
-                            height: size.iScreen(7.5),
-                            fit: BoxFit.cover,
-                          ),
-                        ),),
-                  // Spacer(),
-                  Container(
-                    // color: Colors.red,
-                    width: size.wScreen(45),
-                    child: Text(
-                       '${_ctrlChat.getInfoChat['grupo']['chat_name']}', 
-                      style: GoogleFonts.poppins(
-                        fontSize: size.iScreen(2.0),
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                        letterSpacing: -0.40,
-                      ),
-                      overflow: TextOverflow.ellipsis, // Color del título en negro
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-
-
-                                 final _ctrlSocket =context.read<SocketService>();
-                  _ctrlSocket.emitEvent('client:lista-usuarios', { "chat_id" : _ctrlChat.getInfoChat['grupo']['chat_id'] });
-
-
-
-                      Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: ((context) => ListaUsuariosChat(
-                                            infoGrupo: _ctrlChat.getInfoChat['grupo'],
-                                          ))));
-                    },
-                    child: Container(
-                      width: size.wScreen(10.0),
-                      height: size.hScreen(3.5),
-                      padding: EdgeInsets.all(size.iScreen(0.3)),
-                      decoration: ShapeDecoration(
-                        color: Color(0xFFB32623),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        shadows: [
-                          BoxShadow(
-                            color: Color(0x33123B93),
-                            blurRadius: 20,
-                            offset: Offset(8, 8),
-                            spreadRadius: 0,
-                          )
-                        ],
-                      ),
-                      child: Center(
-                        child: Icon(Icons.segment_outlined,color:  Colors.white,)
-                      ),
-                    ),
-                  ),
+    return SafeArea(
+      child: GestureDetector(
+         onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          //  appBar: AppBar(
+          //       iconTheme: const IconThemeData(color: Colors.black),
+          //       centerTitle: true, // Centra el título en el AppBar
+          //       elevation: 0,
+          //       backgroundColor: cuaternaryColor, // Fondo blanco
+          //       title: Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: [
+                     
+          //          Container(
+          //                   width: size.iScreen(4.0),
+          //                   height: size.iScreen(4.0),
+          //                   decoration: BoxDecoration(
+          //                     shape: BoxShape.circle,
+          //                     border: Border.all(color: Colors.grey, width: 2.0),
+          //                   ),
+          //                   child: ClipOval(
+          //                   child: Image.asset(
+          //                     'assets/imgs/groups.png', // Reemplaza con la ruta de tu imagen en los activos
+          //                     width: size.iScreen(7.5),
+          //                     height: size.iScreen(7.5),
+          //                     fit: BoxFit.cover,
+          //                   ),
+          //                 ),),
+          //           // Spacer(),
+          //           Container(
+          //             // color: Colors.red,
+          //             width: size.wScreen(45),
+          //             child: Text(
+          //                '${_ctrlChat.getInfoChat['grupo']['chat_name']}', 
+          //               style: GoogleFonts.poppins(
+          //                 fontSize: size.iScreen(2.0),
+          //                 fontWeight: FontWeight.w700,
+          //                 color: Colors.black,
+          //                 letterSpacing: -0.40,
+          //               ),
+          //               overflow: TextOverflow.ellipsis, // Color del título en negro
+          //             ),
+          //           ),
+          //           InkWell(
+          //             onTap: () {
     
-                ],
-              ),
-            ),
-            body: Container(
-              // color:Colors.yellow,
-              margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
-              width: size.wScreen(100),
-              height: size.hScreen(100),
-              child:
-              Consumer<SocketService>(builder: (_, valueChat, __) {  
-                    return Stack(
-                      children: [
-                        Column(
-                      
-                          children: [
-                            Expanded(
-                              child: NotificationListener<ScrollNotification>(
-                                 onNotification: (scrollNotification) {
-          setState(() {
-            _showButton = scrollNotification.metrics.pixels > 0;
-          });
-          return true;
-        },
-                                child: ListView.builder(
-                                  reverse: true,
-                                  padding: EdgeInsets.only(bottom: 16.0), // Agrega espacio en la parte inferior
-                                   controller: _scrollController,
-                                physics: const BouncingScrollPhysics(),
-                                          itemCount: valueChat.getListaDeMensajeChat.length+1,
-                                          itemBuilder: (BuildContext context, int index) {
-                                
-                                              if (index<valueChat.getListaDeMensajeChat.length) {
-                                final _chat = valueChat.getListaDeMensajeChat[index];
-                                            return 
-                                            
-                                            // //********************************//
-                                            //  Container(
-                                            //   width: size.wScreen(100),
-                                            //   height: size.iScreen(10.0),
-                                            //   color: Colors.grey.shade300,
-                                            //   child: Text('${_chat['message_text']} -- ${_chat['message_id']}'));
-                                            //   //********************************//
-                              
-                              
-                                                _chat.isNotEmpty?
-                                    MessageChat(
-                                      type: 'text',
-                                      user:_ctrlHome.getUser!,
-                                      messaje:_chat,
-                                     
-                                       ):Container() ;
-                                        
-                              
-                              
-                              
-                              
-                                               // //********************************//
-                              
-                              
-                                          }
-                                          
-                                          
-                                          
-                                          
-                                          
-                                          
-                                          
-                                          
-                                          else{
-                                 return Consumer<ChatController>(
-                                      builder: (_, valueNext, __) {
-                                        return valueNext.getpage == null
-                                            ? Container(
+    
+          //                          final _ctrlSocket =context.read<SocketService>();
+          //           _ctrlSocket.emitEvent('client:lista-usuarios', { "chat_id" : _ctrlChat.getInfoChat['grupo']['chat_id'] });
+    
+    
+    
+          //               Navigator.push(
+          //                           context,
+          //                           MaterialPageRoute(
+          //                               builder: ((context) => ListaUsuariosChat(
+          //                                     infoGrupo: _ctrlChat.getInfoChat['grupo'],
+          //                                   ))));
+          //             },
+          //             child: Container(
+          //               width: size.wScreen(10.0),
+          //               height: size.hScreen(3.5),
+          //               padding: EdgeInsets.all(size.iScreen(0.3)),
+          //               decoration: ShapeDecoration(
+          //                 color: Color(0xFFB32623),
+          //                 shape: RoundedRectangleBorder(
+          //                   borderRadius: BorderRadius.circular(8),
+          //                 ),
+          //                 shadows: [
+          //                   BoxShadow(
+          //                     color: Color(0x33123B93),
+          //                     blurRadius: 20,
+          //                     offset: Offset(8, 8),
+          //                     spreadRadius: 0,
+          //                   )
+          //                 ],
+          //               ),
+          //               child: Center(
+          //                 child: Icon(Icons.segment_outlined,color:  Colors.white,)
+          //               ),
+          //             ),
+          //           ),
+      
+          //         ],
+          //       ),
+          //     ),
+              body: Container(
+                // color:Colors.yellow,
+                margin: EdgeInsets.symmetric(horizontal: size.iScreen(0.0)),
+                width: size.wScreen(100),
+                height: size.hScreen(100),
+                child:
+                Consumer<SocketService>(builder: (_, valueChat, __) {  
+                      return Stack(
+                        children: [
+                          Column(
+                        
+                            children: [
+    
+                    CabeceraChatApp(colorBase:Colors.white,size: size,title:'${_ctrlChat.getInfoChat['grupo']['chat_name']}', onTap: (){                final _ctrlSocket =context.read<SocketService>();
+                    _ctrlSocket.emitEvent('client:lista-usuarios', { "chat_id" : _ctrlChat.getInfoChat['grupo']['chat_id'] });
+    
+    
+    
+                        Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: ((context) => ListaUsuariosChat(
+                                              infoGrupo: _ctrlChat.getInfoChat['grupo'],
+                                            ))));},submenu: true,),
+                                                
+    
+    
+                              Expanded(
+                                child: NotificationListener<ScrollNotification>(
+                                   onNotification: (scrollNotification) {
+            setState(() {
+              _showButton = scrollNotification.metrics.pixels > 0;
+            });
+            return true;
+          },
+                                  child: ListView.builder(
+                                    reverse: true,
+                                    padding: EdgeInsets.only(bottom: 16.0), // Agrega espacio en la parte inferior
+                                     controller: _scrollController,
+                                  physics: const BouncingScrollPhysics(),
+                                            itemCount: valueChat.getListaDeMensajeChat.length+1,
+                                            itemBuilder: (BuildContext context, int index) {
+                                  
+                                                if (index<valueChat.getListaDeMensajeChat.length) {
+                                  final _chat = valueChat.getListaDeMensajeChat[index];
+                                              return 
                                               
-                                                margin: EdgeInsets.symmetric(
-                                                    vertical: size.iScreen(2.0)),
-                                                child: Center(
-                                                  child: Container(
-                                                     padding: EdgeInsets.symmetric(
-                                                    vertical: size.iScreen(0.2),
-                                                    horizontal:  size.iScreen(0.5),
-                                                    ),
-                                                    decoration:BoxDecoration(borderRadius: BorderRadius.circular(8),
-                                                    color: Colors.lightGreen,),
-                                                    
-                                                    child: Text(
-                                                      'Estás al día',
-                                                      style: GoogleFonts.lexendDeca(
-                                                          fontSize:
-                                                              size.iScreen(1.3),
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.normal),
-                                                    ),
-                                                  ),
-                                                ))
-                                            : valueChat.getListaDeMensajeChat.length >
-                                                    25
-                                                ? Container(
-                                                    margin: EdgeInsets.symmetric(
-                                                        vertical:
-                                                            size.iScreen(2.0)),
-                                                    child: const Center(
-                                                        child:
-                                                            CircularProgressIndicator()))
-                                                : Container();
-                                      },
-                                    );
+                                              // //********************************//
+                                              //  Container(
+                                              //   width: size.wScreen(100),
+                                              //   height: size.iScreen(10.0),
+                                              //   color: Colors.grey.shade300,
+                                              //   child: Text('${_chat['message_text']} -- ${_chat['message_id']}'));
+                                              //   //********************************//
                                 
-                                          }
-                                            
-                                          },
+                                
+                                                  _chat.isNotEmpty?
+                                      MessageChat(
+                                        type: 'text',
+                                        user:_ctrlHome.getUser!,
+                                        messaje:_chat,
+                                       
+                                         ):Container() ;
                                           
-                                        ),
-                              ),
-                            ),
-                             _buildInputField(context, size),
-                          ],
-                        ),
-                          Consumer<ChatController>(builder: (_, values, __) { 
-
-
-        return Positioned(
-  bottom: 50.0,
-   child: 
-   
-   values.getFileChat!?
-   Container(
-      margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
-     child: Column(
-       children: [
-        
-          FadeInUp(
-            child: GestureDetector(
-                                  onTap:
-                                      () async{
-                                   
-                            
-                            // //**************************/
- await _ctrlHome.checkAndRequestPermissions();
-           
-                    if (_ctrlHome.hasCameraPermission) {
-                          values.setFileChat(false);
-                            values.setTipoMensajeChat('image');
-                             bottomSheetImagen(_ctrlHome,context,size,values.getInfoChat);
-                    } else {
-                      showPermissionModal(context,size,'Es necesario otorgar permisos de cámara para utilizar el chat de nuestra aplicación.');
-                      
-                    }   
-
-
-                                        
-                                      } ,
-                                  child: Container(
-                                    margin: EdgeInsets.symmetric(vertical: size.iScreen(0.4)),
-                                    width: size.iScreen(
-                                        5.5), // Puedes ajustar el tamaño del contenedor según tus necesidades
-                                    height: size.iScreen(5.5),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape
-                                          .circle, // Hace que el contenedor sea circular
-                                      color: Colors.grey
-                                              .shade400, // Puedes ajustar el color del contenedor
-                                    ),
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.image_rounded,
-                                        color:Colors.black,
-                                      ),
-                                    ),
-                                  ),
+                                
+                                
+                                
+                                
+                                                 // //********************************//
+                                
+                                
+                                            }
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            else{
+                                   return Consumer<ChatController>(
+                                        builder: (_, valueNext, __) {
+                                          return valueNext.getpage == null
+                                              ? Container(
+                                                
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: size.iScreen(2.0)),
+                                                  child: Center(
+                                                    child: Container(
+                                                       padding: EdgeInsets.symmetric(
+                                                      vertical: size.iScreen(0.2),
+                                                      horizontal:  size.iScreen(0.5),
+                                                      ),
+                                                      decoration:BoxDecoration(borderRadius: BorderRadius.circular(8),
+                                                      color: Colors.lightGreen,),
+                                                      
+                                                      child: Text(
+                                                        'Estás al día',
+                                                        style: GoogleFonts.lexendDeca(
+                                                            fontSize:
+                                                                size.iScreen(1.3),
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.normal),
+                                                      ),
+                                                    ),
+                                                  ))
+                                              : valueChat.getListaDeMensajeChat.length >
+                                                      25
+                                                  ? Container(
+                                                      margin: EdgeInsets.symmetric(
+                                                          vertical:
+                                                              size.iScreen(2.0)),
+                                                      child: const Center(
+                                                          child:
+                                                              CircularProgressIndicator()))
+                                                  : Container();
+                                        },
+                                      );
+                                  
+                                            }
+                                              
+                                            },
+                                            
+                                          ),
                                 ),
-          ),
+                              ),
+                               _buildInputField(context, size),
+                            ],
+                          ),
+                            Consumer<ChatController>(builder: (_, values, __) { 
+    
+    
+          return Positioned(
+      bottom: 50.0,
+       child: 
+       
+       values.getFileChat!?
+       Container(
+        margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
+       child: Column(
+         children: [
+          
             FadeInUp(
               child: GestureDetector(
-                                  onTap:
-                                      () async{
-
-
-                                        
-                                    
-
-
-                                      await _ctrlHome.checkAndRequestPermissions();
-           
-                    if (_ctrlHome.hasCameraPermission) {
-                           values.setFileChat(false);
-                                      values.setTipoMensajeChat('video');
-                                      bottomSheetVideo(_ctrlHome,context,size,values.getInfoChat);
-                    } else {
-                      showPermissionModal(context,size,'Es necesario otorgar permisos de cámara para utilizar el chat de nuestra aplicación.');
-                      
-                    } 
-
-
-
-
-                                      
-                                        
-                                      } ,
-                                  child: Container(
-                                    margin: EdgeInsets.symmetric(vertical: size.iScreen(0.4)),
-                                    width: size.iScreen(
-                                        6.0), // Puedes ajustar el tamaño del contenedor según tus necesidades
-                                    height: size.iScreen(6.0),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape
-                                          .circle, // Hace que el contenedor sea circular
-                                      color: Colors.grey
-                                              .shade400, // Puedes ajustar el color del contenedor
-                                    ),
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.video_call_rounded,
-                                        color:Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-            ),
-                               FadeInUp(
-                                 child: GestureDetector(
-                                  onTap:
-                                      ()async{
-
-
-                      // if (recorderState.isRecording) {
-                      //   await recorderState.stopRecording(_record, context);
-                      // } else {
-                      //   await recorderState.startRecording(context,_record, _audioPlayer);
-                      // }
-      
-                                         
+                                    onTap:
+                                        () async{
                                      
-                                      //****************************/
-                                              await _ctrlHome.checkAndRequestPermissions();
-           
-                    if (_ctrlHome.hasCameraPermission) {
-                           values.setFileChat(false);
-                                      values.setTipoMensajeChat('audio');
-                    } else {
-                      showPermissionModal(context,size,'Es necesario otorgar permisos de micrófono para utilizar el chat de nuestra aplicación.');
-                      
-                    } 
-
-                                           //******************************/
-
-
-
-
-                // if (isRecording) {
-                //   await _stopRecording();
-                // } else {
-                //   await _startRecording();
-                // }
-
-
-               await _startRecording(size,values.getInfoChat);
-
-
-
-//******************************/
-
-
-
-
-
-
-
-                                      //****************************/
-
-                                        
-                                      } ,
-                                  child: Container(
-                                    margin: EdgeInsets.symmetric(vertical: size.iScreen(0.4)),
-                                    width: size.iScreen(
-                                        6.0), // Puedes ajustar el tamaño del contenedor según tus necesidades
-                                    height: size.iScreen(6.0),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape
-                                          .circle, // Hace que el contenedor sea circular
-                                      color: Colors.grey
-                                              .shade400, // Puedes ajustar el color del contenedor
-                                    ),
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.record_voice_over_outlined,
-                                        color:Colors.black,
+                              
+                              // //**************************/
+     await _ctrlHome.checkAndRequestPermissions();
+             
+                      if (_ctrlHome.hasCameraPermission) {
+                            values.setFileChat(false);
+                              values.setTipoMensajeChat('image');
+                               bottomSheetImagen(_ctrlHome,context,size,values.getInfoChat);
+                      } else {
+                        showPermissionModal(context,size,'Es necesario otorgar permisos de cámara para utilizar el chat de nuestra aplicación.');
+                        
+                      }   
+    
+    
+                                          
+                                        } ,
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(vertical: size.iScreen(0.4)),
+                                      width: size.iScreen(
+                                          5.5), // Puedes ajustar el tamaño del contenedor según tus necesidades
+                                      height: size.iScreen(5.5),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape
+                                            .circle, // Hace que el contenedor sea circular
+                                        color: Colors.grey
+                                                .shade400, // Puedes ajustar el color del contenedor
+                                      ),
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.image_rounded,
+                                          color:Colors.black,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                                             ),
-                               ),
-           
-       ],
-     ),
-   ):Container(),
- );
-
-               
-       
-
-
-        },)  
-                      ],
-                    );
-              },)),
-              
-            floatingActionButton: Visibility(
-        visible: _showButton,
-        child: FloatingActionButton(
-          mini: true,
-          onPressed: () {
-            // Scroll to the top when the button is pressed
-            // Scrollable.ensureVisible(context,
-            //     alignment: 5.0, duration: Duration(milliseconds: 500));
-            scrollToEnd();
-          },
-          child: Icon(Icons.arrow_downward),
-          backgroundColor: Colors.grey, // Cambia el color a rojo
-        ),
-      ),
+            ),
+              FadeInUp(
+                child: GestureDetector(
+                                    onTap:
+                                        () async{
     
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,   
+    
+                                          
+                                      
+    
+    
+                                        await _ctrlHome.checkAndRequestPermissions();
+             
+                      if (_ctrlHome.hasCameraPermission) {
+                             values.setFileChat(false);
+                                        values.setTipoMensajeChat('video');
+                                        bottomSheetVideo(_ctrlHome,context,size,values.getInfoChat);
+                      } else {
+                        showPermissionModal(context,size,'Es necesario otorgar permisos de cámara para utilizar el chat de nuestra aplicación.');
+                        
+                      } 
+    
+    
+    
+    
+                                        
+                                          
+                                        } ,
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(vertical: size.iScreen(0.4)),
+                                      width: size.iScreen(
+                                          6.0), // Puedes ajustar el tamaño del contenedor según tus necesidades
+                                      height: size.iScreen(6.0),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape
+                                            .circle, // Hace que el contenedor sea circular
+                                        color: Colors.grey
+                                                .shade400, // Puedes ajustar el color del contenedor
+                                      ),
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.video_call_rounded,
+                                          color:Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+              ),
+                                 FadeInUp(
+                                   child: GestureDetector(
+                                    onTap:
+                                        ()async{
+    
+    
+                        // if (recorderState.isRecording) {
+                        //   await recorderState.stopRecording(_record, context);
+                        // } else {
+                        //   await recorderState.startRecording(context,_record, _audioPlayer);
+                        // }
+        
+                                           
+                                       
+                                        //****************************/
+                                                await _ctrlHome.checkAndRequestPermissions();
+             
+                      if (_ctrlHome.hasCameraPermission) {
+                             values.setFileChat(false);
+                                        values.setTipoMensajeChat('audio');
+                      } else {
+                        showPermissionModal(context,size,'Es necesario otorgar permisos de micrófono para utilizar el chat de nuestra aplicación.');
+                        
+                      } 
+    
+                                             //******************************/
+    
+    
+    
+    
+                  // if (isRecording) {
+                  //   await _stopRecording();
+                  // } else {
+                  //   await _startRecording();
+                  // }
+    
+    
+                 await _startRecording(size,values.getInfoChat);
+    
+    
+    
+    //******************************/
+    
+    
+    
+    
+    
+    
+    
+                                        //****************************/
+    
+                                          
+                                        } ,
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(vertical: size.iScreen(0.4)),
+                                      width: size.iScreen(
+                                          6.0), // Puedes ajustar el tamaño del contenedor según tus necesidades
+                                      height: size.iScreen(6.0),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape
+                                            .circle, // Hace que el contenedor sea circular
+                                        color: Colors.grey
+                                                .shade400, // Puedes ajustar el color del contenedor
+                                      ),
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.record_voice_over_outlined,
+                                          color:Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                                               ),
+                                 ),
+             
+         ],
+       ),
+       ):Container(),
+     );
+    
+                 
+         
+    
+    
+          },)  
+                        ],
+                      );
+                },)),
+                
+              floatingActionButton: Visibility(
+          visible: _showButton,
+          child: FloatingActionButton(
+            mini: true,
+            onPressed: () {
+              // Scroll to the top when the button is pressed
+              // Scrollable.ensureVisible(context,
+              //     alignment: 5.0, duration: Duration(milliseconds: 500));
+              scrollToEnd();
+            },
+            child: Icon(Icons.arrow_downward),
+            backgroundColor:colorTerciario, // Cambia el color a rojo
+          ),
+        ),
+      
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,   
+        ),
       ),
     );
   }

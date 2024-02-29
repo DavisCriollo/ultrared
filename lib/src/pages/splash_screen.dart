@@ -304,6 +304,7 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/login_controller.dart';
 
 import 'package:ultrared/src/pages/home_page.dart';
+import 'package:ultrared/src/pages/inicial.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
 import 'package:ultrared/src/service/socket.dart';
 import 'package:ultrared/src/utils/responsive.dart';
@@ -351,14 +352,16 @@ class _SplashPageState extends State<SplashPage> {
           (Route<dynamic> route) => false);
        }else{
          Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const SerClientePage()),
+          // MaterialPageRoute(builder: (context) => const SerClientePage()),
+          MaterialPageRoute(builder: (context) =>  const Inicial()),
           (Route<dynamic> route) => false);
        }
       
     } else {
     
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const SerClientePage()),
+        // MaterialPageRoute(builder: (context) => const SerClientePage()),
+          MaterialPageRoute(builder: (context) =>  const Inicial()),
           (Route<dynamic> route) => false);
     }
   }

@@ -155,3 +155,125 @@ class ElementosSOS extends StatelessWidget {
   
   }
 }
+
+
+class ElementoSOS extends StatelessWidget {
+  final String image;
+  final bool enabled;
+  final String title;
+  final String label;
+  final Function() onTap;
+  const ElementoSOS({
+    Key? key,
+    required this.size,
+    required this.enabled,
+    required this.image,
+    required this.title, 
+    required this.label, 
+    required this.onTap,
+  }) : super(key: key);
+
+  final Responsive size;
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+
+    Consumer<HomeController> (builder: (_, values, __) { 
+      return   InkWell(
+     
+      splashColor: Colors.orange,
+      radius: 10,
+      child: Container(
+        margin: EdgeInsets.all(size.iScreen(1)),
+        padding: EdgeInsets.all(size.iScreen(0.0)),
+        decoration: BoxDecoration(
+            // color:  colorPrimario,
+            border: Border.all(width: size.iScreen(0.1),color: colorPrimario),
+            borderRadius: BorderRadius.circular(size.iScreen(1.0))),
+        width:size.iScreen(18.5),
+        height: size.iScreen(15.5),
+        child:Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+               height: size.iScreen(10.5),
+      
+              decoration: BoxDecoration( 
+              color: Colors.white,
+                borderRadius: BorderRadius.circular(size.iScreen(1.0))),
+              // margin: EdgeInsets.all(size.iScreen(1.0)),
+              // padding: EdgeInsets.all(size.iScreen(1.0)),
+              child: Column(
+                children: [
+                  // Image.asset(
+                  //   image,
+                  //   fit: BoxFit.contain,
+                  //   width: size.iScreen(7.0),
+                  // ),
+                     AvatarGlow(
+                        glowRadiusFactor: 0.2,
+              glowColor: Colors.red,
+              animate: values.alarmActivated== false?false:true,
+                       child: Container(
+                                         width: size.iScreen(9.0),
+                                         height: size.iScreen(9.0),
+                                         decoration: BoxDecoration(
+                        color: values.alarmActivated== true? Colors.white:colorPrimario,
+                        borderRadius: BorderRadius.circular(100)),
+                                         margin: EdgeInsets.all(size.iScreen(0.0)),
+                                         padding: EdgeInsets.all(size.iScreen(0.0)),
+                                         child: Center(
+                          child: Text('SOS',
+                              style: GoogleFonts.poppins(
+                                fontSize: size.iScreen(3.5),
+                                color: values.alarmActivated== true? Colors.red:Colors.white,
+                                fontWeight: FontWeight.normal,
+                                letterSpacing: -0.28,
+                              ))),
+                                       ),
+                     ),
+                  
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: size.iScreen(0.5)),
+              child: Column(
+                children: [
+                 
+                  Text(values.alarmActivated== true?
+                  'Alarma Activada': label,
+                  textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                          fontSize: size.iScreen(1.4),
+                          color:values.alarmActivated== true?Colors.red: Colors.black,
+                          fontWeight:values.alarmActivated== true? FontWeight.w600:FontWeight.normal,
+                          letterSpacing:  -0.28,)),
+                ],
+              ),
+            ),
+          ],
+        )
+        
+        
+        // Consumer<HomeController> (builder: (_, values, __) { 
+          
+        //   return  
+          
+          
+        
+        // },)
+        
+        
+      ),
+      onLongPress:values.alarmActivated== true? null :onTap
+    );
+  
+  
+      },);
+   
+  
+  
+  }
+}

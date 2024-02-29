@@ -17,10 +17,10 @@ import 'package:ultrared/src/service/notifications_service.dart' as snaks;
 
 class ApiProvider {
 //================================= URLS ==============================//
-  final String _dirURL = "https://testconta.neitor.com/api";
+  // final String _dirURL = "https://testconta.neitor.com/api";
 //=================================  ==============================//
 //================================= URLS ==============================//
-  // final String _dirURL = "https://contabackend.neitor.com/api";
+  final String _dirURL = "https://contabackend.neitor.com/api";
 //=================================  ==============================//
 
   // Future<AuthResponse?> login({
@@ -39,9 +39,11 @@ class ApiProvider {
       });
       final respo = jsonDecode(dataResp.body);
 
+           print('DATA DEL LOGIN  : $respo');
+
       if (dataResp.statusCode == 404) {
         snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
-        return respo;
+        return null;
       }
       if (dataResp.statusCode == 200) {
         // final responsData = AuthResponse.fromMap(respo);
@@ -49,14 +51,14 @@ class ApiProvider {
         return respo;
       }
       if (dataResp.statusCode == 403) {
-        // final responsData = AuthResponse.fromMap(respo);
+      snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
         // return responsData;
-        return respo;
+        return null;
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
 
-        return respo;
+        return null;
       }
     } catch (e) {
       snaks.NotificatiosnService.showSnackBarDanger("$e}");

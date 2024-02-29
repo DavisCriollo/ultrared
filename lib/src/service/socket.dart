@@ -301,7 +301,7 @@ Function get emit =>this._socket!.emit;
 
 void connectSocket(String token, String ruc){
 
- _socket = IO.io('https://testconta.neitor.com', <String, dynamic>{
+ _socket = IO.io('https://contabackend.neitor.com', <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': true,
       'forceNew':true,

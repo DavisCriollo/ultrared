@@ -1,7 +1,4 @@
-
-
 import 'dart:io';
-
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:better_player/better_player.dart';
@@ -15,9 +12,8 @@ import 'package:record/record.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/pages/view_video_page.dart';
 import 'package:ultrared/src/utils/responsive.dart';
+import 'package:ultrared/src/widgets/cabeceraApp.dart';
 import 'package:video_player/video_player.dart';
-
-
 
 // class VoiceRecorderScreen extends StatefulWidget {
 //   @override
@@ -258,144 +254,24 @@ import 'package:video_player/video_player.dart';
 //   }
 // }
 
-
-class AudioProvider with ChangeNotifier {
-  AudioPlayer _audioPlayer = AudioPlayer();
-  bool _isPlaying = false;
-  double _position = 0.0;
-  double _duration = 1.0; // Inicializado en 1.0 para evitar la división por cero
-
-  bool get isPlaying => _isPlaying;
-  double get position => _position;
-  double get duration => _duration;
-
-  void play(String url) async {
-    if (_isPlaying) {
-      _audioPlayer.stop();
-    } else {
-      await _audioPlayer.play(url);
-      _audioPlayer.onAudioPositionChanged.listen((Duration duration) {
-        _position = duration.inMilliseconds.toDouble();
-        notifyListeners();
-      });
-
-      _audioPlayer.onDurationChanged.listen((Duration duration) {
-        _duration = duration.inMilliseconds.toDouble();
-        notifyListeners();
-      });
-    }
-    _isPlaying = !_isPlaying;
-    notifyListeners();
-  }
-
-  void seek(double value) {
-    if (_isPlaying) {
-      _audioPlayer.seek(Duration(milliseconds: value.toInt()));
-    }
-  }
-
-  void stop() {
-    _audioPlayer.stop();
-    _isPlaying = false;
-    _position = 0.0;
-    notifyListeners();
-  }
-}
-
-class MyApp extends StatelessWidget {
-  final List<String> _lista = [
-    'https://documentos.neitor.com/contable/chats/ULTRA2022/4579c25b-e05e-4453-b81e-529e24f6c8fd.m4a',
-    // Agrega el resto de los enlaces aquí
-  ];
+class MyApp extends StatefulWidget {
+  MyApp({Key? key}) : super(key: key);
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Audio Player'),
-        ),
-        body: ChangeNotifierProvider(
-          create: (context) => AudioProvider(),
-          child: AudioListView(_lista),
-        ),
+    final Responsive size = Responsive.of(context);
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: CabecerasApp(size:size,colorBase:Colors.white,title:'REGISTRO',onTap:(){
+          Navigator.pop(context);
+        },),
       ),
     );
-  }
-}
-
-class AudioListView extends StatelessWidget {
-  final List<String> _lista;
-
-  AudioListView(this._lista);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: _lista.length,
-      itemBuilder: (context, index) {
-        return AudioListItem(_lista[index]);
-      },
-    );
-  }
-}
-
-class AudioListItem extends StatelessWidget {
-  final String _audioUrl;
-
-  AudioListItem(this._audioUrl);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-          title: Text('Audio ${_audioUrl.split('/').last}'),
-          subtitle: Consumer<AudioProvider>(
-            builder: (context, audioProvider, child) {
-              return Row(
-                children: [
-                  IconButton(
-                    icon: Icon(audioProvider.isPlaying ? Icons.stop : Icons.play_arrow),
-                    onPressed: () {
-                      var audioProvider = Provider.of<AudioProvider>(context, listen: false);
-                      audioProvider.play(_audioUrl);
-                    },
-                  ),
-                  Expanded(
-                    child: Slider(
-                      value: audioProvider.position,
-                      max: audioProvider.duration,
-                      onChanged: (value) {
-                        audioProvider.seek(value);
-                      },
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: Consumer<AudioProvider>(
-            builder: (context, audioProvider, child) {
-              return Text(
-                '${_formatDuration(audioProvider.position.toInt())} / ${_formatDuration(audioProvider.duration.toInt())}',
-                style: TextStyle(fontSize: 12),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  String _formatDuration(int milliseconds) {
-    Duration duration = Duration(milliseconds: milliseconds);
-    String twoDigits(int n) => n.toString().padLeft(2, "0");
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return "$twoDigitMinutes:$twoDigitSeconds";
   }
 }

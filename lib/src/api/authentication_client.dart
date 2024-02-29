@@ -6,6 +6,7 @@ import 'package:ultrared/src/models/auth_response.dart';
 
 
 import 'package:ultrared/src/models/sessio_model.dart';
+import 'package:ultrared/src/pages/inicial.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
 
 class Auth {
@@ -92,7 +93,7 @@ print('LA SESION SE GUARDO $value');
      print('SESION ELIMINADA:$keySESION');
     // Navigator.pushNamedAndRemoveUntil(context, 'serCliente', (_) => false);
     Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const SerClientePage()),
+          MaterialPageRoute(builder: (context) =>  Inicial()),
           (Route<dynamic> route) => false);
   }
   // CIERRO SESSION
@@ -100,7 +101,7 @@ print('LA SESION SE GUARDO $value');
     // await _storage.deleteAll();
     await _storage.delete(key: keySESION);
     Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const SerClientePage()),
+          MaterialPageRoute(builder: (context) =>  Inicial()),
           (Route<dynamic> route) => false);
   }
 

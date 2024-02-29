@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 
 
 
-// const primaryColor =  Color(0XFF973592);
-// const secondaryColor =  Color(0xFF46B448);
-// const tercearyColor =  Color(0xFF253A7F);
-// const cuaternaryColor =  Color(0xFFE61B58);
+const colorPrimario =  Color(0XFFB12521);
+const colorSecundario =  Color(0xFFF15A24);
+const colorTerciario =  Color(0xFFF7931E);
+const colorCuaternario =  Color(0xFF39B54A);
+const colorQuintinario =  Color(0xFF666666);
+const colorSextinario =  Color(0xFF333333);
+
 const primaryColor =  Color(0XFF973592);
 const secondaryColor =  Color(0xFFA5A6AC);
 const tercearyColor =  Color(0xFFB32523);

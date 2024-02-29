@@ -16,7 +16,7 @@ class BotonBase extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: size.wScreen(80),
-      height: size.hScreen(6.0),
+      height: size.hScreen(5.0),
       clipBehavior: Clip.antiAlias,
       decoration: ShapeDecoration(
         color: tercearyColor,
