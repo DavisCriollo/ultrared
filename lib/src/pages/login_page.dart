@@ -1052,7 +1052,7 @@ class _LoginPageState extends State<LoginPage> {
 if (response != null  ) {
 
 
-  _ctrlSocket.connectSocket("${response['token']}", "${response['rucempresa']}");
+  _ctrlSocket.connectSocket(context,"${response['token']}", "${response['rucempresa']}");
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute<void>(

@@ -346,7 +346,7 @@ class _SplashPageState extends State<SplashPage> {
      if(response!=null) {
           final _ctrlSocket= context.read<SocketService>();
     
-          _ctrlSocket.connectSocket("${response['token']}", "${response['rucempresa']}");
+          _ctrlSocket.connectSocket(context,"${response['token']}", "${response['rucempresa']}");
           Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => HomePage(user: session)),
           (Route<dynamic> route) => false);

@@ -862,7 +862,7 @@ class ApiProvider {
       );
 
     
-   print('INFO DE LA CONSULTA VALIDA TOKEN ${dataRespToken.body}');
+  //  print('INFO DE LA CONSULTA VALIDA TOKEN ${dataRespToken.body}');
 
 
 

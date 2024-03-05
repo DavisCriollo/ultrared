@@ -5,6 +5,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
+import 'package:ultrared/src/service/notifications_service.dart';
 // class SocketService with ChangeNotifier {
 //   late IO.Socket _socket;
 
@@ -299,7 +300,7 @@ Function get emit =>this._socket!.emit;
 
 
 
-void connectSocket(String token, String ruc){
+void connectSocket(BuildContext context, token, String ruc){
 
  _socket = IO.io('https://contabackend.neitor.com', <String, dynamic>{
       'transports': ['websocket'],
@@ -319,9 +320,10 @@ _socket!.on('connect_error', (error) {
  notifyListeners();
 });
     
-   _socket!.on('server:error', (error) {
+_socket!.on('server:error', (error) {
 // _msgErrorServer='';
-setMsgErrorServer(error['msg']);
+NotificatiosnService.showSnackBarDanger(error['msg']);
+_msgErrorServer=error['msg'];
 
   print('Error del Socket : $error');
  notifyListeners();
@@ -457,7 +459,7 @@ _socket!.on('disconnect', (_) {
 void emitEvent(String eventName, dynamic data) {
   if (_socket != null && _socket!.connected) {
     _socket!.emit(eventName, data);
-    print('SE EMITE ESTO AL SERVIDOR : $data');
+    // print('SE EMITE ESTO AL SERVIDOR : $data');
   } else {
     print('El socket no está conectado');
     // Si lo deseas, puedes intentar reconectar aquí
@@ -489,7 +491,12 @@ void emitEvent(String eventName, dynamic data) {
 //     _socket.disconnected;
 //     print('Socket cerrado');
 //   } 
-
+  // Función para escuchar eventos del socket
+  // void listenToEvent(String eventName, void Function(dynamic) callback) {
+  //   _socket!.on(eventName, (data) {
+  //     callback(data);
+  //   });
+  // }
 
 
 }

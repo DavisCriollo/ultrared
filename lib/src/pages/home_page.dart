@@ -40,6 +40,7 @@ import 'package:ultrared/src/widgets/drawer_menu.dart';
 import 'package:ultrared/src/widgets/elementoSOS.dart';
 import 'package:ultrared/src/widgets/elementosHome.dart';
 
+
 import 'package:ultrared/src/widgets/modal_permisos.dart';
 import 'package:ultrared/src/widgets/no_data.dart';
 import 'package:upgrader/upgrader.dart';
@@ -341,46 +342,22 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                           color: sextinaryColor,
                                           letterSpacing: -0.20,
                                         )),
-                                    ElementoSOS(
+
+                                      Consumer<SocketService>(builder: (_, _ctrlSocket, __) {  
+
+                                        return  ElementoSOS(
                                         enabled: true,
                                         size: size,
                                         image: 'assets/imgs/document.png',
                                         title: 'Botón de Ayuda',
                                         label: 'Presiona por 3 segundos',
                                         onTap: () async {
-                                          //**************//
-                                          //  HomeController permissionProvider = Provider.of<HomeController>(context, listen: false);
-                                          //             await permissionProvider.checkAndRequestLocationPermission();
-                                          //             print(permissionProvider.hasLocationPermission);
+                                         
 
-                                          //             await permissionProvider.checkAndRequestLocationPermission();
-                                          //             print('**** Permiso ****>  ${permissionProvider.hasLocationPermission}');
-                                          //   permissionProvider.checkGpsStatus();
-                                          //                    if (permissionProvider.hasLocationPermission==true) {
-                                          //                       // permissionProvider.checkGpsStatus();
-
-                                          //                                               if (permissionProvider.gpsStatus==true ) {
-                                          //                                                  NotificatiosnService.showSnackBarSuccsses('El  GPS esta activado');
-
-                                          //                    } else {
-                                          //                      NotificatiosnService.showSnackBarDanger('Por favor active su GPS');
-                                          //                    }
-                                          //                    }
-                                          //                    else{
-                                          //                      Navigator.of(context).pushAndRemoveUntil(
-                                          //               MaterialPageRoute(
-                                          //                   builder: (context) => AccesoGPSPage(
-                                          //                         // validaTurno: validaTurno,
-                                          //                         // tipo: session.rol,
-                                          //                         // user: session,
-                                          //                         // ubicacionGPS: controllerHome.getCoords,
-                                          //                       )),
-                                          //               (Route<dynamic> route) => false);
-
-                                          final _ctrlSocket =
-                                              Provider.of<SocketService>(
-                                                  context,
-                                                  listen: false);
+                                          // final _ctrlSocket =
+                                          //     Provider.of<SocketService>(
+                                          //         context,
+                                          //         listen: false);
                                           // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
                                           HomeController permissionProvider =
                                               Provider.of<HomeController>(
@@ -425,17 +402,26 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                     'client:boton-panico',
                                                     _dataPanico);
 
-                                                if (_ctrlSocket.getMsgError !=
-                                                    '') {
-                                                  NotificatiosnService
-                                                      .showSnackBarDanger(
-                                                          _ctrlSocket
-                                                              .getMsgError);
-                                                  _ctrlSocket
+                                                    _ctrlSocket
                                                       .setMsgErrorServer('');
                                                   _ctrl.desActivateAlarm();
-                                                  // showErroAlerta(context, size, '${_ctrlSocket.getMsgError}');
-                                                }
+
+                                                // if (_ctrlSocket.getMsgError !=
+                                                //     '') {
+                                                      
+                                                //   // NotificatiosnService
+                                                //   //     .showSnackBarDanger(
+                                                //   //         _ctrlSocket
+                                                //   //             .getMsgError);
+                                                // //    showSOSModal(context, size,_ctrlSocket
+                                                // //  .getMsgError);
+
+                                                //  await _showSuccessDialog(context, _ctrlSocket
+                                                //  .getMsgError);
+
+                                                  
+                                                  
+                                                // }
                                               }
                                             } else {
                                               NotificatiosnService
@@ -464,7 +450,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                         //       builder: (context) =>
                                         //           const SubmenuMascotas()));
                                         // },
-                                        ),
+                                        );
+
+                                      },),
+
+                                   
                                    widget.user!['isClient'] == 'SI'
                                         ?   BannerChat(size: size, widget: widget):Container(),
                                     SizedBox(
@@ -1238,7 +1228,31 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       },
     );
   }
+ 
 
+
+                                               
+
+
+Future<void> _showSuccessDialog(BuildContext context, String info) async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Info'),
+          content: Text('$info'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Aceptar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 // bool _buildPermissionStatus(PermissionStatus? status) {
 //     if (status == null) {
 //       return false;
