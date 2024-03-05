@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
+import 'package:ultrared/src/utils/urls.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
 
 import 'package:dotted_border/dotted_border.dart';
@@ -110,13 +111,13 @@ class _AcercaDePageState extends State<AcercaDePage> {
     ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(12)),
       child: Container(
-        height: size.hScreen(50.0),
+        // height: size.hScreen(5.0),
        width: size.wScreen(100.0),
        
         child: Center(
           child: Text(
                               'UltraRED es una innovadora aplicación de múltiples propósitos diseñada para proporcionarte internet ultra rápido por fibra óptica.\n\nCon un enfoque en seguridad, nuestra aplicación ofrece una experiencia integral y fácil de usar para todo tipo de usuarios.',
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.justify,
                               style: GoogleFonts.poppins(
                                   fontSize: size.iScreen(2.0),
                                   fontWeight: FontWeight.w500,
@@ -134,14 +135,70 @@ class _AcercaDePageState extends State<AcercaDePage> {
                           //***********************************************/
     
                           SizedBox(
-                            height: size.iScreen(2.0),
+                            height: size.iScreen(0.0),
                           ),
                           //*****************************************/
-    
+
+                            Container(
+width: size.wScreen(100.00),
+
+                              // color: Colors.red,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                 
+                                    InkWell(
+                                      onTap: () {
+                                        launchURL('https://neitor.com/');
+                                      },
+                                      child: Container(
+                                        width: size.wScreen(80),
+                                      margin: EdgeInsets.symmetric(vertical: size.iScreen(1.0)),
+                                       padding: EdgeInsets.symmetric(vertical: size.iScreen(0.5),horizontal: size.iScreen(1.0)),
+                                      // color: Colors.yellow,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Icon(Icons.public_outlined,size: size.iScreen(4.0),),
+                                          SizedBox(width: size.iScreen(0.5),),
+                                          Text('neitor.com',style: GoogleFonts.poppins(
+                                                                      fontSize: size.iScreen(1.8),
+                                                                      fontWeight: FontWeight.w500,
+                                                                     color: Colors.blue))
+                                        ],
+                                      )),
+                                    ),
+                                     InkWell(
+                                      onTap: () {
+                                        // sendEmail('soporte@neitor.com', 'soporte@neitor.com', 'soporte@neitor.com');
+                                        sendEmails();
+                                      },
+                                       child: Container(
+                                        width: size.wScreen(80.0),
+                                                                         margin: EdgeInsets.symmetric(vertical: size.iScreen(0.0)),
+                                       padding: EdgeInsets.symmetric(vertical: size.iScreen(0.5),horizontal: size.iScreen(1.0)),
+                                                                         // color: Colors.yellow,
+                                                                         child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Icon(Icons.support_agent_rounded,size: size.iScreen(4.0),),
+                                          SizedBox(width: size.iScreen(0.5),),
+                                          Text('soporte@neitor.com',style: GoogleFonts.poppins(
+                                                                       fontSize: size.iScreen(1.8),
+                                                                       fontWeight: FontWeight.w500,
+                                                                      color: Colors.blue))
+                                        ],
+                                                                         )),
+                                     ),
+                                ],
+                              ),
+                            ),
+
+
                           //***********************************************/
     
                           SizedBox(
-                            height: size.iScreen(10.0),
+                            height: size.iScreen(5.0),
                           ),
                           //*****************************************/
                           GestureDetector(

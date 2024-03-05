@@ -86,4 +86,20 @@
         </receiver>
 
     </application>
+
+
+
+             <queries>
+        <!-- Consultas personalizadas aquí -->
+        <!-- Por ejemplo, si tu aplicación abre URLs HTTPS -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+    <action android:name="android.intent.action.SENDTO" />
+    <data android:scheme="smsto" />
+  </intent>
+    </queries>
+
 </manifest>

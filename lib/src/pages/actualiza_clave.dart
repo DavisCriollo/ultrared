@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
+import 'package:ultrared/src/pages/inicial.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
 import 'package:ultrared/src/service/notification_push.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
@@ -459,7 +460,7 @@ class _ActualizaClaveState extends State<ActualizaClave> {
                  await Auth.instance.deleteSesion(context);
                  await Auth.instance.deleteDataRecordarme();
             Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const SerClientePage()),
+          MaterialPageRoute(builder: (context) => const Inicial()),
           (Route<dynamic> route) => false);
               },
                 child:  Text('OK',style: GoogleFonts.lexendDeca(

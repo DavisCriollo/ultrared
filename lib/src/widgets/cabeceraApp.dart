@@ -815,10 +815,10 @@ class CabeceraChatApp extends StatelessWidget {
                       ),
                       Container(
                         //  color: Colors.red,
-                        width: size.iScreen(20),
+                        width: size.iScreen(18),
                         padding: EdgeInsets.only(bottom: size.iScreen(0.0)),
                         child: Text(
-                          '${title} sdfsdf sdfs asdasd ',
+                          '${title} ',
                           style: GoogleFonts.poppins(
                             fontSize: size.iScreen(2.5),
                             fontWeight: FontWeight.normal,

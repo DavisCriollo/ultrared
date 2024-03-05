@@ -75,7 +75,7 @@ dependencies:
   better_player: ^0.0.81
   video_player: ^2.3.9
   chewie: ^1.2.2
-  url_launcher: ^6.0.0
+  url_launcher: ^6.1.0
 
   
   firebase_messaging: 

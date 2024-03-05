@@ -465,7 +465,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                         //           const SubmenuMascotas()));
                                         // },
                                         ),
-                                    BannerChat(size: size, widget: widget),
+                                   widget.user!['isClient'] == 'SI'
+                                        ?   BannerChat(size: size, widget: widget):Container(),
                                     SizedBox(
                                       height: size.iScreen(0.5),
                                     ),

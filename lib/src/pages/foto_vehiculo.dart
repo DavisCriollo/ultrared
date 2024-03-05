@@ -10,6 +10,7 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/init_provider.dart';
 import 'package:ultrared/src/pages/foto_perfil_page.dart';
 import 'package:ultrared/src/pages/home_page.dart';
+import 'package:ultrared/src/pages/inicial.dart';
 import 'package:ultrared/src/pages/login_page.dart';
 import 'package:ultrared/src/pages/selecciona_sector.dart';
 import 'package:ultrared/src/pages/ser_cliente_page.dart';
@@ -20,6 +21,7 @@ import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
+import 'package:ultrared/src/widgets/cabeceraApp.dart';
 import 'package:ultrared/src/widgets/modal_permisos.dart';
 
 class FotosVehiculoPage extends StatefulWidget {
@@ -47,26 +49,24 @@ class _FotosVehiculoPageState extends State<FotosVehiculoPage> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: cuaternaryColor,
-        appBar: AppBar(
-            iconTheme: const IconThemeData(color: Colors.black),
-            centerTitle: true, // Centra el título en el AppBar
-            elevation: 0,
-            backgroundColor: cuaternaryColor, // Fondo blanco
-            title: Consumer<HomeController>(
-              builder: (_, value, __) {
-                return Text(
-                    value.getItemLugarServicio == 'HOGAR'
-                        ? 'FOTO DE TU CASA'
-                        : 'FOTO DE TU VEHICULO',
-                    style: GoogleFonts.poppins(
-                      fontSize: size.iScreen(2.0),
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                      letterSpacing: -0.40,
-                    ) // Color del título en negro
-                    );
-              },
-            )),
+        // appBar: AppBar(
+        //     iconTheme: const IconThemeData(color: Colors.black),
+        //     centerTitle: true, // Centra el título en el AppBar
+        //     elevation: 0,
+        //     backgroundColor: cuaternaryColor, // Fondo blanco
+        //     title: Consumer<HomeController>(
+        //       builder: (_, value, __) {
+        //         return Text(
+        //             value.getItemLugarServicio == 'HOGAR' ? 'FOTO DE TU CASA' : 'FOTO DE TU VEHICULO',
+        //             style: GoogleFonts.poppins(
+        //               fontSize: size.iScreen(2.0),
+        //               fontWeight: FontWeight.w700,
+        //               color: Colors.black,
+        //               letterSpacing: -0.40,
+        //             ) // Color del título en negro
+        //             );
+        //       },
+        //     )),
         body: Container(
             // alignment: Alignment.center,
             // color: Colors.red,
@@ -78,24 +78,13 @@ class _FotosVehiculoPageState extends State<FotosVehiculoPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Container(
-                  //   height: size.hScreen(8),
-                  //   width: size.wScreen(100),
-                  //   padding:
-                  //       EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
-
-                  //   // color: Colors.blue, // Puedes ajustar el color según tus preferencias
-                  //   child: Image.asset(
-                  //     'assets/imgs/LetrasNegro.png',
-                  //     fit: BoxFit.contain, // URL de la imagen
-                  //   ),
-                  // ),
-                  //***********************************************/
-
-                  SizedBox(
-                    height: size.iScreen(2.0),
-                  ),
-                  //*****************************************/
+                     Consumer<HomeController>(
+                builder: (_, value, __) {
+                  return 
+                   CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:  value.getItemLugarServicio == 'HOGAR' ? 'FOTO DE TU CASA' : 'FOTO DE TU VEHICULO',);                 
+                },
+              ),
+             
                   Container(
                     // height: size.hScreen(40),
                     width: size.wScreen(100),
@@ -570,7 +559,7 @@ Future<void> _modalMessageResponse(
                    await Auth.instance.deleteSesion(context);
 
             Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const SerClientePage()),
+          MaterialPageRoute(builder: (context) => const Inicial()),
           (Route<dynamic> route) => false);
                  
                } if ( _action=='EDIT') {

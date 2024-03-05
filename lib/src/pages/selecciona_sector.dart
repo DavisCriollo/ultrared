@@ -149,10 +149,10 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                             ],
                           ),
                         ),
-                  
-                  CabecerasApp(size: size, colorBase:cuaternaryColor , title:_action == 'CREATE' ? 'REGISTRO' : 'EDITAR REGISTRO',onTap:(){
-                        Navigator.pop(context);
-                      }),
+                  CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:_action == 'CREATE' ? 'REGISTRO' : 'EDITAR REGISTRO' ,),
+                  // CabecerasApp(size: size, colorBase:cuaternaryColor , title:_action == 'CREATE' ? 'REGISTRO' : 'EDITAR REGISTRO',onTap:(){
+                  //       Navigator.pop(context);
+                  //     }),
                   
                         //***********************************************/
                   
