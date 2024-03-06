@@ -1220,12 +1220,15 @@ int _mensajesNoLeidos =0;
 
   bool get alarmActivated => _alarmActivated;
 
-  void activateAlarm() {
-    _alarmActivated = true;
+  void activateAlarm(bool _val) {
+    _alarmActivated = _val;
+ print('ESTA ES LA _alarmActivated : $_alarmActivated');
+
+
     notifyListeners();
 
     // Esperar 5 segundos antes de desactivar la alarma
-    Timer(Duration(seconds: 40), () {
+    Timer(const Duration(seconds: 40), () {
       _alarmActivated = false;
       notifyListeners();
     });

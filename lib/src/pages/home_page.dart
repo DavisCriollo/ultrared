@@ -109,6 +109,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     await Auth.internal().saveTokenFireBase(firebaseToken.toString());
     ctrlHome.setTokennotificacion(firebaseToken, 'guardar');
 
+
+
+
+    
     //------------------------------------//
 
     // Manejar la notificación cuando la aplicación está en primer plano
@@ -117,10 +121,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           "Notificación recibida primer plano ************* >: ${message.data}");
       //------------------------------------//
 
-      ctrlHome.buscaNotificacionPorId(context, message.data['notId']);
+      // ctrlHome.buscaNotificacionPorId(context, message.data['notId']);
       //  ctrlHome.setInfoNotificacion(_infoNotificacion);
 
-      Navigator.of(context).pushNamed('auxilo');
+      // Navigator.of(context).pushNamed('auxilo');
+       Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) =>  AuxilioPage(idNotificacion: message.data['notId']))));
 
       ctrlHome.buscarNotificaciones(context);
     });
@@ -130,15 +138,48 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       print(
           "Notificación abierta desde la aplicación se abre desde la barra de notificaciones ********* >: ${message.data}");
       // Aquí puedes dirigir al usuario a la pantalla deseada
+//*****************//
+      // ctrlHome.buscaNotificacionPorId(context, message.data['notId']);
 
-      ctrlHome.buscaNotificacionPorId(context, message.data['notId']);
+      // Navigator.of(context).pushNamed('notificaciones');
 
-      Navigator.of(context).pushNamed('notificaciones');
 
-      // Navigator.of(context).push(MaterialPageRoute(
-      //                                               builder: (context) =>
-      //                                                   const ListaNotificaciones()));
+//  ctrlHome.buscaNotificacionPorId(context, message.data['notId']);
+      //  ctrlHome.setInfoNotificacion(_infoNotificacion);
+      
+     
+Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) =>  AuxilioPage(idNotificacion: message.data['notId']))));
+      
+       ctrlHome.buscarNotificaciones(context);
+      // Navigator.of(context).pushNamed('auxilo');
+
+      // ctrlHome.buscarNotificaciones(context);
+
+
     });
+
+ FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
+      // Manejar la notificación cuando la aplicación está cerrada y se abre desde la notificación
+      if (message != null) {
+        Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) =>  AuxilioPage(idNotificacion: message.data['notId']))));
+                    //     .then((value) =>  Navigator.push(
+                    // context,
+                    // MaterialPageRoute(
+                    //     builder: ((context) =>  const SplashPage()))) );
+      }
+
+
+
+    });
+
+ 
+
 
     //------------------------------------//
 
@@ -358,19 +399,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                           //     Provider.of<SocketService>(
                                           //         context,
                                           //         listen: false);
-                                          // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
-                                          HomeController permissionProvider =
-                                              Provider.of<HomeController>(
-                                                  context,
-                                                  listen: false);
-                                          await permissionProvider
+    //                                       // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
+    // HomeController permissionProvider =  Provider.of<HomeController>(
+    //                                               context,
+    //                                               listen: false);
+                                          await valueHome
                                               .checkAndRequestPermissions();
                                           bool isGpsEnabled =
-                                              await permissionProvider
+                                              await valueHome
                                                   .checkGpsStatus();
-                                          // print('LA INFO ES  ${permissionProvider.hasLocationPermission} ${isGpsEnabled}');
+                                          // print('LA INFO ES  ${valueHome.hasLocationPermission} ${isGpsEnabled}');
 
-                                          if (permissionProvider
+                                          if (valueHome
                                               .hasLocationPermission) {
                                             // NotificatiosnService.showSnackBarSuccsses('SIII TIENE PERMISO');
                                             if (isGpsEnabled) {
@@ -393,7 +433,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                       valueHome.getUser!['id']
                                                 };
 
-                                                valueHome.activateAlarm();
+                                                valueHome.activateAlarm(true);
 
                                                 // print(
                                                 //     'esta la info para el bon de panico ------> $_dataPanico');
@@ -402,9 +442,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                     'client:boton-panico',
                                                     _dataPanico);
 
-                                                    _ctrlSocket
-                                                      .setMsgErrorServer('');
-                                                  _ctrl.desActivateAlarm();
+                                                    // _ctrlSocket
+                                                    //   .setMsgErrorServer('');
+                                                  // _ctrl.desActivateAlarm();
 
                                                 // if (_ctrlSocket.getMsgError !=
                                                 //     '') {

@@ -261,7 +261,7 @@ class _ListaNotificacionesState extends State<ListaNotificaciones> {
     // print('LA DATA PARA SOCKET : $_data');
     
     
-                      ctrlSocket.emitEvent('client:actualizarData', _data);
+                      // ctrlSocket.emitEvent('client:actualizarData', _data);
     
                             final ctrlHome =context.read<HomeController>();
     
@@ -270,12 +270,13 @@ class _ListaNotificacionesState extends State<ListaNotificaciones> {
                                          ctrlHome .buscarNotificaciones(context);
     
     
-                            ctrlHome.setInfoNotificacion(_notificacion);
+                      //       ctrlHome.setInfoNotificacion(_notificacion);
                                Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: ((context) =>
-                                                     const AuxilioPage(
+                                                      AuxilioPage(
+                                                      idNotificacion:_notificacion['notId'].toString() ,
                                                      
                                                      ))));
                           },

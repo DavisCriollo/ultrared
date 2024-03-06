@@ -15,6 +15,7 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/chat_page.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
 import 'package:ultrared/src/pages/vista_imagen.dart';
+import 'package:ultrared/src/service/socket.dart';
 import 'package:ultrared/src/service/socket_service.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
@@ -27,7 +28,8 @@ import 'package:url_launcher/url_launcher.dart'; // Nota: latlong2 es la versió
 
 
 class AuxilioPage extends StatefulWidget {
-  const AuxilioPage({Key? key}) : super(key: key);
+  final String idNotificacion;
+  const AuxilioPage({Key? key, required this.idNotificacion}) : super(key: key);
 
   @override
   State<AuxilioPage> createState() => _AuxilioPageState();
@@ -72,9 +74,9 @@ AudioCache player = AudioCache();
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
-    // final ctrHome = context.read<HomeController>();
+    final ctrlHome = context.read<HomeController>();
 
-   
+   final ctrlSocket =context.read<SocketService>();
    
     
     return SafeArea(
@@ -96,7 +98,25 @@ AudioCache player = AudioCache();
           //       ) // Color del título en negro
           //       ),
           // ),
-          body: Container(
+          body: FutureBuilder(
+            future: ctrlHome.buscaNotificacionPorId(context, widget.idNotificacion),
+         
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+
+
+
+  
+ if (snapshot.connectionState == ConnectionState.waiting) {
+            // Si estamos esperando los datos, mostramos un indicador de carga
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            // Si ocurrió un error, mostramos un mensaje de error
+            return const Center(child: Text('Error al obtener datos del servidor'));
+          } else {
+            // Si los datos fueron obtenidos correctamente, mostramos los datos
+            final datos = snapshot.data;
+            return 
+           SizedBox(
               // alignment: Alignment.center,
               // color: Colors.red,
     
@@ -135,10 +155,48 @@ AudioCache player = AudioCache();
                     label: 'No existen datos para mostar',
                   );
                   // Text("sin datos");
-                } 
+                } else {
+                   final _data= {
+      "tabla": "notificacion-leido", // default
+      "rucempresa": "ULTRA2022", // login
+      "notId":datos['notId'],
+      "notTipo":datos['notTipo'],
+      "notIdPersona":datos['notIdPersona'],
+      "notVisto":datos['notVisto'],
+      "notTitulo":datos['notTitulo'],
+      "notContenido":datos['notContenido'],
+      "notUser":datos['notUser'],
+      "notEmpresa":datos['notEmpresa'],
+      "id_registro":datos['id_registro'],
+      "url_web":datos['url_web'],
+      "notFecReg": datos['notFecReg'],
+      "notFecUpd": datos['notFecUpd'],
+      "perDocNumero":datos['perDocNumero'],
+      "perNombre":datos['perNombre'],
+      "perFoto": datos['perFoto'],
+      "perPerfil":datos['perPerfil'],
+      "notInformacionAdicional": {
+      "idPer":datos['notIdPersona'],
+      "perNombre":datos['perNombre'],
+      "perDocNumero":datos['perDocNumero'],
+      "perFoto": datos['perFoto'],
+      "perFotoCasa":datos['perFotoCasa'],
+      "perFotoVehiculo": datos['perFotoVehiculo'],
+      "tipoServicio":datos ['notInformacionAdicional'] ['tipoServicio'],
+      "coordenadas":datos['notInformacionAdicional']['coordenadas'],
+      }
+    };
     
-      double?  _latitud=  double.tryParse('${ctrHome.getInfoNotificacion['notInformacionAdicional']['coordenadas']['latitud']}');
-       double?  _longitud=  double.tryParse('${ctrHome.getInfoNotificacion['notInformacionAdicional']['coordenadas']['longitud']}');
+                            // final ctrlSocket =context.read<SocketService>();
+    
+    // print('LA DATA PARA SOCKET : $_data');
+    
+    
+                      ctrlSocket.emitEvent('client:actualizarData', _data);
+    
+     ctrlHome .buscarNotificaciones(context);
+      double?  _latitud=  double.tryParse('${datos['notInformacionAdicional']['coordenadas']['latitud']}');
+       double?  _longitud=  double.tryParse('${datos['notInformacionAdicional']['coordenadas']['longitud']}');
     
                   return Column(
                     children: [
@@ -175,7 +233,7 @@ AudioCache player = AudioCache();
                                   child: ClipOval(
                                     child: CachedNetworkImage(
                                       imageUrl:
-                                          '${ctrHome.getInfoNotificacion['perFoto']}', // Reemplaza con la URL de tu imagen
+                                          '${datos['perFoto']}', // Reemplaza con la URL de tu imagen
                                       placeholder: (context, url) =>
                                           const CircularProgressIndicator(),
                                       errorWidget: (context, url, error) =>
@@ -196,7 +254,7 @@ AudioCache player = AudioCache();
                                       // _playSoundOnPageLoad();
                                     },
                                     child: Text(
-                                        ' ${ctrHome.getInfoNotificacion['perNombre']}',
+                                        ' ${datos['perNombre']}',
                                         style: GoogleFonts.poppins(
                                           fontSize: size.iScreen(2.2),
                                           fontWeight: FontWeight.w500,
@@ -206,10 +264,10 @@ AudioCache player = AudioCache();
                                   ),
                                   InkWell(
                                     onLongPress: () {
-                                       _callNumber('${ctrHome.getInfoNotificacion['perDocNumero']}');
+                                       _callNumber('${datos['perDocNumero']}');
                                     },
                                     child: Text(
-                                        '${ctrHome.getInfoNotificacion['perDocNumero']}',
+                                        '${datos['perDocNumero']}',
                                         style: GoogleFonts.poppins(
                                           fontSize: size.iScreen(1.8),
                                           fontWeight: FontWeight.normal,
@@ -294,7 +352,7 @@ AudioCache player = AudioCache();
                                       spacing : 50.0,
                                       alignment :WrapAlignment.center,
                                       children: [
-                                          ctrHome.getInfoNotificacion['perFotoCasa'].isNotEmpty
+                                          datos['perFotoCasa'].isNotEmpty
                               ?    Container(
                                           padding: EdgeInsets.symmetric(
                                               horizontal: size.iScreen(0.9),
@@ -309,7 +367,7 @@ AudioCache player = AudioCache();
                                             children: [
                                               GestureDetector(
                                                 onTap: () {
-                                                  final _infoImage={"id":1,"lugar":'CASA', "url":'${ctrHome.getInfoNotificacion['perFotoCasa']}'};
+                                                  final _infoImage={"id":1,"lugar":'CASA', "url":'${datos['perFotoCasa']}'};
                                                      Navigator.push(context,
           MaterialPageRoute(builder: ((context) => PreviewPhoto(infoImage:_infoImage))));
                                                   
@@ -322,7 +380,7 @@ AudioCache player = AudioCache();
                                                     decoration: ShapeDecoration(
                                                       image: DecorationImage(
                                                         image: NetworkImage(
-                                                          '${ctrHome.getInfoNotificacion['perFotoCasa']}',
+                                                          '${datos['perFotoCasa']}',
                                                         ),
                                                         fit: BoxFit.fill,
                                                       ),
@@ -345,7 +403,7 @@ AudioCache player = AudioCache();
                                             ],
                                           ),
                                         ):Container(),
-                                       ctrHome.getInfoNotificacion['perFotoVehiculo'].isNotEmpty
+                                       datos['perFotoVehiculo'].isNotEmpty
                               ?   Container(
                                           padding: EdgeInsets.symmetric(
                                               horizontal: size.iScreen(0.9),
@@ -360,7 +418,7 @@ AudioCache player = AudioCache();
                                             children: [
                                               GestureDetector(
                                                  onTap: () {
-                                                  final _infoImage={"id":2,"lugar":'VEHÍCULO', "url":'${ctrHome.getInfoNotificacion['perFotoVehiculo']}'};
+                                                  final _infoImage={"id":2,"lugar":'VEHÍCULO', "url":'${datos['perFotoVehiculo']}'};
                                                      Navigator.push(context,
           MaterialPageRoute(builder: ((context) => PreviewPhoto(infoImage:_infoImage))));
                                                   
@@ -373,7 +431,7 @@ AudioCache player = AudioCache();
                                                     decoration: ShapeDecoration(
                                                       image: DecorationImage(
                                                         image: NetworkImage(
-                                                          '${ctrHome.getInfoNotificacion['perFotoVehiculo']}',
+                                                          '${datos['perFotoVehiculo']}',
                                                         ),
                                                         fit: BoxFit.fill,
                                                       ),
@@ -417,7 +475,7 @@ AudioCache player = AudioCache();
                                                 Icon(Icons.location_on,color:  tercearyColor,),
                                                 
                                                 Expanded(
-                                                  child: Text("Localiza a : ${ctrHome.getInfoNotificacion['perNombre']}",style: GoogleFonts.poppins(
+                                                  child: Text("Localiza a : ${datos['perNombre']}",style: GoogleFonts.poppins(
                                                               fontSize: size.iScreen(1.7),
                                                               fontWeight: FontWeight.w500,
                                                               
@@ -498,10 +556,14 @@ AudioCache player = AudioCache();
                         ),
                       ),
                     ],
-                  );
+                  );}
     
                 },
-              )),
+              ));}
+            },
+          ),
+          
+        
         ),
       ),
     );

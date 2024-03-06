@@ -323,7 +323,7 @@ _socket!.on('connect_error', (error) {
 _socket!.on('server:error', (error) {
 // _msgErrorServer='';
 NotificatiosnService.showSnackBarDanger(error['msg']);
-_msgErrorServer=error['msg'];
+setMsgErrorServer(error['msg']);
 
   print('Error del Socket : $error');
  notifyListeners();
@@ -475,28 +475,6 @@ void emitEvent(String eventName, dynamic data) {
     notifyListeners();
     // print('ELIMINADO Chat####################>:${deleteListChatSocket}');
   }
-//   // Función para reconectar el socket si está desconectado
-//   // Función para reconectar el socket
-// void reconnectSocket() async {
-//     final session = await Auth.instance.getSession();
-//     if (_socket == null || !_socket.connected) {
-//       print('Intentando reconectar...');
-//       connectToSocket(session['token'], session['rucempresa']);
-//     }
-//   }
-
-//    // Función para cerrar la conexión del socket
-//  void closeSocket() {
- 
-//     _socket.disconnected;
-//     print('Socket cerrado');
-//   } 
-  // Función para escuchar eventos del socket
-  // void listenToEvent(String eventName, void Function(dynamic) callback) {
-  //   _socket!.on(eventName, (data) {
-  //     callback(data);
-  //   });
-  // }
 
 
 }

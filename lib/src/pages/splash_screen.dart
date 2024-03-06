@@ -344,6 +344,7 @@ class _SplashPageState extends State<SplashPage> {
       // print('revisa token============> :$response');
        
      if(response!=null) {
+        controllerHome.buscarNotificaciones(context);
           final _ctrlSocket= context.read<SocketService>();
     
           _ctrlSocket.connectSocket(context,"${response['token']}", "${response['rucempresa']}");

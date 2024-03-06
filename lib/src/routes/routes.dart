@@ -36,7 +36,7 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
     // 'home': (_) => const Home(),
 
   // 'home': (_) => const FotosPerfilPage(),
-  'auxilo': (_) => const AuxilioPage(),
+  // 'auxilo': (_) =>  AuxilioPage(),
   'notificaciones': (_) => const ListaNotificaciones(),
   'prueba': (_) =>  MyApp(),
 

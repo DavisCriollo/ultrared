@@ -202,6 +202,8 @@ final _ctrl = HomeController();
 
   Future<void> onSelectNotification(String? payload) async {
     print("Notificación seleccionada con payload: $payload");
+    
+    
   }
 
   void configureFirebaseMessaging() {
@@ -248,7 +250,7 @@ final _ctrl = HomeController();
        importance: Importance.max,
       priority: Priority.high,
       playSound: true,
-      sound: RawResourceAndroidNotificationSound('notificationsapp'),
+      sound: const RawResourceAndroidNotificationSound('notificationsapp'),
       enableVibration: true,
       icon: '@mipmap/ic_launcher',
     );
