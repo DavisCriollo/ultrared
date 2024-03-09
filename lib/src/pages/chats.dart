@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:record/record.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
@@ -34,6 +35,7 @@ class Chats extends StatefulWidget {
 class _ChatsState extends State<Chats> with TickerProviderStateMixin {
 
  final ScrollController _scrollController = ScrollController();
+ final ItemScrollController itemScrollController = ItemScrollController();
   bool _showButton = false;
 
 //*************AUDIO PLAYER**************/
@@ -432,101 +434,143 @@ Navigator.of(context).pop();
             });
             return true;
           },
-                                  child: ListView.builder(
-                                    reverse: true,
-                                    padding: EdgeInsets.only(bottom: 16.0), // Agrega espacio en la parte inferior
-                                     controller: _scrollController,
-                                  physics: const BouncingScrollPhysics(),
-                                            itemCount: valueChat.getListaDeMensajeChat.length,
-                                            itemBuilder: (BuildContext context, int index) {
-                                  
-                                                if (index<valueChat.getListaDeMensajeChat.length) {
 
-                                  final _chat = valueChat.getListaDeMensajeChat[index];
-                                              return 
+
+                            
+
+
+
+                                  child: Stack(
+                                    children: [
+//                                       ListView.builder(
+//                                         reverse: true,
+//                                         padding: EdgeInsets.only(bottom: 16.0), // Agrega espacio en la parte inferior
+//                                          controller: _scrollController,
+//                                       physics: const BouncingScrollPhysics(),
+//                                                 itemCount: valueChat.getListaDeMensajeChat.length,
+//                                                 itemBuilder: (BuildContext context, int index) {
+                                                  
+                                      
+//                                                     if (index<valueChat.getListaDeMensajeChat.length) {
+
+//                                       final _chat = valueChat.getListaDeMensajeChat[index];
+
+// // if ( _chat['']== DateTime.now().day)
+          
+
+
+                                      
+//                                                   return 
+                                                  
+                                               
+                                
+//                                                       _chat.isNotEmpty?
+                                         
+//                                               MessageChat(
+//                                                 type: 'text',
+//                                                 user:_ctrlHome.getUser!,
+//                                                 messaje:_chat,
+                                               
+//                                                  ):
+                                         
+//                                              Container() ;
                                               
-                                              // //********************************//
-                                              //  Container(
-                                              //   width: size.wScreen(100),
-                                              //   height: size.iScreen(10.0),
-                                              //   color: Colors.grey.shade300,
-                                              //   child: Text('${_chat['message_text']} -- ${_chat['message_id']}'));
-                                              //   //********************************//
-                                
-                                
-                                                  _chat.isNotEmpty?
-                                      MessageChat(
-                                        type: 'text',
-                                        user:_ctrlHome.getUser!,
-                                        messaje:_chat,
-                                       
-                                         ):
-                                         Container() ;
-                                          
                                 
                                 
                                 
                                 
-                                                 // //********************************//
+//                                                      // //********************************//
                                 
                                 
-                                            }
-                                            
-                                            
-                                            
-                                            
-                                            
-                                            
-                                            
-                                            
-                                            else{
-                                   return Consumer<ChatController>(
-                                        builder: (_, valueNext, __) {
-                                          return valueNext.getpage == null
-                                              ? Container(
+//                                                 }
                                                 
-                                                  margin: EdgeInsets.symmetric(
-                                                      vertical: size.iScreen(2.0)),
-                                                  child: Center(
-                                                    child: Container(
-                                                       padding: EdgeInsets.symmetric(
-                                                      vertical: size.iScreen(0.2),
-                                                      horizontal:  size.iScreen(0.5),
-                                                      ),
-                                                      decoration:BoxDecoration(borderRadius: BorderRadius.circular(8),
-                                                      color: Colors.lightGreen,),
-                                                      
-                                                      child: Text(
-                                                        'Estás al día',
-                                                        style: GoogleFonts.lexendDeca(
-                                                            fontSize:
-                                                                size.iScreen(1.3),
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.normal),
-                                                      ),
-                                                    ),
-                                                  ))
-                                              : valueChat.getListaDeMensajeChat.length >
-                                                      25
-                                                  ? Container(
-                                                      margin: EdgeInsets.symmetric(
-                                                          vertical:
-                                                              size.iScreen(2.0)),
-                                                      child: const Center(
-                                                          child:
-                                                              CircularProgressIndicator()))
-                                                  : Container();
-                                        },
-                                      );
-                                  
-                                            }
-                                              
-                                            },
-                                            
-                                          ),
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+//                                                 else{
+//                                        return Consumer<ChatController>(
+//                                             builder: (_, valueNext, __) {
+//                                               return valueNext.getpage == null
+//                                                   ? Container(
+                                                    
+//                                                       margin: EdgeInsets.symmetric(
+//                                                           vertical: size.iScreen(2.0)),
+//                                                       child: Center(
+//                                                         child: Container(
+//                                                            padding: EdgeInsets.symmetric(
+//                                                           vertical: size.iScreen(0.2),
+//                                                           horizontal:  size.iScreen(0.5),
+//                                                           ),
+//                                                           decoration:BoxDecoration(borderRadius: BorderRadius.circular(8),
+//                                                           color: Colors.lightGreen,),
+                                                          
+//                                                           child: Text(
+//                                                             'Estás al día',
+//                                                             style: GoogleFonts.lexendDeca(
+//                                                                 fontSize:
+//                                                                     size.iScreen(1.3),
+//                                                                 color: Colors.white,
+//                                                                 fontWeight:
+//                                                                     FontWeight.normal),
+//                                                           ),
+//                                                         ),
+//                                                       ))
+//                                                   : valueChat.getListaDeMensajeChat.length >
+//                                                           25
+//                                                       ? Container(
+//                                                           margin: EdgeInsets.symmetric(
+//                                                               vertical:
+//                                                                   size.iScreen(2.0)),
+//                                                           child: const Center(
+//                                                               child:
+//                                                                   CircularProgressIndicator()))
+//                                                       : Container();
+//                                             },
+//                                           );
+                                      
+//                                                 }
+                                                  
+//                                                 },
+                                                
+//                                               ),
+                                   
+                                   
+                                   
+                                   ListView.builder(
+      reverse: true,
+      padding: EdgeInsets.only(bottom: 16.0),
+      controller: _scrollController,
+      physics: const BouncingScrollPhysics(),
+      itemCount: valueChat.getListaDeMensajeChat.length + 1,
+      itemBuilder: (BuildContext context, int index) {
+        if (index == valueChat.getListaDeMensajeChat.length) {
+          // Mostrar el mensaje especial al inicio
+          return _buildSpecialMessage(size,valueChat.getListaDeMensajeChat.last);
+        } else {
+          final _chat = valueChat.getListaDeMensajeChat[index];
+          // Resto del código para mostrar los mensajes individuales
+          if (_chat.isNotEmpty) {
+            return MessageChat(
+              type: 'text',
+              user: _ctrlHome.getUser!,
+              messaje: _chat,
+            );
+          } else {
+            return Container();
+          }
+        }
+      },
+    ),
+                                   
+                                    ],
+                                  ),
                                 ),
                               ),
+                               
                                _buildInputField(context, size),
                             ],
                           ),
@@ -1363,7 +1407,61 @@ final _ctrlChat=context.read<ChatController>();
   
   
   
-  
+Widget _buildSpecialMessage(Responsive size, Map<String, dynamic> chat) {
+  DateTime today = DateTime.now();
+  DateTime yesterday = today.subtract(Duration(days: 1));
+  DateTime dayBeforeYesterday = today.subtract(Duration(days: 2));
+  DateTime lastWeek = today.subtract(Duration(days: 7));
+  DateTime lastMonth = DateTime(today.year, today.month - 1, today.day);
+ final valueChat =context.read<SocketService>();
+  // Asegúrate de que la lista de mensajes no esté vacía
+  if (valueChat.getListaDeMensajeChat.isEmpty) {
+    return Container(); // O cualquier otro widget que desees mostrar en caso de lista vacía
+  }
+
+  // Obtén el último mensaje de la lista
+  final _chat = valueChat.getListaDeMensajeChat.last;
+  final DateTime chatDate = DateTime.parse(_chat['msg_FecReg']);
+
+  String specialMessage = "";
+
+  if (chatDate.day == today.day) {
+    specialMessage = "Hoy";
+  } else if (chatDate.day == yesterday.day) {
+    specialMessage = "Ayer";
+  } else if (chatDate.day == dayBeforeYesterday.day) {
+    specialMessage = "Anteayer";
+  } else if (chatDate.isAfter(lastWeek)) {
+    specialMessage = "Esta semana";
+  } else if (chatDate.isAfter(lastMonth)) {
+    specialMessage = "Este mes";
+  }
+
+  return Container(
+    margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
+    child: Center(
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: size.iScreen(0.2),
+          horizontal: size.iScreen(0.5),
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Colors.red,
+        ),
+        child: Text(
+          specialMessage,
+          style: GoogleFonts.lexendDeca(
+            fontSize: size.iScreen(1.3),
+            color: Colors.white,
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
   
   
   
