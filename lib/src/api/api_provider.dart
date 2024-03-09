@@ -699,6 +699,50 @@ class ApiProvider {
     }
   }
 
+  //=========================VERIFICA CEDULA =====================================//
+  Future getVerificaCedulaCrearNuevoCliente({
+
+     BuildContext? context,
+    String? token,
+    String? cedula,
+ 
+  }) async {
+    try {
+      final url = Uri.parse('$_dirURL/proveedores/searchByCedulaOfRucFromApp/0?search=$cedula');
+
+     
+
+
+      final dataResp = await _http.get(
+        url,
+         headers: {"x-auth-token": '$token'},
+      );
+
+
+
+
+
+      print(' DATA DESDE SERVER VERIFICA CEDULA : ${dataResp.body}');
+      final respo = jsonDecode(dataResp.body);
+      //  print(' LA DETA DEL PUT: $respo');
+ 
+      if (dataResp.statusCode == 200) {
+        // final responsData = AuthResponse.fromMap(respo);
+        // return responsData;
+        return respo;
+      }
+      if (dataResp.statusCode == 401 || dataResp.statusCode == 403|| dataResp.statusCode == 404|| dataResp.statusCode == 500) {
+      snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
+        // return responsData;
+        return null;
+      }
+      
+    } catch (e) {
+      return null;
+    }
+  }
+  
+
 //=========================GET ALL GRUPOS CHAT =====================================//
   Future getAllNoticias({
     BuildContext? context,

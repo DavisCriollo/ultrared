@@ -429,7 +429,7 @@ resetAllValues();
 
   void setItemNombre(String? valor) {
     _itemNombre = valor;
-
+     print(' _itemNombre $_itemNombre');
     notifyListeners();
   }
 
@@ -1676,5 +1676,26 @@ var ctrlHome = context.read<HomeController>();
   }
 
 //*************************************/
+
+//====== ACTUALIZA CLAVE DEL USUARIO ==========//
+
+  Future verificaCedulaCliente(BuildContext context) async {
+    final dataUser = await Auth.instance.getSession();
+    final response = await _api.getVerificaCedulaCrearNuevoCliente(
+        context: context,
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoxNDEwMCwicnVjZW1wcmVzYSI6IlVMVFJBMjAyMiIsInVzdWFyaW8iOiIxMjM0NTY3ODkzIiwicm9sIjpbIkNMSUVOVEUiXSwiaWF0IjoxNzA5OTU0NDY2LCJleHAiOjE3MTA1NTkyNjZ9.XdaH4M8N2_6_PDnpU7R1004JXdzYfCj-iFlMN7KX6cU',
+        //dataUser!['token'],
+        cedula:_itemCedua);
+       
+
+    if (response != null) {
+      return response;
+    }
+    if (response == null) {
+      return null;
+    }
+  }
+
+
 
 }

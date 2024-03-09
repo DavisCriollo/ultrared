@@ -148,54 +148,131 @@ class _RegistroPageState extends State<RegistroPage> {
                           ),
                           //*****************************************/
                           Container(
-                            // color: Colors.red,
-                            width: size.wScreen(90.0),
-                            padding: EdgeInsets.all(size.wScreen(0.0)),
-                            child: Center(
-                              child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: size.hScreen(2.0),
-                                      vertical: size.iScreen(0.0)),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-    
-                                    // border: Border.all(
-                                    //   color: Colors.grey,
-                                    //   width: 1.0,
-                                    // ),
+                              //  color: Colors.green,
+                                    width: size.wScreen(80.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Container(
+                                    // color: Colors.red,
+                                    width: size.wScreen(65.0),
+                                    padding: EdgeInsets.all(size.wScreen(0.0)),
+                                    child: Container(
+                                      // width: size.wScreen(30.0),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: size.hScreen(0.5),
+                                            vertical: size.iScreen(0.0)),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                    
+                                          // border: Border.all(
+                                          //   color: Colors.grey,
+                                          //   width: 1.0,
+                                          // ),
+                                        ),
+                                        child: 
+                                        
+                                      
+                                          TextFormField(
+                                             
+                                          initialValue: widget.action == 'CREATE'
+                                              ? ''
+                                              : _control.getUser!['usuario'].toString(),
+                                          readOnly:
+                                              widget.action == 'CREATE' ? false : true,
+                                          maxLength: 13,
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp(r'[0-9]')),
+                                          ],
+                                          decoration: InputDecoration(
+                                            suffixIcon: const Icon(Icons.assignment_ind),
+                                            hintText: 'CÉDULA',
+                                            // border: InputBorder.none,
+                                            contentPadding: const EdgeInsets.fromLTRB(
+                                                10.0, 15.0, 0.0, 0.0),
+                                            focusedBorder: const OutlineInputBorder(
+                                                borderSide:
+                                                    BorderSide(color: Colors.grey)),
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                            ),
+                                    
+                                            // labelText: 'Nome',
+                                          ),
+                                          onChanged: (text) {
+                                            _control.setItemCedua(text.trim());
+                                          },
+                                        )
+                                       
+                                        
+                                       ),
                                   ),
-                                  child: TextFormField(
-                                    initialValue: widget.action == 'CREATE'
-                                        ? ''
-                                        : _control.getUser!['usuario'].toString(),
-                                    readOnly:
-                                        widget.action == 'CREATE' ? false : true,
-                                    maxLength: 10,
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.allow(
-                                          RegExp(r'[0-9]')),
-                                    ],
-                                    decoration: InputDecoration(
-                                      suffixIcon:
-                                          const Icon(Icons.assignment_ind),
-                                      hintText: 'CÉDULA',
-                                      // border: InputBorder.none,
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          10.0, 15.0, 0.0, 0.0),
-                                      focusedBorder: const OutlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.grey)),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10.0),
-                                      ),
-    
-                                      // labelText: 'Nome',
-                                    ),
-                                    onChanged: (text) {
-                                      _control.setItemCedua(text.trim());
-                                    },
-                                  )),
+                                ),
+                                Container(
+                                 height: size.iScreen(5.0),
+                                  decoration: BoxDecoration(
+                                    
+                                    color: tercearyColor,
+                                    border: Border.all(color: tercearyColor),
+                                    borderRadius: BorderRadius.circular(8)
+                                  ),
+                                
+                                  child: IconButton(
+                                    // splashColor:tercearyColor ,
+                                    splashRadius: 20,
+                                    onPressed: () async{
+                                        ProgressDialog.show(context);
+            final response = await _control. verificaCedulaCliente(context);
+            ProgressDialog.dissmiss(context);
+
+
+if (response != null  ) {
+
+ showDialog(
+          // barrierDismissible :false,
+            context: context,
+            builder: (context) {
+              // final controllerMulta = context.read<MultasGuardiasContrtoller>();
+          
+              return AlertDialog(
+                
+                title: const Text('Datos Encontrados'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+
+                     Text('${response['nombre']}'),
+                  ],
+                ),
+                actions: <Widget>[
+                 
+                  TextButton(
+                      onPressed: ()  {
+                       
+                         _control.setItemNombre(response['nombre']) ;
+                         Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Aceptar',
+                        style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(1.8),
+                            // color: Colors.white,
+                            fontWeight: FontWeight.normal),
+                      )),
+                ],
+              );
+            });
+
+}
+                                  
+                                  }, icon: Icon(Icons.search,color: Colors.white,)),
+                                )
+                              ],
                             ),
                           ),
                           //***********************************************/
@@ -221,19 +298,26 @@ class _RegistroPageState extends State<RegistroPage> {
                                     width: 1.0,
                                   ),
                                 ),
-                                child: TextFormField(
-                                  initialValue: widget.action == 'CREATE'
-                                      ? ''
-                                      : _control.getItemNombre,
+                                child:
+                                
+                                 Consumer<HomeController>(builder: (_, valueNombre, __) { 
+                                          return   TextFormField(
+                                             controller: TextEditingController(text:_control.getItemNombre),
+                                  // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
+                                  //     ? ''
+                                  //     : _control.getItemNombre,
                                   decoration: InputDecoration(
                                     suffixIcon: Icon(Icons.person),
                                     hintText: 'NOMBRES',
                                     border: InputBorder.none,
                                   ),
+                                  //  enabled: valueNombre.getItemNombre!.isNotEmpty, // Habilitar solo si el nombre está vacío
                                   onChanged: (text) {
                                     _control.setItemNombre(text.trim());
                                   },
-                                ),
+                                );
+                                          })
+                                
                               ),
                             ),
                           ),

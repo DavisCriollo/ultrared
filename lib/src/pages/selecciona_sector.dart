@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -737,6 +738,12 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                                           hintText: 'ESCRIBE UNA REFERENCIA ',
                                           border: InputBorder.none,
                                         ),
+                                         inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(
+                                // RegExp("[a-zA-Z0-9@#-+.,{" "}\\s]")),
+                                RegExp(r'^[^\n"]*$')),
+                            UpperCaseText(),
+                          ],
                                         onChanged: (text) {
                                           _ctrl.setItemReferencia(text.trim());
                                         },

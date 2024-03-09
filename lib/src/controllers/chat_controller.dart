@@ -767,9 +767,12 @@ notifyListeners();
     if (response != null && response['data']['results'].isNotEmpty) {
      
         List<dynamic> dataSort = response['data']['results'];
+       
         dataSort.sort((a, b) => b['message_id']!.compareTo(a['message_id']!));
 
-
+  //          _listaTodoLosChats.clear();
+  
+  // _listaTodoLosChats.addAll(dataSort);
 
       if (_page==0) {
             //******/
@@ -794,10 +797,13 @@ notifyListeners();
 
 
 // // //  //******/
+
+         
            setInfoBusquedaTodoLosChats(dataSort,_crtlSocket);
 
      
       } else {
+      
  setInfoBusquedaTodoLosChats(dataSort,_crtlSocket);
      
       }
@@ -843,19 +849,22 @@ setPage(response['data']['pagination']['next']);
     // if (_cantidad==5 && _page==0) {
   //  _listaTodoLosChats.clear();
 //  } else {
-  _listaTodoLosChats.clear();
-  _listaTodoLosChats.addAll(data);
-  // _listaTodoLosChats.reversed;
-     
-//       }
-
+  // _listaTodoLosChats.clear();
   
+  // _listaTodoLosChats.addAll(data);
+
 
 
   
-    // print('NUEVO Chat####################>:${_listaTodoLosChats}');
+//  _crtlSocket.setListaDeMensajesChat(data);
+
+  
+    print('NUEVO Chat####################>:${data.last}');
 
 //  _crtlSocket.setListaDeMensajesChat({});
+
+
+
  for (var item in data) {
                     _crtlSocket.setListaDeMensajesChat(item);
                   }

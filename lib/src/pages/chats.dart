@@ -441,6 +441,7 @@ Navigator.of(context).pop();
                                             itemBuilder: (BuildContext context, int index) {
                                   
                                                 if (index<valueChat.getListaDeMensajeChat.length) {
+
                                   final _chat = valueChat.getListaDeMensajeChat[index];
                                               return 
                                               

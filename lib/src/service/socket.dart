@@ -257,10 +257,24 @@ Function get emit =>this._socket!.emit;
 
   //**********  AGREGA LOS MENSAJES AL CHAT **********//
   void setListaDeMensajesChat(Map<String, dynamic> _msg) {
+    // print('Los MENSAJES DEL SERVIDOR   ------->>>>   : ${_listaDeMensajeChat.length}');
+     _listaDeMensajeChat.removeWhere((e) => e['message_id']==_msg['message_id']);
+   
     _listaDeMensajeChat.insert(0, _msg);
+   
+      // _listaDeMensajeChat.removeLast();
+      // for (var item in _listaDeMensajeChat) {
+      //     print('Los MENSAJES DEL SERVIDOR   ------->>>>   : ${item}');
+      //   }
+     
+   print('Los MENSAJES DEL SERVIDOR   ------->>>>   : ${_msg}');
+     
    _listaDeMensajeChat
         .sort((a, b) => b["message_id"].compareTo(a["message_id"]));
-// print('Los MENSAJES DEL SERVIDOR   ------->>>>   : $_listaDeMensajeChat');
+         print('Los MENSAJES DEL SERVIDOR  TODOS ------->>>>   : ${_listaDeMensajeChat.length}');
+     
+         
+     
     notifyListeners();
   }
 
