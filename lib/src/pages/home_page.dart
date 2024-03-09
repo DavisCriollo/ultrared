@@ -17,7 +17,8 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/controllers/init_provider.dart';
 import 'package:ultrared/src/pages/acceso_gps_page.dart';
 import 'package:ultrared/src/pages/auxilio_page.dart';
-import 'package:ultrared/src/pages/chat_page.dart';
+import 'package:ultrared/src/pages/chats.dart';
+
 import 'package:ultrared/src/pages/image_noticias.dart';
 import 'package:ultrared/src/pages/lista_estado_cuenta.dart';
 import 'package:ultrared/src/pages/lista_grupos_chat.dart';
@@ -101,6 +102,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     WidgetsBinding.instance!.addObserver(this);
 
     var ctrlHome = context.read<HomeController>();
+    final serviceSocket = context.read<SocketService>();
+
+ final dataUser = await Auth.instance.getSession();
+
+
+            serviceSocket.setUserApp(dataUser) ;
+        // var ctrlSocket = context.read<SocketService>();
 
     // Obtén el token de registro de Firebase
     String? firebaseToken = await FirebaseMessaging.instance.getToken();
@@ -117,20 +125,43 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     // Manejar la notificación cuando la aplicación está en primer plano
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print(
-          "Notificación recibida primer plano ************* >: ${message.data}");
+      print(          "Notificación recibida primer plano ************* >: ${message.data}");
       //------------------------------------//
-
       // ctrlHome.buscaNotificacionPorId(context, message.data['notId']);
-      //  ctrlHome.setInfoNotificacion(_infoNotificacion);
 
-      // Navigator.of(context).pushNamed('auxilo');
-       Navigator.push(
+
+// Validar la existencia de la propiedad "message_text"
+  if (message.data.containsKey("perNombre") && message.data["perNombre"] != null) {
+    print("La propiedad 'perNombre' existe en el mapa.");
+
+ Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: ((context) =>  AuxilioPage(idNotificacion: message.data['notId']))));
 
-      ctrlHome.buscarNotificaciones(context);
+
+                          ctrlHome.buscarNotificaciones(context);
+   
+  } else if (message.data.containsKey("message_text") && message.data["message_text"] != null) {
+
+      print("La propiedad 'message_text' SI existe en el mapa o es nula.");
+
+
+
+
+
+  }
+
+
+
+//  if (message.data['notTipo']== "ALERTA AYUDA") {
+ 
+   
+//  }else
+ 
+       
+
+    
     });
 
     // Manejar la notificación cuando la aplicación se abre desde la barra de notificaciones
@@ -148,10 +179,95 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       //  ctrlHome.setInfoNotificacion(_infoNotificacion);
       
      
-Navigator.push(
+// Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                         builder: ((context) =>  AuxilioPage(idNotificacion: message.data['notId']))));
+
+
+//  if (message.data['notTipo']== "ALERTA AYUDA") {
+ if (message.data.containsKey("perNombre") && message.data["perNombre"] != null) {
+    print("La propiedad 'perNombre' existe en el mapa.");
+
+ Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: ((context) =>  AuxilioPage(idNotificacion: message.data['notId']))));
+   
+  } else if (message.data.containsKey("message_text") && message.data["message_text"] != null) {
+      // ctrlSocket.emitEvent('client:lista-chats-grupos', {});
+    print("La propiedad 'message_text' SI existe en el mapa o es nula.");
+
+/*********************/
+                                          //-----------------------------NUEVA FORMA DEL CHAT----------------------------------// 
+                                          final _crtlSocket = context.read<SocketService>();
+                                                final _crtlHome = context.read<HomeController>();
+                                                final _crtl = context.read<ChatController>();
+                         
+                                                final _info = {
+                            "opcion": "GROUP", // 'INDIVIDUAL' | 'GROUP'
+                            "grupo": message.data["chat_name"],
+                            "chat_id":message.data["chat_id"],
+                            "idUsuario": '${_crtlHome.getUser!['id']}',
+                            // tomar del grupo del chat
+                                                };
+ 
+     _crtl.setInfoChat(_info);
+       _crtl.buscaAllTodoLosChats(context,'', false, int.parse(message.data["chat_id"].toString()),_crtlSocket);
+
+
+          //********************* */
+
+          
+
+
+
+
+          //************************/
+
+
+
+
+
+
+
+    
+    _crtlSocket.setIsEnChat(true);
+                            Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) => Chats(
+                                        tipo: 'NOTIFICACION',
+                                        user: _crtlHome.getUser,
+                                            // infoChat: _info,US
+                                          ))));
+
+/******************* */
+
+
+
+                                            
+
+
+
+  }
+
+//   Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                         builder: ((context) =>  AuxilioPage(idNotificacion: message.data['notId']))));
+   
+// //  }else 
+//  if (message.data['notTipo']== "NUEVO MENSAJE") {
+
+//   print('EL PAYLOAD ES: ${message.data['notTipo']}');
+
+//   //  Navigator.push(
+//   //                   context,
+//   //                   MaterialPageRoute(
+//   //                       builder: ((context) =>  AuxilioPage(idNotificacion: message.data['notId']))));
+//  }
+
       
        ctrlHome.buscarNotificaciones(context);
       // Navigator.of(context).pushNamed('auxilo');
@@ -164,14 +280,46 @@ Navigator.push(
  FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
       // Manejar la notificación cuando la aplicación está cerrada y se abre desde la notificación
       if (message != null) {
-        Navigator.push(
+
+             print(          "Notificación recibida CUANDO LA APLICACION ESTA CERRADA ************* >: ${message}");
+        // Navigator.push(
+        //             context,
+        //             MaterialPageRoute(
+        //                 builder: ((context) =>  AuxilioPage(idNotificacion: message.data['notId']))));
+
+        ctrlHome.buscaNotificacionPorId(context, message.data['notId']);
+
+          //  if (message.data['notTipo']== "ALERTA AYUDA") {
+//   Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                         builder: ((context) =>  AuxilioPage(idNotificacion: message.data['notId']))));
+   
+// //  }else 
+//  if (message.data['notTipo']== "NUEVO MENSAJE") {
+
+//   print('EL PAYLOAD ES: ${message.data['notTipo']}');
+
+//   //  Navigator.push(
+//   //                   context,
+//   //                   MaterialPageRoute(
+//   //                       builder: ((context) =>  AuxilioPage(idNotificacion: message.data['notId']))));
+//  }
+
+
+ if (message.data.containsKey("perNombre") && message.data["perNombre"] != null) {
+    print("La propiedad 'perNombre' existe en el mapa.");
+
+ Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: ((context) =>  AuxilioPage(idNotificacion: message.data['notId']))));
-                    //     .then((value) =>  Navigator.push(
-                    // context,
-                    // MaterialPageRoute(
-                    //     builder: ((context) =>  const SplashPage()))) );
+   
+  } else if (message.data.containsKey("message_text") && message.data["message_text"] != null) {
+    print("La propiedad 'message_text' SI existe en el mapa o es nula.");
+  }
+
+                    
       }
 
 
@@ -1422,6 +1570,7 @@ class BannerChat extends StatelessWidget {
           GestureDetector(
             onTap: () async {
               final serviceSocket = context.read<SocketService>();
+               
               // final _ctrlChat =
               //     context.read<
               //         ChatController>();

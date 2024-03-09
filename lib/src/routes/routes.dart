@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ultrared/src/pages/acceso_gps_page.dart';
 import 'package:ultrared/src/pages/auxilio_page.dart';
-import 'package:ultrared/src/pages/chat_page.dart';
+
 import 'package:ultrared/src/pages/foto_casa_page.dart';
 import 'package:ultrared/src/pages/foto_perfil_page.dart';
 import 'package:ultrared/src/pages/home.dart';

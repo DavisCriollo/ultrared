@@ -183,7 +183,7 @@ class ElementoSOS extends StatelessWidget {
       return   InkWell(
      
       splashColor: Colors.orange,
-      radius: 10,
+      radius: 50,
       child: Container(
         margin: EdgeInsets.all(size.iScreen(1)),
         padding: EdgeInsets.all(size.iScreen(0.0)),

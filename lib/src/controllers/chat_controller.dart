@@ -825,7 +825,7 @@ setPage(response['data']['pagination']['next']);
   //  List _tempList = [];
   // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
   void setChatSocket(Map<String,dynamic>  data ) {
-_listaTodoLosChats.insert(0,{data});
+// _listaTodoLosChats.insert(0,{data});
 
  notifyListeners();
   }
@@ -843,6 +843,7 @@ _listaTodoLosChats.insert(0,{data});
     // if (_cantidad==5 && _page==0) {
   //  _listaTodoLosChats.clear();
 //  } else {
+  _listaTodoLosChats.clear();
   _listaTodoLosChats.addAll(data);
   // _listaTodoLosChats.reversed;
      

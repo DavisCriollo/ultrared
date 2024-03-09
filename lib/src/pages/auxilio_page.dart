@@ -12,7 +12,7 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
-import 'package:ultrared/src/pages/chat_page.dart';
+
 import 'package:ultrared/src/pages/lista_usuarios_chat.dart';
 import 'package:ultrared/src/pages/vista_imagen.dart';
 import 'package:ultrared/src/service/socket.dart';
@@ -77,6 +77,7 @@ AudioCache player = AudioCache();
     final ctrlHome = context.read<HomeController>();
 
    final ctrlSocket =context.read<SocketService>();
+   
    
     
     return SafeArea(
@@ -193,14 +194,18 @@ AudioCache player = AudioCache();
     
     
                       ctrlSocket.emitEvent('client:actualizarData', _data);
-    
-     ctrlHome .buscarNotificaciones(context);
+                       
       double?  _latitud=  double.tryParse('${datos['notInformacionAdicional']['coordenadas']['latitud']}');
        double?  _longitud=  double.tryParse('${datos['notInformacionAdicional']['coordenadas']['longitud']}');
     
                   return Column(
                     children: [
-                      CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:'AUXILIO' ,),
+                      CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){
+                        Navigator.pop(context);
+                        ctrlHome.buscarNotificaciones(context);
+                        
+                        
+                        },title:'AUXILIO' ,),
                       
                       Container(
                         padding: EdgeInsets.symmetric(

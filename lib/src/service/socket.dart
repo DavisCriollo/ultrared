@@ -401,7 +401,7 @@ _socket!.on('disconnect', (_) {
         "rucempresa": "ULTRA2022", // login
         "id_user": getUser!['id'],
       };
-      print('ESTOO ES : $_info');
+      print('ESTO ******************** >   ES : $_info');
 
       _socket!.emit('client:totales-actualizados', _info);
 
@@ -459,7 +459,7 @@ _socket!.on('disconnect', (_) {
 void emitEvent(String eventName, dynamic data) {
   if (_socket != null && _socket!.connected) {
     _socket!.emit(eventName, data);
-    // print('SE EMITE ESTO AL SERVIDOR : $data');
+    print('SE EMITE ESTO AL SERVIDOR : $data');
   } else {
     print('El socket no está conectado');
     // Si lo deseas, puedes intentar reconectar aquí

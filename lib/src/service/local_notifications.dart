@@ -239,6 +239,10 @@ final _ctrl = HomeController();
       // Manejar la notificación cuando la aplicación se abre desde la barra de notificaciones
       print("Notificación abierta desde la aplicación: $message");
       // Puedes manejar la navegación a una pantalla específica aquí
+           showNotification(
+        title: message.notification?.title ?? 'Notificación',
+        body: message.notification?.body ?? '',
+      );
     });
   }
 

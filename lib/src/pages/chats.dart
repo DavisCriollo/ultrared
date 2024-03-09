@@ -23,8 +23,9 @@ import 'package:ultrared/src/widgets/message.dart';
 import 'package:ultrared/src/widgets/modal_permisos.dart';
 
 class Chats extends StatefulWidget {
+  final String tipo;
     final Map<String,dynamic>? user;
-  const Chats({Key? key, this.user}) : super(key: key);
+  const Chats({Key? key, this.user, required this.tipo}) : super(key: key);
 
   @override
   State<Chats> createState() => _ChatsState();
@@ -405,18 +406,21 @@ Navigator.of(context).pop();
                           Column(
                         
                             children: [
+ 
+                CabeceraChatApp(colorBase:Colors.white,size: size,
+                title:  widget.tipo=='GRUPO'?'${_ctrlChat.getInfoChat['grupo']['chat_name']}':'${_ctrlChat.getInfoChat['grupo']}', 
+                onTap: (){               
+                   final _ctrlSocket =context.read<SocketService>();
+                    _ctrlSocket.emitEvent('client:lista-usuarios', 
+                    { "chat_id" :  widget.tipo=='GRUPO'?_ctrlChat.getInfoChat['grupo']['chat_id']:_ctrlChat.getInfoChat['chat_id'] });
     
-                    CabeceraChatApp(colorBase:Colors.white,size: size,title:'${_ctrlChat.getInfoChat['grupo']['chat_name']}', onTap: (){                final _ctrlSocket =context.read<SocketService>();
-                    _ctrlSocket.emitEvent('client:lista-usuarios', { "chat_id" : _ctrlChat.getInfoChat['grupo']['chat_id'] });
-    
-    
-    
-                        Navigator.push(
-                                    context,
+                         Navigator.push( context,
                                     MaterialPageRoute(
                                         builder: ((context) => ListaUsuariosChat(
                                               infoGrupo: _ctrlChat.getInfoChat['grupo'],
-                                            ))));},submenu: true,),
+                                            ))));
+                                            },
+                                            submenu: true,),
                                                 
     
     
@@ -433,7 +437,7 @@ Navigator.of(context).pop();
                                     padding: EdgeInsets.only(bottom: 16.0), // Agrega espacio en la parte inferior
                                      controller: _scrollController,
                                   physics: const BouncingScrollPhysics(),
-                                            itemCount: valueChat.getListaDeMensajeChat.length+1,
+                                            itemCount: valueChat.getListaDeMensajeChat.length,
                                             itemBuilder: (BuildContext context, int index) {
                                   
                                                 if (index<valueChat.getListaDeMensajeChat.length) {
@@ -455,7 +459,8 @@ Navigator.of(context).pop();
                                         user:_ctrlHome.getUser!,
                                         messaje:_chat,
                                        
-                                         ):Container() ;
+                                         ):
+                                         Container() ;
                                           
                                 
                                 
@@ -756,7 +761,7 @@ void scrollToEnd() {
         return SafeArea(
           child: Container(
             color: Colors.white,
-            height: size.iScreen(6.0),
+            // height: size.iScreen(6.0),
             margin: EdgeInsets.symmetric(
                 horizontal: size.wScreen(0.0), vertical: size.iScreen(0.0)),
             padding: EdgeInsets.symmetric(
@@ -789,7 +794,8 @@ void scrollToEnd() {
                   ),
                 ),
                 Expanded(
-                  child: Container(height: size.iScreen(4.0),
+                  child: Container(
+                    // height: size.iScreen(4.0),
                     decoration: ShapeDecoration(
                       color: Color(0xFFF2F2F2),
                       // color:Colors.white,
@@ -798,10 +804,12 @@ void scrollToEnd() {
                       ),
                     ),
                     // color:Colors.red,
-                    margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
+                    // margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
                     padding:
                         EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
                     child: TextField(
+                      maxLines: 5,
+                      minLines: 1,
                       onSubmitted: _hansdleSubmit,
                       controller: _textController,
                       decoration: const InputDecoration(
