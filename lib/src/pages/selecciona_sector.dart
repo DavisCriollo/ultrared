@@ -988,7 +988,10 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                   //       }
                   
                   // }
-                  
+                   _ctrl.setItemCorreos('') ;
+                        
+
+                          _ctrl.seItemCelulars('') ;
                                           _next(context, _ctrl,_action!);
                                         },
                                       
@@ -1375,6 +1378,8 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
     //                     controller.setFotoTipo('fotoperfil');
     // Navigator.push(context,
     //     MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
+    
+                         
 
      Navigator.push(
                                             context,

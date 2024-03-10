@@ -447,7 +447,7 @@ resetAllValues();
 
   void setItemApellido(String? valor) {
     _itemApellido = valor;
-
+ print(' _itemApellido $_itemApellido');
     notifyListeners();
   }
 
@@ -456,7 +456,7 @@ resetAllValues();
 
   void setItemDireccion(String? valor) {
     _itemDireccion = valor;
-
+ print(' _itemDireccion $_itemDireccion');
     notifyListeners();
   }
 

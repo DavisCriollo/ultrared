@@ -549,7 +549,7 @@ Navigator.of(context).pop();
       itemBuilder: (BuildContext context, int index) {
         if (index == valueChat.getListaDeMensajeChat.length) {
           // Mostrar el mensaje especial al inicio
-          return _buildSpecialMessage(size,valueChat.getListaDeMensajeChat.last);
+          return _buildSpecialMessage(size);
         } else {
           final _chat = valueChat.getListaDeMensajeChat[index];
           // Resto del código para mostrar los mensajes individuales
@@ -1407,63 +1407,77 @@ final _ctrlChat=context.read<ChatController>();
   
   
   
-Widget _buildSpecialMessage(Responsive size, Map<String, dynamic> chat) {
-  DateTime today = DateTime.now();
+Widget _buildSpecialMessage(Responsive size) {
+  final valueChat=context.read<SocketService>();
+DateTime today = DateTime.now();
   DateTime yesterday = today.subtract(Duration(days: 1));
   DateTime dayBeforeYesterday = today.subtract(Duration(days: 2));
   DateTime lastWeek = today.subtract(Duration(days: 7));
   DateTime lastMonth = DateTime(today.year, today.month - 1, today.day);
- final valueChat =context.read<SocketService>();
-  // Asegúrate de que la lista de mensajes no esté vacía
-  if (valueChat.getListaDeMensajeChat.isEmpty) {
-    return Container(); // O cualquier otro widget que desees mostrar en caso de lista vacía
-  }
 
-  // Obtén el último mensaje de la lista
-  final _chat = valueChat.getListaDeMensajeChat.last;
-  final DateTime chatDate = DateTime.parse(_chat['msg_FecReg']);
+  if (valueChat.getListaDeMensajeChat.isNotEmpty) {
+    final _chat = valueChat.getListaDeMensajeChat.last;
+    final DateTime? chatDate = (_chat['msg_FecReg'] != null && _chat['msg_FecReg'] is String)
+        ? DateTime.tryParse(_chat['msg_FecReg'])
+        : null;
 
-  String specialMessage = "";
+    if (chatDate != null) {
+      String _formattedDate(DateTime date) {
+  return "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}";
+}
+      String specialMessage = "";
 
-  if (chatDate.day == today.day) {
-    specialMessage = "Hoy";
-  } else if (chatDate.day == yesterday.day) {
-    specialMessage = "Ayer";
-  } else if (chatDate.day == dayBeforeYesterday.day) {
-    specialMessage = "Anteayer";
-  } else if (chatDate.isAfter(lastWeek)) {
-    specialMessage = "Esta semana";
-  } else if (chatDate.isAfter(lastMonth)) {
-    specialMessage = "Este mes";
-  }
+     if (chatDate.day == today.day) {
+  specialMessage = "Hoy";
+} else if (chatDate.day == yesterday.day) {
+  specialMessage = "Ayer";
+} else if (chatDate.day == dayBeforeYesterday.day) {
+  specialMessage = "Anteayer";
+} else if (chatDate.isAfter(lastWeek)) {
+  specialMessage = "Esta semana (${_formattedDate(chatDate)})";
+} else if (chatDate.isAfter(lastMonth)) {
+  specialMessage = "Este mes (${_formattedDate(chatDate)})";
+} else if (chatDate.year == today.year && chatDate.month == today.month - 1) {
+  specialMessage = "El mes pasado (${_formattedDate(chatDate)})";
+} else if (chatDate.year == today.year - 1) {
+  specialMessage = "El año pasado (${_formattedDate(chatDate)})";
+} 
+// else {
+//   specialMessage = "Fecha especial (${_formattedDate(chatDate)})";
+// }
 
-  return Container(
-    margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
-    child: Center(
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          vertical: size.iScreen(0.2),
-          horizontal: size.iScreen(0.5),
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.red,
-        ),
-        child: Text(
-          specialMessage,
-          style: GoogleFonts.lexendDeca(
-            fontSize: size.iScreen(1.3),
-            color: Colors.white,
-            fontWeight: FontWeight.normal,
+
+
+      return Container(
+        margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
+        child: Center(
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              vertical: size.iScreen(0.2),
+              horizontal: size.iScreen(0.5),
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: colorTerciario,
+            ),
+            child: Text(
+              specialMessage,
+              style: GoogleFonts.lexendDeca(
+                fontSize: size.iScreen(1.3),
+                color: Colors.white,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
           ),
         ),
-      ),
-    ),
-  );
+      );
+    }
+  }
+
+  // En caso de lista vacía o fecha no válida, regresa un contenedor vacío o un widget alternativo.
+  return Container();
 }
 
-  
-  
   
   
   }

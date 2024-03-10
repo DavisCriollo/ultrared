@@ -30,13 +30,26 @@ class _RegistroPageState extends State<RegistroPage> {
   TextEditingController _textAddTelefono = TextEditingController();
   TextEditingController _textAddCorreo = TextEditingController();
   TextEditingController controllerTextCountry = TextEditingController();
+
+  TextEditingController controllerTextNombre = TextEditingController();
+    TextEditingController controllerTextApellido = TextEditingController();
+      TextEditingController controllerTextDireccion = TextEditingController();
+        TextEditingController controllerTextCorreo = TextEditingController();
+          TextEditingController controllerTextCelular = TextEditingController();
+
+
   bool _isChecked = false;
 
   @override
   void dispose() {
-    _textAddCorreo.clear();
-    _textAddTelefono.clear();
-    controllerTextCountry.clear();
+    _textAddCorreo.dispose();
+    _textAddTelefono.dispose();
+    controllerTextCountry.dispose();
+     controllerTextNombre.dispose();
+     controllerTextApellido.dispose();
+     controllerTextDireccion.dispose();
+     controllerTextCorreo.dispose();
+     controllerTextCelular.dispose();
     super.dispose();
   }
 
@@ -253,8 +266,54 @@ if (response != null  ) {
                  
                   TextButton(
                       onPressed: ()  {
+ String nombreCompleto = response['nombre'];
+    String nombres = '';
+    String apellidos = '';
+                        
+
+  List<String> palabras = nombreCompleto.split(" ");
+
+ 
+
+  if (palabras.length >= 1) {
+    apellidos = palabras[0];
+
+    if (palabras.length == 2) {
+      nombres = palabras[1];
+    } else if (palabras.length >= 3) {
+      apellidos += " " + palabras[1];
+      nombres = palabras.sublist(2).join(" ");
+    }
+
+    // Imprimir los resultados
+    print("Nombre: $nombres");
+    print("Apellido: $apellidos");
+  } else {
+    print("La cadena no tiene el formato esperado.");
+  }
+
                        
-                         _control.setItemNombre(response['nombre']) ;
+                         _control.setItemNombre(nombres) ;
+                         controllerTextNombre.text=_control.getItemNombre!;
+
+                          _control.setItemApellido(apellidos) ;
+                         controllerTextApellido.text=_control.getItemApellido!;
+
+                          _control.setItemDireccion(response['direccion']) ;
+                         controllerTextDireccion.text=_control.getItemDireccion!;
+
+                          _control.setItemCorreos(response['email']) ;
+                         controllerTextCorreo.text=_control.getItemCorreos!;
+
+                          _control.seItemCelulars(response['celular']) ;
+                         controllerTextCelular.text=_control.getItemCelulars!;
+
+
+
+
+
+
+
                          Navigator.pop(context);
                       },
                       child: Text(
@@ -268,6 +327,14 @@ if (response != null  ) {
               );
             });
 
+}
+else{
+   controllerTextNombre.text='';
+   controllerTextApellido.text='';
+   controllerTextDireccion.text='';
+   controllerTextCorreo.text='';
+   controllerTextCelular.text='';
+  
 }
                                   
                                   }, icon: Icon(Icons.search,color: Colors.white,)),
@@ -302,18 +369,22 @@ if (response != null  ) {
                                 
                                  Consumer<HomeController>(builder: (_, valueNombre, __) { 
                                           return   TextFormField(
-                                             controller: TextEditingController(text:_control.getItemNombre),
+                                             controller: controllerTextNombre,
                                   // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
                                   //     ? ''
-                                  //     : _control.getItemNombre,
+                                  //     :
+                                  // _control.getItemNombre,
                                   decoration: InputDecoration(
                                     suffixIcon: Icon(Icons.person),
                                     hintText: 'NOMBRES',
                                     border: InputBorder.none,
                                   ),
                                   //  enabled: valueNombre.getItemNombre!.isNotEmpty, // Habilitar solo si el nombre está vacío
+                                 
                                   onChanged: (text) {
-                                    _control.setItemNombre(text.trim());
+
+                                    valueNombre.setItemNombre(text.trim());
+                                    
                                   },
                                 );
                                           })
@@ -344,20 +415,27 @@ if (response != null  ) {
                                     width: 1.0,
                                   ),
                                 ),
-                                child: TextFormField(
-                                  initialValue: widget.action == 'CREATE'
-                                      ? ''
-                                      : _control.getItemApellido,
-                                  // maxLength: 1,
-                                  decoration: const InputDecoration(
+                                child: Consumer<HomeController>(builder: (_, valueApellido, __) { 
+                                          return   TextFormField(
+                                             controller: controllerTextApellido,
+                                  // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
+                                  //     ? ''
+                                  //     :
+                                  // _control.getItemNombre,
+                                  decoration: InputDecoration(
                                     suffixIcon: Icon(Icons.person),
                                     hintText: 'APELLIDOS',
                                     border: InputBorder.none,
                                   ),
+                                  //  enabled: valueNombre.getItemNombre!.isNotEmpty, // Habilitar solo si el nombre está vacío
+                                 
                                   onChanged: (text) {
-                                    _control.setItemApellido(text.trim());
+
+                                    valueApellido.setItemApellido(text.trim());
+                                    
                                   },
-                                ),
+                                );
+                                          })
                               ),
                             ),
                           ),
@@ -384,19 +462,27 @@ if (response != null  ) {
                                     width: 1.0,
                                   ),
                                 ),
-                                child: TextFormField(
-                                  initialValue: widget.action == 'CREATE'
-                                      ? ''
-                                      : _control.getItemDireccion,
-                                  decoration: const InputDecoration(
+                                child:  Consumer<HomeController>(builder: (_, valueDireccion, __) { 
+                                          return   TextFormField(
+                                             controller: controllerTextDireccion,
+                                  // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
+                                  //     ? ''
+                                  //     :
+                                  // _control.getItemNombre,
+                                  decoration: InputDecoration(
                                     suffixIcon: Icon(Icons.edit),
-                                    hintText: 'DIRECCIÒN',
+                                    hintText: 'DIRECCIÓN',
                                     border: InputBorder.none,
                                   ),
+                                  //  enabled: valueNombre.getItemNombre!.isNotEmpty, // Habilitar solo si el nombre está vacío
+                                 
                                   onChanged: (text) {
-                                    _control.setItemDireccion(text.trim());
+
+                                    valueDireccion.setItemDireccion(text.trim());
+                                    
                                   },
-                                ),
+                                );
+                                          })
                               ),
                             ),
                           ),
