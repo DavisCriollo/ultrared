@@ -180,31 +180,23 @@ class ElementoSOS extends StatelessWidget {
     return 
 
     Consumer<HomeController> (builder: (_, values, __) { 
-      return   InkWell(
-     
-      splashColor: Colors.orange,
-      radius: 50,
-      child: Container(
-        margin: EdgeInsets.all(size.iScreen(1)),
+      return   Container(
+        margin: EdgeInsets.all(size.iScreen(0.5)),
         padding: EdgeInsets.all(size.iScreen(0.0)),
         decoration: BoxDecoration(
             // color:  colorPrimario,
-            border: Border.all(width: size.iScreen(0.1),color: colorPrimario),
+            border: Border.all(width: size.iScreen(0.1),color: colorTerciario),
             borderRadius: BorderRadius.circular(size.iScreen(1.0))),
         width:size.iScreen(18.5),
         height: size.iScreen(15.5),
-        child:Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-               height: size.iScreen(10.5),
-      
-              decoration: BoxDecoration( 
-              color: Colors.white,
-                borderRadius: BorderRadius.circular(size.iScreen(1.0))),
-              // margin: EdgeInsets.all(size.iScreen(1.0)),
-              // padding: EdgeInsets.all(size.iScreen(1.0)),
-              child: Column(
+        child:MaterialButton(
+          splashColor: colorTerciario,
+           onPressed:values.alarmActivated== true? null :onTap,
+         
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
                 children: [
                   // Image.asset(
                   //   image,
@@ -220,6 +212,7 @@ class ElementoSOS extends StatelessWidget {
                                          height: size.iScreen(9.0),
                                          decoration: BoxDecoration(
                         color: values.alarmActivated== true? Colors.white:colorPrimario,
+                         border: Border.all(width: size.iScreen(0.1),color: colorPrimario),
                         borderRadius: BorderRadius.circular(100)),
                                          margin: EdgeInsets.all(size.iScreen(0.0)),
                                          padding: EdgeInsets.all(size.iScreen(0.0)),
@@ -236,24 +229,24 @@ class ElementoSOS extends StatelessWidget {
                   
                 ],
               ),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: size.iScreen(0.5)),
-              child: Column(
-                children: [
-                 
-                  Text(values.alarmActivated== true?
-                  'Alarma Activada': label,
-                  textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                          fontSize: size.iScreen(1.4),
-                          color:values.alarmActivated== true?Colors.red: Colors.black,
-                          fontWeight:values.alarmActivated== true? FontWeight.w600:FontWeight.normal,
-                          letterSpacing:  -0.28,)),
-                ],
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: size.iScreen(0.5)),
+                child: Column(
+                  children: [
+                   
+                    Text(values.alarmActivated== true?
+                    'Alarma Activada': label,
+                    textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                            fontSize: size.iScreen(1.4),
+                            color:values.alarmActivated== true?Colors.red: Colors.black,
+                            fontWeight:values.alarmActivated== true? FontWeight.w600:FontWeight.normal,
+                            letterSpacing:  -0.28,)),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         )
         
         
@@ -266,9 +259,7 @@ class ElementoSOS extends StatelessWidget {
         // },)
         
         
-      ),
-      onLongPress:values.alarmActivated== true? null :onTap
-    );
+      );
   
   
       },);

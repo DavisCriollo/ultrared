@@ -276,7 +276,10 @@ resetAllValues();
     _gpsPositione = true;
     notifyListeners();
   }
-
+void resetUbicaciobGPS(){
+   _locationMessage = '';
+   notifyListeners();
+}
   Future getLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
@@ -1247,21 +1250,54 @@ int _mensajesNoLeidos =0;
   String? _idUsuario = "";
 
   void setIngoUsuario(Map<String, dynamic> _info) {
-    _infoUsuarioById = {};
+ _infoUsuarioById = {};
     _idUsuario = "";
     _infoUsuarioById = _info;
+    String nombreCompleto = _info['nombres'];
+    String nombres = '';
+    String apellidos = '';
+                        
+
+  List<String> palabras = nombreCompleto.split(" ");
+
+ 
+
+  if (palabras.isNotEmpty) {
+    apellidos = palabras[0];
+
+    if (palabras.length == 2) {
+      nombres = palabras[1];
+    } else if (palabras.length >= 3) {
+      apellidos += " " + palabras[1];
+      nombres = palabras.sublist(2).join(" ");
+    }
+
+    // Imprimir los resultados
+   
+  }
+
+   
+    // _itemLugarServicio= getUser!['tipoServicio'];
+    // _ciudadItem=getUser!['usuario'];
+
+
 
     _itemCedua = getUser!['usuario'];
     _idUsuario = _infoUsuarioById['perId'].toString();
-    _itemNombre = _infoUsuarioById['nombres'];
-    _itemApellido = _infoUsuarioById['nombres'];
+
+    _itemNombre = nombres;//_infoUsuarioById['nombres'];
+
+    _itemApellido = apellidos;//_infoUsuarioById['nombres'];
     _itemDireccion = _infoUsuarioById['direccion'];
     _itemCorreos = _infoUsuarioById['email'];
     _itemCelulares = _infoUsuarioById['celular'];
     _itemIsEdad = true;
     _ciudadItem = _infoUsuarioById['ciudad'];
     _sectorItem = _infoUsuarioById['sector'];
-    setItemReferencia(_infoUsuarioById['referencia']??"");
+    
+    _itemReferencia=_infoUsuarioById["referencia"];
+    // setItemReferencia(_infoUsuarioById['referencia']??"");
+
       _urlImagePerfil = _infoUsuarioById['fotoPerfil'];
     _urlImageCasa = _infoUsuarioById['fotoCasa']??"";
     _urlImageVehiculo = _infoUsuarioById['fotoVehiculo']??"";
@@ -1274,7 +1310,7 @@ int _mensajesNoLeidos =0;
 
     _infoUsuarioById['gps'] ?? '';
 
-    _itemLugarServicio = _infoUsuarioById['tipoServicio'] ?? '';
+    _itemLugarServicio = _infoUsuarioById['tipoServicio'];
 
     _itemPlaca = _infoUsuarioById['placa'] ?? '';
     _itemColor = _infoUsuarioById['color'] ?? '';

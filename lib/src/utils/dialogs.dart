@@ -172,6 +172,30 @@ abstract class ProgressDialogMini {
   }
 }
 
+abstract class ProgressDialogGPS {
+  static show(BuildContext context, {String? messaje}) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (_) {
+        return WillPopScope(
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: Colors.grey.withOpacity(0.5),
+            child:  const Center(
+              child: CircularProgressIndicator(color: colorPrimario,),
+            ),
+          ),
+          onWillPop: () async => false,
+        );
+      },
+    );
+  }
+
+  static dissmiss(BuildContext context) {
+    Navigator.pop(context);
+  }
+}
 // abstract class DialogToasNoContext {
 //   static show(BuildContext context, String messaje) {
 //     Fluttertoast.showToast(

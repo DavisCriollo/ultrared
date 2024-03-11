@@ -19,8 +19,9 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:ultrared/src/widgets/cabeceraApp.dart';
 
 class RegistroPage extends StatefulWidget {
+
   final String? action;
-  const RegistroPage({Key? key, required this.action}) : super(key: key);
+  const RegistroPage({Key? key, required this.action, }) : super(key: key);
 
   @override
   State<RegistroPage> createState() => _RegistroPageState();
@@ -36,6 +37,10 @@ class _RegistroPageState extends State<RegistroPage> {
       TextEditingController controllerTextDireccion = TextEditingController();
         TextEditingController controllerTextCorreo = TextEditingController();
           TextEditingController controllerTextCelular = TextEditingController();
+
+
+
+
 
 
   bool _isChecked = false;
@@ -58,6 +63,11 @@ class _RegistroPageState extends State<RegistroPage> {
     final _action = widget.action;
     final Responsive size = Responsive.of(context);
     final _control = context.read<HomeController>();
+     controllerTextNombre.text='${_control.getItemNombre}';
+     controllerTextApellido.text='${_control.getItemApellido}';
+       controllerTextDireccion.text='${_control.getItemDireccion}';
+         controllerTextCorreo.text='${_control.getItemCorreos}';
+           controllerTextCelular.text='${_control.getItemCelulars}';
     // context.read<SocketService>();
     return SafeArea(
       child: GestureDetector(
@@ -171,7 +181,7 @@ class _RegistroPageState extends State<RegistroPage> {
                                   borderRadius: BorderRadius.circular(8),
                                   child: Container(
                                     // color: Colors.red,
-                                    width: size.wScreen(65.0),
+                                    width:  _action != 'CREATE'? size.wScreen(80.0):size.wScreen(65.0),
                                     padding: EdgeInsets.all(size.wScreen(0.0)),
                                     child: Container(
                                       // width: size.wScreen(30.0),
@@ -202,21 +212,34 @@ class _RegistroPageState extends State<RegistroPage> {
                                             FilteringTextInputFormatter.allow(
                                                 RegExp(r'[0-9]')),
                                           ],
-                                          decoration: InputDecoration(
-                                            suffixIcon: const Icon(Icons.assignment_ind),
-                                            hintText: 'CÉDULA',
-                                            // border: InputBorder.none,
-                                            contentPadding: const EdgeInsets.fromLTRB(
-                                                10.0, 15.0, 0.0, 0.0),
-                                            focusedBorder: const OutlineInputBorder(
-                                                borderSide:
-                                                    BorderSide(color: Colors.grey)),
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(10.0),
-                                            ),
+                                          // decoration: InputDecoration(
+                                          //   suffixIcon: const Icon(Icons.assignment_ind),
+                                          //   hintText: 'CÉDULA',
+                                          //   // border: InputBorder.none,
+                                          //   contentPadding: const EdgeInsets.fromLTRB(
+                                          //       10.0, 15.0, 0.0, 0.0),
+                                          //   focusedBorder: const OutlineInputBorder(
+                                          //       borderSide:
+                                          //           BorderSide(color: Colors.grey)),
+                                          //   border: OutlineInputBorder(
+                                          //     borderRadius: BorderRadius.circular(10.0),
+                                          //   ),
                                     
-                                            // labelText: 'Nome',
-                                          ),
+                                          //   // labelText: 'Nome',
+                                          // ),
+                                            decoration: InputDecoration(
+                                      label: Text('CÉDULA'),
+                                      suffixIcon: Icon(Icons.assignment_ind, color: colorPrimario),
+                                     
+                                      hintText: 'INGRESE CÉDULA',
+                                      border: UnderlineInputBorder(),
+                                        // Establecer el color de texto a rojo
+                                       labelStyle: TextStyle(color:colorPrimario),
+    
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color:colorPrimario),
+    ),
+                                    ),
                                           onChanged: (text) {
                                             _control.setItemCedua(text.trim());
                                           },
@@ -226,7 +249,7 @@ class _RegistroPageState extends State<RegistroPage> {
                                        ),
                                   ),
                                 ),
-                                Container(
+                              _action == 'CREATE'?  Container(
                                  height: size.iScreen(5.0),
                                   decoration: BoxDecoration(
                                     
@@ -338,59 +361,143 @@ else{
 }
                                   
                                   }, icon: Icon(Icons.search,color: Colors.white,)),
-                                )
+                                ):Container()
                               ],
                             ),
                           ),
                           //***********************************************/
-                          //***********************************************/
-    
-                          SizedBox(
-                            height: size.iScreen(1.0),
-                          ),
-                          //*****************************************/
                           Container(
-                            // color: Colors.red,
-                            width: size.wScreen(80.0),
-                            padding: EdgeInsets.all(size.wScreen(0.0)),
-                            child: Center(
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: size.hScreen(2.0),
-                                    vertical: size.iScreen(0.0)),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                child:
-                                
-                                 Consumer<HomeController>(builder: (_, valueNombre, __) { 
-                                          return   TextFormField(
+                             width: size.wScreen(80.0),
+                            child: Consumer<HomeController>(builder: (_, valueNombre, __) { 
+                                            return   TextFormField(
+                                               readOnly:
+                                                widget.action != 'CREATE' ? false : true,   
                                              controller: controllerTextNombre,
-                                  // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
-                                  //     ? ''
-                                  //     :
-                                  // _control.getItemNombre,
-                                  decoration: InputDecoration(
-                                    suffixIcon: Icon(Icons.person),
-                                    hintText: 'NOMBRES',
-                                    border: InputBorder.none,
-                                  ),
-                                  //  enabled: valueNombre.getItemNombre!.isNotEmpty, // Habilitar solo si el nombre está vacío
-                                 
-                                  onChanged: (text) {
+                                    // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
+                                    //     ? ''
+                                    //     :
+                                    // _control.getItemNombre,
+                                    decoration: InputDecoration(
+                                      label: Text('NOMBRES'),
+                                      suffixIcon: Icon(Icons.person, color: colorPrimario),
+                                     
+                                      hintText: 'NOMBRES',
+                                      border: UnderlineInputBorder(),
+                                        // Establecer el color de texto a rojo
+                                       labelStyle: TextStyle(color:colorPrimario),
+    
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color:colorPrimario),
+    ),
+                                    ),
+                                   
+                                    onChanged: (text) {
 
-                                    valueNombre.setItemNombre(text.trim());
-                                    
-                                  },
-                                );
-                                          })
+                                      valueNombre.setItemNombre(text.trim());
+                                      
+                                    },
+                                  );
+                                            }),
+                          ),
+                          // //***********************************************/
+    
+                          // SizedBox(
+                          //   height: size.iScreen(1.0),
+                          // ),
+                          // //*****************************************/
+                          // Container(
+                          //   // color: Colors.red,
+                          //   width: size.wScreen(80.0),
+                          //   padding: EdgeInsets.all(size.wScreen(0.0)),
+                          //   child: Center(
+                          //     child: Container(
+                          //       padding: EdgeInsets.symmetric(
+                          //           horizontal: size.hScreen(2.0),
+                          //           vertical: size.iScreen(0.0)),
+                          //       decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.circular(10.0),
+                          //         border: Border.all(
+                          //           color: Colors.grey,
+                          //           width: 1.0,
+                          //         ),
+                          //       ),
+                          //       child:
                                 
-                              ),
-                            ),
+                          //        Consumer<HomeController>(builder: (_, valueNombre, __) { 
+                          //                 return   TextFormField(
+                          //                    readOnly:
+                          //                     widget.action != 'CREATE' ? false : true,                                             controller: controllerTextNombre,
+                          //         // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
+                          //         //     ? ''
+                          //         //     :
+                          //         // _control.getItemNombre,
+                          //         decoration: InputDecoration(
+                          //           label: Text('NOMBRES'),
+                          //           suffixIcon: Icon(Icons.person),
+                          //           hintText: 'NOMBRES',
+                          //           border: InputBorder.none,
+                          //         ),
+                          //         //  enabled: valueNombre.getItemNombre!.isNotEmpty, // Habilitar solo si el nombre está vacío
+                                 
+                          //         onChanged: (text) {
+
+                          //           valueNombre.setItemNombre(text.trim());
+                                    
+                          //         },
+                          //       );
+                          //                 })
+                                
+                          //     ),
+                          //   ),
+                          // ),
+                          //***********************************************/
+                          //***********************************************/
+    
+                          SizedBox(
+                            height: size.iScreen(2.0),
+                          ),
+                          //*****************************************/
+                          Container(
+                            // color: Colors.red,
+                            width: size.wScreen(80.0),
+                            padding: EdgeInsets.all(size.wScreen(0.0)),
+                            child: Consumer<HomeController>(builder: (_, valueApellido, __) { 
+                                      return   TextFormField(
+                                         readOnly:
+                                          widget.action != 'CREATE' ? false : true,
+                                         controller: controllerTextApellido,
+                              // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
+                              //     ? ''
+                              //     :
+                              // _control.getItemNombre,
+                              // decoration: InputDecoration(
+                              //   suffixIcon: Icon(Icons.person),
+                              //   hintText: 'APELLIDOS',
+                              //   border: InputBorder.none,
+                              // ),
+                               decoration: InputDecoration(
+                                  label: Text('APELLIDOS'),
+                                  suffixIcon: Icon(Icons.person, color: colorPrimario),
+                                 
+                                  hintText: 'APELLIDOS',
+                                  border: UnderlineInputBorder(),
+                                    // Establecer el color de texto a rojo
+                                   labelStyle: TextStyle(color:colorPrimario),
+    
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color:colorPrimario),
+    ),
+                                ),
+                               
+                              //  enabled: valueNombre.getItemNombre!.isNotEmpty, // Habilitar solo si el nombre está vacío
+                             
+                              onChanged: (text) {
+
+                                valueApellido.setItemApellido(text.trim());
+                                
+                              },
+                            );
+                                      }),
                           ),
                           //***********************************************/
                           //***********************************************/
@@ -403,88 +510,43 @@ else{
                             // color: Colors.red,
                             width: size.wScreen(80.0),
                             padding: EdgeInsets.all(size.wScreen(0.0)),
-                            child: Center(
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: size.hScreen(2.0),
-                                    vertical: size.iScreen(0.0)),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                child: Consumer<HomeController>(builder: (_, valueApellido, __) { 
-                                          return   TextFormField(
-                                             controller: controllerTextApellido,
-                                  // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
-                                  //     ? ''
-                                  //     :
-                                  // _control.getItemNombre,
-                                  decoration: InputDecoration(
-                                    suffixIcon: Icon(Icons.person),
-                                    hintText: 'APELLIDOS',
-                                    border: InputBorder.none,
-                                  ),
-                                  //  enabled: valueNombre.getItemNombre!.isNotEmpty, // Habilitar solo si el nombre está vacío
-                                 
-                                  onChanged: (text) {
+                            child: Consumer<HomeController>(builder: (_, valueDireccion, __) { 
+                                      return   TextFormField(
+                                         controller: controllerTextDireccion,
+                              // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
+                              //     ? ''
+                              //     :
+                              // _control.getItemNombre,
+                              // decoration: InputDecoration(
+                              //   suffixIcon: Icon(Icons.edit),
+                              //   hintText: 'DIRECCIÓN',
+                              //   border: InputBorder.none,
+                              // ),
 
-                                    valueApellido.setItemApellido(text.trim());
-                                    
-                                  },
-                                );
-                                          })
-                              ),
-                            ),
-                          ),
-                          //***********************************************/
-                          //***********************************************/
-    
-                          SizedBox(
-                            height: size.iScreen(2.0),
-                          ),
-                          //*****************************************/
-                          Container(
-                            // color: Colors.red,
-                            width: size.wScreen(80.0),
-                            padding: EdgeInsets.all(size.wScreen(0.0)),
-                            child: Center(
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: size.hScreen(2.0),
-                                    vertical: size.iScreen(0.0)),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                child:  Consumer<HomeController>(builder: (_, valueDireccion, __) { 
-                                          return   TextFormField(
-                                             controller: controllerTextDireccion,
-                                  // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
-                                  //     ? ''
-                                  //     :
-                                  // _control.getItemNombre,
-                                  decoration: InputDecoration(
-                                    suffixIcon: Icon(Icons.edit),
-                                    hintText: 'DIRECCIÓN',
-                                    border: InputBorder.none,
-                                  ),
-                                  //  enabled: valueNombre.getItemNombre!.isNotEmpty, // Habilitar solo si el nombre está vacío
-                                 
-                                  onChanged: (text) {
 
-                                    valueDireccion.setItemDireccion(text.trim());
-                                    
-                                  },
-                                );
-                                          })
-                              ),
+   decoration: InputDecoration(
+                              label: Text('DIRECCIÓN'),
+                              suffixIcon: Icon(Icons.edit, color: colorPrimario),
+                             
+                              hintText: 'DIRECCIÓN',
+                              border: UnderlineInputBorder(),
+                                // Establecer el color de texto a rojo
+                               labelStyle: TextStyle(color:colorPrimario),
+    
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color:colorPrimario),
+    ),
                             ),
+
+                              //  enabled: valueNombre.getItemNombre!.isNotEmpty, // Habilitar solo si el nombre está vacío
+                             
+                              onChanged: (text) {
+
+                                valueDireccion.setItemDireccion(text.trim());
+                                
+                              },
+                            );
+                                      }),
                           ),
                           //***********************************************/
     
@@ -496,72 +558,135 @@ else{
     
                           //***********************************************/
                           //***********************************************/
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     _agregaCorreo(context, _control, size);
+                          //   },
+                          //   child: Container(
+                          //       width: size.wScreen(80.0),
+                          //       padding: EdgeInsets.symmetric(
+                          //           horizontal: size.iScreen(2.0),
+                          //           vertical: size.iScreen(1.0)),
+                          //       decoration: BoxDecoration(
+                          //         // color: Colors.grey,
+                          //         borderRadius: BorderRadius.circular(10.0),
+                          //         border: Border(
+                          //           // top: BorderSide(width: 16.0, color: Colors.lightBlue.shade600),
+                          //           // color: Colors.grey,
+                          //           // width: 1.0,
+                          //         ),
+                          //       ),
+                          //       child: Consumer<HomeController>(
+                          //         builder: (_, valuCorreo, __) {
+                          //           return Row(
+                          //             mainAxisAlignment:
+                          //                 MainAxisAlignment.spaceBetween,
+                          //             children: [
+                          //               Container(
+                          //                 // color: Colors.red,
+                          //                 width: size.wScreen(60.0),
+                          //                 child: valuCorreo.getItemCorreos == ""
+                          //                     ? Text(
+                          //                         ' EMAIL  ',
+                          //                         style: GoogleFonts.poppins(
+                          //                           fontSize: size.iScreen(
+                          //                               2.0), // Ajusta según tus necesidades
+                          //                           fontWeight: FontWeight.w400,
+                          //                           color: valuCorreo
+                          //                                       .getItemCorreos !=
+                          //                                   ""
+                          //                               ? Colors.black
+                          //                               : colorPrimario,
+                          //                         ),
+                          //                       )
+                          //                     : Text(
+                          //                         '${valuCorreo.getItemCorreos}  ',
+                          //                         style: GoogleFonts.poppins(
+                          //                           fontSize: size.iScreen(
+                          //                               1.8), // Ajusta según tus necesidades
+                          //                           fontWeight: FontWeight.w400,
+                          //                           letterSpacing: 0.5,
+                          //                           color: valuCorreo
+                          //                                       .getItemCorreos !=
+                          //                                   ""
+                          //                               ? Colors.black
+                          //                               : Colors.grey,
+                          //                         ),
+                          //                       ),
+                          //               ),
+                          //               Icon(
+                          //                 Icons
+                          //                     .email_outlined, // Cambia el icono según tus necesidades
+                          //                 color: valuCorreo.getItemCelulars == ""
+                          //                     ? Colors.black45
+                          //                     : tercearyColor, // Color del icono
+                          //               ),
+                          //             ],
+                          //           );
+                          //         },
+                          //       )),
+                          // ),
                           GestureDetector(
-                            onTap: () {
-                              _agregaCorreo(context, _control, size);
-                            },
-                            child: Container(
-                                width: size.wScreen(80.0),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: size.iScreen(2.0),
-                                    vertical: size.iScreen(1.0)),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                child: Consumer<HomeController>(
-                                  builder: (_, valuCorreo, __) {
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          // color: Colors.red,
-                                          width: size.wScreen(60.0),
-                                          child: valuCorreo.getItemCorreos == ""
-                                              ? Text(
-                                                  ' EMAIL  ',
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: size.iScreen(
-                                                        2.0), // Ajusta según tus necesidades
-                                                    fontWeight: FontWeight.w400,
-                                                    color: valuCorreo
-                                                                .getItemCorreos !=
-                                                            ""
-                                                        ? Colors.black
-                                                        : Colors.grey,
-                                                  ),
-                                                )
-                                              : Text(
-                                                  '${valuCorreo.getItemCorreos}  ',
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: size.iScreen(
-                                                        1.8), // Ajusta según tus necesidades
-                                                    fontWeight: FontWeight.w400,
-                                                    letterSpacing: 0.5,
-                                                    color: valuCorreo
-                                                                .getItemCorreos !=
-                                                            ""
-                                                        ? Colors.black
-                                                        : Colors.grey,
-                                                  ),
-                                                ),
-                                        ),
-                                        Icon(
-                                          Icons
-                                              .email_outlined, // Cambia el icono según tus necesidades
-                                          color: valuCorreo.getItemCelulars == ""
-                                              ? Colors.black45
-                                              : tercearyColor, // Color del icono
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                )),
-                          ),
+  onTap: () {
+    _agregaCorreo(context, _control, size);
+  },
+  child: Container(
+    width: size.wScreen(80.0),
+    padding: EdgeInsets.symmetric(
+      horizontal: size.iScreen(1.0),
+      vertical: size.iScreen(1.0),
+    ),
+    decoration: BoxDecoration(
+      border: Border(
+        bottom: BorderSide(
+          color: colorPrimario, // Color del borde inferior
+          width: 1.0, // Ancho del borde inferior
+        ),
+      ),
+    ),
+    child: Consumer<HomeController>(
+      builder: (_, valuCorreo, __) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: size.wScreen(60.0),
+              child: valuCorreo.getItemCorreos == ""
+                  ? Text(
+                      ' EMAIL  ',
+                      style: GoogleFonts.poppins(
+                        fontSize: size.iScreen(2.0),
+                        fontWeight: FontWeight.w400,
+                        color: valuCorreo.getItemCorreos != ""
+                            ? Colors.black
+                            : colorPrimario,
+                      ),
+                    )
+                  : Text(
+                      '${valuCorreo.getItemCorreos}  ',
+                      style: GoogleFonts.poppins(
+                        fontSize: size.iScreen(1.8),
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: 0.5,
+                        color: valuCorreo.getItemCorreos != ""
+                            ? Colors.black
+                            : Colors.grey,
+                      ),
+                    ),
+            ),
+            Icon(
+              Icons.email_outlined,
+              color: colorPrimario
+              // valuCorreo.getItemCelulars == ""
+              //     ? Colors.black45
+              //     : colorPrimario,
+            ),
+          ],
+        );
+      },
+    ),
+  ),
+),
                           //***********************************************/
     
                           SizedBox(
@@ -571,73 +696,134 @@ else{
                           //***********************************************/
     
                           //***********************************************/
-                          GestureDetector(
-                            onTap: () {
-                              _agregaCelular(context, _control, size);
-                            },
-                            child: Container(
-                                width: size.wScreen(80.0),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: size.iScreen(2.0),
-                                    vertical: size.iScreen(1.0)),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                child: Consumer<HomeController>(
-                                  builder: (_, valuCelular, __) {
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          // color: Colors.red,
-                                          width: size.wScreen(60.0),
-                                          child: valuCelular.getItemCelulars == ""
-                                              ? Text(
-                                                  'CELULAR  ',
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: size.iScreen(
-                                                        2.0), // Ajusta según tus necesidades
-                                                    fontWeight: FontWeight.w400,
-                                                    color: valuCelular
-                                                                .getItemCelulars !=
-                                                            ""
-                                                        ? Colors.black
-                                                        : Colors.grey,
-                                                  ),
-                                                )
-                                              : Text(
-                                                  '${valuCelular.getItemCelulars}  ',
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: size.iScreen(
-                                                        1.8), // Ajusta según tus necesidades
-                                                    fontWeight: FontWeight.w400,
-                                                    letterSpacing: 0.5,
-                                                    color: valuCelular
-                                                                .getItemCelulars !=
-                                                            ""
-                                                        ? Colors.black
-                                                        : Colors.grey,
-                                                  ),
-                                                ),
-                                        ),
-                                        Icon(
-                                          Icons
-                                              .whatsapp_outlined, // Cambia el icono según tus necesidades
-                                          color: valuCelular.getItemCelulars == ""
-                                              ? Colors.grey
-                                              : tercearyColor, // Color del icono
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                )),
-                          ),
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     _agregaCelular(context, _control, size);
+                          //   },
+                          //   child: Container(
+                          //       width: size.wScreen(80.0),
+                          //       padding: EdgeInsets.symmetric(
+                          //           horizontal: size.iScreen(2.0),
+                          //           vertical: size.iScreen(1.0)),
+                          //       decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.circular(10.0),
+                          //         border: Border.all(
+                          //           color: Colors.grey,
+                          //           width: 1.0,
+                          //         ),
+                          //       ),
+                          //       child: Consumer<HomeController>(
+                          //         builder: (_, valuCelular, __) {
+                          //           return Row(
+                          //             mainAxisAlignment:
+                          //                 MainAxisAlignment.spaceBetween,
+                          //             children: [
+                          //               Container(
+                          //                 // color: Colors.red,
+                          //                 width: size.wScreen(60.0),
+                          //                 child: valuCelular.getItemCelulars == ""
+                          //                     ? Text(
+                          //                         'CELULAR  ',
+                          //                         style: GoogleFonts.poppins(
+                          //                           fontSize: size.iScreen(
+                          //                               2.0), // Ajusta según tus necesidades
+                          //                           fontWeight: FontWeight.w400,
+                          //                           color: valuCelular
+                          //                                       .getItemCelulars !=
+                          //                                   ""
+                          //                               ? Colors.black
+                          //                               : Colors.grey,
+                          //                         ),
+                          //                       )
+                          //                     : Text(
+                          //                         '${valuCelular.getItemCelulars}  ',
+                          //                         style: GoogleFonts.poppins(
+                          //                           fontSize: size.iScreen(
+                          //                               1.8), // Ajusta según tus necesidades
+                          //                           fontWeight: FontWeight.w400,
+                          //                           letterSpacing: 0.5,
+                          //                           color: valuCelular
+                          //                                       .getItemCelulars !=
+                          //                                   ""
+                          //                               ? Colors.black
+                          //                               : Colors.grey,
+                          //                         ),
+                          //                       ),
+                          //               ),
+                          //               Icon(
+                          //                 Icons
+                          //                     .whatsapp_outlined, // Cambia el icono según tus necesidades
+                          //                 color: valuCelular.getItemCelulars == ""
+                          //                     ? Colors.grey
+                          //                     : tercearyColor, // Color del icono
+                          //               ),
+                          //             ],
+                          //           );
+                          //         },
+                          //       )),
+                          // ),
     
+    GestureDetector(
+  onTap: () {
+    _agregaCelular(context, _control, size);
+  },
+  child: Container(
+    width: size.wScreen(80.0),
+    padding: EdgeInsets.symmetric(
+      horizontal: size.iScreen(1.0),
+      vertical: size.iScreen(1.0),
+    ),
+    decoration: BoxDecoration(
+      border: Border(
+        bottom: BorderSide(
+          color: colorPrimario, // Color del borde inferior
+          width: 1.0, // Ancho del borde inferior
+        ),
+      ),
+    ),
+    child: Consumer<HomeController>(
+      builder: (_, valuCelular, __) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: size.wScreen(60.0),
+              child: valuCelular.getItemCelulars == ""
+                  ? Text(
+                      'CELULAR  ',
+                      style: GoogleFonts.poppins(
+                        fontSize: size.iScreen(2.0),
+                        fontWeight: FontWeight.w400,
+                        color: valuCelular.getItemCelulars != ""
+                            ? Colors.black
+                            : colorPrimario,
+                      ),
+                    )
+                  : Text(
+                      '${valuCelular.getItemCelulars}  ',
+                      style: GoogleFonts.poppins(
+                        fontSize: size.iScreen(1.8),
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: 0.5,
+                        color: valuCelular.getItemCelulars != ""
+                            ? Colors.black
+                            : colorPrimario,
+                      ),
+                    ),
+            ),
+            Icon(
+              Icons.whatsapp_outlined,
+              color: colorPrimario
+              // valuCelular.getItemCelulars == ""
+              //     ? Colors.grey
+              //     : colorPrimario,
+            ),
+          ],
+        );
+      },
+    ),
+  ),
+),
                           //***********************************************/
                           //***********************************************/
     
@@ -674,7 +860,8 @@ else{
                                   style: GoogleFonts.poppins(
                                       fontSize: size.iScreen(1.5),
                                       fontWeight: FontWeight.w400,
-                                      color: secondaryColor),
+                                      // color: colorSecundario
+                                      ),
                                 ),
                               ],
                             ),

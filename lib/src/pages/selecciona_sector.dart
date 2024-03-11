@@ -8,6 +8,7 @@ import 'package:ultrared/src/pages/foto_perfil_page.dart';
 import 'package:ultrared/src/pages/password_page.dart';
 import 'package:ultrared/src/pages/registro_page.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
+import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/letras_mayusculas_minusculas.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
@@ -193,8 +194,7 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                                                   valueServicio
                                                               .getItemLugarServicio !=
                                                           ""
-                                                      ? valueServicio
-                                                          .getItemLugarServicio!
+                                                      ? valueServicio.getItemLugarServicio!
                                                       : 'ACTIVAR SERVICIO EN:   ',
                                                   style: GoogleFonts.poppins(
                                                     fontSize: size.iScreen(
@@ -757,28 +757,43 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                                     return valueGPS.getItemLugarServicio == "HOGAR"
                                         ? GestureDetector(
                                             onTap: () async {
-                                          
-                                              // final status =
-                                              //     await Permission.location.request();
-                                              // if (status ==  PermissionStatus.granted) {
-                                              //   //   // print('============== SI TIENE PERMISOS');
-                                              //   await _ctrl.getLocation();
-                                              //   // if (_ctrl.getGPSPositione) {
-                                              //   //   // Navigator.of(context).pushAndRemoveUntil(
-                                              //   //   //     MaterialPageRoute(
-                                              //   //   //         builder: (context) => HomePage(
-                                              //   //   //               // validaTurno: validaTurno,
-                                              //   //   //               // tipo: session.rol,
-                                              //   //   //               // user: session,
-                                              //   //   //               // ubicacionGPS: controllerHome.getCoords,
-                                              //   //   //             )),
-                                              //   //   //     (Route<dynamic> route) => false);
-                                              //   //   // ModalRoute.withName('/');
-                                              //   // }
-                                              // } else {
-                                              //   Navigator.pushNamed(context, 'gps');
-                                              // }
-                  
+                                             
+// _showDialogGPS(context,size);
+//********************************************/
+showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        title: Text("Información"),
+        content:const Text("Para completar el registro en nuestra aplicación, es necesario obtener el permiso de ubicación GPS."),
+        actions: <Widget>[
+        
+          TextButton(
+            
+            child: Text("Cancelar",style: GoogleFonts.poppins(
+                              fontSize: size.iScreen(1.6),
+                              fontWeight: FontWeight.normal,
+                              color: colorPrimario,
+                              // letterSpacing: -0.40,
+                            ),),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+              TextButton(
+            
+            child: Text("Aceptar",style: GoogleFonts.poppins(
+                              fontSize: size.iScreen(1.6),
+                              fontWeight: FontWeight.normal,
+                              
+                              // letterSpacing: -0.40,
+                            ),),
+            onPressed: () async{
+            
+               valueGPS.resetUbicaciobGPS();
                   
                                                                                            // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
                    HomeController permissionProvider =
@@ -791,11 +806,12 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                             // NotificatiosnService.showSnackBarSuccsses('SIII TIENE PERMISO');
                             if (isGpsEnabled) {
                               //  NotificatiosnService.showSnackBarDanger(' GPS ACTIVADO ');
+                                ProgressDialogGPS.show(context);
                                 await _ctrl.getLocation();
                   
-                                  
+                                 ProgressDialog.dissmiss(context);
                   
-                  
+                     Navigator.of(context).pop();
                                                              
                              }
                                else {
@@ -809,7 +825,65 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                   
                   
                          }
+
+
+            },
+          ),
+        ],
+      );
+    },
+  );
+//*******************************************/
+
+
+                                          
+                  //                            valueGPS.resetUbicaciobGPS();
                   
+                  //                                                                          // final _ctrlSocket = Provider.of<SocketModel>( context,listen: false);
+                  //  HomeController permissionProvider =
+                  //     Provider.of<HomeController>(context, listen: false);
+                  //       await permissionProvider.checkAndRequestPermissions();
+                  //   bool isGpsEnabled = await permissionProvider.checkGpsStatus();
+                  //   // print('LA INFO ES  ${permissionProvider.hasLocationPermission} ${isGpsEnabled}');
+                         
+                  //        if (permissionProvider.hasLocationPermission) {
+                  //           // NotificatiosnService.showSnackBarSuccsses('SIII TIENE PERMISO');
+                  //           if (isGpsEnabled) {
+                  //             //  NotificatiosnService.showSnackBarDanger(' GPS ACTIVADO ');
+                  //               ProgressDialogGPS.show(context);
+                  //               await _ctrl.getLocation();
+                  
+                  //                ProgressDialog.dissmiss(context);
+                  
+                  
+                                                             
+                  //            }
+                  //              else {
+                  //             NotificatiosnService.showSnackBarDanger(' Por favor active el GPS');
+                  //           }
+                  
+                  //        } else {
+                         
+                  
+                  //   showPermissionModal(context,size,'Para completar el registro en nuestra aplicación, es necesario otorgar permisos de ubicación.');
+                  
+                  
+                  //        }
+
+
+
+            //         ProgressDialogGPS.show(context);
+            //  await _ctrl.getLocation();
+            //    ProgressDialog.dissmiss(context);
+            //    if (_ctrl.locationMessage.isNotEmpty) {
+            //      NotificatiosnService.showSnackBarError('${_ctrl.locationMessage}');
+                 
+            //    } else {
+            //      NotificatiosnService.showSnackBarError('NO TENEMOS UBICACION GPS');
+            //    }
+
+
+                  //*************************+*/
                   
                                             },
                                             child: Column(
@@ -931,11 +1005,13 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                                                                       2.0), // Ajusta según tus necesidades
                                                                   fontWeight:
                                                                       FontWeight.w400,
+                                                                      
                                                                   color: valueGPS.locationMessage.toString() !=
                                                                           ""
                                                                       ? Colors.black
                                                                       : Colors.grey,
                                                                 ),
+                                                                textAlign: TextAlign.center,
                                                               ),
                                                             ),
                                                             const Icon(
@@ -1354,13 +1430,20 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
     // controller.setFotoTipo('fotoperfil');
     // Navigator.push(context,
     //     MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
-
+final info={
+                                                      'nombres':'',
+                                                      'apellidos':'',
+                                                      'direccion':'',
+                                                      'email':'',
+                                                      'celular':'',
+                                                      };
 
  Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: ((context) =>
-                                                     RegistroPage(action: _action))));
+                                                     RegistroPage(action: _action,
+                                                    ))));
 
 
 
@@ -1379,7 +1462,7 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
     // Navigator.push(context,
     //     MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
     
-                         
+                     
 
      Navigator.push(
                                             context,
@@ -1396,7 +1479,49 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
 
     
   }
+void _showDialogGPS(BuildContext context ,Responsive size) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        title: Text("Información"),
+        content:const Text("Para completar el registro en nuestra aplicación, es necesario obtener el permiso de ubicación GPS."),
+        actions: <Widget>[
+        
+          TextButton(
+            
+            child: Text("Cancelar",style: GoogleFonts.poppins(
+                              fontSize: size.iScreen(1.6),
+                              fontWeight: FontWeight.normal,
+                              color: colorPrimario,
+                              // letterSpacing: -0.40,
+                            ),),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+              TextButton(
+            
+            child: Text("Aceptar",style: GoogleFonts.poppins(
+                              fontSize: size.iScreen(1.6),
+                              fontWeight: FontWeight.normal,
+                              color: colorPrimario,
+                              // letterSpacing: -0.40,
+                            ),),
+            onPressed: () {
 
+
+
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
 
 
 }
