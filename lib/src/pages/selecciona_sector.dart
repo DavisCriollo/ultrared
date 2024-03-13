@@ -10,6 +10,7 @@ import 'package:ultrared/src/pages/registro_page.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
 import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/letras_mayusculas_minusculas.dart';
+import 'package:ultrared/src/utils/modal_informativo.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/botonBase.dart';
@@ -26,7 +27,20 @@ class SeleccionaSector extends StatefulWidget {
 }
 
 class _SeleccionaSectorState extends State<SeleccionaSector> {
+   TextEditingController controllerTextTipoServicio = TextEditingController();
+    TextEditingController controllerTextCiudad = TextEditingController();
+      TextEditingController controllerTextSector = TextEditingController();
+        TextEditingController controllerTextRefecrencia = TextEditingController();
+          // TextEditingController controllerTextCelular = TextEditingController();
 
+ @override
+  void dispose() {
+    controllerTextTipoServicio .dispose();
+     controllerTextCiudad .dispose();
+       controllerTextSector .dispose();
+         controllerTextRefecrencia .dispose();
+    super.dispose();
+  }
 
 
 
@@ -35,6 +49,9 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
     final _action = widget.action;
     final Responsive size = Responsive.of(context);
     final _ctrl = context.read<HomeController>();
+      controllerTextRefecrencia.text = _ctrl.getItemReferencia!;
+
+
     return SafeArea(
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -157,6 +174,9 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                   //     }),
                   
                         //***********************************************/
+
+
+                        
                   
                                 SizedBox(
                                   height: size.iScreen(1.0),
@@ -707,50 +727,96 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                                   height: size.iScreen(1.0),
                                 ),
                                 //*****************************************/
-                                Container(
-                                  // color: Colors.red,
-                                  width: size.wScreen(80.0),
-                                  padding: EdgeInsets.all(size.wScreen(0.0)),
-                                  child: Center(
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: size.hScreen(2.0),
-                                          vertical: size.iScreen(0.0)),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10.0),
-                                        border: Border.all(
-                                          color: Colors.grey,
-                                          width: 1.0,
-                                        ),
-                                      ),
-                                      child: TextFormField(
-                                        initialValue: widget.action == 'CREATE'
-                                            ? ''
-                                            : _ctrl.getItemReferencia,
+//                                 Container(
+//                                   // color: Colors.red,
+//                                   width: size.wScreen(80.0),
+//                                   padding: EdgeInsets.all(size.wScreen(0.0)),
+//                                   child: Center(
+//                                     child: Container(
+//                                       padding: EdgeInsets.symmetric(
+//                                           horizontal: size.hScreen(2.0),
+//                                           vertical: size.iScreen(0.0)),
+//                                       decoration: BoxDecoration(
+//                                         borderRadius: BorderRadius.circular(10.0),
+//                                         border: Border.all(
+//                                           color: Colors.grey,
+//                                           width: 1.0,
+//                                         ),
+//                                       ),
+//                                       child: TextFormField(
+//                                         initialValue: widget.action == 'CREATE'
+//                                             ? ''
+//                                             : _ctrl.getItemReferencia,
                   
-                                        maxLines: 3,
-                                        minLines: 1,
-                                        decoration: const InputDecoration(
-                                          suffixIcon: Icon(
-                                            Icons.mark_unread_chat_alt_outlined,
-                                            color: secondaryColor,
-                                          ),
-                                          hintText: 'ESCRIBE UNA REFERENCIA ',
-                                          border: InputBorder.none,
-                                        ),
-                                         inputFormatters: <TextInputFormatter>[
+//                                         maxLines: 3,
+//                                         minLines: 1,
+//                                         decoration: const InputDecoration(
+//                                           suffixIcon: Icon(
+//                                             Icons.mark_unread_chat_alt_outlined,
+//                                             color: secondaryColor,
+//                                           ),
+//                                           hintText: 'ESCRIBE UNA REFERENCIA ',
+//                                           border: InputBorder.none,
+//                                         ),
+//                                          inputFormatters: <TextInputFormatter>[
+//                             FilteringTextInputFormatter.allow(
+//                                 // RegExp("[a-zA-Z0-9@#-+.,{" "}\\s]")),
+//                                 RegExp(r'^[^\n"]*$')),
+//                             UpperCaseText(),
+//                           ],
+//                                         onChanged: (text) {
+//                                           _ctrl.setItemReferencia(text.trim());
+//                                         },
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ),
+
+// //****************************//
+      //***********************************************/
+                          Container(
+                             width: size.wScreen(80.0),
+                            child: Consumer<HomeController>(builder: (_, valueReferencia, __) { 
+                                            return   TextFormField(
+                                               readOnly:
+                                                widget.action == 'EDIT' ? false : false,   
+                                            //  controller: controllerTextRefecrencia,
+
+                                    initialValue: widget.action == 'EDIT'
+                                        ?  valueReferencia.getInfoUsuarioById['referencia']
+                                        :'',
+                                    // valueReferencia.getItemReferencia,
+                                    decoration: InputDecoration(
+                                      label: Text('REFERENCIA'),
+                                      suffixIcon: Icon(Icons.mark_unread_chat_alt_outlined, color: colorPrimario),
+                                     
+                                      hintText: 'REFERENCIA',
+                                      border: UnderlineInputBorder(),
+                                        // Establecer el color de texto a rojo
+                                       labelStyle: TextStyle(color:colorPrimario),
+    
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color:colorPrimario),
+    ),
+                                    ),
+                                   inputFormatters: <TextInputFormatter>[
                             FilteringTextInputFormatter.allow(
                                 // RegExp("[a-zA-Z0-9@#-+.,{" "}\\s]")),
                                 RegExp(r'^[^\n"]*$')),
                             UpperCaseText(),
                           ],
-                                        onChanged: (text) {
-                                          _ctrl.setItemReferencia(text.trim());
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                    onChanged: (text) {
+
+                                      valueReferencia.setItemReferencia(text.trim());
+                                      
+                                    },
+                                  );
+                                            }),
+                          ),
+
+
+
+
                                 //***********************************************/
                                 Consumer<HomeController>(
                                   builder: (_, valueGPS, __) {
@@ -815,7 +881,8 @@ showDialog(
                                                              
                              }
                                else {
-                              NotificatiosnService.showSnackBarDanger(' Por favor active el GPS');
+                                modalnformativoOK(context,size,'Por favor active el GPS');
+                              // NotificatiosnService.showSnackBarDanger(' Por favor active el GPS');
                             }
                   
                          } else {
@@ -1430,13 +1497,27 @@ showDialog(
     // controller.setFotoTipo('fotoperfil');
     // Navigator.push(context,
     //     MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
-final info={
-                                                      'nombres':'',
-                                                      'apellidos':'',
-                                                      'direccion':'',
-                                                      'email':'',
-                                                      'celular':'',
-                                                      };
+// final info={
+//                                                       'nombres':'',
+//                                                       'apellidos':'',
+//                                                       'direccion':'',
+//                                                       'email':'',
+//                                                       'celular':'',
+//                                                       };
+ controller.setItemNombre('') ;
+                       
+
+                          controller.setItemApellido('') ;
+                        
+
+                          controller.setItemDireccion('') ;
+                       
+
+                          controller.setItemCorreos('') ;
+                       
+
+                          controller.seItemCelulars('') ;
+                       
 
  Navigator.push(
                                             context,
@@ -1522,6 +1603,7 @@ void _showDialogGPS(BuildContext context ,Responsive size) {
     },
   );
 }
+
 
 
 }

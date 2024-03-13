@@ -51,13 +51,11 @@ class _MessageChatState extends State<MessageChat> {
 
     // String horaFormateada = "${fechaLocal.hour}:${fechaLocal.minute}:${fechaLocal.second}";
        // Formatear la fecha con día, mes y año
-String fechaFormateada =
-    "${fechaLocal.day < 10 ? '0' : ''}${fechaLocal.day}-${fechaLocal.month < 10 ? '0' : ''}${fechaLocal.month}-${fechaLocal.year}";
+String fechaFormateada ="${fechaLocal.day < 10 ? '0' : ''}${fechaLocal.day}-${fechaLocal.month < 10 ? '0' : ''}${fechaLocal.month}-${fechaLocal.year}";
 
-    String horaFormateada =
-        "${fechaLocal.hour < 10 ? '0' : ''}${fechaLocal.hour}:${fechaLocal.minute < 10 ? '0' : ''}${fechaLocal.minute}";
+    String horaFormateada = "${fechaLocal.hour < 10 ? '0' : ''}${fechaLocal.hour}:${fechaLocal.minute < 10 ? '0' : ''}${fechaLocal.minute}";
     // Formatear la fecha para mostrar solo la hora
- 
+  String _fecha= '$fechaFormateada $horaFormateada';
     // print("Hora local formateada: $horaFormateada");
 
     // DateFormat.Hm().format(myDate.toLocal())
@@ -229,7 +227,7 @@ _myChat(BuildContext context,
                       bottom: -3,
                       right: 0,
                       child: Text(
-                        ' $_hora ',
+                        '$_hora ',
                         style: GoogleFonts.poppins(
                           fontSize: size.iScreen(1.2),
                           fontWeight: FontWeight.w500,

@@ -44,7 +44,11 @@ class _RegistroPageState extends State<RegistroPage> {
 
 
   bool _isChecked = false;
-
+@override
+  void initState() {
+   agregaDatos();
+    super.initState();
+  }
   @override
   void dispose() {
     _textAddCorreo.dispose();
@@ -268,28 +272,7 @@ class _RegistroPageState extends State<RegistroPage> {
 
 
 if (response != null  ) {
-
- showDialog(
-          // barrierDismissible :false,
-            context: context,
-            builder: (context) {
-              // final controllerMulta = context.read<MultasGuardiasContrtoller>();
-          
-              return AlertDialog(
-                
-                title: const Text('Datos Encontrados'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-
-                     Text('${response['nombre']}'),
-                  ],
-                ),
-                actions: <Widget>[
-                 
-                  TextButton(
-                      onPressed: ()  {
- String nombreCompleto = response['nombre'];
+   String nombreCompleto = response['nombre'];
     String nombres = '';
     String apellidos = '';
                         
@@ -334,21 +317,89 @@ if (response != null  ) {
 
 
 
+//  showDialog(
+//           // barrierDismissible :false,
+//             context: context,
+//             builder: (context) {
+//               // final controllerMulta = context.read<MultasGuardiasContrtoller>();
+          
+//               return AlertDialog(
+                
+//                 title: const Text('Datos Encontrados'),
+//                 content: Column(
+//                   mainAxisSize: MainAxisSize.min,
+//                   children: [
+
+//                      Text('${response['nombre']}'),
+//                   ],
+//                 ),
+//                 actions: <Widget>[
+                 
+//                   TextButton(
+//                       onPressed: ()  {
+
+//  String nombreCompleto = response['nombre'];
+//     String nombres = '';
+//     String apellidos = '';
+                        
+
+//   List<String> palabras = nombreCompleto.split(" ");
+
+ 
+
+//   if (palabras.length >= 1) {
+//     apellidos = palabras[0];
+
+//     if (palabras.length == 2) {
+//       nombres = palabras[1];
+//     } else if (palabras.length >= 3) {
+//       apellidos += " " + palabras[1];
+//       nombres = palabras.sublist(2).join(" ");
+//     }
+
+//     // Imprimir los resultados
+//     print("Nombre: $nombres");
+//     print("Apellido: $apellidos");
+//   } else {
+//     print("La cadena no tiene el formato esperado.");
+//   }
+
+                       
+//                          _control.setItemNombre(nombres) ;
+//                          controllerTextNombre.text=_control.getItemNombre!;
+
+//                           _control.setItemApellido(apellidos) ;
+//                          controllerTextApellido.text=_control.getItemApellido!;
+
+//                           _control.setItemDireccion(response['direccion']) ;
+//                          controllerTextDireccion.text=_control.getItemDireccion!;
+
+//                           _control.setItemCorreos(response['email']) ;
+//                          controllerTextCorreo.text=_control.getItemCorreos!;
+
+//                           _control.seItemCelulars(response['celular']) ;
+//                          controllerTextCelular.text=_control.getItemCelulars!;
 
 
 
-                         Navigator.pop(context);
-                      },
-                      child: Text(
-                        'Aceptar',
-                        style: GoogleFonts.lexendDeca(
-                            fontSize: size.iScreen(1.8),
-                            // color: Colors.white,
-                            fontWeight: FontWeight.normal),
-                      )),
-                ],
-              );
-            });
+
+
+
+
+//                          Navigator.pop(context);
+//                       },
+//                       child: Text(
+//                         'Aceptar',
+//                         style: GoogleFonts.lexendDeca(
+//                             fontSize: size.iScreen(1.8),
+//                             // color: Colors.white,
+//                             fontWeight: FontWeight.normal),
+//                       )),
+//                 ],
+//               );
+//             });
+
+
 
 }
 else{
@@ -357,6 +408,20 @@ else{
    controllerTextDireccion.text='';
    controllerTextCorreo.text='';
    controllerTextCelular.text='';
+                          _control.setItemNombre('') ;
+                       
+
+                          _control.setItemApellido('') ;
+                        
+
+                          _control.setItemDireccion('') ;
+                       
+
+                          _control.setItemCorreos('') ;
+                       
+
+                          _control.seItemCelulars('') ;
+                       
   
 }
                                   
@@ -371,7 +436,7 @@ else{
                             child: Consumer<HomeController>(builder: (_, valueNombre, __) { 
                                             return   TextFormField(
                                                readOnly:
-                                                widget.action != 'CREATE' ? false : true,   
+                                                widget.action == 'EDIT' ? true : true,   
                                              controller: controllerTextNombre,
                                     // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
                                     //     ? ''
@@ -463,8 +528,8 @@ else{
                             padding: EdgeInsets.all(size.wScreen(0.0)),
                             child: Consumer<HomeController>(builder: (_, valueApellido, __) { 
                                       return   TextFormField(
-                                         readOnly:
-                                          widget.action != 'CREATE' ? false : true,
+                                       readOnly:
+                                             widget.action == 'EDIT' ? true : true,   
                                          controller: controllerTextApellido,
                               // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
                               //     ? ''
@@ -512,6 +577,8 @@ else{
                             padding: EdgeInsets.all(size.wScreen(0.0)),
                             child: Consumer<HomeController>(builder: (_, valueDireccion, __) { 
                                       return   TextFormField(
+                                          readOnly:
+                                             widget.action == 'EDIT' ? false : false,   
                                          controller: controllerTextDireccion,
                               // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
                               //     ? ''
@@ -539,7 +606,12 @@ else{
                             ),
 
                               //  enabled: valueNombre.getItemNombre!.isNotEmpty, // Habilitar solo si el nombre está vacío
-                             
+                             inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(
+                                // RegExp("[a-zA-Z0-9@#-+.,{" "}\\s]")),
+                                RegExp(r'^[^\n"]*$')),
+                            UpperCaseText(),
+                          ],
                               onChanged: (text) {
 
                                 valueDireccion.setItemDireccion(text.trim());
@@ -549,12 +621,62 @@ else{
                                       }),
                           ),
                           //***********************************************/
-    
-                          //***********************************************/
+                                 //***********************************************/
     
                           SizedBox(
                             height: size.iScreen(2.0),
                           ),
+                          //*****************************************/
+                          Container(
+                            // color: Colors.red,
+                            width: size.wScreen(80.0),
+                            padding: EdgeInsets.all(size.wScreen(0.0)),
+                            child: Consumer<HomeController>(builder: (_, valueCorreo, __) { 
+                                      return   TextFormField(
+                                         controller: controllerTextCorreo,
+                                          readOnly:
+                                             widget.action == 'EDIT' ? false : false,  
+                              // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
+                              //     ? ''
+                              //     :
+                              // _control.getItemNombre,
+                              // decoration: InputDecoration(
+                              //   suffixIcon: Icon(Icons.edit),
+                              //   hintText: 'DIRECCIÓN',
+                              //   border: InputBorder.none,
+                              // ),
+
+
+   decoration: InputDecoration(
+                              label: Text('CORREO'),
+                              suffixIcon: Icon(Icons.email_outlined, color: colorPrimario),
+                             
+                              hintText: 'CORREO',
+                              border: UnderlineInputBorder(),
+                                // Establecer el color de texto a rojo
+                               labelStyle: TextStyle(color:colorPrimario),
+    
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color:colorPrimario),
+    ),
+                            ),
+
+                              //  enabled: valueNombre.getItemNombre!.isNotEmpty, // Habilitar solo si el nombre está vacío
+                             
+                              onChanged: (text) {
+
+                                   valueCorreo.setItemCorreos(text);
+                                
+                              },
+                            );
+                                      }),
+                          ),
+                          //***********************************************/
+                          //***********************************************/
+    
+                          // SizedBox(
+                          //   height: size.iScreen(2.0),
+                          // ),
     
                           //***********************************************/
                           //***********************************************/
@@ -626,67 +748,67 @@ else{
                           //         },
                           //       )),
                           // ),
-                          GestureDetector(
-  onTap: () {
-    _agregaCorreo(context, _control, size);
-  },
-  child: Container(
-    width: size.wScreen(80.0),
-    padding: EdgeInsets.symmetric(
-      horizontal: size.iScreen(1.0),
-      vertical: size.iScreen(1.0),
-    ),
-    decoration: BoxDecoration(
-      border: Border(
-        bottom: BorderSide(
-          color: colorPrimario, // Color del borde inferior
-          width: 1.0, // Ancho del borde inferior
-        ),
-      ),
-    ),
-    child: Consumer<HomeController>(
-      builder: (_, valuCorreo, __) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: size.wScreen(60.0),
-              child: valuCorreo.getItemCorreos == ""
-                  ? Text(
-                      ' EMAIL  ',
-                      style: GoogleFonts.poppins(
-                        fontSize: size.iScreen(2.0),
-                        fontWeight: FontWeight.w400,
-                        color: valuCorreo.getItemCorreos != ""
-                            ? Colors.black
-                            : colorPrimario,
-                      ),
-                    )
-                  : Text(
-                      '${valuCorreo.getItemCorreos}  ',
-                      style: GoogleFonts.poppins(
-                        fontSize: size.iScreen(1.8),
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 0.5,
-                        color: valuCorreo.getItemCorreos != ""
-                            ? Colors.black
-                            : Colors.grey,
-                      ),
-                    ),
-            ),
-            Icon(
-              Icons.email_outlined,
-              color: colorPrimario
-              // valuCorreo.getItemCelulars == ""
-              //     ? Colors.black45
-              //     : colorPrimario,
-            ),
-          ],
-        );
-      },
-    ),
-  ),
-),
+//                           GestureDetector(
+//   onTap: () {
+//     // _agregaCorreo(context, _control, size);
+//   },
+//   child: Container(
+//     width: size.wScreen(80.0),
+//     padding: EdgeInsets.symmetric(
+//       horizontal: size.iScreen(1.0),
+//       vertical: size.iScreen(1.0),
+//     ),
+//     decoration: BoxDecoration(
+//       border: Border(
+//         bottom: BorderSide(
+//           color: colorPrimario, // Color del borde inferior
+//           width: 1.0, // Ancho del borde inferior
+//         ),
+//       ),
+//     ),
+//     child: Consumer<HomeController>(
+//       builder: (_, valuCorreo, __) {
+//         return Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: [
+//             Container(
+//               width: size.wScreen(60.0),
+//               child: valuCorreo.getItemCorreos == ""
+//                   ? Text(
+//                       ' EMAIL  ',
+//                       style: GoogleFonts.poppins(
+//                         fontSize: size.iScreen(1.8),
+//                         fontWeight: FontWeight.w400,
+//                         color: valuCorreo.getItemCorreos != ""
+//                             ? Colors.black
+//                             : colorPrimario,
+//                       ),
+//                     )
+//                   : Text(
+//                       '${valuCorreo.getItemCorreos}  ',
+//                       style: GoogleFonts.poppins(
+//                         fontSize: size.iScreen(1.8),
+//                         fontWeight: FontWeight.w400,
+//                         letterSpacing: 0.5,
+//                         color: valuCorreo.getItemCorreos != ""
+//                             ? Colors.black
+//                             : Colors.grey,
+//                       ),
+//                     ),
+//             ),
+//             Icon(
+//               Icons.email_outlined,
+//               color: colorPrimario
+//               // valuCorreo.getItemCelulars == ""
+//               //     ? Colors.black45
+//               //     : colorPrimario,
+//             ),
+//           ],
+//         );
+//       },
+//     ),
+//   ),
+// ),
                           //***********************************************/
     
                           SizedBox(
@@ -792,7 +914,7 @@ else{
                   ? Text(
                       'CELULAR  ',
                       style: GoogleFonts.poppins(
-                        fontSize: size.iScreen(2.0),
+                        fontSize: size.iScreen(1.8),
                         fontWeight: FontWeight.w400,
                         color: valuCelular.getItemCelulars != ""
                             ? Colors.black
@@ -1029,15 +1151,15 @@ else{
                             keyboardType: TextInputType.emailAddress,
                             textCapitalization: TextCapitalization.none,
 
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              final validador = validateEmail(value);
-                              if (validador == null) {
-                                controller.setIsCorreo(true);
-                              }
-                              return validateEmail(value);
-                            },
+                            // autovalidateMode:
+                            //     AutovalidateMode.onUserInteraction,
+                            // validator: (value) {
+                            //   final validador = validateEmail(value);
+                            //   if (validador == null) {
+                            //     controller.setIsCorreo(true);
+                            //   }
+                            //   return validateEmail(value);
+                            // },
                             decoration: const InputDecoration(
                                 hintText: '  Ingrese un Correo'
                                 // suffixIcon: Icon(Icons.beenhere_outlined)
@@ -1115,19 +1237,34 @@ else{
 
 
   void _next(BuildContext context, HomeController controller) async {
-    
-     ProgressDialog.show(context);
-      final response = await controller.verificaCedulaNuevoCliente(context);
-      ProgressDialog.dissmiss(context);
-      if (response != null && response==200 && widget.action=='CREATE') {
-        NotificatiosnService.showSnackBarDanger("El número ${controller.getItemCedua} ya se encuentra registrado");
-      } else {
+
+String? email = controller.getItemCorreos;
+if (validateEmail(email)==false) {
+  NotificatiosnService.showSnackBarDanger("El correo ingresado es incorrecto");
+} 
+// else {
+//    NotificatiosnService.showSnackBarDanger("El correo ingresado es incorrecto");
+// }
+
+
+   
+    //  ProgressDialog.show(context);
+    //   final response = await controller.verificaCedulaNuevoCliente(context);
+    //   ProgressDialog.dissmiss(context);
+    //   if (response != null && response==200 && widget.action=='CREATE') {
+    //     NotificatiosnService.showSnackBarDanger("El número ${controller.getItemCedua} ya se encuentra registrado");
+    //   } else {
         
-         if (controller.getItemCedua!.isEmpty ||
+       else  if (controller.getItemCedua!.isEmpty ||
         controller.getItemCedua!.length < 10 ||
         controller.getItemCedua!.length > 10) {
       NotificatiosnService.showSnackBarDanger('Cédula incorrecta');
-    } else if (controller.getItemNombre!.isNotEmpty &&
+    }
+      else  if (controller.getItemCelulars!.isEmpty)
+       {
+      NotificatiosnService.showSnackBarDanger('Agregue número celular');
+    }else 
+     if (controller.getItemNombre!.isNotEmpty &&
         controller.getItemApellido!.isNotEmpty &&
         controller.getItemDireccion!.isNotEmpty &&
         controller.getItemCorreos!.isNotEmpty |
@@ -1141,30 +1278,63 @@ else{
         NotificatiosnService.showSnackBarDanger(
             'Falta agregar  información ');
       }
-      }
+      
     
-    // if (controller.getItemCedua!.isEmpty ||
-    //     controller.getItemCedua!.length < 10 ||
-    //     controller.getItemCedua!.length > 10) {
-    //   NotificatiosnService.showSnackBarDanger('Cédula incorrecta');
-    // } else if (controller.getItemNombre!.isNotEmpty &&
-    //     controller.getItemApellido!.isNotEmpty &&
-    //     controller.getItemDireccion!.isNotEmpty &&
-    //     controller.getItemCorreos!.isNotEmpty |
-    //         controller.getItemCelulars!.isNotEmpty &&
-    //     controller.getItemIsEdad == true) {
-
-    // Navigator.push(context,
-    //     MaterialPageRoute(builder: ((context) => FotosPerfilPage( action: widget.action))));
-                   
-    //         }  else {
-    //     NotificatiosnService.showSnackBarDanger(
-    //         'Falta agregar  información ');
-    //   }
-
+    
 
 
             }
+
+  void agregaDatos() {
+    final _control=context.read<HomeController>();
+
+String nombreCompleto = _control.getInfoUsuarioById['nombres'];
+    String nombres = '';
+    String apellidos = '';
+                        
+
+  List<String> palabras = nombreCompleto.split(" ");
+
+ 
+
+  if (palabras.length >= 1) {
+    apellidos = palabras[0];
+
+    if (palabras.length == 2) {
+      nombres = palabras[1];
+    } else if (palabras.length >= 3) {
+      apellidos += " " + palabras[1];
+      nombres = palabras.sublist(2).join(" ");
+    }
+
+    // Imprimir los resultados
+    print("Nombre: $nombres");
+    print("Apellido: $apellidos");
+  } else {
+    print("La cadena no tiene el formato esperado.");
+  }
+
+                       
+                         _control.setItemNombre(nombres) ;
+                         controllerTextNombre.text=nombres;
+
+                          _control.setItemApellido(apellidos) ;
+                         controllerTextApellido.text=_control.getItemApellido!;
+
+                          _control.setItemDireccion(_control.getInfoUsuarioById['direccion']) ;
+                         controllerTextDireccion.text=_control.getItemDireccion!;
+
+                          _control.setItemCorreos(_control.getInfoUsuarioById['email']) ;
+                         controllerTextCorreo.text=_control.getItemCorreos!;
+
+                          _control.seItemCelulars(_control.getInfoUsuarioById['celular']) ;
+                         controllerTextCelular.text=_control.getItemCelulars!;
+
+
+
+
+
+  }
 
 
 

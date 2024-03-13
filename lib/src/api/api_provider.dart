@@ -703,7 +703,7 @@ class ApiProvider {
   Future getVerificaCedulaCrearNuevoCliente({
 
      BuildContext? context,
-    String? token,
+    String? empresa,
     String? cedula,
  
   }) async {
@@ -715,7 +715,7 @@ class ApiProvider {
 
       final dataResp = await _http.get(
         url,
-         headers: {"x-auth-token": '$token'},
+         headers: {"rucempresa": '$empresa'},
       );
 
 

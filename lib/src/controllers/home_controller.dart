@@ -160,7 +160,20 @@ resetAllValues();
       _listaSectores = [];
 
       for (var item in _item['ciuSectores']) {
-        _listaSectores.add(item);
+ _listaSectores.add(item);
+  // Ordenar la lista alfabéticamente según el nombre
+  _listaSectores.sort((a, b) => a["nombre"]!.compareTo(b["nombre"]!));
+
+  // Imprimir la lista ordenada
+  
+
+
+   
+        // _listaSectores.add(item);
+
+// print('LOS SECTORES: $item');
+
+
       }
     } else {
       _listaSectores = [];
@@ -213,7 +226,8 @@ resetAllValues();
   List get getlistaSectores => _listaSectores;
 
   void setListaSectores(_items) {
-    _listaSectores.add(_items);
+  
+   _listaSectores.add(_items);
 
     notifyListeners();
   }
@@ -413,7 +427,7 @@ void resetUbicaciobGPS(){
 
   void setItemCorreos(String? valor) {
     _itemCorreos = valor;
-
+print(' EL CORREO ******* >: $_itemCorreos');
     notifyListeners();
   }
 //========================== ITEM  formularios =======================//
@@ -1251,8 +1265,14 @@ int _mensajesNoLeidos =0;
 
   void setIngoUsuario(Map<String, dynamic> _info) {
  _infoUsuarioById = {};
-    _idUsuario = "";
     _infoUsuarioById = _info;
+
+
+print('la data del cliente EDITADO **************> : $_infoUsuarioById');
+
+
+    _idUsuario = "";
+ 
     String nombreCompleto = _info['nombres'];
     String nombres = '';
     String apellidos = '';
@@ -1295,8 +1315,8 @@ int _mensajesNoLeidos =0;
     _ciudadItem = _infoUsuarioById['ciudad'];
     _sectorItem = _infoUsuarioById['sector'];
     
-    _itemReferencia=_infoUsuarioById["referencia"];
-    // setItemReferencia(_infoUsuarioById['referencia']??"");
+    // _itemReferencia=_infoUsuarioById["referencia"];
+    setItemReferencia(_infoUsuarioById['referencia']);
 
       _urlImagePerfil = _infoUsuarioById['fotoPerfil'];
     _urlImageCasa = _infoUsuarioById['fotoCasa']??"";
@@ -1679,7 +1699,7 @@ var ctrlHome = context.read<HomeController>();
     _listaEstadoDeCuenta = [];
 
     _listaEstadoDeCuenta = _data;
-    print('INFO DE LA CONSULTA _listaEstadoDeCuenta $_listaEstadoDeCuenta');
+    // print('INFO DE LA CONSULTA _listaEstadoDeCuenta $_listaEstadoDeCuenta');
 
     notifyListeners();
   }
@@ -1719,7 +1739,7 @@ var ctrlHome = context.read<HomeController>();
     final dataUser = await Auth.instance.getSession();
     final response = await _api.getVerificaCedulaCrearNuevoCliente(
         context: context,
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoxNDEwMCwicnVjZW1wcmVzYSI6IlVMVFJBMjAyMiIsInVzdWFyaW8iOiIxMjM0NTY3ODkzIiwicm9sIjpbIkNMSUVOVEUiXSwiaWF0IjoxNzA5OTU0NDY2LCJleHAiOjE3MTA1NTkyNjZ9.XdaH4M8N2_6_PDnpU7R1004JXdzYfCj-iFlMN7KX6cU',
+        empresa: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoxNDEwMCwicnVjZW1wcmVzYSI6IlVMVFJBMjAyMiIsInVzdWFyaW8iOiIxMjM0NTY3ODkzIiwicm9sIjpbIkNMSUVOVEUiXSwiaWF0IjoxNzA5OTU0NDY2LCJleHAiOjE3MTA1NTkyNjZ9.XdaH4M8N2_6_PDnpU7R1004JXdzYfCj-iFlMN7KX6cU',
         //dataUser!['token'],
         cedula:_itemCedua);
        
