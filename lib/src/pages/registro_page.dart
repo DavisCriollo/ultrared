@@ -436,7 +436,7 @@ else{
                             child: Consumer<HomeController>(builder: (_, valueNombre, __) { 
                                             return   TextFormField(
                                                readOnly:
-                                                widget.action == 'EDIT' ? true : true,   
+                                                widget.action == 'EDIT' ? false : true,   
                                              controller: controllerTextNombre,
                                     // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
                                     //     ? ''
@@ -529,7 +529,7 @@ else{
                             child: Consumer<HomeController>(builder: (_, valueApellido, __) { 
                                       return   TextFormField(
                                        readOnly:
-                                             widget.action == 'EDIT' ? true : true,   
+                                             widget.action == 'EDIT' ? false : true,   
                                          controller: controllerTextApellido,
                               // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
                               //     ? ''
@@ -1287,8 +1287,8 @@ if (validateEmail(email)==false) {
 
   void agregaDatos() {
     final _control=context.read<HomeController>();
-
-String nombreCompleto = _control.getInfoUsuarioById['nombres'];
+if (_control.getInfoUsuarioById['nombres']!=null) {
+  String nombreCompleto = _control.getInfoUsuarioById['nombres'];
     String nombres = '';
     String apellidos = '';
                         
@@ -1297,7 +1297,7 @@ String nombreCompleto = _control.getInfoUsuarioById['nombres'];
 
  
 
-  if (palabras.length >= 1) {
+  if (palabras.isNotEmpty) {
     apellidos = palabras[0];
 
     if (palabras.length == 2) {
@@ -1316,7 +1316,7 @@ String nombreCompleto = _control.getInfoUsuarioById['nombres'];
 
                        
                          _control.setItemNombre(nombres) ;
-                         controllerTextNombre.text=nombres;
+                         controllerTextNombre.text=_control.getItemNombre!;
 
                           _control.setItemApellido(apellidos) ;
                          controllerTextApellido.text=_control.getItemApellido!;
@@ -1334,12 +1334,13 @@ String nombreCompleto = _control.getInfoUsuarioById['nombres'];
 
 
 
+  
+
+} 
+
+
+
+
   }
-
-
-
-
-
-
 
 }

@@ -380,7 +380,7 @@ void resetUbicaciobGPS(){
   void seItemCelulars(String? valor) {
     _itemCelulares = valor;
     // print('item Celulars: $_itemCelulares');
-    notifyListeners();
+    // notifyListeners();
   }
 
   String? _celulares = '';
@@ -428,7 +428,7 @@ void resetUbicaciobGPS(){
   void setItemCorreos(String? valor) {
     _itemCorreos = valor;
 print(' EL CORREO ******* >: $_itemCorreos');
-    notifyListeners();
+    // notifyListeners();
   }
 //========================== ITEM  formularios =======================//
 
@@ -438,7 +438,7 @@ print(' EL CORREO ******* >: $_itemCorreos');
   void setItemCedua(String? valor) {
     _itemCedua = valor;
 
-    notifyListeners();
+    // notifyListeners();
   }
 
   String? _itemNombre = '';
@@ -447,7 +447,7 @@ print(' EL CORREO ******* >: $_itemCorreos');
   void setItemNombre(String? valor) {
     _itemNombre = valor;
      print(' _itemNombre $_itemNombre');
-    notifyListeners();
+    // notifyListeners();
   }
 
   bool? _itemIsEdad = false;
@@ -465,7 +465,7 @@ print(' EL CORREO ******* >: $_itemCorreos');
   void setItemApellido(String? valor) {
     _itemApellido = valor;
  print(' _itemApellido $_itemApellido');
-    notifyListeners();
+    // notifyListeners();
   }
 
   String? _itemDireccion = '';
@@ -474,7 +474,7 @@ print(' EL CORREO ******* >: $_itemCorreos');
   void setItemDireccion(String? valor) {
     _itemDireccion = valor;
  print(' _itemDireccion $_itemDireccion');
-    notifyListeners();
+//     notifyListeners();
   }
 
   String? _itemMarca = '';
@@ -1273,7 +1273,7 @@ print('la data del cliente EDITADO **************> : $_infoUsuarioById');
 
     _idUsuario = "";
  
-    String nombreCompleto = _info['nombres'];
+    String nombreCompleto = _infoUsuarioById['nombres'];
     String nombres = '';
     String apellidos = '';
                         
