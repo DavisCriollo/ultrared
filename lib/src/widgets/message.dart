@@ -51,11 +51,11 @@ class _MessageChatState extends State<MessageChat> {
 
     // String horaFormateada = "${fechaLocal.hour}:${fechaLocal.minute}:${fechaLocal.second}";
        // Formatear la fecha con día, mes y año
-String fechaFormateada ="${fechaLocal.day < 10 ? '0' : ''}${fechaLocal.day}-${fechaLocal.month < 10 ? '0' : ''}${fechaLocal.month}-${fechaLocal.year}";
+String fechaFormateada ="${fechaLocal.day < 10 ? '0' : ''}${fechaLocal.day}/${fechaLocal.month < 10 ? '0' : ''}${fechaLocal.month}/${fechaLocal.year}";
 
     String horaFormateada = "${fechaLocal.hour < 10 ? '0' : ''}${fechaLocal.hour}:${fechaLocal.minute < 10 ? '0' : ''}${fechaLocal.minute}";
     // Formatear la fecha para mostrar solo la hora
-  String _fecha= '$fechaFormateada $horaFormateada';
+  String _fecha= '$horaFormateada  $fechaFormateada';
     // print("Hora local formateada: $horaFormateada");
 
     // DateFormat.Hm().format(myDate.toLocal())
@@ -73,9 +73,9 @@ String fechaFormateada ="${fechaLocal.day < 10 ? '0' : ''}${fechaLocal.day}-${fe
     return Container(
       margin: EdgeInsets.symmetric(horizontal:size.iScreen(0.5)),
       child: widget.user['id'] == widget.messaje['person_id']
-          ? _myChat(context,size, widget.messaje, widget.type, horaFormateada)
+          ? _myChat(context,size, widget.messaje, widget.type, _fecha)
           // : Text('data')/
-          : _noChat( context,size, widget.messaje, widget.type, horaFormateada),
+          : _noChat( context,size, widget.messaje, widget.type, _fecha),
     );
   }
 }
@@ -194,7 +194,7 @@ _myChat(BuildContext context,
                             constraints: BoxConstraints(
                                 // minHeight: size.wScreen(5.0), // Altura mínima
   
-                                // minWidth: size.wScreen(5.0),
+                                minWidth: size.wScreen(25.0),
                                 // maxWidth: size.wScreen(60.0) // Ancho máximo
                                 ),
                             child: 
@@ -231,7 +231,7 @@ _myChat(BuildContext context,
                         style: GoogleFonts.poppins(
                           fontSize: size.iScreen(1.2),
                           fontWeight: FontWeight.w500,
-                          color: sextinaryColor,
+                          color: Colors.black54,
                           // letterSpacing: -0.40,
                         ),
                         // textAlign: TextAlign.right,
@@ -339,8 +339,8 @@ String _formatDuration(int milliseconds) {
 
 
   return Container(
-    width: size.iScreen(30.0),
-    height: size.iScreen(7.0),
+    width: size.iScreen(20.0),
+    height: size.iScreen(4.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
         // color: Colors.grey,
@@ -365,21 +365,15 @@ String _formatDuration(int milliseconds) {
                         audioProvider.play(_urlAudio);
                       },
                     ),
-                    Slider(
-                      value: audioProvider.position,
-                      max: audioProvider.duration,
-                      onChanged: (value) {
-                        audioProvider.seek(value);
-                      },
+                    // Slider(
+                    //   value: audioProvider.position,
+                    //   max: audioProvider.duration,
+                    //   onChanged: (value) {
+                    //     audioProvider.seek(value);
+                    //   },
                      
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-
-        Container(
+                    // ),
+                    Container(
           // color: Colors.red,
           padding:  EdgeInsets.symmetric(horizontal:size.iScreen(0.2),vertical:size.iScreen(0.0)),
           child: Consumer<ChatController>(
@@ -396,88 +390,39 @@ String _formatDuration(int milliseconds) {
             },
           ),
         ),
+
+
+
+
+        
+                  ],
+                ),
+              );
+            },
+          ),
+
+        // Container(
+        //   // color: Colors.red,
+        //   padding:  EdgeInsets.symmetric(horizontal:size.iScreen(0.2),vertical:size.iScreen(0.0)),
+        //   child: Consumer<ChatController>(
+        //     builder: (context, audioProvider, child) {
+        //       return Text(
+        //         '${_formatDuration(audioProvider.position.toInt())} / ${_formatDuration(audioProvider.duration.toInt())}',
+        //          style: GoogleFonts.poppins(
+        //                   fontSize: size.iScreen(1.5),
+        //                   fontWeight: FontWeight.w500,
+        //                   color: sextinaryColor,
+        //                   // letterSpacing: -0.40,
+        //                 )
+        //       );
+        //     },
+        //   ),
+        // ),
       ],
     ),
     );
       
-      
-      
-//       Consumer<ChatController>(builder: (_, valuesAudio,__) { 
-// return    Container(
-//                     color: Colors.grey.shade200,
-//                     // width: size.isScreen(10),
-//                     //  height: size.iScreen(30.0),
-//                     // margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0)),
-                   
-//                     child: 
 
-
-//                           Consumer<ChatController>(builder: (_, valuesAudio,__) { 
-
-
-
-//                     // Text('data')
-//                     // Column(
-//                     //   mainAxisSize: MainAxisSize.min,
-//                     //   children: [
-
-
-                          
-
-
-
-
-//                     //     // Text('data')
-//                     //     // Row(
-//                     //     //   children: [
-//                     //     //     InkWell(
-//                     //     //       onTap: () async {
-//                     //     //         // if (valuesAudio.isPlaying) {
-//                     //     //         //   await valuesAudio.stopPlaying(_audioPlayer);
-//                     //     //         // } else {
-//                     //     //         //   await valuesAudio.playRecordedFile(_audioPlayer);
-//                     //     //         // }
-//                     //     //       },
-//                     //     //       child:
-//                     //     //        Container(
-//                     //     //         child: Icon(valuesAudio.isPlaying ? Icons.stop : Icons.play_arrow, size: size.iScreen(3.5)),
-//                     //     //       ),
-//                     //     //     ),
-//                     //     //     Slider(
-//                     //     //       activeColor: Colors.red,
-//                     //     //       thumbColor: Colors.pink,
-//                     //     //       min: 0,
-//                     //     //       value: valuesAudio.playbackTime,
-//                     //     //       max: valuesAudio.playbackDuration,
-//                     //     //       onChanged: (double value) {
-//                     //     //         // _audioPlayer.seek(Duration(milliseconds: value.toInt()));
-//                     //     //       },
-//                     //     //     ),
-//                     //     //   ],
-//                     //     // ),
-//                     //     // Row(
-//                     //     //   children: [
-//                     //     //     Text(
-//                     //     //       valuesAudio.formatDuration(valuesAudio.playbackTime) +
-//                     //     //           ' / ' +
-//                     //     //           valuesAudio.formatDuration(valuesAudio.playbackDuration),
-//                     //     //       style: TextStyle(
-//                     //     //         fontSize: 16,
-//                     //     //       ),
-//                     //     //     ),
-//                     //     //   ],
-//                     //     // ),
-//                     //   ],
-//                     // ),
-//                   );
-//                                }
-//       // width: size.wScreen(
-//       //   60.0,
-//       // ),
-//       // height: size.iScreen(
-//       //   30.0,
-//       // ),
-//       ));
 }
 
 Container _messajeImagen(BuildContext context,List _listUrl,Responsive size) {
@@ -543,6 +488,7 @@ Widget _messajeTexto(String messaje, Responsive size,BuildContext context) {
       
     },
     child: Container(
+      // color: Colors.red,
         constraints: BoxConstraints(
                                 // minHeight: size.wScreen(5.0), // Altura mínima
   
@@ -658,18 +604,19 @@ _noChat(BuildContext context,
                             ),
                           ),
                         ),
-                        // Container(
-                        //   // constraints: BoxConstraints(maxWidth: size.wScreen(60.0)),
+
+                        Container(
+                          // constraints: BoxConstraints(maxWidth: size.wScreen(60.0)),
                         //   // alignment: Alignment.centerLeft,
-                        //   constraints: BoxConstraints(
-                        //       // minHeight: size.wScreen(5.0), // Altura mínima
+                          constraints: BoxConstraints(
+                              // minHeight: size.wScreen(5.0), // Altura mínima
   
-                        //       minWidth: size.wScreen(5.0),
-                        //       maxWidth: size.wScreen(60.0) // Ancho máximo
-                        //       ),
+                              minWidth: size.wScreen(25.0),
+                              // maxWidth: size.wScreen(60.0) // Ancho máximo
+                              ),
                         //   child:messaje['message_text']._messajeTexto(messaje['message_text'], size)
                         //   //  Text('data'),
-                        // ),
+                        ),
                         // type == 'text'
                         //     ? messaje['message_text']._messajeTexto(messaje['message_text'], size)
                         //     : type == 'img'
@@ -681,11 +628,12 @@ _noChat(BuildContext context,
                             // constraints: BoxConstraints(maxWidth: size.wScreen(60.0)),
                             // alignment: Alignment.centerLeft,
                             constraints: BoxConstraints(
-                                // minHeight: size.wScreen(5.0), // Altura mínima
+                            //     minHeight: size.wScreen(5.0), // Altura mínima
   
-                                // minWidth: size.wScreen(5.0),
+                                minWidth: size.wScreen(25.0),
                                 // maxWidth: size.wScreen(60.0) // Ancho máximo
                                 ),
+                            
                             child: 
                               Column(
                               children: [
@@ -696,8 +644,8 @@ _noChat(BuildContext context,
                                     constraints: BoxConstraints(
                                 // minHeight: size.wScreen(1.0), // Altura mínima
   
-                                // minWidth: size.wScreen(5.0),
-                                // maxWidth: size.wScreen(60.0) // Ancho máximo
+                                minWidth: size.wScreen(5.0),
+                                maxWidth: size.wScreen(60.0) // Ancho máximo
                                 ),
                                     // width:size.iScreen(25)
                                   
@@ -711,7 +659,7 @@ _noChat(BuildContext context,
                                         
                                         ),
                         SizedBox(
-                          height: size.wScreen(2.0),
+                          height: size.wScreen(4.0),
                         )
                       ],
                     ),
@@ -725,7 +673,7 @@ _noChat(BuildContext context,
                         style: GoogleFonts.poppins(
                           fontSize: size.iScreen(1.2),
                           fontWeight: FontWeight.w500,
-                          color: sextinaryColor,
+                          color: Colors.black54,
                           // letterSpacing: -0.40,
                         ),
                         // textAlign: TextAlign.right,

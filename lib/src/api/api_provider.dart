@@ -17,10 +17,10 @@ import 'package:ultrared/src/service/notifications_service.dart' as snaks;
 
 class ApiProvider {
 //================================= URLS ==============================//
-  // final String _dirURL = "https://testconta.neitor.com/api";
+  final String _dirURL = "https://testconta.neitor.com/api";
 //=================================  ==============================//
 //================================= URLS ==============================//
-  final String _dirURL = "https://contabackend.neitor.com/api";
+  // final String _dirURL = "https://contabackend.neitor.com/api";
 //=================================  ==============================//
 
   // Future<AuthResponse?> login({
@@ -39,7 +39,7 @@ class ApiProvider {
       });
       final respo = jsonDecode(dataResp.body);
 
-           print('DATA DEL LOGIN  : $respo');
+          //  print('DATA DEL LOGIN  : $respo');
 
       if (dataResp.statusCode == 404) {
         snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
@@ -159,6 +159,8 @@ class ApiProvider {
     BuildContext? context,
     Map<String, dynamic>? data,
   }) async {
+
+      //  print('la data al crear un nuevo cliente Q SE ENVIA ******************** $data');
     try {
       final uri = Uri.parse('$_dirURL/usuarios');
       final headers = {
@@ -174,16 +176,17 @@ class ApiProvider {
         body: jsonBody,
         encoding: encoding,
       );
-
+      // print('respuesta code ******************** ${dataResp.statusCode}');
       final respo = jsonDecode(dataResp.body);
-      // print('la data $respo');
+      // print('la data al crear un nuevo cliente ******************** $respo');
 
       snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
-      if (dataResp.statusCode == 404) {
+      if (dataResp.statusCode == 403 ||dataResp.statusCode == 404 ||dataResp.statusCode == 500||dataResp.statusCode == 504 ) {
         snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
         return respo["msg"];
       }
       if (dataResp.statusCode == 200) {
+      //  print('la data 200 ******************** $respo');
         // final responsData = AuthResponse.fromMap(respo);
         // return responsData;
         return respo;
@@ -407,12 +410,12 @@ class ApiProvider {
       );
 
       if (response.statusCode == 200) {
-        print('Imagen eliminada exitosamente');
+        // print('Imagen eliminada exitosamente');
         return true;
       } else {
-        print(
-            'Error al eliminar la imagen. Código de estado: ${response.statusCode}');
-        print('Respuesta del servidor: ${response.body}');
+        // print(
+        //     'Error al eliminar la imagen. Código de estado: ${response.statusCode}');
+        // print('Respuesta del servidor: ${response.body}');
       }
     } catch (error) {
       print('Error al enviar la solicitud: $error');
@@ -580,7 +583,7 @@ class ApiProvider {
             "x-auth-token": '$token'
           },
           body: jsonEncode(data));
-      print(' LA DETA DEL PUT: ${dataResp.body}');
+      // print(' LA DETA DEL PUT: ${dataResp.body}');
       final respo = jsonDecode(dataResp.body);
 
       //  print(' LA DETA DEL PUT: $respo');
@@ -650,7 +653,7 @@ class ApiProvider {
             "x-auth-token": '$token'
           },
           body: jsonEncode(nuevaClave));
-      print(' actualiza  PUT: ${dataResp.body}');
+      // print(' actualiza  PUT: ${dataResp.body}');
       final respo = jsonDecode(dataResp.body);
 
       //  print(' LA DETA DEL PUT: $respo');
@@ -680,10 +683,10 @@ class ApiProvider {
       final dataResp = await _http.get(
         url,
       );
-      print(' DATA DESDE SERVER VERIFICA CEDULA : ${dataResp.body}');
+      // print(' DATA DESDE SERVER VERIFICA CEDULA : ${dataResp.body}');
       final respo = jsonDecode(dataResp.body);
 
-      print('objectLA RESPUESTA DE VALIDAR CEDULA $respo');
+      // print('objectLA RESPUESTA DE VALIDAR CEDULA $respo');
       if (dataResp.statusCode == 200) {
         return 200;
       }
@@ -722,7 +725,7 @@ class ApiProvider {
 
 
 
-      print(' DATA DESDE SERVER VERIFICA CEDULA : ${dataResp.body}');
+      // print(' DATA DESDE SERVER VERIFICA CEDULA : ${dataResp.body}');
       final respo = jsonDecode(dataResp.body);
       //  print(' LA DETA DEL PUT: $respo');
  
@@ -951,7 +954,7 @@ class ApiProvider {
 
       final respo = jsonDecode(dataResp.body);
       if (dataResp.statusCode == 200) {
-        print('INFO DE LA NOTIFICACION POR ID ${respo['data']}');
+        // print('INFO DE LA NOTIFICACION POR ID ${respo['data']}');
         return respo['data'];
       }
 
@@ -996,10 +999,10 @@ class ApiProvider {
       var response = await request.send();
 
       var responsed = await _http.Response.fromStream(response);
-       print('Image responsed.body successfully ALL. ${responsed.body}');
+      //  print('Image responsed.body successfully ALL. ${responsed.body}');
 
       if (response.statusCode == 200) {
-        print('Image responsed.body successfully. ${responsed.body}');
+        // print('Image responsed.body successfully. ${responsed.body}');
         Map<String, dynamic> jsonMap = json.decode(responsed.body);
 
         // Extraer la URL
@@ -1014,7 +1017,7 @@ class ApiProvider {
         return null;
       }
     } catch (e) {
-      print('=== response.statusCode ===> ${e}');
+      // print('=== response.statusCode ===> ${e}');
       return false;
     }
 

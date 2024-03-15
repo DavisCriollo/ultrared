@@ -833,8 +833,22 @@ showDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        title: Text("Información"),
-        content:const Text("Para completar el registro en nuestra aplicación, es necesario obtener el permiso de ubicación GPS."),
+        title: Row(
+      
+          children: [
+            Text("Información"),
+            
+            SizedBox(
+              width:size.iScreen(10.0),
+              child: Icon(Icons.info_outline_rounded,color:Colors.green,size:  size.iScreen(4.0),))
+          ],
+        ),
+        content: Text("Para continuar el registro en nuestra aplicación, es necesario otorgar el permiso de ubicación GPS, ya que lo utilizamos al momento de solicitar ayuda.",style: GoogleFonts.poppins(
+                              fontSize: size.iScreen(1.8),
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
+                              // letterSpacing: -0.40,
+                            )),
         actions: <Widget>[
         
           TextButton(
@@ -1569,7 +1583,7 @@ void _showDialogGPS(BuildContext context ,Responsive size) {
           borderRadius: BorderRadius.circular(8),
         ),
         title: Text("Información"),
-        content:const Text("Para completar el registro en nuestra aplicación, es necesario obtener el permiso de ubicación GPS."),
+        content:const Text("Para continuar el registro en nuestra aplicación, es imprescindible otorgar el permiso de ubicación GPS, ya que lo utilizamos al momento de solicitar ayuda."),
         actions: <Widget>[
         
           TextButton(

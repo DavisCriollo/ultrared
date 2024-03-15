@@ -140,7 +140,7 @@ class _ChatsState extends State<Chats> with TickerProviderStateMixin {
       }
     } else {
       // Handle permission denied
-      print('Permission denied to access the microphone.');
+      // print('Permission denied to access the microphone.');
     }
   }
 
@@ -272,7 +272,7 @@ Navigator.of(context).pop();
         isRecording = false;
         filePath = result!;
       });
-      print('Recording saved at: $result');
+      // print('Recording saved at: $result');
     }
   }
 
@@ -540,7 +540,7 @@ Navigator.of(context).pop();
                                    
                                    
                                    
-                                   ListView.builder(
+   ListView.builder(
       reverse: true,
       padding: EdgeInsets.only(bottom: 16.0),
       controller: _scrollController,
@@ -1407,9 +1407,74 @@ final _ctrlChat=context.read<ChatController>();
   
   
   
+// Widget _buildSpecialMessage(Responsive size) {
+//   final valueChat=context.read<SocketService>();
+// DateTime today = DateTime.now();
+//   DateTime yesterday = today.subtract(Duration(days: 1));
+//   DateTime dayBeforeYesterday = today.subtract(Duration(days: 2));
+//   DateTime lastWeek = today.subtract(Duration(days: 7));
+//   DateTime lastMonth = DateTime(today.year, today.month - 1, today.day);
+
+//   if (valueChat.getListaDeMensajeChat.isNotEmpty) {
+//     final _chat = valueChat.getListaDeMensajeChat.last;
+//     final DateTime? chatDate = (_chat['msg_FecReg'] != null && _chat['msg_FecReg'] is String)
+//         ? DateTime.tryParse(_chat['msg_FecReg'])
+//         : null;
+
+//     if (chatDate != null) {
+//       String _formattedDate(DateTime date) {
+//   return "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}";
+// }
+//       String specialMessage = "";
+
+//      if (chatDate.day == today.day) {
+//   specialMessage = "Hoy";
+// } else if (chatDate.day == yesterday.day) {
+//   specialMessage = "Ayer";
+// } else if (chatDate.day == dayBeforeYesterday.day) {
+//   specialMessage = "Anteayer";
+// } else if (chatDate.isAfter(lastWeek)) {
+//   specialMessage = "Esta semana (${_formattedDate(chatDate)})";
+// } else if (chatDate.isAfter(lastMonth)) {
+//   specialMessage = "Este mes (${_formattedDate(chatDate)})";
+// } else if (chatDate.year == today.year && chatDate.month == today.month - 1) {
+//   specialMessage = "El mes pasado (${_formattedDate(chatDate)})";
+// } else if (chatDate.year == today.year - 1) {
+//   specialMessage = "El año pasado (${_formattedDate(chatDate)})";
+// } 
+//       return Container(
+//         margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
+//         child: Center(
+//           child: Container(
+//             padding: EdgeInsets.symmetric(
+//               vertical: size.iScreen(0.2),
+//               horizontal: size.iScreen(0.5),
+//             ),
+//             decoration: BoxDecoration(
+//               borderRadius: BorderRadius.circular(8),
+//               color: colorTerciario,
+//             ),
+//             child: Text(
+//               specialMessage,
+//               style: GoogleFonts.lexendDeca(
+//                 fontSize: size.iScreen(1.3),
+//                 color: Colors.white,
+//                 fontWeight: FontWeight.normal,
+//               ),
+//             ),
+//           ),
+//         ),
+//       );
+//     }
+//   }
+
+//   // En caso de lista vacía o fecha no válida, regresa un contenedor vacío o un widget alternativo.
+//   return Container();
+// }
+
 Widget _buildSpecialMessage(Responsive size) {
-  final valueChat=context.read<SocketService>();
-DateTime today = DateTime.now();
+  final valueChat = context.read<SocketService>();
+  DateTime today = DateTime.now();
   DateTime yesterday = today.subtract(Duration(days: 1));
   DateTime dayBeforeYesterday = today.subtract(Duration(days: 2));
   DateTime lastWeek = today.subtract(Duration(days: 7));
@@ -1422,55 +1487,49 @@ DateTime today = DateTime.now();
         : null;
 
     if (chatDate != null) {
-      String _formattedDate(DateTime date) {
-  return "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}";
-}
       String specialMessage = "";
 
-     if (chatDate.day == today.day) {
-  specialMessage = "Hoy";
-} else if (chatDate.day == yesterday.day) {
-  specialMessage = "Ayer";
-} else if (chatDate.day == dayBeforeYesterday.day) {
-  specialMessage = "Anteayer";
-} else if (chatDate.isAfter(lastWeek)) {
-  specialMessage = "Esta semana (${_formattedDate(chatDate)})";
-} else if (chatDate.isAfter(lastMonth)) {
-  specialMessage = "Este mes (${_formattedDate(chatDate)})";
-} else if (chatDate.year == today.year && chatDate.month == today.month - 1) {
-  specialMessage = "El mes pasado (${_formattedDate(chatDate)})";
-} else if (chatDate.year == today.year - 1) {
-  specialMessage = "El año pasado (${_formattedDate(chatDate)})";
-} 
-// else {
-//   specialMessage = "Fecha especial (${_formattedDate(chatDate)})";
-// }
+      if (chatDate.day == today.day) {
+        specialMessage = "Hoy";
+      } else if (chatDate.day == yesterday.day) {
+        specialMessage = "Ayer";
+      } else if (chatDate.day == dayBeforeYesterday.day) {
+        specialMessage = "Anteayer";
+      } else if (chatDate.isAfter(lastWeek)) {
+        specialMessage = "Esta semana (${_formattedDate(chatDate)})";
+      } else if (chatDate.isAfter(lastMonth)) {
+        specialMessage = "Este mes (${_formattedDate(chatDate)})";
+      } else if (chatDate.year == today.year && chatDate.month == today.month - 1) {
+        specialMessage = "El mes pasado (${_formattedDate(chatDate)})";
+      } else if (chatDate.year == today.year - 1) {
+        specialMessage = "El año pasado (${_formattedDate(chatDate)})";
+      }
 
-
-
-      return Container(
-        margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
-        child: Center(
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              vertical: size.iScreen(0.2),
-              horizontal: size.iScreen(0.5),
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: colorTerciario,
-            ),
-            child: Text(
-              specialMessage,
-              style: GoogleFonts.lexendDeca(
-                fontSize: size.iScreen(1.3),
-                color: Colors.white,
-                fontWeight: FontWeight.normal,
+      if (specialMessage.isNotEmpty) {
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                vertical: size.iScreen(0.2),
+                horizontal: size.iScreen(0.5),
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: colorTerciario,
+              ),
+              child: Text(
+                specialMessage,
+                style: GoogleFonts.lexendDeca(
+                  fontSize: size.iScreen(1.3),
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                ),
               ),
             ),
           ),
-        ),
-      );
+        );
+      }
     }
   }
 
@@ -1478,6 +1537,9 @@ DateTime today = DateTime.now();
   return Container();
 }
 
+String _formattedDate(DateTime date) {
+  return "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}";
+}
   
   
   }

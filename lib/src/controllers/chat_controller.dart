@@ -300,7 +300,7 @@ final ctrlSocket=
 void addItemsChatPaginacion(Map<String,dynamic> data) {
      _listaTodoLosChatPaginacion.clear();
     _listaTodoLosChatPaginacion.addAll({data});
-    print('ITEM AL CHAT ###>:${_listaTodoLosChatPaginacion}');
+    // print('ITEM AL CHAT ###>:${_listaTodoLosChatPaginacion}');
 
     notifyListeners();
   }
@@ -547,7 +547,7 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
     _addFileChat = _state;
 
 
-    print('ESTADO FILE CHAT :$getFileChat') ;
+    // print('ESTADO FILE CHAT :$getFileChat') ;
     notifyListeners();
   }
 
@@ -578,7 +578,16 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
         notifyListeners();
       });
     }
+
+_audioPlayer.onPlayerCompletion.listen((event) {
+      _isPlaying = false; // Cambia el estado a no reproduciendo
+      notifyListeners();
+    });
+  
+
+
     _isPlaying = !_isPlaying;
+    
     notifyListeners();
   }
 
@@ -588,12 +597,26 @@ void addItemsChatPaginacion(Map<String,dynamic> data) {
     }
   }
 
+
+
+void fastForward() {
+  if (_isPlaying) {
+    double newPosition = _position + 10000; // Avanzar 10 segundos (en milisegundos)
+    if (newPosition > _duration) {
+      newPosition = _duration; // Asegurarse de que no se vaya más allá de la duración total del audio
+    }
+    _audioPlayer.seek(Duration(milliseconds: newPosition.toInt()));
+  }
+}
   void stop() {
     _audioPlayer.stop();
     _isPlaying = false;
     _position = 0.0;
     notifyListeners();
   }
+
+
+
 //*************  TIPO DE MENSAJE  ******************/
 
 String? _tipoMensajeChat = '';
@@ -602,7 +625,7 @@ String? _tipoMensajeChat = '';
     _tipoMensajeChat = _tipo;
 
 
-print('EL TIPO ES ************ >>> $_tipoMensajeChat');
+// print('EL TIPO ES ************ >>> $_tipoMensajeChat');
 
     notifyListeners();
   }
@@ -693,7 +716,7 @@ print('EL TIPO ES ************ >>> $_tipoMensajeChat');
   void setUrlImagenVideo(String _data) {
     _urlImageImagenVideo = "";
     _urlImageImagenVideo = _data;
-    print('ImagenVideo URL: $_urlImageImagenVideo');
+    // print('ImagenVideo URL: $_urlImageImagenVideo');
 
 
     notifyListeners();
@@ -859,7 +882,7 @@ setPage(response['data']['pagination']['next']);
 //  _crtlSocket.setListaDeMensajesChat(data);
 
   
-    print('NUEVO Chat####################>:${data.last}');
+    // print('NUEVO Chat####################>:${data.last}');
 
 //  _crtlSocket.setListaDeMensajesChat({});
 
@@ -883,7 +906,7 @@ bool _descargaOK=false;
 bool get getDescargaOK=>_descargaOK;
 void setDescargaOk(bool _inf){
 _descargaOK=_inf;
-  print('Boton presionado $_descargaOK');
+  // print('Boton presionado $_descargaOK');
   notifyListeners();
 }
 bool _pressed=false;
@@ -910,7 +933,7 @@ Future<void> descargarYGuardarVideo(String url,BuildContext context) async {
     try {
       // Descarga el video
       await dio.download(url, savePath);
-      print('Video descargado en $savePath');
+      // print('Video descargado en $savePath');
       // setDescargaOk(true);
       setPressed(false);
 
@@ -937,7 +960,7 @@ Future<void> descargarYGuardarVideo(String url,BuildContext context) async {
         fontSize: 16.0,
       );
     } catch (e) {
-      print('Error al descargar el video: $e');
+      // print('Error al descargar el video: $e');
       // setDescargaOk(false);
       setPressed(false);
       // Muestra un toast indicando que hubo un error en la descarga
@@ -952,7 +975,7 @@ Future<void> descargarYGuardarVideo(String url,BuildContext context) async {
       );
     }
   } else {
-    print('Permiso de almacenamiento denegado');
+    // print('Permiso de almacenamiento denegado');
   }
 }
 
@@ -993,7 +1016,7 @@ Future<void> descargarImagen(String url,BuildContext context) async {
         fontSize: 16.0,
       );
     } catch (e) {
-      print('Error al descargar la Imagen: $e');
+      // print('Error al descargar la Imagen: $e');
       // setDescargaOk(false);
       // setPressed(false);
       // Muestra un toast indicando que hubo un error en la descarga
@@ -1008,7 +1031,7 @@ Future<void> descargarImagen(String url,BuildContext context) async {
       );
     }
   } else {
-    print('Permiso de almacenamiento denegado');
+    // print('Permiso de almacenamiento denegado');
   }
 }
 

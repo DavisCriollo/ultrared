@@ -177,14 +177,26 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
                                                                   //   },
                                                                   // ),
     
-                                                                  FadeInImage(
+                                                                  Container(
+                                                                    decoration: BoxDecoration(
+                                                                            //  color: Colors.red,
+                                                                      borderRadius: BorderRadius.circular(8),
+                                                                    ),
+                                                             
+                                                                    // width: size.wScreen(100.0),
+                                                                    height: size.hScreen(20.0),
+                                                                      constraints: BoxConstraints(
+                                                      minHeight:
+                                                          size.iScreen(49.5), maxHeight: size.iScreen(49.5)),
+                                                                    child: FadeInImage(
                                                             placeholder:
                                                                 const AssetImage(
-                                                                    'assets/imgs/loader.gif'),
+                                                                      'assets/imgs/loader.gif'),
                                                             image: NetworkImage(
                                                               '${valueFoto.getUrlPerfil}',
                                                             ),
-                                                          )),
+                                                          ),
+                                                                  )),
                                                           Positioned(
                                                               top: size
                                                                   .iScreen(1.0),

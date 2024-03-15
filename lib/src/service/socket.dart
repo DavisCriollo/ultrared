@@ -241,7 +241,7 @@ Function get emit =>this._socket!.emit;
   void setUserApp(Map<String, dynamic>? _data) {
     _user = {};
     _user = _data;
-    print('EL USER SOCKET ------------- >>>   $_user');
+    // print('EL USER SOCKET ------------- >>>   $_user');
     notifyListeners();
   }
 
@@ -251,7 +251,7 @@ Function get emit =>this._socket!.emit;
     _isEnChat = false;
     _isEnChat = _data;
 
-    print('ESTA EN EL CHAT ------------- >>>   $_isEnChat');
+    // print('ESTA EN EL CHAT ------------- >>>   $_isEnChat');
     notifyListeners();
   }
 
@@ -267,11 +267,11 @@ Function get emit =>this._socket!.emit;
       //     print('Los MENSAJES DEL SERVIDOR   ------->>>>   : ${item}');
       //   }
      
-   print('Los MENSAJES DEL SERVIDOR   ------->>>>   : ${_msg}');
+  //  print('Los MENSAJES DEL SERVIDOR   ------->>>>   : ${_msg}');
      
    _listaDeMensajeChat
         .sort((a, b) => b["message_id"].compareTo(a["message_id"]));
-         print('Los MENSAJES DEL SERVIDOR  TODOS ------->>>>   : ${_listaDeMensajeChat.length}');
+        //  print('Los MENSAJES DEL SERVIDOR  TODOS ------->>>>   : ${_listaDeMensajeChat.length}');
      
          
      
@@ -284,7 +284,7 @@ Function get emit =>this._socket!.emit;
   void setMsgNoLeidos(int _msgs) {
     _msgNoLeidos = 0;
     _msgNoLeidos = _msgs;
-    print(' *******************_msgNoLeidos : $_msgNoLeidos');
+    // print(' *******************_msgNoLeidos : $_msgNoLeidos');
     notifyListeners();
   }
 
@@ -364,7 +364,7 @@ _socket!.on('disconnect', (_) {
 
     // MUESTRA LOS GRUPOL CHAT
     _socket!.on('server:lista-chats-grupos', (data) {
-      print('Los grupos del servidor  -------#####   : $data');
+      // print('Los grupos del servidor  -------#####   : $data');
 
       _listaGruposChat = [];
       _listaGruposChat = data;

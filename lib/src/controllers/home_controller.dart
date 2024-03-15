@@ -334,10 +334,10 @@ void resetUbicaciobGPS(){
       };
       _locationMessage = "${_currentPosition.latitude},${_currentPosition.longitude}";
       setGPSPositione(true);
-       print(' obtener la posición: $_currentPosition');
+      //  print(' obtener la posición: $_currentPosition');
       notifyListeners();
     } catch (e) {
-      print('Error al obtener la posición: $e');
+      // print('Error al obtener la posición: $e');
     }
   }
 //-----------------VERIFICA INTERNET-----------------------//
@@ -427,7 +427,7 @@ void resetUbicaciobGPS(){
 
   void setItemCorreos(String? valor) {
     _itemCorreos = valor;
-print(' EL CORREO ******* >: $_itemCorreos');
+// print(' EL CORREO ******* >: $_itemCorreos');
     // notifyListeners();
   }
 //========================== ITEM  formularios =======================//
@@ -446,7 +446,7 @@ print(' EL CORREO ******* >: $_itemCorreos');
 
   void setItemNombre(String? valor) {
     _itemNombre = valor;
-     print(' _itemNombre $_itemNombre');
+    //  print(' _itemNombre $_itemNombre');
     // notifyListeners();
   }
 
@@ -464,7 +464,7 @@ print(' EL CORREO ******* >: $_itemCorreos');
 
   void setItemApellido(String? valor) {
     _itemApellido = valor;
- print(' _itemApellido $_itemApellido');
+//  print(' _itemApellido $_itemApellido');
     // notifyListeners();
   }
 
@@ -473,7 +473,7 @@ print(' EL CORREO ******* >: $_itemCorreos');
 
   void setItemDireccion(String? valor) {
     _itemDireccion = valor;
- print(' _itemDireccion $_itemDireccion');
+//  print(' _itemDireccion $_itemDireccion');
 //     notifyListeners();
   }
 
@@ -801,9 +801,9 @@ int _mensajesNoLeidos =0;
       "tabla": "usuario",
       "rucempresa": "ULTRA2022",
       "tipoServicio": _itemLugarServicio,
-      "cedula": _itemCedua,
+      "cedula":_itemCedua,
       "nombres": _itemNombre,
-      "apellidos": _itemApellido,
+      // "apellidos": _itemApellido,
       "celular": _itemCelulares,
       "email": _itemCorreos,
       "direccion": _itemDireccion,
@@ -832,6 +832,31 @@ int _mensajesNoLeidos =0;
       return null;
     }
     return null;
+
+    // final data= {
+    //   "tabla": "usuario",
+    //   "rucempresa": "ULTRA2022",
+    //   "tipoServicio": _itemLugarServicio,
+    //   "cedula": _itemCedua,
+    //   "nombres": _itemNombre,
+    //   "apellidos": _itemApellido,
+    //   "celular": _itemCelulares,
+    //   "email": _itemCorreos,
+    //   "direccion": _itemDireccion,
+    //   "plan": 'NINGUNO',
+    //   "ciudad": _ciudadItem,
+    //   "sector": _sectorItem,
+    //   "referencia": _itemReferencia,
+    //   "fotoPerfil": _urlImagePerfil,
+    //   "fotoCasa": _urlImageCasa,
+    //   "gps": _locationGPS,
+    //   "fotoVehiculo": _urlImageVehiculo,
+    //   "placa": _itemPlaca,
+    //   "marca": _itemMarca,
+    //   "modelo": _itemModelo,
+    //   "color": _itemColor
+    // };
+    //   print('la data al crear un nuevo cliente Q SE ENVIA ******************** $data');
   }
 
 //================================== CREAR NUEVO  ==============================//
@@ -853,7 +878,7 @@ int _mensajesNoLeidos =0;
           "tipoServicio": _itemLugarServicio,
           "cedula": _itemCedua,
           "nombres": _itemNombre,
-          "apellidos": _itemApellido,
+          // "apellidos": _itemApellido,
           "celular": _itemCelulares,
           "email": _itemCorreos,
           "direccion": _itemDireccion,
@@ -913,7 +938,7 @@ int _mensajesNoLeidos =0;
   void setUrlCasa(String _data) {
     _urlImageCasa = "";
     _urlImageCasa = _data;
-    print('CASA URL: $_urlImageCasa');
+    // print('CASA URL: $_urlImageCasa');
 
     notifyListeners();
   }
@@ -925,7 +950,7 @@ int _mensajesNoLeidos =0;
   void setUrlVehiculo(String _data) {
     _urlImageVehiculo = "";
     _urlImageVehiculo = _data;
-    print('VEHICULO URL: $_urlImageVehiculo');
+    // print('VEHICULO URL: $_urlImageVehiculo');
 
     notifyListeners();
   }
@@ -1273,41 +1298,41 @@ print('la data del cliente EDITADO **************> : $_infoUsuarioById');
 
     _idUsuario = "";
  
-    String nombreCompleto = _infoUsuarioById['nombres'];
-    String nombres = '';
-    String apellidos = '';
+  //   String nombreCompleto = _infoUsuarioById['nombres'];
+  //   String nombres = '';
+  //   String apellidos = '';
                         
 
-  List<String> palabras = nombreCompleto.split(" ");
+  // List<String> palabras = nombreCompleto.split(" ");
 
  
 
-  if (palabras.isNotEmpty) {
-    apellidos = palabras[0];
+  // if (palabras.isNotEmpty) {
+  //   apellidos = palabras[0];
 
-    if (palabras.length == 2) {
-      nombres = palabras[1];
-    } else if (palabras.length >= 3) {
-      apellidos += " " + palabras[1];
-      nombres = palabras.sublist(2).join(" ");
-    }
+  //   if (palabras.length == 2) {
+  //     nombres = palabras[1];
+  //   } else if (palabras.length >= 3) {
+  //     apellidos += " " + palabras[1];
+  //     nombres = palabras.sublist(2).join(" ");
+  //   }
 
-    // Imprimir los resultados
+  //   // Imprimir los resultados
    
-  }
+  // }
 
    
-    // _itemLugarServicio= getUser!['tipoServicio'];
-    // _ciudadItem=getUser!['usuario'];
+    _itemLugarServicio= getUser!['tipoServicio'];
+    _ciudadItem=getUser!['usuario'];
 
 
 
     _itemCedua = getUser!['usuario'];
     _idUsuario = _infoUsuarioById['perId'].toString();
 
-    _itemNombre = nombres;//_infoUsuarioById['nombres'];
+    _itemNombre = _infoUsuarioById['nombres'];//_infoUsuarioById['nombres'];
 
-    _itemApellido = apellidos;//_infoUsuarioById['nombres'];
+    // _itemApellido = apellidos;//_infoUsuarioById['nombres'];
     _itemDireccion = _infoUsuarioById['direccion'];
     _itemCorreos = _infoUsuarioById['email'];
     _itemCelulares = _infoUsuarioById['celular'];
@@ -1739,7 +1764,7 @@ var ctrlHome = context.read<HomeController>();
     final dataUser = await Auth.instance.getSession();
     final response = await _api.getVerificaCedulaCrearNuevoCliente(
         context: context,
-        empresa: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoxNDEwMCwicnVjZW1wcmVzYSI6IlVMVFJBMjAyMiIsInVzdWFyaW8iOiIxMjM0NTY3ODkzIiwicm9sIjpbIkNMSUVOVEUiXSwiaWF0IjoxNzA5OTU0NDY2LCJleHAiOjE3MTA1NTkyNjZ9.XdaH4M8N2_6_PDnpU7R1004JXdzYfCj-iFlMN7KX6cU',
+        empresa: 'ULTRA2022',
         //dataUser!['token'],
         cedula:_itemCedua);
        

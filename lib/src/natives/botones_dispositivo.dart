@@ -8,7 +8,7 @@ class BotonesChannel{
 Future<void>  versionSO() async{
  try {
     final result = await _methodChannel.invokeMethod("versionSO");
-  print('El resiltado de Channel> $result');
+  // print('El resiltado de Channel> $result');
  } catch (e) {
    print('Error Channel Botones  $e');
  }

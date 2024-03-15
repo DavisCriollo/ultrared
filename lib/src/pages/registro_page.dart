@@ -246,6 +246,28 @@ class _RegistroPageState extends State<RegistroPage> {
                                     ),
                                           onChanged: (text) {
                                             _control.setItemCedua(text.trim());
+
+                                          if (_control.getItemCedua!.isEmpty ) {
+                                             _control.setItemNombre('') ;
+                         controllerTextNombre.text=_control.getItemNombre!;
+
+                        //   _control.setItemApellido('') ;
+                        //  controllerTextApellido.text=_control.getItemApellido!;
+
+                          _control.setItemDireccion('') ;
+                         controllerTextDireccion.text=_control.getItemDireccion!;
+
+                          _control.setItemCorreos('') ;
+                         controllerTextCorreo.text=_control.getItemCorreos!;
+
+                          _control.seItemCelulars('') ;
+                         controllerTextCelular.text=_control.getItemCelulars!;
+                                        
+                                      }
+
+
+
+
                                           },
                                         )
                                        
@@ -272,38 +294,38 @@ class _RegistroPageState extends State<RegistroPage> {
 
 
 if (response != null  ) {
-   String nombreCompleto = response['nombre'];
-    String nombres = '';
-    String apellidos = '';
+  //  String nombreCompleto = response['nombre'];
+  //   String nombres = '';
+  //   String apellidos = '';
                         
 
-  List<String> palabras = nombreCompleto.split(" ");
+  // List<String> palabras = nombreCompleto.split(" ");
 
  
 
-  if (palabras.length >= 1) {
-    apellidos = palabras[0];
+  // if (palabras.length >= 1) {
+  //   apellidos = palabras[0];
 
-    if (palabras.length == 2) {
-      nombres = palabras[1];
-    } else if (palabras.length >= 3) {
-      apellidos += " " + palabras[1];
-      nombres = palabras.sublist(2).join(" ");
-    }
+  //   if (palabras.length == 2) {
+  //     nombres = palabras[1];
+  //   } else if (palabras.length >= 3) {
+  //     apellidos += " " + palabras[1];
+  //     nombres = palabras.sublist(2).join(" ");
+  //   }
 
-    // Imprimir los resultados
-    print("Nombre: $nombres");
-    print("Apellido: $apellidos");
-  } else {
-    print("La cadena no tiene el formato esperado.");
-  }
+  //   // Imprimir los resultados
+  //   print("Nombre: $nombres");
+  //   print("Apellido: $apellidos");
+  // } else {
+  //   print("La cadena no tiene el formato esperado.");
+  // }
 
                        
-                         _control.setItemNombre(nombres) ;
+                         _control.setItemNombre(response['nombre']) ;
                          controllerTextNombre.text=_control.getItemNombre!;
 
-                          _control.setItemApellido(apellidos) ;
-                         controllerTextApellido.text=_control.getItemApellido!;
+                        //   _control.setItemApellido(apellidos) ;
+                        //  controllerTextApellido.text=_control.getItemApellido!;
 
                           _control.setItemDireccion(response['direccion']) ;
                          controllerTextDireccion.text=_control.getItemDireccion!;
@@ -459,6 +481,10 @@ else{
                                     onChanged: (text) {
 
                                       valueNombre.setItemNombre(text.trim());
+
+                                      
+
+
                                       
                                     },
                                   );
@@ -516,59 +542,59 @@ else{
                           //   ),
                           // ),
                           //***********************************************/
-                          //***********************************************/
+    //                       //***********************************************/
     
-                          SizedBox(
-                            height: size.iScreen(2.0),
-                          ),
-                          //*****************************************/
-                          Container(
-                            // color: Colors.red,
-                            width: size.wScreen(80.0),
-                            padding: EdgeInsets.all(size.wScreen(0.0)),
-                            child: Consumer<HomeController>(builder: (_, valueApellido, __) { 
-                                      return   TextFormField(
-                                       readOnly:
-                                             widget.action == 'EDIT' ? false : true,   
-                                         controller: controllerTextApellido,
-                              // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
-                              //     ? ''
-                              //     :
-                              // _control.getItemNombre,
-                              // decoration: InputDecoration(
-                              //   suffixIcon: Icon(Icons.person),
-                              //   hintText: 'APELLIDOS',
-                              //   border: InputBorder.none,
-                              // ),
-                               decoration: InputDecoration(
-                                  label: Text('APELLIDOS'),
-                                  suffixIcon: Icon(Icons.person, color: colorPrimario),
+    //                       SizedBox(
+    //                         height: size.iScreen(2.0),
+    //                       ),
+    //                       //*****************************************/
+    //                       Container(
+    //                         // color: Colors.red,
+    //                         width: size.wScreen(80.0),
+    //                         padding: EdgeInsets.all(size.wScreen(0.0)),
+    //                         child: Consumer<HomeController>(builder: (_, valueApellido, __) { 
+    //                                   return   TextFormField(
+    //                                    readOnly:
+    //                                          widget.action == 'EDIT' ? false : true,   
+    //                                      controller: controllerTextApellido,
+    //                           // initialValue: widget.action == 'CREATE'|| _control.getItemNombre!.isEmpty
+    //                           //     ? ''
+    //                           //     :
+    //                           // _control.getItemNombre,
+    //                           // decoration: InputDecoration(
+    //                           //   suffixIcon: Icon(Icons.person),
+    //                           //   hintText: 'APELLIDOS',
+    //                           //   border: InputBorder.none,
+    //                           // ),
+    //                            decoration: InputDecoration(
+    //                               label: Text('APELLIDOS'),
+    //                               suffixIcon: Icon(Icons.person, color: colorPrimario),
                                  
-                                  hintText: 'APELLIDOS',
-                                  border: UnderlineInputBorder(),
-                                    // Establecer el color de texto a rojo
-                                   labelStyle: TextStyle(color:colorPrimario),
+    //                               hintText: 'APELLIDOS',
+    //                               border: UnderlineInputBorder(),
+    //                                 // Establecer el color de texto a rojo
+    //                                labelStyle: TextStyle(color:colorPrimario),
     
-    focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color:colorPrimario),
-    ),
-                                ),
+    // focusedBorder: UnderlineInputBorder(
+    //   borderSide: BorderSide(color:colorPrimario),
+    // ),
+    //                             ),
                                
-                              //  enabled: valueNombre.getItemNombre!.isNotEmpty, // Habilitar solo si el nombre está vacío
+    //                           //  enabled: valueNombre.getItemNombre!.isNotEmpty, // Habilitar solo si el nombre está vacío
                              
-                              onChanged: (text) {
+    //                           onChanged: (text) {
 
-                                valueApellido.setItemApellido(text.trim());
+    //                             valueApellido.setItemApellido(text.trim());
                                 
-                              },
-                            );
-                                      }),
-                          ),
-                          //***********************************************/
+    //                           },
+    //                         );
+    //                                   }),
+    //                       ),
+    //                       //***********************************************/
                           //***********************************************/
     
                           SizedBox(
-                            height: size.iScreen(2.0),
+                            height: size.iScreen(1.0),
                           ),
                           //*****************************************/
                           Container(
@@ -624,7 +650,7 @@ else{
                                  //***********************************************/
     
                           SizedBox(
-                            height: size.iScreen(2.0),
+                            height: size.iScreen(1.0),
                           ),
                           //*****************************************/
                           Container(
@@ -1238,23 +1264,20 @@ else{
 
   void _next(BuildContext context, HomeController controller) async {
 
+
+ ProgressDialog.show(context);
+      final response = await controller.verificaCedulaNuevoCliente(context);
+      ProgressDialog.dissmiss(context);
+      if (response != null && response==200 && widget.action=='CREATE') {
+        NotificatiosnService.showSnackBarDanger("El número ${controller.getItemCedua} ya se encuentra registrado");
+      } else {
+
 String? email = controller.getItemCorreos;
 if (validateEmail(email)==false) {
   NotificatiosnService.showSnackBarDanger("El correo ingresado es incorrecto");
 } 
-// else {
-//    NotificatiosnService.showSnackBarDanger("El correo ingresado es incorrecto");
-// }
 
-
-   
-    //  ProgressDialog.show(context);
-    //   final response = await controller.verificaCedulaNuevoCliente(context);
-    //   ProgressDialog.dissmiss(context);
-    //   if (response != null && response==200 && widget.action=='CREATE') {
-    //     NotificatiosnService.showSnackBarDanger("El número ${controller.getItemCedua} ya se encuentra registrado");
-    //   } else {
-        
+  
        else  if (controller.getItemCedua!.isEmpty ||
         controller.getItemCedua!.length < 10 ||
         controller.getItemCedua!.length > 10) {
@@ -1265,7 +1288,7 @@ if (validateEmail(email)==false) {
       NotificatiosnService.showSnackBarDanger('Agregue número celular');
     }else 
      if (controller.getItemNombre!.isNotEmpty &&
-        controller.getItemApellido!.isNotEmpty &&
+        // controller.getItemApellido!.isNotEmpty &&
         controller.getItemDireccion!.isNotEmpty &&
         controller.getItemCorreos!.isNotEmpty |
             controller.getItemCelulars!.isNotEmpty &&
@@ -1283,43 +1306,48 @@ if (validateEmail(email)==false) {
     
 
 
+  }
+
+
+
+
             }
 
   void agregaDatos() {
     final _control=context.read<HomeController>();
-if (_control.getInfoUsuarioById['nombres']!=null) {
-  String nombreCompleto = _control.getInfoUsuarioById['nombres'];
-    String nombres = '';
-    String apellidos = '';
+// if (_control.getInfoUsuarioById['nombres']!=null) {
+//   String nombreCompleto = _control.getInfoUsuarioById['nombres'];
+//     String nombres = '';
+//     String apellidos = '';
                         
 
-  List<String> palabras = nombreCompleto.split(" ");
+//   List<String> palabras = nombreCompleto.split(" ");
 
  
 
-  if (palabras.isNotEmpty) {
-    apellidos = palabras[0];
+//   if (palabras.isNotEmpty) {
+//     nombres= palabras[0];
 
-    if (palabras.length == 2) {
-      nombres = palabras[1];
-    } else if (palabras.length >= 3) {
-      apellidos += " " + palabras[1];
-      nombres = palabras.sublist(2).join(" ");
-    }
+//     if (palabras.length == 2) {
+//       nombres = palabras[1];
+//     } else if (palabras.length >= 3) {
+//       apellidos += " " + palabras[1];
+//       nombres = palabras.sublist(2).join(" ");
+//     }
 
-    // Imprimir los resultados
-    print("Nombre: $nombres");
-    print("Apellido: $apellidos");
-  } else {
-    print("La cadena no tiene el formato esperado.");
-  }
+//     // Imprimir los resultados
+//     print("Nombre: $nombres");
+//     print("Apellido: $apellidos");
+//   } else {
+//     print("La cadena no tiene el formato esperado.");
+//   }
 
                        
-                         _control.setItemNombre(nombres) ;
+                         _control.setItemNombre(_control.getInfoUsuarioById['nombres']) ;
                          controllerTextNombre.text=_control.getItemNombre!;
 
-                          _control.setItemApellido(apellidos) ;
-                         controllerTextApellido.text=_control.getItemApellido!;
+                        //   _control.setItemApellido(apellidos) ;
+                        //  controllerTextApellido.text=_control.getItemApellido!;
 
                           _control.setItemDireccion(_control.getInfoUsuarioById['direccion']) ;
                          controllerTextDireccion.text=_control.getItemDireccion!;
@@ -1341,6 +1369,6 @@ if (_control.getInfoUsuarioById['nombres']!=null) {
 
 
 
-  }
+  // }
 
 }
