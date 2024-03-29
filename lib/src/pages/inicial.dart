@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
+import 'package:ultrared/src/pages/acceso_gps_page.dart';
 import 'package:ultrared/src/pages/login_page.dart';
 import 'package:ultrared/src/pages/selecciona_sector.dart';
 import 'package:ultrared/src/utils/responsive.dart';
@@ -60,15 +61,23 @@ class _InicialState extends State<Inicial> {
                     highlightColor:Colors.red,
 
                     onTap: () {
-                        final _ctrlHome= context.read<HomeController>();
-                                _ctrlHome.resetAllValues();
-                                _ctrlHome.setItemLugarServicio('HOGAR');
+                        // final _ctrlHome= context.read<HomeController>();
+                        //         _ctrlHome.resetAllValues();
+                        //         _ctrlHome.setItemLugarServicio('HOGAR');
+                              
+                        //       Navigator.push(
+                        //                     context,
+                        //                     MaterialPageRoute(
+                        //                         builder: ((context) =>
+                        //                             const SeleccionaSector(action: 'CREATE',))));
+
+                     
                               
                               Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: ((context) =>
-                                                    const SeleccionaSector(action: 'CREATE',))));
+                                                    const AccesoGPSPage(tipo:'CREATE' ,))));
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: size.iScreen(6.0),vertical: size.iScreen(1.0)),
@@ -91,11 +100,16 @@ class _InicialState extends State<Inicial> {
                                         SizedBox(height: size.iScreen(0.5),),
                                         InkWell(
                                           onTap: () {
+                                            //   Navigator.push(
+                                            // context,
+                                            // MaterialPageRoute(
+                                            //     builder: ((context) =>
+                                            //         LoginPage())));
                                               Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: ((context) =>
-                                                    LoginPage())));
+                                                    const AccesoGPSPage(tipo:'LOGIN' ,))));
                                           },
                                           child: Container(
                                             padding: EdgeInsets.symmetric(horizontal: size.iScreen(4.0),vertical: size.iScreen(1)),

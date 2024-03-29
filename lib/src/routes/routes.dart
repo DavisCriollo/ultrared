@@ -26,7 +26,7 @@ import 'package:ultrared/src/pages/view_video_page.dart';
 
 final Map<String, Widget Function(BuildContext)> appRoutes = {
   'splash': (_) => const SplashPage(),
-  'gps': (_) => const AccesoGPSPage(),
+  'gps': (_) => const AccesoGPSPage(tipo:'',),
   'login': (_) => const LoginPage(),
   // 'home': (_) => const SocketStatusScreen(),
   'serCliente': (_) => const SerClientePage(),

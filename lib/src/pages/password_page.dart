@@ -182,14 +182,14 @@ class _PasswordPageState extends State<PasswordPage> {
                                       // maxLength: 1,
                                       decoration: const InputDecoration(
                                         suffixIcon: Icon(Icons.assignment_ind),
-                                        hintText: 'ESCRIBE TU CÉDULA',
+                                        hintText: 'ESCRIBE TU USUARIO',
                                         border: InputBorder.none,
                                       ),
-                                      keyboardType: TextInputType.number,
-                                      inputFormatters: <TextInputFormatter>[
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp(r'[0-9]')),
-                                      ],
+                                      // keyboardType: TextInputType.number,
+                                      // inputFormatters: <TextInputFormatter>[
+                                      //   FilteringTextInputFormatter.allow(
+                                      //       RegExp(r'[0-9]')),
+                                      // ],
                                       onChanged: (text) {
                                         _control.setItemCedulaRecupera(text.trim());
                                       },
@@ -217,9 +217,38 @@ class _PasswordPageState extends State<PasswordPage> {
                               ),
     
                             
-                              // SizedBox(
-                              //   height: size.hScreen(5.0),
-                              // ),
+                              SizedBox(
+                                height: size.hScreen(10.0),
+                              ),
+
+                                  Container(
+                                  height: size.hScreen(10),
+                                  width: size.wScreen(100),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: size.iScreen(0.0)),
+                                          
+                                  // color: Colors.blue, // Puedes ajustar el color según tus preferencias
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text('Provider to  ', style: TextStyle(
+                                              color: Color(0xFF080623),
+                                              fontSize: size.iScreen(1.7),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                              height: size.iScreen(0.1),
+                                            ),),
+                                      Container(
+                                        height: size.iScreen(4.0),
+                                        child: Image.asset(
+                                          'assets/imgs/LetrasNegro.png', scale: 1.0,
+                                          fit: BoxFit.contain, // URL de la imagen
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                                        ),
+
                               // Text.rich(
                               //   TextSpan(
                               //     children: [
@@ -250,36 +279,37 @@ class _PasswordPageState extends State<PasswordPage> {
                       ],
                     ),
                   ),
-                  Positioned(
-                      bottom: 0.0,
-                       child: Container(
-                                  height: size.hScreen(10),
-                                  width: size.wScreen(100),
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: size.iScreen(0.0)),
+                  // Positioned(
+                  //     bottom: 0.0,
+                  //      child: 
+                  //      Container(
+                  //                 height: size.hScreen(10),
+                  //                 width: size.wScreen(100),
+                  //                 padding:
+                  //                     EdgeInsets.symmetric(horizontal: size.iScreen(0.0)),
                                           
-                                  // color: Colors.blue, // Puedes ajustar el color según tus preferencias
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('Provider to  ', style: TextStyle(
-                                              color: Color(0xFF080623),
-                                              fontSize: size.iScreen(1.7),
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w400,
-                                              height: size.iScreen(0.1),
-                                            ),),
-                                      Container(
-                                        height: size.iScreen(4.0),
-                                        child: Image.asset(
-                                          'assets/imgs/LetrasNegro.png', scale: 1.0,
-                                          fit: BoxFit.contain, // URL de la imagen
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                                        ),
-                     ),
+                  //                 // color: Colors.blue, // Puedes ajustar el color según tus preferencias
+                  //                 child: Row(
+                  //                   mainAxisAlignment: MainAxisAlignment.center,
+                  //                   children: [
+                  //                     Text('Provider to  ', style: TextStyle(
+                  //                             color: Color(0xFF080623),
+                  //                             fontSize: size.iScreen(1.7),
+                  //                             fontFamily: 'Poppins',
+                  //                             fontWeight: FontWeight.w400,
+                  //                             height: size.iScreen(0.1),
+                  //                           ),),
+                  //                     Container(
+                  //                       height: size.iScreen(4.0),
+                  //                       child: Image.asset(
+                  //                         'assets/imgs/LetrasNegro.png', scale: 1.0,
+                  //                         fit: BoxFit.contain, // URL de la imagen
+                  //                       ),
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //                                       ),
+                  //    ),
                 ],
               )),
         ),
@@ -327,14 +357,14 @@ class _PasswordPageState extends State<PasswordPage> {
           ),
           actions: <Widget>[
             Container(
-              width: size.wScreen(100),
-              color: Colors.red,
+              width: size.wScreen(80),
+              color: colorPrimario,
               child: TextButton(
                 onPressed: () {
                   Navigator.pop(context, 'OK');
                   Navigator.pop(context);
                 },
-                child: const Text('OK'),
+                child: const Text('OK',style: TextStyle(color: Colors.white),),
               ),
             )
           ]),

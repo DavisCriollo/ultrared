@@ -17,10 +17,10 @@ import 'package:ultrared/src/service/notifications_service.dart' as snaks;
 
 class ApiProvider {
 //================================= URLS ==============================//
-  final String _dirURL = "https://testconta.neitor.com/api";
+  // final String _dirURL = "https://testconta.neitor.com/api";
 //=================================  ==============================//
 //================================= URLS ==============================//
-  // final String _dirURL = "https://contabackend.neitor.com/api";
+  final String _dirURL = "https://contabackend.neitor.com/api";
 //=================================  ==============================//
 
   // Future<AuthResponse?> login({
