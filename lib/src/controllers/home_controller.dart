@@ -1724,6 +1724,7 @@ var ctrlHome = context.read<HomeController>();
     _listaEstadoDeCuenta = [];
 
     _listaEstadoDeCuenta = _data;
+
     // print('INFO DE LA CONSULTA _listaEstadoDeCuenta $_listaEstadoDeCuenta');
 
     notifyListeners();
@@ -1741,7 +1742,10 @@ var ctrlHome = context.read<HomeController>();
         token: dataUser!['token'],);
     if (response != null) {
       _errorEstadoDeCuenta = true;
-      setListaEstadoDeCuenta(response['data']);
+      List<dynamic> dataSort = response['data'];
+        dataSort.sort((a, b) => b['ccFechaFactura']!.compareTo(a['ccFechaFactura']!));
+        // setListaEstadoDeCuenta(response['data']);
+      setListaEstadoDeCuenta(dataSort);
 
       // setListaTodasLasRazas(response['data'][0]['espRazas']);
 

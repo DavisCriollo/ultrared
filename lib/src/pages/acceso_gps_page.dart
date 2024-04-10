@@ -152,6 +152,7 @@ class _AccesoGPSPageState extends State<AccesoGPSPage>
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
+    //  final ctrlHome=context.read<HomeController>();
     return SafeArea(
       child: Scaffold(
         body: Container( 
@@ -163,7 +164,7 @@ class _AccesoGPSPageState extends State<AccesoGPSPage>
             // mainAxisAlignment: MainAxisAlignment.center,
             children: [
                 CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){
-                          Navigator.pop(context); },title:'INFORMACIÓN',),
+                          Navigator.pop(context); },title:'INFORMACIÓN',user: '',),
               
               Container(
                        width: size.wScreen(100.0),

@@ -81,7 +81,7 @@ class _FotosVehiculoPageState extends State<FotosVehiculoPage> {
                      Consumer<HomeController>(
                 builder: (_, value, __) {
                   return 
-                   CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:  value.getItemLugarServicio == 'HOGAR' ? 'FOTO DE TU CASA' : 'FOTO DE TU VEHICULO',);                 
+                   CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:  value.getItemLugarServicio == 'HOGAR' ? 'FOTO DE TU CASA' : 'FOTO DE TU VEHICULO',user: '',);                 
                 },
               ),
              

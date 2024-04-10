@@ -111,7 +111,7 @@ class _RegistroPageState extends State<RegistroPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                    
-                         CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:_action == 'CREATE' ? 'REGISTRO' : 'EDITAR REGISTRO' ,),
+                         CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:_action == 'CREATE' ? 'REGISTRO' : 'EDITAR REGISTRO' ,user: '',),
                       
     
     

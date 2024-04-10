@@ -67,7 +67,7 @@ class _ActualizaClaveState extends State<ActualizaClave> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                   CabecerasStandarApp(colorBase: Colors.white,size: size,onTap: (){Navigator.pop(context);},title:'CONTRASEÑA' ,),
+                   CabecerasStandarApp(colorBase: Colors.white,size: size,onTap: (){Navigator.pop(context);},title:'CONTRASEÑA' ,user: '',),
                       
                     //*****************************************/
                     Container(

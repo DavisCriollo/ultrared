@@ -18,6 +18,7 @@ class DataTableEstadoCuenta extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
+   final ctrlHome=context.read<HomeController>();
 
   //  String formatDate(String dateStr) {
   //     DateTime dateTime = DateTime.parse(dateStr);
@@ -152,6 +153,7 @@ class DataTableEstadoCuenta extends StatelessWidget {
                   Navigator.pop(context);
                 },
                 title: 'Estado de Cuenta',
+                user: ctrlHome.getUser!['nombre'],
               ),
               Consumer<HomeController>(
                 builder: (_, valueEstadoCuenta, __) {

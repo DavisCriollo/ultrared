@@ -80,7 +80,7 @@ class _FotosCasaPageState extends State<FotosCasaPage> {
                    Consumer<HomeController>(
                 builder: (_, value, __) {
                   return 
-                   CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title: value.getItemLugarServicio == 'HOGAR' ? 'REGISTRO FOTO CASA'  : 'REGISTRO FOTO VEHICULO',);
+                   CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title: value.getItemLugarServicio == 'HOGAR' ? 'REGISTRO FOTO CASA'  : 'REGISTRO FOTO VEHICULO',user: '',);
                  
                 },
               ),

@@ -96,7 +96,7 @@ class _ListaGruposChatState extends State<ListaGruposChat> {
               height: size.hScreen(100.0),
               child: Column(
                 children: [
-                    CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:'MIS GRUPOS' ,),
+                    CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:'MIS GRUPOS' ,user: '',),
                   Consumer<SocketService>(
                     builder: (_, valueChat, __) {
                      if (valueChat.getListaGruposChat==null) {

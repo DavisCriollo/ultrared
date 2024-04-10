@@ -71,7 +71,7 @@ class _FotosPerfilPageState extends State<FotosPerfilPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                   CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:_action == 'CREATE' ? 'REGISTRO FOTO PERFIL' : 'EDITAR  FOTO PERFIL',),
+                   CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:_action == 'CREATE' ? 'REGISTRO FOTO PERFIL' : 'EDITAR  FOTO PERFIL',user: '',),
                     //***********************************************/
     
                     SizedBox(

@@ -113,7 +113,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           padding: EdgeInsets.zero,
           children: [
 
-            CabecerasIconDrawerApp(size: size, colorBase: Colors.white,name:  '${value.getUser!['nombre']}',code:  '${value.getUser!['id']}  ',onTap: (){
+            CabecerasIconDrawerApp(size: size, colorBase: Colors.white,name:  '${value.getUser!['nombre']}',code:  '${value.getUser!['usuario']}  ',onTap: (){
                //                       //--------------------//
                                     _ctrl.resetAllValues();
 

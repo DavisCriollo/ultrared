@@ -168,7 +168,7 @@ class _SeleccionaSectorState extends State<SeleccionaSector> {
                             ],
                           ),
                         ),
-                  CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:_action == 'CREATE' ? 'REGISTRO' : 'EDITAR REGISTRO' ,),
+                  CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:_action == 'CREATE' ? 'REGISTRO' : 'EDITAR REGISTRO' ,user: '',),
                   // CabecerasApp(size: size, colorBase:cuaternaryColor , title:_action == 'CREATE' ? 'REGISTRO' : 'EDITAR REGISTRO',onTap:(){
                   //       Navigator.pop(context);
                   //     }),

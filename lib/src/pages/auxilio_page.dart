@@ -205,7 +205,8 @@ AudioCache player = AudioCache();
                         ctrlHome.buscarNotificaciones(context);
                         
                         
-                        },title:'AUXILIO' ,),
+                        },title:'AUXILIO' ,
+                        user: '',),
                       
                       Container(
                         padding: EdgeInsets.symmetric(

@@ -74,7 +74,7 @@ class _ListaNotificacionesState extends State<ListaNotificaciones> {
                   SingleChildScrollView(
                     child: Column(
                       children: [
-                         CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:'NOTIFICACIONES' ,),
+                         CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:'NOTIFICACIONES' ,user: '',),
                         Consumer<HomeController>(builder: (_, valueNotificaciones,__) {
                               
                                 

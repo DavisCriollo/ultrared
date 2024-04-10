@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:ultrared/src/controllers/home_controller.dart';
 
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
@@ -21,6 +23,7 @@ class _AcercaDePageState extends State<AcercaDePage> {
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
+    //  final ctrlHome=context.read<HomeController>();
     return SafeArea(
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -51,7 +54,7 @@ class _AcercaDePageState extends State<AcercaDePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                 CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:'ACERCA DE' ,),
+                 CabecerasStandarApp(colorBase: cuaternaryColor,size: size,onTap: (){Navigator.pop(context);},title:'ACERCA DE' ,user: '',),
                         
                     Container(
                       // height: size.hScreen(40),

@@ -503,9 +503,9 @@ class CabecerasIconDrawerApp extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.only(bottom: size.iScreen(0.0)),
                         child: Text(
-                          'ID ${code}',
+                          ' ${code}',
                           style: GoogleFonts.poppins(
-                            fontSize: size.iScreen(1.7),
+                            fontSize: size.iScreen(1.8),
                             fontWeight: FontWeight.normal,
                             color: Colors.white,
                             letterSpacing: -0.20,
@@ -645,12 +645,14 @@ class CabecerasStandarApp extends StatelessWidget {
   final Function() onTap;
   final Color colorBase;
   final String title;
+   final String user;
   const CabecerasStandarApp({
     Key? key,
     required this.size,
     required this.colorBase,
     required this.title,
     required this.onTap,
+     required this.user,
   }) : super(key: key);
 
   final Responsive size;
@@ -717,6 +719,19 @@ class CabecerasStandarApp extends StatelessWidget {
                 ],
               ),
             ),
+            Expanded(
+              child: Container(
+            
+                width: size.wScreen(100.0),
+                // color: Colors.yellow,
+                child: Text(user,style: GoogleFonts.poppins(
+                            fontSize: size.iScreen(1.8),
+                            fontWeight: FontWeight.bold,
+                            // color: Colors.white,
+                            letterSpacing: -0.20,
+                          ),textAlign: TextAlign.center,)
+                          ),
+            )
           ],
         )
 
