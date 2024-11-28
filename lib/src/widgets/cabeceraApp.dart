@@ -742,6 +742,106 @@ class CabecerasStandarApp extends StatelessWidget {
   }
 }
 
+class CabecerasStandarSinUserApp extends StatelessWidget {
+  final Function() onTap;
+  final Color colorBase;
+  final String title;
+  //  final String user;
+  const CabecerasStandarSinUserApp({
+    Key? key,
+    required this.size,
+    required this.colorBase,
+    required this.title,
+    required this.onTap,
+    //  required this.user,
+  }) : super(key: key);
+
+  final Responsive size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        // color: Colors.red,
+        height: size.hScreen(11),
+        width: size.wScreen(100.0),
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0XFFB12521), // Primer color con 70% de transparencia
+                    Color(0xFFF7931E), // Segundo color con 70% de transparencia
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [
+                    0.1,
+                    2.0
+                  ], // 70% del primer color, 30% del segundo color
+                  // spreadMethod: SpreadMethod.pad, // Agregar difuminación
+                ),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(40),
+                  bottomRight: Radius.circular(40),
+                ),
+              ),
+              width: size.wScreen(100.0),
+              height: size.hScreen(10),
+              child: Row(
+                // mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                      padding: EdgeInsets.only(
+                          left: size.iScreen(3.0), top: size.iScreen(0.0)),
+                      alignment: Alignment.centerLeft,
+                      // width: size.wScreen(100.0),
+                      // color: Colors.red,
+                      child: GestureDetector(
+                          onTap: onTap,
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                          ))),
+                  Container(
+                    width: size.wScreen(80.0),
+                    // color: Colors.red,
+                    padding: EdgeInsets.only(bottom: size.iScreen(0.0)),
+                    child: Text(title,
+                        style: GoogleFonts.poppins(
+                          fontSize: size.iScreen(2.5),
+                          fontWeight: FontWeight.normal,
+                          color: Colors.white,
+                          letterSpacing: -0.20,
+                        ),
+                        textAlign: TextAlign.center,),
+                  ),
+                ],
+              ),
+            ),
+            // Expanded(
+            //   child: Container(
+            
+            //     width: size.wScreen(100.0),
+            //     // color: Colors.yellow,
+            //     child: Text(user,style: GoogleFonts.poppins(
+            //                 fontSize: size.iScreen(1.8),
+            //                 fontWeight: FontWeight.bold,
+            //                 // color: Colors.white,
+            //                 letterSpacing: -0.20,
+            //               ),textAlign: TextAlign.center,)
+            //               ),
+            // )
+          ],
+        )
+
+        // CustomPaint(
+        //   painter: RPSCustomPainter(),
+        // ),
+        );
+  }
+}
 class CabeceraChatApp extends StatelessWidget {
   final Function() onTap;
   final Color colorBase;

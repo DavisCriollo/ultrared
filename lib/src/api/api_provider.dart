@@ -1058,6 +1058,39 @@ class ApiProvider {
     }
   }
 
+  //=========================GET ALL ACTIVIDADES =====================================//
+  Future getAllActividades({
+    BuildContext? context,
+    
+    String? token,
+  }) async {
+    try {
+      final url = Uri.parse('$_dirURL/acta_entrega_recepcion/listar_registros');
+
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
+
+print('INFO DE LA CONSULTA ACTIVIDADES ${dataResp.body}');
+
+      final respo = jsonDecode(dataResp.body);
+      if (dataResp.statusCode == 200) {
+        return respo;
+      }
+
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+       
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
 
 
 

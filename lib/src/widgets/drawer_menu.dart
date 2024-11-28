@@ -12,12 +12,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
+import 'package:ultrared/src/controllers/actividades_controller.dart';
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
 import 'package:ultrared/src/pages/acercaDe.dart';
 import 'package:ultrared/src/pages/actualiza_clave.dart';
 import 'package:ultrared/src/pages/lista_estado_cuenta.dart';
 import 'package:ultrared/src/pages/lista_notificaciones.dart';
+import 'package:ultrared/src/pages/menu_actividades.dart';
 
 import 'package:ultrared/src/pages/selecciona_sector.dart';
 
@@ -369,10 +371,27 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 leading: const Icon(Icons.info),
                 title: const Text('Acerca de'),
                 onTap: () {
-                  // Acción al hacer clic en "Acerca de"
+                  // Acción al hacer clic en "Acerca de"ß
                   Navigator.pop(context);
                   Navigator.push(context,
                       MaterialPageRoute(builder: ((context) => AcercaDePage())));
+                },
+              ),
+            ),
+            FadeInLeftBig(
+               duration: Duration(milliseconds: 400),
+              child: ListTile(
+                tileColor: Colors.white,
+                leading: const Icon(Icons.playlist_add_check_circle_outlined),
+                title: const Text('Actividades'),
+                onTap: () {
+                  // Acción al hacer clic en "Acerca de"
+                  // final crtlAct=context.read<ActividadesController>();
+                  // crtlAct.buscaActividades(context);
+                  Navigator.pop(context);
+                   Navigator.push(context,
+                      MaterialPageRoute(builder: ((context) => MenuActividades())));
+            
                 },
               ),
             ),

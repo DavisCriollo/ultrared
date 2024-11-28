@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:ultrared/src/controllers/actividades_controller.dart';
 
 import 'package:ultrared/src/controllers/chat_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
@@ -68,7 +69,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
   
            ChangeNotifierProvider(create: (_) => SocketService()),
-        //  ChangeNotifierProvider(create: (_) => SocketModel()),
+         ChangeNotifierProvider(create: (_) => ActividadesController()),
          
          ChangeNotifierProvider(create: (_) => HomeController()),
      ChangeNotifierProvider(create: (_) => ChatController()),
