@@ -38,7 +38,7 @@ class MenuActividades extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                title: 'ACTIVIDADES ONLINE',
+                title: 'ACTIVIDADES OFFLINE',
                 // user: ctrlHome.getUser!['nombre']
               ),
                Expanded(

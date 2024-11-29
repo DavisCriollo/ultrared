@@ -253,55 +253,7 @@ color: Colors.white,
                                 ),
                               ],
                             ),
-                             Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text('estado: ',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: size.iScreen(1.7),
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.black,
-                                    )),
-                                Container(
-                                  
-                                  child: Text(actividad['actaEstado'],
-                                      style: GoogleFonts.poppins(
-                                        fontSize: size.iScreen(1.8),
-                                         fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                      )),
-                                ),
-                              ],
-                            ),
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //   children: [
-                            //     Text('Estado:',
-                            //         style: GoogleFonts.poppins(
-                            //           fontSize: size.iScreen(1.7),
-                            //           fontWeight: FontWeight.normal,
-                            //           color: Colors.black,
-                            //         )),
-                            //     Container(
-                            //       decoration: BoxDecoration(
-                            //         color: actividad['ccEstado'] == 'CANCELADO'
-                            //             ? Colors.green
-                            //             : colorPrimario,
-                            //         borderRadius: BorderRadius.circular(8.0),
-                            //       ),
-                            //       padding: EdgeInsets.symmetric(
-                            //           horizontal: size.iScreen(1.0)),
-                            //       child: Text('${actividad['ccEstado']}',
-                            //           style: GoogleFonts.poppins(
-                            //             fontSize: size.iScreen(1.8),
-                            //             fontWeight: FontWeight.normal,
-                            //             color: Colors.white,
-                            //             letterSpacing: -0.40,
-                            //           )),
-                            //     ),
-                            //   ],
-                            // ),
-                            // Otras filas...
+                        
                           ],
                         ),
                       );

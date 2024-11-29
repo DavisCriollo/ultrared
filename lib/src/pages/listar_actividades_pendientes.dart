@@ -253,26 +253,26 @@ color: Colors.white,
                                 ),
                               ],
                             ),
-                             Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text('estado: ',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: size.iScreen(1.7),
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.black,
-                                    )),
-                                Container(
+                            //  Row(
+                            //   mainAxisAlignment: MainAxisAlignment.start,
+                            //   children: [
+                            //     Text('estado: ',
+                            //         style: GoogleFonts.poppins(
+                            //           fontSize: size.iScreen(1.7),
+                            //           fontWeight: FontWeight.normal,
+                            //           color: Colors.black,
+                            //         )),
+                            //     Container(
                                   
-                                  child: Text(actividad['actaEstado'],
-                                      style: GoogleFonts.poppins(
-                                        fontSize: size.iScreen(1.8),
-                                         fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                      )),
-                                ),
-                              ],
-                            ),
+                            //       child: Text(actividad['actaEstado'],
+                            //           style: GoogleFonts.poppins(
+                            //             fontSize: size.iScreen(1.8),
+                            //              fontWeight: FontWeight.bold,
+                            //         color: Colors.black,
+                            //           )),
+                            //     ),
+                            //   ],
+                            // ),
                             // Row(
                             //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             //   children: [
