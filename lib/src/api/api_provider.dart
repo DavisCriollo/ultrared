@@ -1072,7 +1072,7 @@ class ApiProvider {
         headers: {"x-auth-token": '$token'},
       );
 
-print('INFO DE LA CONSULTA ACTIVIDADES ${dataResp.body}');
+// print('INFO DE LA CONSULTA ACTIVIDADES ${dataResp.body}');
 
       final respo = jsonDecode(dataResp.body);
       if (dataResp.statusCode == 200) {

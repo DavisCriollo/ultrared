@@ -5,15 +5,17 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 
 import 'package:ultrared/src/pages/listar_actividades_pendientes.dart';
 import 'package:ultrared/src/pages/listar_actividades_procesadas.dart';
+import 'package:ultrared/src/pages/menu_actividades.dart';
+import 'package:ultrared/src/pages/menu_offline.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/cabeceraApp.dart';
 import 'package:ultrared/src/widgets/items_menu.dart';
 
 
-class MenuActividades extends StatelessWidget {
+class SubMenuActividades extends StatelessWidget {
     final Map<String, dynamic>? user;
-  const MenuActividades({Key? key, this.user}) : super(key: key);
+  const SubMenuActividades({Key? key, this.user}) : super(key: key);
 
 
 
@@ -49,14 +51,12 @@ class MenuActividades extends StatelessWidget {
                               ItemsMenu(
                                 onTap: () {
                                  
-                                  // Navigator.of(context).push(
-                                  //   MaterialPageRoute(
-                                  //       builder: (context) =>  ListaCoros(user: widget.user,)),
-                                  // );
+                      Navigator.push(context,
+                      MaterialPageRoute(builder: ((context) => MenuOffLine())));
                                 },
                                
-                                label: 'Desgargar BDD',
-                                icon: 'downloadBDD.png',
+                                label: 'Actividades Offline',
+                                icon: 'no-internet.png',
                                 color: Colors.red.shade800,
                               ),
                               ItemsMenu(
@@ -64,45 +64,18 @@ class MenuActividades extends StatelessWidget {
                                    final crtlAct=context.read<ActividadesController>();
                                    crtlAct.setTipoPeticion('PENDIENTE');
                                   //  crtlAct.setTipoPeticion('PROCESADO');
-                  crtlAct.buscaActividades(context);
+                 
                  
                    Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) => ListaActividadesPendientes())));
+                      MaterialPageRoute(builder: ((context) => MenuActividades())));
                                  
                                 },
                                
-                                label: 'Pendientes',
-                                icon: 'pendientes.png',
-                                color: Colors.orange.shade800,
+                                label: 'Actividades Online',
+                                icon: 'global-access.png',
+                                color: Colors.green,
                               ),
-                              ItemsMenu(
-                                onTap: () {
-                                    final crtlAct=context.read<ActividadesController>();
-                                   
-                                   crtlAct.setTipoPeticion('PROCESADO');
-                  crtlAct.buscaActividades(context);
-                 
-                   Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) => ListaActividadesProcesados())));
-                                },
-                               
-                                label: 'Procesados',
-                                icon: 'procesados.png',
-                                color: Colors.green.shade800,
-                              ),
-                              ItemsMenu(
-                                onTap: () {
-                                 
-                                  // Navigator.of(context).push(
-                                  //   MaterialPageRoute(
-                                  //       builder: (context) =>  ListaCoros(user: widget.user,)),
-                                  // );
-                                },
-                               
-                                label: 'Subir BDD ',
-                                icon: 'uploadData.png',
-                                color: Colors.blue.shade800,
-                              ),
+                              
                             ]),
                  ),
                )

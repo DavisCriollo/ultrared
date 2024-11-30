@@ -22,6 +22,7 @@ import 'package:ultrared/src/pages/lista_notificaciones.dart';
 import 'package:ultrared/src/pages/menu_actividades.dart';
 
 import 'package:ultrared/src/pages/selecciona_sector.dart';
+import 'package:ultrared/src/pages/submenu_actividades.dart';
 
 
 import 'package:ultrared/src/service/notification_push.dart';
@@ -390,7 +391,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   // crtlAct.buscaActividades(context);
                   Navigator.pop(context);
                    Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) => MenuActividades())));
+                      MaterialPageRoute(builder: ((context) => SubMenuActividades())));
             
                 },
               ),

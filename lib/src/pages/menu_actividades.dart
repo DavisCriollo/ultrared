@@ -46,19 +46,7 @@ class MenuActividades extends StatelessWidget {
                    child: Wrap(
                             alignment: WrapAlignment.center,
                             children: [
-                              ItemsMenu(
-                                onTap: () {
-                                 
-                                  // Navigator.of(context).push(
-                                  //   MaterialPageRoute(
-                                  //       builder: (context) =>  ListaCoros(user: widget.user,)),
-                                  // );
-                                },
-                               
-                                label: 'Desgargar BDD',
-                                icon: 'downloadBDD.png',
-                                color: Colors.red.shade800,
-                              ),
+                             
                               ItemsMenu(
                                 onTap: () {
                                    final crtlAct=context.read<ActividadesController>();
@@ -90,19 +78,7 @@ class MenuActividades extends StatelessWidget {
                                 icon: 'procesados.png',
                                 color: Colors.green.shade800,
                               ),
-                              ItemsMenu(
-                                onTap: () {
-                                 
-                                  // Navigator.of(context).push(
-                                  //   MaterialPageRoute(
-                                  //       builder: (context) =>  ListaCoros(user: widget.user,)),
-                                  // );
-                                },
-                               
-                                label: 'Subir BDD ',
-                                icon: 'uploadData.png',
-                                color: Colors.blue.shade800,
-                              ),
+                             
                             ]),
                  ),
                )

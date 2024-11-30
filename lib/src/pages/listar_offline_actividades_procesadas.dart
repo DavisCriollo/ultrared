@@ -11,14 +11,14 @@ import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/cabeceraApp.dart';
 import 'package:ultrared/src/widgets/no_data.dart';
 
-class ListaActividadesPendientes extends StatefulWidget {
-  const ListaActividadesPendientes({Key? key}) : super(key: key);
+class ListaOffLineActividadesProcesados extends StatefulWidget {
+  const ListaOffLineActividadesProcesados({Key? key}) : super(key: key);
 
   @override
-  State<ListaActividadesPendientes> createState() => _ListaActividadesPendientesState();
+  State<ListaOffLineActividadesProcesados> createState() => _ListaOffLineActividadesProcesadosState();
 }
 
-class _ListaActividadesPendientesState extends State<ListaActividadesPendientes> {
+class _ListaOffLineActividadesProcesadosState extends State<ListaOffLineActividadesProcesados> {
   final TextEditingController _textSearchController = TextEditingController();
   @override
   void dispose() {
@@ -43,7 +43,7 @@ class _ListaActividadesPendientesState extends State<ListaActividadesPendientes>
               onTap: () {
                 Navigator.pop(context);
               },
-              title: 'Actividades Pendientes',
+              title: 'Actividades Procesadas OffLine',
             ),
                Container(
                  margin: EdgeInsets.symmetric(
@@ -63,7 +63,7 @@ color: Colors.white,
                      // providerSearchPreFacturas
                          // .onSearchTextPreFacturaPaginacion(
                          //     text);
-                         ctrlAct.search(text);
+                         ctrlAct.searchOffLine(text);
                        
                    },
                    decoration:  InputDecoration(
@@ -76,7 +76,7 @@ color: Colors.white,
                        // providerSearchFacturas
                            // .setInfoBusquedaPropietariosPaginacion([]);
                         
-                           ctrlAct.buscaActividades(context);
+                           ctrlAct.fetchActas();
                            _textSearchController.text='';
 
                      },),
@@ -88,7 +88,7 @@ color: Colors.white,
               child: Consumer<ActividadesController>(
                 builder: (_, valueActiv, __) {
 
-                     if (valueActiv.allItemsFilters.isEmpty) {
+                     if (valueActiv.allItemsFiltersOffLine.isEmpty) {
                             return const NoData(
                               label: 'Por favor espere ....',
                             );
@@ -97,7 +97,7 @@ color: Colors.white,
 
                           return 
                           
-                          (valueActiv.allItemsFilters.isEmpty)
+                          (valueActiv.allItemsFiltersOffLine.isEmpty)
                                         ? Center(
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
@@ -107,15 +107,15 @@ color: Colors.white,
                                               Text('Por favor espere ....')
                                             ],
                                           ))
-                                        : (valueActiv.allItemsFilters.length > 0)
+                                        : (valueActiv.allItemsFiltersOffLine.length > 0)
                                             ?
 
 
                    ListView.builder(physics: BouncingScrollPhysics(),
-                    itemCount: valueActiv.allItemsFilters.length,
+                    itemCount: valueActiv.allItemsFiltersOffLine.length,
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     itemBuilder: (context, index) {
-                      final actividad = valueActiv.allItemsFilters[index];
+                      final actividad = valueActiv.allItemsFiltersOffLine[index];
 //==============================================//
   String fechaLocal = convertirFechaLocal(actividad['actaFecReg']);
  //==============================================//
@@ -253,7 +253,7 @@ color: Colors.white,
                                 ),
                               ],
                             ),
-                           
+                        
                           ],
                         ),
                       );

@@ -5,15 +5,19 @@ import 'package:ultrared/src/controllers/home_controller.dart';
 
 import 'package:ultrared/src/pages/listar_actividades_pendientes.dart';
 import 'package:ultrared/src/pages/listar_actividades_procesadas.dart';
+import 'package:ultrared/src/pages/listar_offline_actividades_pendientes.dart';
+import 'package:ultrared/src/pages/listar_offline_actividades_procesadas.dart';
+import 'package:ultrared/src/service/notifications_service.dart';
+import 'package:ultrared/src/utils/dialogs.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/cabeceraApp.dart';
 import 'package:ultrared/src/widgets/items_menu.dart';
 
 
-class MenuActividades extends StatelessWidget {
+class MenuOffLine extends StatelessWidget {
     final Map<String, dynamic>? user;
-  const MenuActividades({Key? key, this.user}) : super(key: key);
+  const MenuOffLine({Key? key, this.user}) : super(key: key);
 
 
 
@@ -47,12 +51,27 @@ class MenuActividades extends StatelessWidget {
                             alignment: WrapAlignment.center,
                             children: [
                               ItemsMenu(
-                                onTap: () {
-                                 
-                                  // Navigator.of(context).push(
-                                  //   MaterialPageRoute(
-                                  //       builder: (context) =>  ListaCoros(user: widget.user,)),
-                                  // );
+                                onTap: () async{
+                                  final crtlAct=context.read<ActividadesController>();
+
+             ProgressDialog.show(context);
+            final response = await  crtlAct.buscaActividadesOffLine(context);
+            ProgressDialog.dissmiss(context);
+            if (response != null  ) {
+
+if (response.isNotEmpty) {
+   NotificatiosnService.showSnackBarDanger( 'CORRECTO LLENO');
+} else {
+  NotificatiosnService.showSnackBarDanger( 'VACIO');
+}
+
+    } 
+    
+     if (response.isEmpty) {
+       NotificatiosnService.showSnackBarDanger( 'NO hay datos');
+    
+    }
+                                  
                                 },
                                
                                 label: 'Desgargar BDD',
@@ -62,12 +81,12 @@ class MenuActividades extends StatelessWidget {
                               ItemsMenu(
                                 onTap: () {
                                    final crtlAct=context.read<ActividadesController>();
+                                 
                                    crtlAct.setTipoPeticion('PENDIENTE');
-                                  //  crtlAct.setTipoPeticion('PROCESADO');
-                  crtlAct.buscaActividades(context);
-                 
+                                 
+                   crtlAct.fetchActas();
                    Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) => ListaActividadesPendientes())));
+                      MaterialPageRoute(builder: ((context) => ListaOffLineActividadesPendientes())));
                                  
                                 },
                                
@@ -80,10 +99,10 @@ class MenuActividades extends StatelessWidget {
                                     final crtlAct=context.read<ActividadesController>();
                                    
                                    crtlAct.setTipoPeticion('PROCESADO');
-                  crtlAct.buscaActividades(context);
+                     crtlAct.fetchActas();
                  
                    Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) => ListaActividadesProcesados())));
+                      MaterialPageRoute(builder: ((context) => ListaOffLineActividadesProcesados())));
                                 },
                                
                                 label: 'Procesados',
