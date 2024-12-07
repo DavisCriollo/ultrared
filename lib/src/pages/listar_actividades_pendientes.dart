@@ -162,6 +162,9 @@ color: Colors.white,
                                       label: 'Revisar',
                                       onPressed: (context) {
                                         ctrlAct.setInfoActividad(actividad);
+                                        ctrlAct.removeImages();
+
+
                                          Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -178,6 +181,7 @@ color: Colors.white,
                                       label: 'Detalle',
                                       onPressed: (context) {
                                          ctrlAct.setInfoActividad(actividad);
+                                           ctrlAct.removeImages();
                                          Navigator.push(
                                             context,
                                             MaterialPageRoute(

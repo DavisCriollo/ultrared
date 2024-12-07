@@ -108,37 +108,6 @@ class DetalleActividad extends StatelessWidget {
                         ),
                 
                        
-           //***********************************************/
-SizedBox(
-  height: size.iScreen(1.0),
-),
-//*****************************************/
-Row(
-  children: [
-    Container(
-      child: Text(
-        'Estado: ',
-        style: GoogleFonts.lexendDeca(
-          fontSize: size.iScreen(2.0),
-          fontWeight: FontWeight.normal,
-          color: Colors.grey,
-        ),
-      ),
-    ),
-    Container(
-      padding: const EdgeInsets.only(),
-      child: Text(
-        ctrlAct.getInfoActividad['actaEstado'].isNotEmpty
-            ? '${ctrlAct.getInfoActividad['actaEstado']}'
-            : '--- --- --- --- ---',
-        style: GoogleFonts.lexendDeca(
-          fontSize: size.iScreen(2.0),
-          fontWeight: FontWeight.normal,
-        ),
-      ),
-    ),
-  ],
-),
 
 //***********************************************/
 SizedBox(
@@ -177,9 +146,10 @@ SizedBox(
   height: size.iScreen(1.0),
 ),
 //*****************************************/
-Row(
+Column(
   children: [
     Container(
+      width: size.wScreen(100.0),
       child: Text(
         'Detalle Estado: ',
         style: GoogleFonts.lexendDeca(
@@ -190,6 +160,7 @@ Row(
       ),
     ),
     Container(
+      width: size.wScreen(100.0),
       padding: const EdgeInsets.only(),
       child: Text(
         ctrlAct.getInfoActividad['actaDetalleEstado'].isNotEmpty
@@ -771,7 +742,8 @@ Column(
         ),
       ),
     ),
-    Container(
+     ctrlAct.getInfoActividad['actaDocVendedor']!=null
+    ?Container(
        width: size.wScreen(100.0),
       padding: const EdgeInsets.only(),
       child: Text(
@@ -783,7 +755,13 @@ Column(
           fontWeight: FontWeight.normal,
         ),
       ),
-    ),
+    ):Text(
+         '--- --- --- --- ---',
+        style: GoogleFonts.lexendDeca(
+          fontSize: size.iScreen(2.0),
+          fontWeight: FontWeight.normal,
+        ),
+      ),
   ],
 ),
 //***********************************************/
@@ -804,7 +782,7 @@ Column(
         ),
       ),
     ),
-    Container(
+    ctrlAct.getInfoActividad['actaNombreVendedor']!=null? Container(
        width: size.wScreen(100.0),
       padding: const EdgeInsets.only(),
       child: Text(
@@ -816,7 +794,13 @@ Column(
           fontWeight: FontWeight.normal,
         ),
       ),
-    ),
+    ):Text(
+         '--- --- --- --- ---',
+        style: GoogleFonts.lexendDeca(
+          fontSize: size.iScreen(2.0),
+          fontWeight: FontWeight.normal,
+        ),
+      ),
   ],
 ),
 //***********************************************/
@@ -836,7 +820,8 @@ Row(
         ),
       ),
     ),
-    Container(
+   
+   ctrlAct.getInfoActividad['planNombreInternet']!=null? Container(
       padding: const EdgeInsets.only(),
       child: Text(
         ctrlAct.getInfoActividad['planNombreInternet'].isNotEmpty
@@ -847,7 +832,12 @@ Row(
           fontWeight: FontWeight.normal,
         ),
       ),
-    ),
+    ):Text(
+         '--- --- --- --- ---',
+        style: GoogleFonts.lexendDeca(
+          fontSize: size.iScreen(2.0),
+          fontWeight: FontWeight.normal,
+        )),
   ],
 ),
 //***********************************************/
@@ -867,6 +857,7 @@ Row(
         ),
       ),
     ),
+   ctrlAct.getInfoActividad['planValorInternet']!=null?
     Container(
       padding: const EdgeInsets.only(),
       child: Text(
@@ -878,7 +869,13 @@ Row(
           fontWeight: FontWeight.normal,
         ),
       ),
-    ),
+    ):Text(
+         '--- --- --- --- ---',
+        style: GoogleFonts.lexendDeca(
+          fontSize: size.iScreen(2.0),
+          fontWeight: FontWeight.normal,
+        ),
+      ),
   ],
 ),
 //***********************************************/
@@ -898,7 +895,7 @@ Row(
         ),
       ),
     ),
-    Container(
+   ctrlAct.getInfoActividad['planMegasInternet']!=null? Container(
       padding: const EdgeInsets.only(),
       child: Text(
         ctrlAct.getInfoActividad['planMegasInternet'].isNotEmpty
@@ -909,7 +906,13 @@ Row(
           fontWeight: FontWeight.normal,
         ),
       ),
-    ),
+    ):Text(
+         '--- --- --- --- ---',
+        style: GoogleFonts.lexendDeca(
+          fontSize: size.iScreen(2.0),
+          fontWeight: FontWeight.normal,
+        ),
+      ),
   ],
 ),
 //***********************************************/

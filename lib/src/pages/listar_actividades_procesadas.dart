@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/actividades_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
+import 'package:ultrared/src/pages/detalle_actividades_generic.dart';
 import 'package:ultrared/src/utils/fechaLocal.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
@@ -168,7 +169,15 @@ color: Colors.white,
                                       icon: Icons.info_outlined,
                                       label: 'Detalle',
                                       onPressed: (context) {
-
+                                            ctrlAct.setInfoActividad(actividad);
+                                           ctrlAct.removeImages();
+                                         Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: ((context) => DetalleActividad(
+                                                     
+                                                    
+                                                    ))));
                                       },
                                     )
                             ],

@@ -321,10 +321,15 @@ _labelEstado=_infoActividad['actaEstado'];
 
 _selectedConfigRouter=_infoActividad['actaConfigRouter']??'';
 _selectedCambioPatch= _infoActividad['actaCambioPatch']??'';
-// print('LA DATA DEL LA ACTIVIDAD: $_infoActividad');
-print('LA DATA DEL LA _selectedRegulador: $_selectedRegulador');
-print('LA DATA DEL LA _selectedConfigRouter: $_selectedConfigRouter');
-print('LA DATA DEL LA _selectedCambioPatch: $_selectedCambioPatch');
+
+_inputDetalle=_infoActividad['actaDetalleEstado']??'';
+_inputWifi=_infoActividad['actaRedWifi']??'';
+_inputClave=_infoActividad['actaClave']??'';
+_obsInstalacion=_infoActividad['actaCalidadIns']??'';
+
+
+
+
   notifyListeners();
 }
 
@@ -427,9 +432,13 @@ String? _obsInstalacion;
     images.remove(image);
     notifyListeners(); // Notificar a los oyentes que se ha eliminado una imagen
   }
-//==================GUARDAR IMAGEN EN EL SERVER=======================//
+//==================RESET LISTA IMAGES=======================//
 
-
+void removeImages() {
+    images.clear();
+    _urlsImagesActividad = [];
+    notifyListeners(); // Notificar a los oyentes que se ha eliminado una imagen
+  }
 
 
 
@@ -445,6 +454,7 @@ String? _obsInstalacion;
     }
     
     print('ACTIVIDADES URL: $_urlsImagesActividad');
+    crearActividad();
 
     notifyListeners();
   }

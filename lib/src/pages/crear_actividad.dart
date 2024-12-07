@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/actividades_controller.dart';
 import 'package:ultrared/src/service/notifications_service.dart';
 import 'package:ultrared/src/utils/dialogs.dart';
+import 'package:ultrared/src/utils/letras_mayusculas_minusculas.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
 import 'package:ultrared/src/widgets/cabeceraApp.dart';
@@ -188,7 +189,8 @@ print('EL REGULADOR ${crtl.selectedRegulador}');
                                 color: Colors.grey)),
                       ),
                       TextFormField(
-                       
+                       initialValue: ctrl.getInputDetalle!.isNotEmpty
+                       ?ctrl.getInputDetalle:'',
                         decoration: const InputDecoration(
                             // suffixIcon: Icon(Icons.beenhere_outlined)
                             ),
@@ -197,6 +199,7 @@ print('EL REGULADOR ${crtl.selectedRegulador}');
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.allow(
                               RegExp("[a-zA-Z0-9@#-+.,{" "}\\s]")),
+                              UpperCaseText(),
                         ],
                         onChanged: (text) {
                           ctrl.onDetalleChange(text);
@@ -223,7 +226,8 @@ print('EL REGULADOR ${crtl.selectedRegulador}');
                                 color: Colors.grey)),
                       ),
                       TextFormField(
-                       
+                       initialValue: ctrl.getInputWifi!.isNotEmpty
+                       ?ctrl.getInputWifi:'',
                         decoration: const InputDecoration(
                             // suffixIcon: Icon(Icons.beenhere_outlined)
                             ),
@@ -258,7 +262,8 @@ print('EL REGULADOR ${crtl.selectedRegulador}');
                                 color: Colors.grey)),
                       ),
                       TextFormField(
-                       
+                         initialValue: ctrl.getInputClave!.isNotEmpty
+                       ?ctrl.getInputClave:'',
                         decoration: const InputDecoration(
                             // suffixIcon: Icon(Icons.beenhere_outlined)
                             ),
@@ -490,7 +495,8 @@ Consumer<ActividadesController>(
                                 color: Colors.grey)),
                       ),
                       TextFormField(
-                       
+                         initialValue: ctrl.getObsInstalacion!.isNotEmpty
+                       ?ctrl.getObsInstalacion:'',
                         decoration: const InputDecoration(
                             // suffixIcon: Icon(Icons.beenhere_outlined)
                             ),
@@ -499,6 +505,7 @@ Consumer<ActividadesController>(
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.allow(
                               RegExp("[a-zA-Z0-9@#-+.,{" "}\\s]")),
+                                UpperCaseText(),
                         ],
                         onChanged: (text) {
                           ctrl.onObsInstalacionChange(text);
@@ -804,47 +811,43 @@ void _showPermissionDeniedDialog(BuildContext context) {
   );
 }
 
-void _onSubmit(ActividadesController ctrl, BuildContext context) async {
+Future<void> _onSubmit(ActividadesController ctrl, BuildContext context) async {
   // Validar el formulario
   final isValid = ctrl.validateFormActividade();
   ctrl.actividadesFormKey.currentState?.save();
   if (!isValid) return;
 
-  ProgressDialog.show(context); // Mostrar el diálogo de progreso
+  // Mostrar el diálogo de progreso
+  ProgressDialog.show(context);
 
   try {
+    // Enviar imágenes si hay alguna
     if (ctrl.images.isNotEmpty) {
-      // 1. Enviar imágenes al servidor y obtener las URLs
       await ctrl.getAllUrlsServerActividad();
-
-      if (ctrl.getUrlsActividades.isEmpty) {
-        // Si no se pudieron obtener las URLs, mostrar un mensaje de error y detener el flujo
-        NotificatiosnService.showSnackBarError('No se pudieron obtener las URLs.');
-        return;
-      }
     }
 
-    // 2. Crear la actividad con o sin URLs
+    // Crear la actividad
     final response = await ctrl.crearActividad();
 
     if (response != null) {
       // Mostrar notificación de éxito
-      NotificatiosnService.showSnackBarError('Actividad creada correctamente.');
+      NotificatiosnService.showSnackBarDanger('Actividad creada correctamente.');
+      ctrl.setTipoPeticion(ctrl.tipoPeticion!);
+      ctrl.buscaActividades(context);
+      Navigator.pop(context);
     } else {
       // Mostrar notificación de error
       NotificatiosnService.showSnackBarError('Error al crear la actividad.');
     }
   } catch (e) {
-    // Manejo de errores
-   // NotificatiosnService.showSnackBarError('Ocurrió un error: $e');
+    // Manejo de errores inesperados
+    NotificatiosnService.showSnackBarError('Ocurrió un error: ${e.toString()}');
   } finally {
-    ProgressDialog.dissmiss(context); // Ocultar el diálogo de progreso
-
+    // Ocultar el diálogo de progreso
+    ProgressDialog.dissmiss(context);
   }
-  Navigator.pop(context);
-  ctrl.setTipoPeticion('PENDIENTE');
-   ctrl.buscaActividades(context);
 }
+
 
 
   //====== MUESTRA MODAL DE TIPO DE DOCUMENTO =======//

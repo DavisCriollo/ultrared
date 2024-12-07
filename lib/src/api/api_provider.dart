@@ -1134,7 +1134,7 @@ Future<List<String>> getUrlsServerActividades(List<File> images, String token) a
     print('Error: $e');
     return [];
   }
- print('LAS IMAGENES API: $urls');
+//  print('LAS IMAGENES API: $urls');
   return urls;
 }
 
