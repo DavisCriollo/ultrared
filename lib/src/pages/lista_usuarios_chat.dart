@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/api/authentication_client.dart';
@@ -184,13 +185,13 @@ class _ListaUsuariosChatState extends State<ListaUsuariosChat> {
                                           //                                   const CupertinoActivityIndicator(),
                                           //                               // Image.asset(
                                           //                               //     'assets/imgs/loader.gif'),
-    
+                              
                                           //                               errorWidget: (context, url,
                                           //                                       error) =>
                                           //                                   const Icon(Icons.error),
                                           //
                                           //                ),
-    
+                              
                                           _usuario!['foto'].isNotEmpty
                                               ? Container(
                                                   width: size.iScreen(9.0),

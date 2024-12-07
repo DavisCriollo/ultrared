@@ -40,6 +40,7 @@ class SubMenuActividades extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                 },
+               
                 title: 'ACTIVIDADES',
                 // user: ctrlHome.getUser!['nombre']
               ),

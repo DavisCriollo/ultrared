@@ -744,6 +744,7 @@ class CabecerasStandarApp extends StatelessWidget {
 
 class CabecerasStandarSinUserApp extends StatelessWidget {
   final Function() onTap;
+ 
   final Color colorBase;
   final String title;
   //  final String user;
@@ -753,7 +754,7 @@ class CabecerasStandarSinUserApp extends StatelessWidget {
     required this.colorBase,
     required this.title,
     required this.onTap,
-    //  required this.user,
+ 
   }) : super(key: key);
 
   final Responsive size;

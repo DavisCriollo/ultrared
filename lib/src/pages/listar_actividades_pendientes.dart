@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:ultrared/src/controllers/actividades_controller.dart';
 import 'package:ultrared/src/controllers/home_controller.dart';
+import 'package:ultrared/src/pages/crear_actividad.dart';
+import 'package:ultrared/src/pages/detalle_actividades_generic.dart';
 import 'package:ultrared/src/utils/fechaLocal.dart';
 import 'package:ultrared/src/utils/responsive.dart';
 import 'package:ultrared/src/utils/theme.dart';
@@ -121,140 +124,207 @@ color: Colors.white,
  //==============================================//
                     
 
-                      return Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: size.iScreen(1.0),
-                          vertical: size.iScreen(1.0),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: size.iScreen(1.0),
-                          vertical: size.iScreen(1.0),
-                        ),
-                        width: size.iScreen(100),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              BorderRadius.circular(size.iScreen(1.0)),
-                          border: Border.all(
-                            color: Colors.grey.shade300,
-                            width: 0.5,
+                      return Slidable(
+                        startActionPane:  ActionPane(
+                            motion: ScrollMotion(),
+                            children: [
+                              // _usuario!.usuario == ausencia['ausUser']
+                              //     ? SlidableAction(
+                              //         backgroundColor: Colors.purple,
+                              //         foregroundColor: Colors.white,
+                              //         icon: Icons.edit,
+                              //         // label: 'Editar',
+                              //         onPressed: (context) {
+                              //          final List<String>_ids=[];
+                              //          for (var item in  ausencia['idTurno']) {
+                              //           _ids.addAll([item.toString()]);
+                              //          }
+                              //           provider.resetDropDown();
+                              //           provider.resetValuesAusencias();
+                              //           provider.buscaListaGuardiasReemplazo(_ids);
+
+                              //           provider.getDataAusencia(ausencia);
+
+                              //           Navigator.push(
+                              //               context,
+                              //               MaterialPageRoute(
+                              //                   builder: ((context) => CreaAusencia(
+                              //                         usuario: _usuario,
+                              //                         action: 'EDIT',
+                              //                       ))));
+                              //         },
+                              //       )
+                              //     : Container(),
+                              SlidableAction(
+                                      backgroundColor: Colors.green,
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.rate_review_outlined,
+                                      label: 'Revisar',
+                                      onPressed: (context) {
+                                        ctrlAct.setInfoActividad(actividad);
+                                         Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: ((context) => CrearActividadPage(
+                                                     
+                                                      action: 'CREATE',
+                                                    ))));
+                                      },
+                                    ),
+                                    SlidableAction(
+                                      backgroundColor: Colors.blue,
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.info_outlined,
+                                      label: 'Detalle',
+                                      onPressed: (context) {
+                                         ctrlAct.setInfoActividad(actividad);
+                                         Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: ((context) => DetalleActividad(
+                                                     
+                                                    
+                                                    ))));
+                                      
+
+                                      },
+                                    )
+                            ],),
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: size.iScreen(1.0),
+                            vertical: size.iScreen(1.0),
                           ),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                                width: size.iScreen(100),
-                              child: Text('${actividad['actaNombreCliente']} ',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: size.iScreen(1.7),
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  )),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: size.iScreen(1.0),
+                            vertical: size.iScreen(1.0),
+                          ),
+                          width: size.iScreen(100),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.circular(size.iScreen(1.0)),
+                            border: Border.all(
+                              color: Colors.grey.shade300,
+                              width: 0.5,
                             ),
-                                Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text('CI: ',
+                          ),
+                          child: Column(
+                            children: [
+                              Container(
+                                  width: size.iScreen(100),
+                                child: Text('${actividad['actaNombreCliente']} ',
                                     style: GoogleFonts.poppins(
                                       fontSize: size.iScreen(1.7),
-                                      fontWeight: FontWeight.normal,
+                                      fontWeight: FontWeight.bold,
                                       color: Colors.black,
                                     )),
-                                Container(
-                                  
-                                  child: Text(actividad['actaDocCliente'],
+                              ),
+                                  Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text('CI: ',
                                       style: GoogleFonts.poppins(
-                                        fontSize: size.iScreen(1.8),
-                                         fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                      )),
-                                ),
-                              ],
-                            ),
-                             Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text('Fecha: ',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: size.iScreen(1.7),
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.black,
-                                    )),
-                                Container(
-                                  
-                                  child: Text(fechaLocal,
-                                      style: GoogleFonts.poppins(
-                                        fontSize: size.iScreen(1.8),
-                                         fontWeight: FontWeight.bold,
+                                        fontSize: size.iScreen(1.7),
+                                        fontWeight: FontWeight.normal,
                                         color: Colors.black,
-                                        letterSpacing: -0.40,
                                       )),
-                                ),
-                              ],
-                            ),
-                             Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text('Tipo: ',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: size.iScreen(1.7),
-                                      fontWeight: FontWeight.normal,
+                                  Container(
+                                    
+                                    child: Text(actividad['actaDocCliente'],
+                                        style: GoogleFonts.poppins(
+                                          fontSize: size.iScreen(1.8),
+                                           fontWeight: FontWeight.bold,
                                       color: Colors.black,
-                                    )),
-                                Container(
-                                  
-                                  child: Text(actividad['actaTipo'],
+                                        )),
+                                  ),
+                                ],
+                              ),
+                               Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text('Fecha: ',
                                       style: GoogleFonts.poppins(
-                                        fontSize: size.iScreen(1.8),
-                                         fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                      )),
-                                ),
-                              ],
-                            ),
-                             Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text('servicio Visita: ',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: size.iScreen(1.7),
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.black,
-                                    )),
-                                Container(
-                                  
-                                  child: Text(actividad['actaServiciosVisita'],
-                                      style: GoogleFonts.poppins(
-                                        fontSize: size.iScreen(1.8),
-                                         fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                      )),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text('Ciudad: ',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: size.iScreen(1.7),
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.black,
-                                    )),
-                                Container(
-                                  
-                                  child: Text(actividad['actaCiudad'],
-                                      style: GoogleFonts.poppins(
-                                        fontSize: size.iScreen(1.8),
-                                         fontWeight: FontWeight.bold,
+                                        fontSize: size.iScreen(1.7),
+                                        fontWeight: FontWeight.normal,
                                         color: Colors.black,
-                                        letterSpacing: -0.40,
                                       )),
-                                ),
-                              ],
-                            ),
-                           
-                          ],
+                                  Container(
+                                    
+                                    child: Text(fechaLocal,
+                                        style: GoogleFonts.poppins(
+                                          fontSize: size.iScreen(1.8),
+                                           fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          letterSpacing: -0.40,
+                                        )),
+                                  ),
+                                ],
+                              ),
+                               Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text('Tipo: ',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: size.iScreen(1.7),
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.black,
+                                      )),
+                                  Container(
+                                    
+                                    child: Text(actividad['actaTipo'],
+                                        style: GoogleFonts.poppins(
+                                          fontSize: size.iScreen(1.8),
+                                           fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                        )),
+                                  ),
+                                ],
+                              ),
+                               Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text('servicio Visita: ',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: size.iScreen(1.7),
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.black,
+                                      )),
+                                  Container(
+                                    
+                                    child: Text(actividad['actaServiciosVisita'],
+                                        style: GoogleFonts.poppins(
+                                          fontSize: size.iScreen(1.8),
+                                           fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                        )),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text('Ciudad: ',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: size.iScreen(1.7),
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.black,
+                                      )),
+                                  Container(
+                                    
+                                    child: Text(actividad['actaCiudad'],
+                                        style: GoogleFonts.poppins(
+                                          fontSize: size.iScreen(1.8),
+                                           fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          letterSpacing: -0.40,
+                                        )),
+                                  ),
+                                ],
+                              ),
+                             
+                            ],
+                          ),
                         ),
                       );
                     },

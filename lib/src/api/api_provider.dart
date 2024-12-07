@@ -1092,9 +1092,85 @@ class ApiProvider {
   }
 
 
+//====================SERVIDOR IMAGE ACTIVIDADES==========================//
+
+Future<List<String>> getUrlsServerActividades(List<File> images, String token) async {
+  var url = Uri.parse('$_dirURL/upload_delete_multiple_files/upload');
+
+  List<String> urls = [];
+
+  try {
+    for (File image in images) {
+      var request = _http.MultipartRequest('POST', url);
+
+      // Añadir parámetros al request
+      request.fields['tipo'] = 'acta_entrega_recepcion';
+
+      // Añadir encabezados
+      request.headers.addAll({
+        "x-auth-token": token,
+        "Content-Type": 'multipart/form-data',
+      });
+
+      // Añadir el archivo al request
+      request.files.add(await _http.MultipartFile.fromPath(
+        'archivo',
+        image.path,
+      ));
+
+      // Enviar la solicitud
+      var response = await request.send();
+      var responseBody = await _http.Response.fromStream(response);
+
+      if (response.statusCode == 200) {
+        // Parsear la respuesta para obtener la URL
+        Map<String, dynamic> jsonMap = json.decode(responseBody.body);
+        urls.add(jsonMap['nombre']);
+      } else {
+        print('Error al subir la imagen: ${response.statusCode}');
+      }
+    }
+  } catch (e) {
+    print('Error: $e');
+    return [];
+  }
+ print('LAS IMAGENES API: $urls');
+  return urls;
+}
 
 
+//=========================CREAR  ACTIVIDAD =====================================//
+Future saveActividadedServer({
+  Map<String, dynamic>? data,
+  String? token,
+}) async {
+  try {
+    final url = Uri.parse('$_dirURL/acta_entrega_recepcion/actualizar_varios_desde_app');
 
+    // Realizar la solicitud PUT
+    final dataResp = await _http.put(
+      url,
+      headers: {
+        "x-auth-token": '$token',
+        "Content-Type": "application/json", // Asegura que el servidor acepte JSON
+      },
+      body: jsonEncode(data), // Convertir los datos al formato JSON
+    );
+//  print('RESPUESTA API dataResp.statusCode : ${dataResp.statusCode}');
+//  print('RESPUESTA API ACTIVIDAD : ${dataResp.body}');
+    // Decodificar la respuesta
+    final respo = jsonDecode(dataResp.body);
+
+    // Simplificar lógica de respuesta
+    if (dataResp.statusCode == 200) {
+      return respo; // Retorna los datos si la solicitud fue exitosa
+    } else {
+      return null; // Retorna null para cualquier otro código de estado
+    }
+  } catch (e) {
+    return null; // Manejo de errores
+  }
+}
 
 
 

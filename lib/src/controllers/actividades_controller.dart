@@ -2,8 +2,10 @@
 
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:ultrared/bdd/data_base_helper.dart';
 import 'package:ultrared/src/api/api_provider.dart';
@@ -17,7 +19,7 @@ final _api = ApiProvider();
 
 
 
-bool validateFormCelular() {
+bool validateFormActividade() {
     if (actividadesFormKey.currentState!.validate()) {
       return true;
     } else {
@@ -303,6 +305,243 @@ final dbHelper = DatabaseHelper();
     fetchActas();  // Refrescar la lista después de eliminar
   }
 
+
+
+//================ OBTENEMOS LA DATA DE LA ACTIVIDAD  ======================//
+
+dynamic _infoActividad={};
+dynamic get getInfoActividad=> _infoActividad;
+void setInfoActividad(dynamic _info){
+
+_infoActividad={};
+_infoActividad=_info;
+
+_labelEstado=_infoActividad['actaEstado'];
+ _selectedRegulador = _infoActividad['actaClienteRegulador']??'' ;
+
+_selectedConfigRouter=_infoActividad['actaConfigRouter']??'';
+_selectedCambioPatch= _infoActividad['actaCambioPatch']??'';
+// print('LA DATA DEL LA ACTIVIDAD: $_infoActividad');
+print('LA DATA DEL LA _selectedRegulador: $_selectedRegulador');
+print('LA DATA DEL LA _selectedConfigRouter: $_selectedConfigRouter');
+print('LA DATA DEL LA _selectedCambioPatch: $_selectedCambioPatch');
+  notifyListeners();
+}
+
+
+
+//================ ITEMS ACTIVIDAD  ======================//
+ String? _inputDetalle;
+  String? get getInputDetalle => _inputDetalle;
+  void onDetalleChange(String? text) {
+    _inputDetalle = text;
+    // print(_inputDetalle);
+    notifyListeners();
+  }
+ String? _inputWifi;
+  String? get getInputWifi => _inputWifi;
+  void onWifiChange(String? text) {
+    _inputWifi = text;
+    // print(_inputDetalle);
+    notifyListeners();
+  }
+String? _inputClave;
+  String? get getInputClave => _inputClave;
+  void onClaveChange(String? text) {
+    _inputClave = text;
+    // print(_inputDetalle);
+    notifyListeners();
+  }
+ // Valor inicial: "No"
+  String _selectedRegulador = 'No';
+
+  String get selectedRegulador => _selectedRegulador;
+
+  void setSelectedRegulador(String opt) {
+    _selectedRegulador = opt;
+    notifyListeners();
+  }
+
+
+ // Valor inicial: "No"
+  String _selectedConfigRouter = 'No';
+
+  String get selectedConfigRouter => _selectedConfigRouter;
+
+  void setSelectedConfigRouter(String opt) {
+    _selectedConfigRouter = opt;
+    notifyListeners();
+  }
+
+ // Valor inicial: "No"
+  String _selectedCambioPatch = 'No';
+
+  String get selectedCambioPatch => _selectedCambioPatch;
+
+  void setSelectedCambioPatch(String opt) {
+    _selectedCambioPatch = opt;
+    notifyListeners();
+  }
+
+String? _obsInstalacion;
+  String? get getObsInstalacion => _obsInstalacion;
+  void onObsInstalacionChange(String? text) {
+    _obsInstalacion = text;
+    // print(_inputDetalle);
+    notifyListeners();
+  }
+
+//====================   TOMA FOTO ========================//
+
+  List<File> images = [];
+  final ImagePicker _picker = ImagePicker();
+
+  // Método para tomar una foto con la cámara
+  Future<void> pickImageFromCamera() async {
+    try {
+      final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+      if (pickedFile != null) {
+        images.add(File(pickedFile.path));
+        notifyListeners(); // Notificar a los oyentes que se ha añadido una nueva imagen
+      }
+    } catch (e) {
+      print("Error al tomar la foto: $e");
+    }
+  }
+
+  // Método para seleccionar una imagen de la galería
+  Future<void> pickImageFromGallery() async {
+    try {
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        images.add(File(pickedFile.path));
+        notifyListeners(); // Notificar a los oyentes que se ha añadido una nueva imagen
+      }
+    } catch (e) {
+      print("Error al seleccionar la imagen: $e");
+    }
+  }
+
+  // Método para eliminar una imagen
+  void removeImage(File image) {
+    images.remove(image);
+    notifyListeners(); // Notificar a los oyentes que se ha eliminado una imagen
+  }
+//==================GUARDAR IMAGEN EN EL SERVER=======================//
+
+
+
+
+
+//=========================== GUARDAMOS LISTA DE IMAGENES AL SERVIDOR=====================================//
+ List _urlsImagesActividad = [];
+
+  List get getUrlsActividades => _urlsImagesActividad;
+
+  void setUrlActividad(List _data) {
+    _urlsImagesActividad = [];
+    for (var item in _data) {
+       _urlsImagesActividad.addAll(item);
+    }
+    
+    print('ACTIVIDADES URL: $_urlsImagesActividad');
+
+    notifyListeners();
+  }
+ 
+Future getAllUrlsServerActividad() async {
+
+    final dataUser = await Auth.instance.getSession();
+    try {
+      final response = await _api.getUrlsServerActividades(images, dataUser!['token']);
+
+      if (response != null) {
+      
+        setUrlActividad(
+          response,
+        );
+        notifyListeners();
+        return response;
+      }
+
+      if (response == null) {
+         notifyListeners();
+       return null;
+
+       
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+//=========================== CREAMOS LA ACTIVIDAD=====================================//
+
+Future crearActividad() async {
+
+    final dataUser = await Auth.instance.getSession();
+
+ Map<String,dynamic> _infoData=
+{
+  "info_data": [
+    {
+      "actaId": _infoActividad['actaId'],
+      "actaEstado": _labelEstado,
+      "actaDetalleEstado": _inputDetalle,
+      "actaRedWifi": _inputWifi,
+      "actaClave": _inputClave,
+      "actaClienteRegulador": _selectedRegulador,
+      "actaConfigRouter":_selectedConfigRouter,
+      "actaCambioPatch": _selectedCambioPatch,
+      "actaCalidadIns": _obsInstalacion,
+      "actaFotos": _urlsImagesActividad
+    }
+  ]
+
+
+ };
+
+//  print('LA TOKEN Q VA AL SERVER ${dataUser!['token']}');
+//  print('LA INFO Q VA AL SERVER $_infoData');
+
+
+
+
+
+
+    try {
+      final response = await _api.saveActividadedServer(data:_infoData, token:dataUser!['token']);
+
+      if (response != null) {
+      
+        setUrlActividad(
+          response,
+        );
+        notifyListeners();
+        return response;
+      }
+
+      if (response == null) {
+         notifyListeners();
+       return null;
+
+       
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+
+
+  String? _labelEstado;
+
+  String? get labelEstado => _labelEstado;
+
+  void setLabelEstado(String value) {
+    _labelEstado = value;
+    notifyListeners();
+  }
 
 
 }
